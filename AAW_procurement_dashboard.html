@@ -1,0 +1,712 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AAW Global Logistics — Contract Utilisation Dashboard</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg:#f0f4f9; --surface:#ffffff; --surface2:#f5f7fb; --border:#dde3ee;
+    --navy:#04246a; --sky:#38b6ff; --sky-light:#e8f6ff;
+    --text:#0f1a35; --muted:#6b7a99;
+    --green:#0ba360; --yellow:#d97706; --red:#dc2626;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;min-height:100vh;overflow-x:hidden;}
+
+  /* HEADER */
+  header{display:flex;align-items:center;justify-content:space-between;padding:0 32px;height:64px;background:var(--navy);position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(4,36,106,.25);}
+  .logo-svg{height:40px;width:auto;}
+  .header-center{position:absolute;left:50%;transform:translateX(-50%);font-size:13px;font-weight:600;color:rgba(255,255,255,.6);white-space:nowrap;}
+  .header-center span{color:#fff;font-weight:700;}
+  .header-right{display:flex;align-items:center;gap:14px;}
+  .live-badge{display:flex;align-items:center;gap:7px;background:rgba(56,182,255,.15);border:1px solid rgba(56,182,255,.4);border-radius:20px;padding:5px 13px;font-size:11px;font-weight:700;color:var(--sky);letter-spacing:1px;}
+  .live-dot{width:7px;height:7px;background:var(--sky);border-radius:50%;animation:pulse 1.5s ease-in-out infinite;}
+  @keyframes pulse{0%,100%{opacity:1;transform:scale(1);}50%{opacity:.4;transform:scale(.7);}}
+  .last-sync{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,.45);}
+  .btn-sync{background:var(--sky);border:none;color:#fff;padding:8px 16px;border-radius:8px;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;gap:7px;box-shadow:0 2px 8px rgba(56,182,255,.35);}
+  .btn-sync:hover{background:#1fa7f5;}
+  .btn-sync.syncing .sync-icon{animation:spin 1s linear infinite;display:inline-block;}
+  @keyframes spin{to{transform:rotate(360deg);}}
+
+  /* CONTROLS */
+  .controls{display:flex;align-items:center;gap:12px;padding:11px 32px;border-bottom:1px solid var(--border);background:var(--surface);flex-wrap:wrap;}
+  .control-label{font-size:11px;color:var(--muted);font-weight:700;letter-spacing:.6px;text-transform:uppercase;}
+  .week-selector{display:flex;align-items:center;gap:4px;}
+  .week-btn{background:var(--surface2);border:1px solid var(--border);color:var(--navy);width:28px;height:28px;border-radius:6px;cursor:pointer;font-size:14px;transition:all .2s;}
+  .week-btn:hover{border-color:var(--sky);color:var(--sky);}
+  .week-display{font-family:'Space Mono',monospace;font-size:13px;padding:0 12px;color:var(--navy);font-weight:700;}
+  .branch-filter{display:flex;gap:6px;flex-wrap:wrap;}
+  .filter-chip{padding:4px 14px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;}
+  .filter-chip.active{border-color:var(--navy);color:var(--navy);background:rgba(4,36,106,.07);}
+  .filter-chip:hover:not(.active){border-color:var(--sky);color:var(--sky);background:var(--sky-light);}
+  .divider{height:22px;width:1px;background:var(--border);}
+
+  /* LAYOUT */
+  .main{padding:20px 32px;display:flex;flex-direction:column;gap:18px;}
+
+  /* KPI */
+  .kpi-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;}
+  .kpi-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:18px 20px;position:relative;overflow:hidden;box-shadow:0 1px 4px rgba(4,36,106,.06);transition:box-shadow .2s;}
+  .kpi-card:hover{box-shadow:0 4px 16px rgba(4,36,106,.1);}
+  .kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;}
+  .kpi-card.c-navy::before{background:var(--navy);}
+  .kpi-card.c-sky::before{background:var(--sky);}
+  .kpi-card.c-red::before{background:var(--red);}
+  .kpi-card.c-yellow::before{background:var(--yellow);}
+  .kpi-icon{position:absolute;top:16px;right:16px;width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:17px;}
+  .kpi-card.c-navy .kpi-icon{background:rgba(4,36,106,.08);}
+  .kpi-card.c-sky .kpi-icon{background:var(--sky-light);}
+  .kpi-card.c-red .kpi-icon{background:rgba(220,38,38,.08);}
+  .kpi-card.c-yellow .kpi-icon{background:rgba(217,119,6,.08);}
+  .kpi-label{font-size:11px;text-transform:uppercase;letter-spacing:.7px;color:var(--muted);font-weight:700;margin-bottom:8px;}
+  .kpi-value{font-size:30px;font-weight:800;letter-spacing:-1px;line-height:1;margin-bottom:5px;transition:all .4s;}
+  .kpi-card.c-navy .kpi-value{color:var(--navy);}
+  .kpi-card.c-sky .kpi-value{color:var(--sky);}
+  .kpi-card.c-red .kpi-value{color:var(--red);}
+  .kpi-card.c-yellow .kpi-value{color:var(--yellow);}
+  .kpi-sub{font-size:11px;color:var(--muted);font-family:'Space Mono',monospace;}
+
+  /* GRID */
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  .grid-3{display:grid;grid-template-columns:1.65fr 1fr;gap:18px;}
+
+  /* PANEL */
+  .panel{background:var(--surface);border:1px solid var(--border);border-radius:12px;overflow:hidden;box-shadow:0 1px 4px rgba(4,36,106,.06);}
+  .panel-header{display:flex;align-items:center;justify-content:space-between;padding:13px 20px;border-bottom:1px solid var(--border);}
+  .panel-title{font-size:13px;font-weight:700;color:var(--navy);}
+  .panel-badge{font-family:'Space Mono',monospace;font-size:11px;padding:2px 10px;border-radius:10px;font-weight:700;}
+  .badge-navy{background:rgba(4,36,106,.08);color:var(--navy);}
+  .badge-sky{background:var(--sky-light);color:#1a8fd1;}
+  .badge-yellow{background:rgba(217,119,6,.1);color:var(--yellow);}
+  .badge-red{background:rgba(220,38,38,.08);color:var(--red);}
+  .badge-neutral{background:var(--surface2);color:var(--muted);}
+
+  /* CONTRACT TABLE */
+  .ct-row{display:grid;grid-template-columns:90px 1fr 72px 82px 72px 110px 96px;align-items:center;padding:0 20px;border-bottom:1px solid var(--border);min-height:52px;transition:background .12s;}
+  .ct-row:last-child{border-bottom:none;}
+  .ct-row:not(.header):hover{background:var(--sky-light);cursor:pointer;}
+  .ct-row.header{min-height:34px;background:var(--surface2);}
+  .ct-row.header>*{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;}
+  .contract-id{font-family:'Space Mono',monospace;font-size:11px;color:var(--navy);font-weight:700;}
+  .carrier-name{font-size:13px;font-weight:600;color:var(--text);}
+  .carrier-lane{font-size:11px;color:var(--muted);margin-top:1px;}
+  .num{font-family:'Space Mono',monospace;font-size:12px;color:var(--text);}
+  .num.over{color:var(--red);font-weight:700;}
+  .num.under{color:var(--yellow);}
+  .progress-wrap{display:flex;align-items:center;gap:7px;}
+  .progress-bar{flex:1;height:6px;background:var(--surface2);border-radius:3px;overflow:hidden;border:1px solid var(--border);}
+  .progress-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+  .progress-fill.over{background:var(--red);}
+  .progress-fill.warn{background:var(--yellow);}
+  .progress-fill.ok{background:var(--sky);}
+  .progress-fill.low{background:#c8d3e8;}
+  .progress-pct{font-family:'Space Mono',monospace;font-size:11px;min-width:36px;text-align:right;color:var(--muted);}
+  .status-pill{display:inline-flex;align-items:center;padding:3px 9px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap;}
+  .pill-over{background:rgba(220,38,38,.1);color:var(--red);border:1px solid rgba(220,38,38,.2);}
+  .pill-warn{background:rgba(217,119,6,.1);color:var(--yellow);border:1px solid rgba(217,119,6,.2);}
+  .pill-ok{background:rgba(56,182,255,.1);color:#1a8fd1;border:1px solid rgba(56,182,255,.25);}
+  .pill-low{background:var(--surface2);color:var(--muted);border:1px solid var(--border);}
+
+  /* BRANCH TABLE */
+  .bt-row{display:grid;grid-template-columns:130px 1fr 70px 70px 70px 90px;align-items:center;padding:0 20px;border-bottom:1px solid var(--border);min-height:48px;transition:background .12s;}
+  .bt-row:last-child{border-bottom:none;}
+  .bt-row:not(.header):hover{background:var(--sky-light);}
+  .bt-row.header{min-height:34px;background:var(--surface2);}
+  .bt-row.header>*{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;}
+  .branch-tag{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:600;}
+  .branch-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+
+  /* ALERTS */
+  .alert-item{display:flex;align-items:flex-start;gap:11px;padding:11px 18px;border-bottom:1px solid var(--border);transition:background .12s;cursor:pointer;}
+  .alert-item:last-child{border-bottom:none;}
+  .alert-item:hover{background:var(--sky-light);}
+  .alert-icon{width:30px;height:30px;border-radius:7px;display:flex;align-items:center;justify-content:center;font-size:13px;flex-shrink:0;margin-top:1px;}
+  .alert-icon.over{background:rgba(220,38,38,.1);}
+  .alert-icon.warn{background:rgba(217,119,6,.1);}
+  .alert-icon.info{background:var(--sky-light);}
+  .alert-title{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px;}
+  .alert-desc{font-size:11px;color:var(--muted);line-height:1.5;font-family:'Space Mono',monospace;}
+  .alert-time{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);white-space:nowrap;margin-top:3px;}
+
+  /* FEED */
+  .feed-list{max-height:310px;overflow-y:auto;}
+  .feed-list::-webkit-scrollbar{width:3px;}
+  .feed-list::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+  .feed-item{display:flex;align-items:center;gap:11px;padding:9px 18px;border-bottom:1px solid var(--border);animation:slideIn .3s ease;}
+  @keyframes slideIn{from{opacity:0;transform:translateX(-6px);}to{opacity:1;transform:translateX(0);}}
+  .feed-item:last-child{border-bottom:none;}
+  .feed-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
+  .feed-ref{font-family:'Space Mono',monospace;font-size:11px;color:var(--navy);font-weight:700;}
+  .feed-detail{font-size:11px;color:var(--muted);margin-top:1px;}
+  .feed-branch-tag{font-size:11px;font-weight:700;color:var(--text);}
+  .feed-time-tag{font-family:'Space Mono',monospace;font-size:10px;color:var(--muted);margin-top:1px;}
+
+  /* SPARKLINES */
+  .sparkline-wrap{padding:14px 20px;display:flex;flex-direction:column;gap:10px;}
+  .spark-row{display:flex;align-items:center;gap:12px;}
+  .spark-label{width:110px;font-size:12px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--navy);}
+  .spark-bar-track{flex:1;height:18px;background:var(--surface2);border-radius:4px;overflow:hidden;border:1px solid var(--border);}
+  .spark-bar-fill{height:100%;border-radius:3px;display:flex;align-items:center;padding:0 8px;font-family:'Space Mono',monospace;font-size:10px;font-weight:700;color:#fff;transition:width .7s ease;min-width:28px;}
+  .spark-alloc{font-family:'Space Mono',monospace;font-size:11px;color:var(--muted);width:52px;text-align:right;}
+
+  /* CHART */
+  .util-chart{padding:16px 20px;display:flex;align-items:flex-end;gap:6px;height:170px;}
+  .bar-group{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1;height:100%;justify-content:flex-end;}
+  .bar-outer{width:100%;background:var(--surface2);border-radius:4px 4px 0 0;height:120px;display:flex;align-items:flex-end;overflow:hidden;border:1px solid var(--border);border-bottom:none;}
+  .bar-inner{width:100%;border-radius:4px 4px 0 0;transition:height .8s ease;}
+  .bar-label{font-size:9px;color:var(--muted);text-align:center;font-family:'Space Mono',monospace;}
+  .bar-val{font-size:10px;font-weight:700;text-align:center;font-family:'Space Mono',monospace;}
+
+  /* BRANCH BANNER */
+  .branch-banner{background:var(--navy);color:#fff;padding:10px 20px;font-size:12px;font-weight:600;display:flex;align-items:center;gap:8px;border-radius:8px;animation:fadeIn .3s ease;}
+  @keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+  .branch-banner .bdot{width:10px;height:10px;border-radius:50%;}
+
+  /* DRAWER */
+  .drawer-overlay{position:fixed;inset:0;background:rgba(4,36,106,.2);z-index:200;opacity:0;pointer-events:none;transition:opacity .3s;backdrop-filter:blur(2px);}
+  .drawer-overlay.open{opacity:1;pointer-events:all;}
+  .drawer{position:fixed;top:0;right:0;bottom:0;width:480px;background:var(--surface);border-left:1px solid var(--border);z-index:201;transform:translateX(100%);transition:transform .35s cubic-bezier(.25,.8,.25,1);overflow-y:auto;padding:28px;box-shadow:-8px 0 32px rgba(4,36,106,.12);}
+  .drawer.open{transform:translateX(0);}
+  .drawer-close{position:absolute;top:18px;right:18px;background:var(--surface2);border:1px solid var(--border);color:var(--muted);width:30px;height:30px;border-radius:7px;cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .drawer-close:hover{border-color:var(--red);color:var(--red);}
+  .drawer-title{font-size:18px;font-weight:800;color:var(--navy);margin-bottom:3px;}
+  .drawer-sub{font-family:'Space Mono',monospace;font-size:12px;color:var(--sky);margin-bottom:22px;}
+  .drawer-section{margin-bottom:22px;}
+  .drawer-section-title{font-size:10px;text-transform:uppercase;letter-spacing:.8px;color:var(--muted);font-weight:700;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);}
+  .stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  .stat-box{background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:11px 14px;}
+  .stat-box-label{font-size:10px;text-transform:uppercase;color:var(--muted);letter-spacing:.5px;margin-bottom:5px;font-weight:600;}
+  .stat-box-value{font-family:'Space Mono',monospace;font-size:18px;font-weight:700;color:var(--navy);}
+  .branch-breakdown{display:flex;flex-direction:column;gap:7px;}
+  .bb-row{display:flex;align-items:center;gap:9px;padding:7px 11px;background:var(--surface2);border-radius:7px;border:1px solid var(--border);}
+  .bb-name{flex:1;font-size:12px;font-weight:600;color:var(--text);}
+  .bb-bar-track{width:110px;height:5px;background:var(--border);border-radius:3px;overflow:hidden;}
+  .bb-bar-fill{height:100%;border-radius:3px;transition:width .6s ease;}
+  .bb-num{font-family:'Space Mono',monospace;font-size:11px;width:60px;text-align:right;color:var(--muted);}
+  .action-bar{display:flex;gap:10px;margin-top:18px;}
+  .btn-action{flex:1;padding:10px;border-radius:8px;border:1px solid;font-family:'Inter',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:all .2s;}
+  .btn-action.primary{background:var(--navy);border-color:var(--navy);color:#fff;}
+  .btn-action.primary:hover{background:#062d85;}
+  .btn-action.secondary{background:transparent;border-color:var(--border);color:var(--text);}
+  .btn-action.secondary:hover{border-color:var(--sky);color:var(--sky);}
+
+  /* TOAST */
+  .toast{position:fixed;bottom:28px;right:28px;background:var(--navy);border-radius:10px;padding:13px 18px;display:flex;align-items:center;gap:12px;z-index:300;transform:translateY(80px);opacity:0;transition:all .3s;min-width:270px;box-shadow:0 8px 30px rgba(4,36,106,.3);}
+  .toast.show{transform:translateY(0);opacity:1;}
+  .toast-icon{font-size:18px;}
+  .toast-title{font-size:13px;font-weight:700;color:#fff;}
+  .toast-msg{font-size:11px;color:rgba(255,255,255,.6);margin-top:2px;}
+
+  .table-scroll{overflow-x:auto;}
+  .empty-state{padding:20px;text-align:center;font-size:12px;color:var(--muted);}
+
+  @media(max-width:1200px){
+    .kpi-strip{grid-template-columns:repeat(2,1fr);}
+    .grid-2,.grid-3{grid-template-columns:1fr;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <!-- AAW logo as inline SVG — always visible on dark backgrounds -->
+  <svg class="logo-svg" viewBox="0 0 230 50" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <!-- Left "A" -->
+    <polygon points="2,47 19,3 36,47 30,47 19,19 8,47" fill="white"/>
+    <polygon points="12,47 19,29 26,47" fill="#38b6ff"/>
+    <!-- Middle "A" -->
+    <polygon points="30,47 47,3 64,47 58,47 47,19 36,47" fill="white"/>
+    <polygon points="40,47 47,31 54,47" fill="white" opacity="0.2"/>
+    <!-- "W" -->
+    <polygon points="67,3 79,37 89,15 99,37 111,3 105,3 95,29 89,11 83,29 73,3" fill="white"/>
+    <!-- Vertical rule -->
+    <line x1="118" y1="6" x2="118" y2="44" stroke="rgba(255,255,255,0.25)" stroke-width="1"/>
+    <!-- Text: GLOBAL / LOGISTICS -->
+    <text x="124" y="22" font-family="Arial,sans-serif" font-size="13.5" font-weight="700" fill="white" letter-spacing="1">GLOBAL</text>
+    <text x="124" y="40" font-family="Arial,sans-serif" font-size="13.5" font-weight="700" fill="white" letter-spacing="1">LOGISTICS</text>
+  </svg>
+
+  <div class="header-center">Procurement <span>Contract Utilisation Dashboard</span></div>
+
+  <div class="header-right">
+    <div class="live-badge"><div class="live-dot"></div>LIVE — CW1</div>
+    <div class="last-sync" id="lastSync">Last sync: —</div>
+    <button class="btn-sync" id="syncBtn" onclick="triggerSync()">
+      <span class="sync-icon">⟳</span> Sync Cargowise
+    </button>
+  </div>
+</header>
+
+<div class="controls">
+  <span class="control-label">Week</span>
+  <div class="week-selector">
+    <button class="week-btn" onclick="changeWeek(-1)">‹</button>
+    <div class="week-display" id="weekDisplay">WK 12 · 2026</div>
+    <button class="week-btn" onclick="changeWeek(1)">›</button>
+  </div>
+  <div class="divider"></div>
+  <span class="control-label">Branch</span>
+  <div class="branch-filter">
+    <button class="filter-chip active" data-branch="ALL" onclick="filterBranch(this)">All Branches</button>
+    <button class="filter-chip" data-branch="SYD" onclick="filterBranch(this)">Sydney</button>
+    <button class="filter-chip" data-branch="MEL" onclick="filterBranch(this)">Melbourne</button>
+    <button class="filter-chip" data-branch="BNE" onclick="filterBranch(this)">Brisbane</button>
+    <button class="filter-chip" data-branch="PER" onclick="filterBranch(this)">Perth</button>
+    <button class="filter-chip" data-branch="ADL" onclick="filterBranch(this)">Adelaide</button>
+  </div>
+</div>
+
+<div class="main">
+  <div id="branchBanner"></div>
+
+  <!-- KPIs -->
+  <div class="kpi-strip">
+    <div class="kpi-card c-navy"><div class="kpi-icon">📦</div><div class="kpi-label">Total Allocation (TEUs)</div><div class="kpi-value" id="kpiTotal">—</div><div class="kpi-sub" id="kpiTotalSub">—</div></div>
+    <div class="kpi-card c-sky"> <div class="kpi-icon">🛳</div><div class="kpi-label">Booked (TEUs)</div>        <div class="kpi-value" id="kpiBooked">—</div><div class="kpi-sub" id="kpiBookedSub">—</div></div>
+    <div class="kpi-card c-red"> <div class="kpi-icon">⚠️</div><div class="kpi-label">Overbooked Contracts</div> <div class="kpi-value" id="kpiOver">—</div><div class="kpi-sub" id="kpiOverSub">—</div></div>
+    <div class="kpi-card c-yellow"><div class="kpi-icon">📉</div><div class="kpi-label">Underperforming (≤50%)</div><div class="kpi-value" id="kpiUnder">—</div><div class="kpi-sub" id="kpiUnderSub">—</div></div>
+  </div>
+
+  <!-- Contract table + right column -->
+  <div class="grid-3">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title" id="contractTitle">📋 Contract Utilisation — All Branches</div>
+        <span class="panel-badge badge-neutral" id="contractCount">12 contracts</span>
+      </div>
+      <div class="table-scroll">
+        <div class="ct-row header">
+          <div>Contract</div><div>Carrier / Trade Lane</div><div>Alloc.</div>
+          <div id="colBooked">Booked</div><div id="colAvail">Avail.</div>
+          <div>Utilisation</div><div>Status</div>
+        </div>
+        <div id="contractRows"></div>
+      </div>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:14px;">
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">⚡ Action Required</div>
+          <span class="panel-badge badge-red" id="alertCount">—</span>
+        </div>
+        <div id="alertsList"></div>
+      </div>
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title">🛳 Live Booking Feed</div>
+          <span class="panel-badge badge-sky" id="feedBadge">CW1 Live</span>
+        </div>
+        <div class="feed-list" id="feedList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Branch table + chart -->
+  <div class="grid-2">
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title" id="branchTableTitle">🏢 Branch Allocation Breakdown</div>
+        <span class="panel-badge badge-navy">All Branches</span>
+      </div>
+      <div class="bt-row header">
+        <div>Branch</div><div>Utilisation</div><div>Alloc.</div><div>Booked</div><div>Avail.</div><div>Status</div>
+      </div>
+      <div id="branchRows"></div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <div class="panel-title">📊 Utilisation by Carrier</div>
+        <span class="panel-badge badge-neutral">TEU %</span>
+      </div>
+      <div class="util-chart" id="utilChart"></div>
+    </div>
+  </div>
+
+  <!-- Sparklines -->
+  <div class="panel">
+    <div class="panel-header">
+      <div class="panel-title" id="sparkTitle">📈 Contract Progress — All Branches</div>
+      <span class="panel-badge badge-neutral">Booked vs Allocated</span>
+    </div>
+    <div class="sparkline-wrap" id="sparklines"></div>
+  </div>
+</div>
+
+<div class="drawer-overlay" id="drawerOverlay" onclick="closeDrawer()"></div>
+<div class="drawer" id="drawer">
+  <button class="drawer-close" onclick="closeDrawer()">✕</button>
+  <div id="drawerContent"></div>
+</div>
+
+<div class="toast" id="toast">
+  <div class="toast-icon" id="toastIcon"></div>
+  <div><div class="toast-title" id="toastTitle"></div><div class="toast-msg" id="toastMsg"></div></div>
+</div>
+
+<script>
+/* ── DATA ─────────────────────────────────────────────────── */
+const BRANCHES = [
+  {code:'SYD',name:'Sydney',    color:'#04246a'},
+  {code:'MEL',name:'Melbourne', color:'#38b6ff'},
+  {code:'BNE',name:'Brisbane',  color:'#f59e0b'},
+  {code:'PER',name:'Perth',     color:'#0ba360'},
+  {code:'ADL',name:'Adelaide',  color:'#9333ea'},
+];
+
+const CONTRACTS = [
+  {id:'EVG-2601',carrier:'Evergreen Line',      lane:'AUS–NCSA',alloc:200,br:{SYD:{a:60,b:72},MEL:{a:55,b:68},BNE:{a:40,b:44},PER:{a:28,b:30},ADL:{a:17,b:17}}},
+  {id:'MSC-2602',carrier:'MSC',                 lane:'AUS–MEX', alloc:150,br:{SYD:{a:45,b:55},MEL:{a:40,b:48},BNE:{a:30,b:22},PER:{a:20,b:14},ADL:{a:15,b:9}}},
+  {id:'CMA-2603',carrier:'CMA CGM',             lane:'AUS–EUR', alloc:180,br:{SYD:{a:55,b:70},MEL:{a:50,b:55},BNE:{a:35,b:30},PER:{a:25,b:18},ADL:{a:15,b:9}}},
+  {id:'ONE-2604',carrier:'ONE (Ocean Network)', lane:'AUS–NEA', alloc:120,br:{SYD:{a:36,b:20},MEL:{a:32,b:18},BNE:{a:24,b:10},PER:{a:16,b:4}, ADL:{a:12,b:2}}},
+  {id:'HMM-2605',carrier:'HMM',                 lane:'AUS–SEA', alloc:100,br:{SYD:{a:30,b:35},MEL:{a:28,b:30},BNE:{a:20,b:15},PER:{a:13,b:7}, ADL:{a:9,b:4}}},
+  {id:'YML-2606',carrier:'Yang Ming',           lane:'AUS–CHN', alloc:200,br:{SYD:{a:60,b:28},MEL:{a:55,b:22},BNE:{a:40,b:12},PER:{a:28,b:8}, ADL:{a:17,b:3}}},
+  {id:'PIL-2607',carrier:"Pacific Int'l Lines", lane:'AUS–SEA', alloc:80, br:{SYD:{a:24,b:28},MEL:{a:22,b:25},BNE:{a:16,b:12},PER:{a:11,b:7}, ADL:{a:7,b:3}}},
+  {id:'COF-2608',carrier:'COSCO Freight',       lane:'AUS–CHN', alloc:160,br:{SYD:{a:48,b:44},MEL:{a:44,b:35},BNE:{a:32,b:18},PER:{a:22,b:10},ADL:{a:14,b:5}}},
+  {id:'ANL-2609',carrier:'ANL Container Line',  lane:'AUS–IND', alloc:90, br:{SYD:{a:27,b:10},MEL:{a:25,b:9}, BNE:{a:18,b:5}, PER:{a:12,b:3}, ADL:{a:8,b:2}}},
+  {id:'WHL-2610',carrier:'Wan Hai Lines',       lane:'AUS–TWN', alloc:80, br:{SYD:{a:24,b:22},MEL:{a:22,b:18},BNE:{a:16,b:8}, PER:{a:11,b:5}, ADL:{a:7,b:3}}},
+  {id:'ZIM-2611',carrier:'ZIM Integrated',      lane:'AUS–MED', alloc:200,br:{SYD:{a:60,b:16},MEL:{a:55,b:14},BNE:{a:40,b:8}, PER:{a:28,b:4}, ADL:{a:17,b:2}}},
+  {id:'SML-2612',carrier:'Simatech',            lane:'AUS–PGC', alloc:280,br:{SYD:{a:84,b:12},MEL:{a:77,b:10},BNE:{a:56,b:4}, PER:{a:39,b:2}, ADL:{a:24,b:1}}},
+];
+
+function nums(ct, branch) {
+  if (branch === 'ALL') {
+    return {
+      alloc: ct.alloc,
+      booked: Object.values(ct.br).reduce((s,v)=>s+v.b,0)
+    };
+  }
+  const v = ct.br[branch];
+  return v ? {alloc:v.a, booked:v.b} : {alloc:0,booked:0};
+}
+
+const ALL_FEED = [
+  {ref:'CWO-8823451',contract:'EVG-2601',branch:'SYD',cargo:'2×FCL 40HC – Electronics',time:'2 min ago', color:'#04246a'},
+  {ref:'CWO-8823448',contract:'CMA-2603',branch:'MEL',cargo:'1×FCL 20GP – Machinery',  time:'8 min ago', color:'#38b6ff'},
+  {ref:'CWO-8823445',contract:'MSC-2602',branch:'BNE',cargo:'3×FCL 40HC – Pharma',     time:'14 min ago',color:'#f59e0b'},
+  {ref:'CWO-8823440',contract:'HMM-2605',branch:'SYD',cargo:'2×FCL 40GP – Furniture',  time:'21 min ago',color:'#04246a'},
+  {ref:'CWO-8823435',contract:'COF-2608',branch:'PER',cargo:'1×FCL 40HC – Minerals',   time:'35 min ago',color:'#0ba360'},
+  {ref:'CWO-8823429',contract:'YML-2606',branch:'ADL',cargo:'4×FCL 20GP – Agriculture',time:'52 min ago',color:'#9333ea'},
+  {ref:'CWO-8823420',contract:'EVG-2601',branch:'MEL',cargo:'2×FCL 40HC – Automotive', time:'1h 10m',    color:'#38b6ff'},
+  {ref:'CWO-8823415',contract:'ZIM-2611',branch:'SYD',cargo:'1×FCL 20GP – Food',       time:'1h 28m',    color:'#04246a'},
+  {ref:'CWO-8823410',contract:'ANL-2609',branch:'BNE',cargo:'2×FCL 40HC – Chemicals',  time:'1h 45m',    color:'#f59e0b'},
+  {ref:'CWO-8823405',contract:'PIL-2607',branch:'PER',cargo:'3×FCL 40GP – Timber',     time:'2h 5m',     color:'#0ba360'},
+];
+let LIVE_FEED = [...ALL_FEED];
+
+let currentBranch = 'ALL';
+let syncing = false;
+let weekOffset = 0;
+
+function getStatus(pct) {
+  if (pct > 100) return {label:'⚠ Overbooked',cls:'pill-over',bar:'over'};
+  if (pct >= 90)  return {label:'↑ Near Full', cls:'pill-warn',bar:'warn'};
+  if (pct >= 50)  return {label:'✓ On Track',  cls:'pill-ok',  bar:'ok'};
+  return           {label:'▼ Low Uptake',       cls:'pill-low', bar:'low'};
+}
+
+function brInfo(code) { return BRANCHES.find(b=>b.code===code); }
+function wk() { return ((12+weekOffset-1)%52)+1; }
+
+/* ── RENDER ALL ─────────────────────────────────────────── */
+function renderAll() {
+  renderBanner();
+  renderKPIs();
+  renderContracts();
+  renderAlerts();
+  renderFeed();
+  renderBranches();
+  renderChart();
+  renderSparklines();
+}
+
+function renderBanner() {
+  const el = document.getElementById('branchBanner');
+  if (currentBranch === 'ALL') {
+    el.innerHTML = '';
+  } else {
+    const b = brInfo(currentBranch);
+    el.innerHTML = `<div class="branch-banner">
+      <div class="bdot" style="background:${b.color}"></div>
+      Viewing: <strong>${b.name} Branch only</strong> — all figures below reflect ${b.name} allocation and bookings exclusively.
+      &nbsp;<span style="opacity:.6;font-weight:400">Click "All Branches" to reset.</span>
+    </div>`;
+  }
+  const lbl = currentBranch === 'ALL' ? 'All Branches' : brInfo(currentBranch).name;
+  document.getElementById('contractTitle').textContent   = `📋 Contract Utilisation — ${lbl}`;
+  document.getElementById('sparkTitle').textContent      = `📈 Contract Progress — ${lbl}`;
+  document.getElementById('branchTableTitle').textContent = currentBranch === 'ALL' ? '🏢 Branch Allocation Breakdown' : `🏢 ${brInfo(currentBranch).name} — Contract Breakdown`;
+}
+
+function renderKPIs() {
+  let ta=0, tb=0, over=0, under=0;
+  CONTRACTS.forEach(ct => {
+    const {alloc,booked} = nums(ct, currentBranch);
+    ta += alloc; tb += booked;
+    const p = alloc>0 ? booked/alloc : 0;
+    if (p>1)   over++;
+    if (p<0.5) under++;
+  });
+  const pct = ta>0 ? Math.round((tb/ta)*100) : 0;
+  const lbl = currentBranch==='ALL' ? '12 contracts · All Branches' : `${brInfo(currentBranch).name} Branch`;
+  document.getElementById('kpiTotal').textContent   = ta.toLocaleString();
+  document.getElementById('kpiTotalSub').textContent = `${lbl} · WK ${wk()}`;
+  document.getElementById('kpiBooked').textContent  = tb.toLocaleString();
+  document.getElementById('kpiBookedSub').textContent = `${pct}% utilised · ${(ta-tb).toLocaleString()} TEU remaining`;
+  document.getElementById('kpiOver').textContent    = over;
+  document.getElementById('kpiOverSub').textContent = over>0 ? 'Require reallocation ▲' : 'No overbooked contracts ✓';
+  document.getElementById('kpiUnder').textContent   = under;
+  document.getElementById('kpiUnderSub').textContent = under>0 ? 'Internal action needed ▼' : 'All contracts on track ✓';
+}
+
+function renderContracts() {
+  const c = document.getElementById('contractRows');
+  c.innerHTML = '';
+  const b = currentBranch;
+  document.getElementById('colBooked').textContent = b==='ALL' ? 'Booked' : b+' Booked';
+  document.getElementById('colAvail').textContent  = b==='ALL' ? 'Avail.'  : b+' Avail.';
+  let count = 0;
+  CONTRACTS.forEach(ct => {
+    const {alloc,booked} = nums(ct, b);
+    if (!alloc) return;
+    count++;
+    const pct = Math.round((booked/alloc)*100);
+    const avail = alloc-booked;
+    const st = getStatus(pct);
+    const nc = pct>100?'over':pct<50?'under':'';
+    const row = document.createElement('div');
+    row.className='ct-row';
+    row.onclick=()=>openDrawer(ct);
+    row.innerHTML=`
+      <div class="contract-id">${ct.id}</div>
+      <div><div class="carrier-name">${ct.carrier}</div><div class="carrier-lane">${ct.lane}</div></div>
+      <div class="num">${alloc}</div>
+      <div class="num ${nc}">${booked}</div>
+      <div class="num ${avail<0?'over':''}">${avail}</div>
+      <div class="progress-wrap">
+        <div class="progress-bar"><div class="progress-fill ${st.bar}" style="width:${Math.min(pct,100)}%"></div></div>
+        <span class="progress-pct">${pct}%</span>
+      </div>
+      <div><span class="status-pill ${st.cls}">${st.label}</span></div>`;
+    c.appendChild(row);
+  });
+  document.getElementById('contractCount').textContent = `${count} contracts`;
+}
+
+function renderAlerts() {
+  const c = document.getElementById('alertsList');
+  c.innerHTML='';
+  const alerts=[];
+  CONTRACTS.forEach(ct=>{
+    const {alloc,booked}=nums(ct,currentBranch);
+    if(!alloc) return;
+    const pct=Math.round((booked/alloc)*100);
+    if(pct>100) alerts.push({type:'over',icon:'🔴',title:`${ct.id} — Overbooked by ${booked-alloc} TEUs`,desc:`${ct.carrier} · ${ct.lane} · Reallocate excess`,time:'Now'});
+    else if(pct<50&&alloc>=50) alerts.push({type:'warn',icon:'🟡',title:`${ct.id} — Low utilisation (${pct}%)`,desc:`${ct.carrier} · ${ct.lane} · Prioritise internally`,time:'WK'+wk()});
+  });
+  alerts.push({type:'info',icon:'🔵',title:'Evergreen WK13 window opens',desc:'EVG-2601 · Submit allocation request by Friday EOD',time:'In 2d'});
+  document.getElementById('alertCount').textContent=`${alerts.length} alerts`;
+  alerts.forEach(a=>{
+    const el=document.createElement('div');
+    el.className='alert-item';
+    el.innerHTML=`<div class="alert-icon ${a.type}">${a.icon}</div>
+      <div style="flex:1"><div class="alert-title">${a.title}</div><div class="alert-desc">${a.desc}</div></div>
+      <div class="alert-time">${a.time}</div>`;
+    c.appendChild(el);
+  });
+}
+
+function renderFeed() {
+  const c = document.getElementById('feedList');
+  c.innerHTML='';
+  const items = currentBranch==='ALL' ? LIVE_FEED : LIVE_FEED.filter(f=>f.branch===currentBranch);
+  if(!items.length){
+    c.innerHTML='<div class="empty-state">No recent bookings for this branch.</div>';
+    document.getElementById('feedBadge').textContent='No entries';
+    return;
+  }
+  document.getElementById('feedBadge').textContent='CW1 Live';
+  items.forEach(f=>{
+    const el=document.createElement('div');
+    el.className='feed-item';
+    el.innerHTML=`<div class="feed-dot" style="background:${f.color}"></div>
+      <div style="flex:1"><div class="feed-ref">${f.ref}</div><div class="feed-detail">${f.contract} · ${f.cargo}</div></div>
+      <div style="text-align:right"><div class="feed-branch-tag">${f.branch}</div><div class="feed-time-tag">${f.time}</div></div>`;
+    c.appendChild(el);
+  });
+}
+
+function renderBranches() {
+  const c = document.getElementById('branchRows');
+  c.innerHTML='';
+  const list = currentBranch==='ALL' ? BRANCHES : BRANCHES.filter(b=>b.code===currentBranch);
+  list.forEach(b=>{
+    let a=0,bk=0;
+    CONTRACTS.forEach(ct=>{const v=ct.br[b.code];if(v){a+=v.a;bk+=v.b;}});
+    const pct=a>0?Math.round((bk/a)*100):0;
+    const st=getStatus(pct);
+    const row=document.createElement('div');
+    row.className='bt-row';
+    row.innerHTML=`<div><span class="branch-tag"><div class="branch-dot" style="background:${b.color}"></div>${b.name}</span></div>
+      <div class="progress-wrap"><div class="progress-bar"><div class="progress-fill ${st.bar}" style="width:${Math.min(pct,100)}%"></div></div><span class="progress-pct">${pct}%</span></div>
+      <div class="num">${a}</div><div class="num ${pct>100?'over':''}">${bk}</div><div class="num">${a-bk}</div>
+      <div><span class="status-pill ${st.cls}">${st.label}</span></div>`;
+    c.appendChild(row);
+  });
+}
+
+function renderChart() {
+  const c=document.getElementById('utilChart');
+  c.innerHTML='';
+  CONTRACTS.slice(0,8).forEach(ct=>{
+    const {alloc,booked}=nums(ct,currentBranch);
+    const pct=alloc>0?Math.round((booked/alloc)*100):0;
+    const barH=Math.round((Math.min(pct,120)/120)*120);
+    const bc=pct>100?'#dc2626':pct>=90?'#d97706':pct>=50?'#38b6ff':'#c8d3e8';
+    const vc=pct>100?'#dc2626':pct>=90?'#d97706':pct>=50?'#04246a':'#6b7a99';
+    const g=document.createElement('div');
+    g.className='bar-group';
+    g.innerHTML=`<div class="bar-val" style="color:${vc}">${pct}%</div>
+      <div class="bar-outer"><div class="bar-inner" style="height:${barH}px;background:${bc};opacity:.9"></div></div>
+      <div class="bar-label">${ct.carrier.split(' ')[0]}</div>`;
+    c.appendChild(g);
+  });
+}
+
+function renderSparklines() {
+  const c=document.getElementById('sparklines');
+  c.innerHTML='';
+  CONTRACTS.forEach(ct=>{
+    const {alloc,booked}=nums(ct,currentBranch);
+    if(!alloc) return;
+    const pct=Math.round((booked/alloc)*100);
+    const bc=pct>100?'#dc2626':pct>=90?'#d97706':pct>=50?'#38b6ff':'#c8d3e8';
+    const row=document.createElement('div');
+    row.className='spark-row';
+    row.innerHTML=`<div class="spark-label" title="${ct.carrier}">${ct.id} · ${ct.carrier.split(' ')[0]}</div>
+      <div class="spark-bar-track"><div class="spark-bar-fill" style="width:${Math.min(pct,100)}%;background:${bc}">${pct>=15?pct+'%':''}</div></div>
+      <div class="spark-alloc">${booked}/${alloc}</div>`;
+    c.appendChild(row);
+  });
+}
+
+/* ── DRAWER ─────────────────────────────────────────────── */
+function openDrawer(ct) {
+  const {alloc,booked}=nums(ct,currentBranch);
+  const pct=Math.round((booked/alloc)*100);
+  const bRows=BRANCHES.map(b=>{
+    const v=ct.br[b.code];if(!v)return'';
+    const bp=Math.round((v.b/v.a)*100);
+    const bc=bp>100?'#dc2626':bp>=50?b.color:'#c8d3e8';
+    const hl=currentBranch===b.code?'border:1px solid var(--sky);background:var(--sky-light);':'';
+    return `<div class="bb-row" style="${hl}">
+      <div style="width:8px;height:8px;border-radius:2px;background:${b.color};flex-shrink:0"></div>
+      <div class="bb-name">${b.name}${currentBranch===b.code?' ← viewing':''}</div>
+      <div class="bb-bar-track"><div class="bb-bar-fill" style="width:${Math.min(bp,100)}%;background:${bc}"></div></div>
+      <div class="bb-num">${v.b}/${v.a} TEU</div></div>`;
+  }).join('');
+
+  document.getElementById('drawerContent').innerHTML=`
+    <div class="drawer-title">${ct.carrier}</div>
+    <div class="drawer-sub">${ct.id} · ${ct.lane}${currentBranch!=='ALL'?' · '+brInfo(currentBranch).name:''}</div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">WK ${wk()} Summary — ${currentBranch==='ALL'?'All Branches':brInfo(currentBranch).name}</div>
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-box-label">Allocation</div><div class="stat-box-value">${alloc} <span style="font-size:12px;color:var(--muted)">TEU</span></div></div>
+        <div class="stat-box"><div class="stat-box-label">Booked</div><div class="stat-box-value" style="color:${pct>100?'var(--red)':'var(--navy)'}">${booked} <span style="font-size:12px;color:var(--muted)">TEU</span></div></div>
+        <div class="stat-box"><div class="stat-box-label">Available</div><div class="stat-box-value" style="color:${alloc-booked<0?'var(--red)':'var(--navy)'}">${alloc-booked} <span style="font-size:12px;color:var(--muted)">TEU</span></div></div>
+        <div class="stat-box"><div class="stat-box-label">Utilisation</div><div class="stat-box-value" style="color:${pct>100?'var(--red)':pct<50?'var(--yellow)':'var(--sky)'}">${pct}<span style="font-size:12px">%</span></div></div>
+      </div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">All Branch Breakdown</div>
+      <div class="branch-breakdown">${bRows}</div>
+    </div>
+    <div class="drawer-section">
+      <div class="drawer-section-title">Recommendation</div>
+      <div style="background:var(--surface2);border-radius:10px;padding:14px;border:1px solid var(--border);font-size:12px;line-height:1.8;color:var(--muted)">
+        ${pct>100
+          ?`<span style="color:var(--red);font-weight:700">⚠ Overbooked by ${booked-alloc} TEUs.</span><br>Move excess to underutilised contracts e.g. <strong style="color:var(--navy)">YML-2606</strong> or <strong style="color:var(--navy)">ZIM-2611</strong>.`
+          :pct<50
+          ?`<span style="color:var(--yellow);font-weight:700">▼ Critically low at ${pct}%.</span><br>Issue internal bulletin to all branches. Review spot market rates.`
+          :`<span style="color:var(--sky);font-weight:700">✓ On track at ${pct}%.</span><br>Monitor closely approaching ETD. Confirm cut-off dates with all branches.`}
+      </div>
+    </div>
+    <div class="action-bar">
+      <button class="btn-action primary" onclick="showToast('✅','Action Logged','Task created in CW1');closeDrawer()">Log Action in CW1</button>
+      <button class="btn-action secondary" onclick="showToast('📧','Alert Sent','Branch notification dispatched');closeDrawer()">Alert Branches</button>
+    </div>`;
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.getElementById('drawer').classList.add('open');
+}
+
+function closeDrawer(){
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+}
+
+/* ── SYNC ───────────────────────────────────────────────── */
+function triggerSync(){
+  if(syncing)return;
+  syncing=true;
+  document.getElementById('syncBtn').classList.add('syncing');
+  setTimeout(()=>{
+    const ct=CONTRACTS[Math.floor(Math.random()*CONTRACTS.length)];
+    const bk=BRANCHES[Math.floor(Math.random()*BRANCHES.length)];
+    const v=ct.br[bk.code];
+    if(v) v.b=Math.max(0,v.b+Math.floor(Math.random()*5)-1);
+    const nf={ref:`CWO-${880000+Math.floor(Math.random()*9999)}`,contract:ct.id,branch:bk.code,
+      cargo:['2×FCL 40HC – Electronics','1×FCL 20GP – Machinery','3×LCL – Garments','2×FCL 40GP – Perishables'][Math.floor(Math.random()*4)],
+      time:'just now',color:bk.color};
+    ALL_FEED.unshift(nf);
+    if(ALL_FEED.length>12)ALL_FEED.pop();
+    LIVE_FEED=[...ALL_FEED];
+    renderAll();
+    syncing=false;
+    document.getElementById('syncBtn').classList.remove('syncing');
+    const now=new Date();
+    document.getElementById('lastSync').textContent=`Last sync: ${now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
+    showToast('🔄','Cargowise Synced',`${ct.id} · ${bk.name} updated`);
+  },1800);
+}
+
+/* ── CONTROLS ───────────────────────────────────────────── */
+function filterBranch(el){
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
+  el.classList.add('active');
+  currentBranch=el.dataset.branch;
+  renderAll();
+  showToast('🏢',`Viewing: ${currentBranch==='ALL'?'All Branches':brInfo(currentBranch).name}`,'Dashboard updated');
+}
+
+function changeWeek(delta){
+  weekOffset+=delta;
+  const w=wk(), yr=2026+Math.floor((12+weekOffset-1)/52);
+  document.getElementById('weekDisplay').textContent=`WK ${w<10?'0'+w:w} · ${yr}`;
+  renderAll();
+}
+
+/* ── TOAST ──────────────────────────────────────────────── */
+function showToast(icon,title,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('toastIcon').textContent=icon;
+  document.getElementById('toastTitle').textContent=title;
+  document.getElementById('toastMsg').textContent=msg;
+  t.classList.add('show');
+  setTimeout(()=>t.classList.remove('show'),3200);
+}
+
+/* ── INIT ───────────────────────────────────────────────── */
+document.addEventListener('DOMContentLoaded',()=>{
+  renderAll();
+  const now=new Date();
+  document.getElementById('lastSync').textContent=`Last sync: ${now.toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit',second:'2-digit'})}`;
+  setTimeout(()=>showToast('🛳','Dashboard Ready','Connected to Cargowise CW1 · Live mode'),600);
+});
+</script>
+</body>
+</html>
