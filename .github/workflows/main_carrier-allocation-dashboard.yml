@@ -10,22 +10,15 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout
+      # Checkout repo
+      - name: Checkout code
         uses: actions/checkout@v4
 
-      - name: Set up Python
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.11'
-
-      - name: Install dependencies
-        run: |
-          pip install -r backend/requirements.txt
-
+      # Deploy ONLY backend folder to Azure
       - name: Deploy to Azure Web App
         uses: azure/webapps-deploy@v3
         with:
