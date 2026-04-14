@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { ComposedChart, Area, Line, Bar, BarChart, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import Navbar from '../components/Navbar';
-import { BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, BOOKING_BRANCH_SUMMARY, BOOKING_CONTRACT_BREAKDOWN, CONTRACT_UTIL_DATA, ORIGINS, DESTINATIONS, LANES, ALLOCATIONS, PRIORITIES } from '../BookingData';
+import { BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, CONTRACT_UTIL_DATA, ORIGINS, DESTINATIONS, LANES, ALLOCATIONS, PRIORITIES, REGIONS, PORT_HIERARCHY } from '../BookingData';
 
 
 
@@ -13,6 +13,7 @@ const totalBook = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0)
 const totalUtl = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
 const overbooked = CONTRACT_UTIL_DATA.filter(c => c.booked > c.alloc).length;
 const lowUtil = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
+const noNodeNum = 'node-';
 
 const KPI_DATA = [
   { id: 'alloc', label: 'TOTAL ALLOCATION', value: totalAlloc.toLocaleString(), sub: 'Max Capacity', accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]', type: 'bar', percent: 100, barColor: 'bg-indigo-500' },
@@ -46,6 +47,10 @@ const ContractDashboard: React.FC = () => {
   const [selectedLane, setSelectedLane] = useState('ALL');
   const [selectedAllocation, setSelectedAllocation] = useState('ALL');
   const [selectedPriority, setSelectedPriority] = useState('ALL');
+  const [selectedRegion, setSelectedRegion] = useState('ALL');
+  const [selectedCountry, setSelectedCountry] = useState('ALL');
+  const [selectedPortName, setSelectedPortName] = useState('ALL');
+  const [selectedPortCode, setSelectedPortCode] = useState('ALL');
   const [isCuTableModalOpen, setIsCuTableModalOpen] = useState(false);
   const [isBranchTableModalOpen, setIsBranchTableModalOpen] = useState(false);
   const [activeCuKpi, setActiveCuKpi] = useState<any | null>(null);
@@ -103,8 +108,7 @@ const ContractDashboard: React.FC = () => {
 
 
   // Derive available contracts from master log
-  const availableContractsRaw = ['ALL', ...Array.from(new Set(BOOKING_LOG_DATA.map(b => b.contract)))].sort();
-  const availableContracts = availableContractsRaw;
+  // Reactive helper deactivated as we use real data now
 
   // Re-computed Reactive KPIs from Real Data
   const currentWeekTrendRaw = WEEKLY_TREND_DATA.find(i => i.week === selectedWeek) || WEEKLY_TREND_DATA[0];
@@ -129,10 +133,18 @@ const ContractDashboard: React.FC = () => {
 
       const matchLane = selectedLane === 'ALL' || b.lane === selectedLane;
       const matchPriority = selectedPriority === 'ALL' || b.priority === selectedPriority;
-
       const matchAlloc = selectedAllocation === 'ALL' || (master && master.notes === selectedAllocation);
 
-      return matchWeek && matchContract && matchOrigin && matchDest && matchLane && matchPriority && matchAlloc;
+      // Hierarchical Filter Matches
+      const portMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort || p.code === b.dischargePort || p.name === b.dischargePort);
+
+      const matchRegion = selectedRegion === 'ALL' || (portMeta && portMeta.region === selectedRegion);
+      const matchCountry = selectedCountry === 'ALL' || (portMeta && portMeta.country === selectedCountry);
+      const matchPortName = selectedPortName === 'ALL' || (portMeta && portMeta.name === selectedPortName);
+      const matchPortCode = selectedPortCode === 'ALL' || (portMeta && portMeta.code === selectedPortCode);
+
+      return matchWeek && matchContract && matchOrigin && matchDest && matchLane && matchPriority && matchAlloc &&
+        matchRegion && matchCountry && matchPortName && matchPortCode;
     });
   };
 
@@ -173,10 +185,26 @@ const ContractDashboard: React.FC = () => {
     { ...KPI_DATA[5], value: selectedWeek === 'ALL' ? 'ALL' : selectedWeek.split(' ')[1] },
   ];
 
-  const availableWeeksNavbar = [
-    'ALL',
-    ...(WEEKLY_TREND_DATA.map(w => w.week))
-  ];
+  // Performance Matrix Derivation
+  const CONTRACT_WEEKLY_BREAKDOWN = Array.from(new Set(BOOKING_LOG_DATA.map(b => b.contract))).map(cid => {
+    const contractBookings = BOOKING_LOG_DATA.filter(b => b.contract === cid);
+    const weeklyData: Record<string, any> = {};
+
+    AVAILABLE_WEEKS.forEach(wk => {
+      const wkNum = wk.split(' ')[1];
+      const wkBookings = contractBookings.filter(b => b.mscWeek === wkNum);
+      const booked = wkBookings.reduce((s, b) => s + b.teu, 0);
+      const master = CONTRACT_UTIL_DATA.find(c => c.id === cid);
+      const alloc = master ? master.alloc : 0;
+      weeklyData[wk] = { alloc, booked, util: alloc > 0 ? (booked / alloc) * 100 : 0 };
+    });
+
+    return {
+      contract: cid,
+      type: 'TOTAL',
+      data: weeklyData
+    };
+  });
 
   const reactiveBranchSnapshot = BRANCH_SNAPSHOT
     .map(b => {
@@ -227,6 +255,29 @@ const ContractDashboard: React.FC = () => {
       }
       return acc;
     }, [] as any[]);
+
+  // Derive reactive weekly trend
+  const reactiveWeeklyTrendData = AVAILABLE_WEEKS.map(wk => {
+    const wkNum = wk.split(' ')[1];
+    const wkBookings = filteredBookings.filter(b => b.mscWeek === wkNum);
+    const booked = wkBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+
+    // Determine the relevant allocation scope based on filters
+    let relevantContracts = CONTRACT_UTIL_DATA;
+    if (selectedContract !== 'ALL') relevantContracts = relevantContracts.filter(c => c.id === selectedContract);
+    if (selectedDestination !== 'ALL') relevantContracts = relevantContracts.filter(c => c.lane === selectedDestination);
+    if (selectedPriority !== 'ALL') relevantContracts = relevantContracts.filter(c => c.priority === selectedPriority);
+
+    const alloc = relevantContracts.reduce((sum, c) => sum + (c.alloc || 0), 0);
+    const util = alloc > 0 ? (booked / alloc) * 100 : 0;
+
+    return {
+      week: wk,
+      alloc: round(alloc),
+      booked: Number(booked.toFixed(1)),
+      util: Number(util.toFixed(1))
+    };
+  });
 
   const reactiveBookingContractBreakdown = filteredBookings
     .reduce((acc, curr) => {
@@ -536,7 +587,7 @@ const ContractDashboard: React.FC = () => {
 
   return (
     <div
-      className="min-h-screen flex flex-col text-slate-200 relative overflow-hidden"
+      className="min-h-screen flex flex-col text-slate-200 relative overflow-x-hidden"
       style={{ backgroundColor: '#030712' }}
     >
       <DigitalRain />
@@ -563,6 +614,14 @@ const ContractDashboard: React.FC = () => {
           onAllocationChange={setSelectedAllocation}
           selectedPriority={selectedPriority}
           onPriorityChange={setSelectedPriority}
+          selectedRegion={selectedRegion}
+          onRegionChange={(val) => { setSelectedRegion(val); setSelectedCountry('ALL'); setSelectedPortName('ALL'); setSelectedPortCode('ALL'); }}
+          selectedCountry={selectedCountry}
+          onCountryChange={(val) => { setSelectedCountry(val); setSelectedPortName('ALL'); setSelectedPortCode('ALL'); }}
+          selectedPortName={selectedPortName}
+          onPortNameChange={(val) => { setSelectedPortName(val); setSelectedPortCode('ALL'); }}
+          selectedPortCode={selectedPortCode}
+          onPortCodeChange={setSelectedPortCode}
           isSyncing={isSyncing}
           onSync={handleSyncTrigger}
           availableWeeks={AVAILABLE_WEEKS}
@@ -572,12 +631,17 @@ const ContractDashboard: React.FC = () => {
           availableLanes={LANES}
           availableAllocations={ALLOCATIONS}
           availablePriorities={PRIORITIES}
+          availableRegions={REGIONS}
+          availableCountries={Array.from(new Set(PORT_HIERARCHY.filter(p => selectedRegion === 'ALL' || p.region === selectedRegion).map(p => p.country)))}
+          availablePortNames={Array.from(new Set(PORT_HIERARCHY.filter(p => (selectedRegion === 'ALL' || p.region === selectedRegion) && (selectedCountry === 'ALL' || p.country === selectedCountry)).map(p => p.name)))}
+          availablePortCodes={Array.from(new Set(PORT_HIERARCHY.filter(p => (selectedRegion === 'ALL' || p.region === selectedRegion) && (selectedCountry === 'ALL' || p.country === selectedCountry) && (selectedPortName === 'ALL' || p.name === selectedPortName)).map(p => p.code)))}
         />
       </div>
 
-      <main className="flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-28 pb-12 flex flex-col md:flex-row gap-8 relative z-10 items-start">
+      <main className="flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[240px] pb-12 grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8 relative z-10 items-start">
 
-        <aside className="w-20 md:w-80 hidden md:flex flex-col shrink-0 sticky top-32 bg-[#05070a]/40 backdrop-blur-3xl border border-white/10 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] h-[calc(100vh-160px)] group/sidebar overflow-hidden relative">
+        <aside className="w-full hidden md:flex flex-col bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] group/sidebar overflow-hidden relative h-full">
+
 
           <div className="p-6 pb-0 relative z-20">
             <div className="flex items-center gap-4 mb-6">
@@ -667,7 +731,7 @@ const ContractDashboard: React.FC = () => {
         </aside>
 
         {/* Main Content Area - Detached Floating Glass Pane */}
-        <div className="flex-1 w-full relative h-[calc(100vh-160px)] overflow-y-auto elegant-scrollbar rounded-[40px] bg-[#0b0f19]/70 backdrop-blur-3xl border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] p-8 md:p-14">
+        <div className="flex-1 min-w-0 w-full relative h-full rounded-[40px] bg-[#0b0f19]/70 backdrop-blur-3xl border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] p-8 md:p-14">
 
           {/* Branch Summary View */}
           {activeTag === 'Branch Summary' && (
@@ -940,8 +1004,8 @@ const ContractDashboard: React.FC = () => {
                       </h3>
                       <div className="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-[9px] font-mono text-indigo-300">LIVE DATA</div>
                     </div>
-                    <div className="w-full">
-                      <table className="w-full text-left border-collapse table-fixed">
+                    <div className="w-full overflow-x-auto elegant-scrollbar">
+                      <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
                         <thead>
                           <tr className="bg-gradient-to-r from-transparent via-cyan-900/10 to-transparent">
                             <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase border-b border-white/10 w-[140px]">Contract</th>
@@ -1060,8 +1124,8 @@ const ContractDashboard: React.FC = () => {
                       </h3>
                       <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-[9px] font-mono text-cyan-300">LIVE DATA</div>
                     </div>
-                    <div className="w-full">
-                      <table className="w-full text-left border-collapse table-fixed">
+                    <div className="w-full overflow-x-auto elegant-scrollbar">
+                      <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
                         <thead>
                           <tr className="bg-gradient-to-r from-transparent via-indigo-900/10 to-transparent">
                             <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase text-center border-b border-white/10 w-24">Code</th>
@@ -1693,7 +1757,7 @@ const ContractDashboard: React.FC = () => {
 
                   <div className="h-[400px] w-full relative z-10 antialiased">
                     <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={WEEKLY_TREND_DATA} margin={{ top: 10, right: 10, bottom: 0, left: -20 }} barGap={6}>
+                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: -20 }} barGap={6}>
                         <defs>
                           <linearGradient id="allocGlow" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stopColor="#0ea5e9" stopOpacity={0.9} />
@@ -1735,12 +1799,12 @@ const ContractDashboard: React.FC = () => {
                           }}
                         />
                         <Bar dataKey="alloc" barSize={18} radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out">
-                          {WEEKLY_TREND_DATA.map((_entry, index) => (
+                          {reactiveWeeklyTrendData.map((_entry, index) => (
                             <Cell key={`cell-alloc-${index}`} fill="url(#allocGlow)" style={{ filter: 'drop-shadow(0px 0px 4px rgba(14,165,233,0.3))' }} />
                           ))}
                         </Bar>
                         <Bar dataKey="booked" barSize={18} radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out">
-                          {WEEKLY_TREND_DATA.map((_entry, index) => (
+                          {reactiveWeeklyTrendData.map((_entry, index) => (
                             <Cell key={`cell-book-${index}`} fill="url(#bookGlow)" style={{ filter: 'drop-shadow(0px 0px 6px rgba(139,92,246,0.6))' }} />
                           ))}
                         </Bar>
@@ -1771,7 +1835,7 @@ const ContractDashboard: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/[0.03]">
-                        {WEEKLY_TREND_DATA.map((row) => (
+                        {reactiveWeeklyTrendData.map((row) => (
                           <tr key={row.week} className="hover:bg-white/[0.02] transition-colors group/pulse">
                             <td className="px-6 py-2.5 font-bold text-slate-300 text-xs tracking-wider">{row.week}</td>
                             <td className="px-4 py-2.5 text-center font-mono text-xs text-slate-400">{row.alloc}</td>
@@ -1828,7 +1892,7 @@ const ContractDashboard: React.FC = () => {
 
                   <div className="h-[420px] w-full relative z-10 antialiased">
                     <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={WEEKLY_TREND_DATA} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
+                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
                         <defs>
                           <linearGradient id="liquidBlue" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.6} />
@@ -1944,7 +2008,7 @@ const ContractDashboard: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/[0.03]">
-                        {WEEKLY_TREND_DATA.map((row, i) => {
+                        {reactiveWeeklyTrendData.map((row, i) => {
                           const isCurrentWk = row.week === selectedWeek;
                           return (
                             <tr key={noNodeNum + i} className={`transition-colors group ${isCurrentWk ? 'bg-cyan-500/10 border-l-4 border-l-cyan-400' : 'hover:bg-indigo-500/5'}`}>
@@ -2033,7 +2097,7 @@ const ContractDashboard: React.FC = () => {
                               </tr>
                             ) : (
                               /* Detailed Branch Rows */
-                              contractRow.branches?.map((branch, bIdx) => (
+                              (contractRow as any).branches?.map((branch: any, bIdx: number) => (
                                 <tr key={`${idx}-${bIdx}`} className="border-b border-white/5 hover:bg-white/[0.02] transition-colors group/branch">
                                   <td className="px-6 py-4 border-r border-white/5 sticky left-0 bg-[#0b0f19] z-10">
                                     <div className="flex items-center gap-3">
@@ -2070,7 +2134,7 @@ const ContractDashboard: React.FC = () => {
                               <span className="text-[9px] text-slate-500 font-bold uppercase">All Contracts</span>
                             </div>
                           </td>
-                          {WEEKLY_TREND_DATA.map((wk, i) => {
+                          {reactiveWeeklyTrendData.map((wk, i) => {
                             const utilColor = wk.util >= 100 ? 'text-rose-400' : wk.util >= 90 ? 'text-amber-400' : 'text-emerald-400';
                             return (
                               <React.Fragment key={i}>
@@ -2171,7 +2235,7 @@ const ContractDashboard: React.FC = () => {
                           dataKey="teu"
                           stroke="none"
                         >
-                          {BOOKING_CONTRACT_BREAKDOWN.map((_, index) => {
+                          {reactiveBookingContractBreakdown.map((_, index) => {
                             const colors = ['#22d3ee', '#3b82f6', '#8b5cf6'];
                             return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} style={{ filter: `drop-shadow(0px 0px 8px ${colors[index % colors.length]}aa)` }} />;
                           })}
@@ -2324,7 +2388,7 @@ const ContractDashboard: React.FC = () => {
                     {/* TOTAL ALLOCATION BREAKDOWN */}
                     {activeKpi.label === 'TOTAL ALLOCATION' && (
                       <div className="grid grid-cols-2 gap-2">
-                        {BRANCH_SNAPSHOT.map((b, i) => (
+                        {reactiveBranchSnapshot.map((b, i) => (
                           <div key={b.branch} className="flex flex-col gap-1.5 p-2 rounded-lg bg-white/[0.02] border border-white/[0.02]">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{b.branch}</span>
@@ -2341,7 +2405,7 @@ const ContractDashboard: React.FC = () => {
                     {/* TOTAL BOOKED BREAKDOWN */}
                     {activeKpi.label === 'TOTAL BOOKED' && (
                       <div className="grid grid-cols-2 gap-2">
-                        {BRANCH_SNAPSHOT.map((b, i) => (
+                        {reactiveBranchSnapshot.map((b, i) => (
                           <div key={b.branch} className="flex flex-col gap-1.5 p-2 rounded-lg bg-white/[0.02] border border-white/[0.02]">
                             <div className="flex justify-between items-center">
                               <span className="text-[10px] uppercase tracking-widest text-slate-400 font-bold">{b.branch}</span>
@@ -2385,7 +2449,7 @@ const ContractDashboard: React.FC = () => {
                     {/* LOW UTIL BREAKDOWN */}
                     {activeKpi.label === 'LOW UTILISATION' && (
                       <div className="grid grid-cols-2 gap-2">
-                        {BRANCH_SNAPSHOT.filter(b => parseFloat(b.util) < 60).map(b => (
+                        {reactiveBranchSnapshot.filter(b => parseFloat(b.util.toString()) < 60).map(b => (
                           <div key={b.branch} className="flex justify-between items-center p-2.5 rounded-lg bg-amber-500/10 border border-amber-500/20">
                             <span className="text-white text-sm">{b.branch}</span>
                             <span className="text-[10px] font-bold px-1.5 py-0.5 bg-amber-500/20 text-amber-400 rounded-sm">{b.util}</span>
@@ -2484,7 +2548,7 @@ const ContractDashboard: React.FC = () => {
                                 })}
                               </tr>
                             ) : (
-                              contractRow.branches?.map((branch, bIdx) => (
+                              (contractRow as any).branches?.map((branch: any, bIdx: number) => (
                                 <tr key={`${idx}-${bIdx}`} className="border-b border-white/5 hover:bg-white/[0.05] transition-colors group/pbranch">
                                   <td className="px-8 py-5 border-r border-white/10 sticky left-0 bg-[#0b0f19] z-10 flex items-center gap-4">
                                     <span className="text-[10px] bg-slate-800 text-slate-400 px-2 py-1 rounded font-bold font-mono">{branch.code}</span>
@@ -2517,7 +2581,7 @@ const ContractDashboard: React.FC = () => {
                               <span className="text-xs text-slate-500 font-bold uppercase mt-1">All Contracts</span>
                             </div>
                           </td>
-                          {WEEKLY_TREND_DATA.map((wk, i) => (
+                          {reactiveWeeklyTrendData.map((wk, i) => (
                             <React.Fragment key={i}>
                               <td className="px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-lg text-white">{wk.alloc}</td>
                               <td className="px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-lg text-white">{wk.booked.toFixed(1)}</td>
@@ -2568,13 +2632,13 @@ const ContractDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
-                      {BOOKING_BRANCH_SUMMARY.map((row, i) => (
+                      {reactiveBookingBranchSummary.map((row, i) => (
                         <tr key={i} className={row.code === 'ALL' ? 'bg-emerald-900/20' : 'hover:bg-white/[0.02] transition-colors'}>
                           <td className={`px-6 py-4 font-mono text-sm font-bold text-center ${row.code === 'ALL' ? 'text-white' : 'text-slate-300'}`}>{row.code}</td>
                           <td className={`px-6 py-4 font-medium ${row.code === 'ALL' ? 'text-white' : 'text-slate-300'}`}>{row.branch}</td>
                           <td className="px-6 py-4 font-mono text-base font-bold text-emerald-400 text-right drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{row.teu.toFixed(1)}</td>
                           <td className={`px-6 py-4 font-mono text-sm text-right ${row.code === 'ALL' ? 'text-white font-bold' : 'text-slate-400'}`}>{row.bookings}</td>
-                          <td className={`px-6 py-4 font-mono text-sm text-right ${row.code === 'ALL' ? 'text-white font-bold' : 'text-slate-400'}`}>{row.contracts}</td>
+                          <td className={`px-6 py-4 font-mono text-sm text-right ${row.code === 'ALL' ? 'text-white font-bold' : 'text-slate-400'}`}>{row.contracts || '-'}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -2618,7 +2682,7 @@ const ContractDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
-                      {BOOKING_CONTRACT_BREAKDOWN.map((row, i) => (
+                      {reactiveBookingContractBreakdown.map((row, i) => (
                         <tr key={i} className="hover:bg-white/[0.02] transition-colors">
                           <td className="px-6 py-4 font-mono text-sm font-bold text-slate-300">{row.contract}</td>
                           <td className="px-6 py-4 font-mono text-sm font-bold text-cyan-400 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 w-min mx-auto">{row.region}</div></td>
@@ -2887,7 +2951,7 @@ const ContractDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
-                      {CONTRACT_UTIL_DATA.map((row, i) => {
+                      {reactiveContractUtilData.map((row, i) => {
                         const statusStyle = row.util > 100 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
                           : row.util >= 85 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
                             : row.util >= 70 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
@@ -2970,7 +3034,7 @@ const ContractDashboard: React.FC = () => {
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
-                      {CONTRACT_UTIL_DATA.map((row, i) => (
+                      {reactiveContractUtilData.map((row, i) => (
                         <tr key={i} className="hover:bg-white/[0.04] transition-all duration-300">
                           <td className="p-8 font-mono text-sm font-black text-slate-200 border-r border-white/5 sticky left-0 z-10 bg-[#0b0f19]">{row.id}</td>
                           <td className="p-8 text-sm text-white border-r border-white/5 font-bold sticky left-44 z-10 bg-[#0b0f19]">{row.carrier}</td>

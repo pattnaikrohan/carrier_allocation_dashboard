@@ -8,13 +8,15 @@ from datetime import datetime
 
 # Paths
 orders_path = r'D:\Dashboards\Orders 10 APril.xlsx'
-master_path = r'D:\Dashboards\Contract_Master_All_Data.xlsx'
+master_path = r'D:\Dashboards\Contract_Master_All_Data Update.xlsx'
 carrier_profiles_path = r'D:\Dashboards\Carrier Profiles.xlsx'
+port_listing_path = r'D:\Dashboards\CONTRACT_PORT_CODE_LISTING.xlsx'
 
 print("Loading Master Data Sources...")
 master_df = pd.read_excel(master_path)
 carrier_df = pd.read_excel(carrier_profiles_path)
 orders_df = pd.read_excel(orders_path)
+port_listing_df = pd.read_excel(port_listing_path)
 
 # Build Carrier Map from Profiles
 carrier_meta = {}
@@ -62,7 +64,9 @@ for _, row in master_df.iterrows():
     c_id = str(row['Contract #']).strip()
     if not c_id: continue
     
-    alloc_teu = parse_allocation_to_teu(row['Allocation'])
+    # The new sheet uses 'Allocation Total'
+    alloc_col = 'Allocation Total' if 'Allocation Total' in row else 'Allocation'
+    alloc_teu = parse_allocation_to_teu(row[alloc_col])
     
     contract_master_map[c_id] = {
         "carrier": str(row['Carrier']),
@@ -75,7 +79,8 @@ for _, row in master_df.iterrows():
         "freeTime": str(row['Free Time']),
         "allocation": alloc_teu,
         "owner": str(row['Contract Owner']),
-        "rawAlloc": str(row['Allocation'])
+        "rawAlloc": str(row[alloc_col]),
+        "officeAlloc": str(row.get('Office Allocation', ''))
     }
 
 print(f"Loaded {len(contract_master_map)} master contracts and {len(carrier_meta)} carrier profiles.")
@@ -192,10 +197,27 @@ else:
                     lane_tokens.append(f"{o} to {d}")
     master_lanes = sorted(list(set(lane_tokens)))
 
-master_allocations = split_and_clean(master_df['Allocation'])
+alloc_col_master = 'Allocation Total' if 'Allocation Total' in master_df.columns else 'Allocation'
+master_allocations = split_and_clean(master_df[alloc_col_master])
 master_priorities = split_and_clean(master_df['Priority'])
 
-contracts_list = sorted(list(set(b['contract'] for b in booking_log_data)))
+# Hierarchical Port Extraction
+REGIONS = sorted(list(set(port_listing_df['REGION'].dropna().astype(str).unique())))
+countries_header = [c for c in port_listing_df.columns if 'COUNTRY' in c.upper()][0]
+COUNTRIES = sorted(list(set(port_listing_df[countries_header].dropna().astype(str).unique())))
+PORT_NAMES = sorted(list(set(port_listing_df['PORT NAME'].dropna().astype(str).unique())))
+PORT_CODES = sorted(list(set(port_listing_df['PORT CODE'].dropna().astype(str).unique())))
+
+port_hierarchy = []
+for _, row in port_listing_df.iterrows():
+    port_hierarchy.append({
+        'region': str(row['REGION']).strip(),
+        'country': str(row[countries_header]).strip(),
+        'name': str(row['PORT NAME']).strip(),
+        'code': str(row['PORT CODE']).strip()
+    })
+
+contracts_list = sorted(list(set(str(c) for c in master_df['Contract #'].dropna().unique())))
 weeks_list = sorted(list(set(f"WK {b['mscWeek']}" for b in booking_log_data)), key=lambda x: int(x.split(' ')[1]) if x.split(' ')[1].isdigit() else 0)
 
 # 2. Weekly Trend
@@ -209,7 +231,7 @@ total_master_alloc = sum(m['allocation'] for m in contract_master_map.values())
 weekly_trend_data = []
 for wk in weeks_list:
     booked = week_stats.get(wk, 0)
-    alloc = total_master_alloc if total_master_alloc > 0 else max(booked * 1.2, 50)
+    alloc = total_master_alloc # Do not cook data, use actual master total
     weekly_trend_data.append({
         "week": wk,
         "alloc": round(alloc, 1),
@@ -229,9 +251,39 @@ for b in booking_log_data:
     branch_stats[br]["booked"] += b['teu']
     branch_stats[br]["bookings"] += 1
 
+def extract_branch_alloc(office_str, branch_keys):
+    if not office_str or office_str.lower() in ['open', 'nan', '']: return 0
+    matches = re.findall(r'([A-Za-z\s]+)\s*=\s*([\d.]+)', str(office_str))
+    total = 0
+    for name, val in matches:
+        if any(bk.upper() in name.upper() for bk in branch_keys):
+            try: total += float(val)
+            except: pass
+    if total == 0:
+        # Try to match PILLA = 5 TEU where name is PILLA
+        for name, val in matches:
+            for bk in branch_keys:
+                if name.upper().strip() == bk.upper().strip():
+                    try: total += float(val)
+                    except: pass
+    return total
+
 branch_snapshot = []
 for br_id, booked in branch_teu.items():
-    alloc = max(booked * 1.3, 20)
+    # Try to map branch name to keys
+    keys = [br_id.upper()]
+    if 'SYD' in keys[0]: keys.extend(['SYDNEY', 'SYD'])
+    elif 'MEL' in keys[0]: keys.extend(['MELBOURNE', 'MEL'])
+    elif 'BNE' in keys[0]: keys.extend(['BRISBANE', 'BNE'])
+    elif 'PER' in keys[0] or 'FRE' in keys[0]: keys.extend(['PERTH', 'FRE', 'FREMANTLE'])
+    elif 'ADL' in keys[0]: keys.extend(['ADELAIDE', 'ADL'])
+    elif 'AKL' in keys[0] or 'AUCK' in keys[0]: keys.extend(['AUCKLAND', 'AKL', 'NZ'])
+    
+    # Calculate real allocation from master contracts for this branch
+    alloc = 0
+    for m in contract_master_map.values():
+        alloc += extract_branch_alloc(m.get('officeAlloc', ''), keys)
+        
     util = (booked / alloc) * 100 if alloc > 0 else 0
     branch_snapshot.append({
         "branch": br_id,
@@ -258,10 +310,11 @@ contract_util_data = []
 for ctr, dat in contract_stats.items():
     master = contract_master_map.get(ctr, {})
     alloc = master.get('allocation', 0)
-    if alloc == 0: alloc = max(dat['booked'] * 1.1, 5)
     
     booked = dat['booked']
     util = (booked / alloc) * 100 if alloc > 0 else 0
+    
+    office_str = master.get('officeAlloc', '')
     
     contract_util_data.append({
         "id": ctr,
@@ -278,12 +331,12 @@ for ctr, dat in contract_stats.items():
         "verif": ctr in contract_master_map,
         "owner": master.get('owner', 'N/A'),
         "notes": master.get('rawAlloc', ''),
-        # Proportional mock splits for standard branch columns
-        "syd": {"booked": round(dat['branches'].get('SYDNEY', dat['branches'].get('SY1', 0)), 1), "alloc": round(alloc * 0.3, 1)},
-        "mel": {"booked": round(dat['branches'].get('MELBOURNE', dat['branches'].get('ME1', 0)), 1), "alloc": round(alloc * 0.3, 1)},
-        "bne": {"booked": round(dat['branches'].get('BRISBANE', dat['branches'].get('BN1', 0)), 1), "alloc": round(alloc * 0.2, 1)},
-        "per": {"booked": round(dat['branches'].get('PERTH', dat['branches'].get('PR1', 0)), 1), "alloc": round(alloc * 0.1, 1)},
-        "adl": {"booked": round(dat['branches'].get('ADELAIDE', dat['branches'].get('AD1', 0)), 1), "alloc": round(alloc * 0.1, 1)}
+        # Real branch allocations from 'Office Allocation'
+        "syd": {"booked": round(dat['branches'].get('SYDNEY', dat['branches'].get('SY1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['SYD', 'SYDNEY'])},
+        "mel": {"booked": round(dat['branches'].get('MELBOURNE', dat['branches'].get('ME1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['MEL', 'MELBOURNE'])},
+        "bne": {"booked": round(dat['branches'].get('BRISBANE', dat['branches'].get('BN1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['BNE', 'BRISBANE'])},
+        "per": {"booked": round(dat['branches'].get('PERTH', dat['branches'].get('PR1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['PER', 'PERTH', 'FRE', 'FREMANTLE'])},
+        "adl": {"booked": round(dat['branches'].get('ADELAIDE', dat['branches'].get('AD1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['ADL', 'ADELAIDE'])}
     })
 
 # EXPORT
@@ -297,6 +350,11 @@ export const ALLOCATIONS = {json.dumps(master_allocations)};
 export const PRIORITIES = {json.dumps(master_priorities)};
 export const CONTRACTS = {json.dumps(contracts_list)};
 export const WEEKS = {json.dumps(weeks_list)};
+export const REGIONS = {json.dumps(REGIONS)};
+export const COUNTRIES = {json.dumps(COUNTRIES)};
+export const PORT_NAMES = {json.dumps(PORT_NAMES)};
+export const PORT_CODES = {json.dumps(PORT_CODES)};
+export const PORT_HIERARCHY = {json.dumps(port_hierarchy)};
 
 export const BOOKING_LOG_DATA = {json.dumps(booking_log_data, indent=2)};
 export const WEEKLY_TREND_DATA = {json.dumps(weekly_trend_data, indent=2)};
