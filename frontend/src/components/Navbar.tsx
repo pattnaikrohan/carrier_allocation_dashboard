@@ -83,6 +83,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const location = useLocation();
   const isHome = location.pathname === '/';
 
+
   // Individual Menu States
   const [openMenu, setOpenMenu] = useState<string | null>(null);
 
@@ -136,10 +137,10 @@ const Navbar: React.FC<NavbarProps> = ({
                 <button
                   onClick={() => setOpenMenu(openMenu === f.label ? null : f.label)}
                   className={`w-full flex items-center justify-between px-3.5 h-[52px] rounded-2xl border transition-all duration-500 relative group overflow-hidden ${openMenu === f.label
-                      ? `bg-${f.color}-500/15 border-${f.color}-500/40 text-${f.color}-300 ring-1 ring-${f.color}-500/20`
-                      : f.val !== 'ALL'
-                        ? 'bg-white/[0.06] border-white/15 text-white hover:bg-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
-                        : 'bg-[#0b0f19]/80 border-white/[0.03] text-slate-400 hover:border-white/[0.08] hover:bg-white/[0.05]'
+                    ? `bg-${f.color}-500/15 border-${f.color}-500/40 text-${f.color}-300 ring-1 ring-${f.color}-500/20`
+                    : f.val !== 'ALL'
+                      ? 'bg-white/[0.06] border-white/15 text-white hover:bg-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
+                      : 'bg-[#0b0f19]/80 border-white/[0.03] text-slate-400 hover:border-white/[0.08] hover:bg-white/[0.05]'
                     }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
@@ -223,32 +224,86 @@ const FilterSelect: React.FC<{
   const [search, setSearch] = useState('');
   const filteredItems = items.filter(i => i.toLowerCase().includes(search.toLowerCase()));
 
+  // ✅ SAFE Tailwind mapping (NO dynamic classes)
+  const getColorClasses = () => {
+    switch (accentColor) {
+      case 'cyan':
+        return {
+          active: 'bg-cyan-500/10 text-cyan-400 border border-cyan-500/20',
+          dot: 'bg-cyan-400',
+          shadow: '0 0 15px rgba(6,182,212,0.1)'
+        };
+      case 'purple':
+      case 'violet':
+        return {
+          active: 'bg-purple-500/10 text-purple-400 border border-purple-500/20',
+          dot: 'bg-purple-400',
+          shadow: '0 0 15px rgba(168,85,247,0.1)'
+        };
+      case 'emerald':
+        return {
+          active: 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20',
+          dot: 'bg-emerald-400',
+          shadow: '0 0 15px rgba(16,185,129,0.1)'
+        };
+      case 'amber':
+        return {
+          active: 'bg-amber-500/10 text-amber-400 border border-amber-500/20',
+          dot: 'bg-amber-400',
+          shadow: '0 0 15px rgba(245,158,11,0.1)'
+        };
+      default:
+        return {
+          active: 'bg-slate-500/10 text-slate-400 border border-slate-500/20',
+          dot: 'bg-slate-400',
+          shadow: '0 0 15px rgba(148,163,184,0.1)'
+        };
+    }
+  };
+
+  const colors = getColorClasses();
+
   return (
     <div className="flex flex-col gap-2">
       {hasSearch && (
         <div className="px-2 pb-1 border-b border-white/5 mb-1 mt-1">
           <input
-            type="text" autoFocus placeholder="Refine..." value={search} onChange={e => setSearch(e.target.value)}
+            type="text"
+            autoFocus
+            placeholder="Refine..."
+            value={search}
+            onChange={e => setSearch(e.target.value)}
             className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-[10px] font-mono text-white placeholder:text-slate-700 focus:outline-none focus:border-cyan-500/30 transition-all"
           />
         </div>
       )}
-      <div className={`overflow-y-auto elegant-scrollbar pr-1 mt-2`} style={{ maxHeight: height }}>
+
+      <div className="overflow-y-auto elegant-scrollbar pr-1 mt-2" style={{ maxHeight: height }}>
         {filteredItems.map((item, idx) => (
           <button
             key={item + idx}
             onClick={() => onSelect?.(item)}
             className={`w-full text-left px-4 py-3 rounded-xl text-[12px] md:text-[13px] font-black uppercase tracking-widest transition-all mb-1 flex items-center justify-between ${selected === item
-              ? `bg-${accentColor}-500/10 text-${accentColor}-400 border border-${accentColor}-500/20 shadow-[0_0_15px_rgba(var(--${accentColor}-rgb),0.1)]`
-              : 'text-slate-400 hover:bg-white/5 hover:text-white'}`}
+                ? colors.active
+                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+              }`}
+            style={
+              selected === item
+                ? { boxShadow: colors.shadow }
+                : undefined
+            }
           >
-            <span className="truncate">{item === 'ALL' ? 'Global' : item}</span>
-            {selected === item && <div className={`w-1 h-1 rounded-full bg-${accentColor}-400 shadow-[0_0_8px_currentColor]`} />}
+            <span className="truncate">
+              {item === 'ALL' ? 'Global' : item}
+            </span>
+
+            {selected === item && (
+              <div className={`w-1 h-1 rounded-full ${colors.dot} shadow-[0_0_8px_currentColor]`} />
+            )}
           </button>
         ))}
       </div>
     </div>
   );
 };
-
 export default Navbar;
