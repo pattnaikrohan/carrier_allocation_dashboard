@@ -406,3 +406,104 @@
                 -0.025em -0.05em 0 rgba(0, 0, 255, 0.75);
   }
 }
+
+/* ── True Light Mode Overrides ─────────────────────────────────────── */
+html.light-mode body {
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+html.light-mode .bg-aurora-blobs {
+  background-color: #f8fafc;
+}
+html.light-mode .blob {
+  opacity: 0.3; /* Lighter blobs on light mode */
+}
+
+/* Glassmorphism */
+html.light-mode .quantum-glass {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.7));
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.05), inset 0 1px 1px rgba(255,255,255,1);
+}
+html.light-mode .quantum-glass-active {
+  background: rgba(255, 255, 255, 1);
+  border-color: rgba(6, 182, 212, 0.3);
+  box-shadow: 0 10px 40px -10px rgba(6, 182, 212, 0.15);
+}
+
+/* Typography Overrides */
+html.light-mode .text-white { color: #0f172a !important; }
+html.light-mode .text-slate-100 { color: #1e293b !important; }
+html.light-mode .text-slate-200 { color: #1e293b !important; }
+html.light-mode .text-slate-300 { color: #334155 !important; }
+html.light-mode .text-slate-400 { color: #475569 !important; }
+html.light-mode .text-slate-500 { color: #64748b !important; }
+
+/* Backgrounds */
+html.light-mode .bg-\[\#0b0f19\] { background-color: #ffffff !important; box-shadow: 0 4px 20px rgba(0,0,0,0.03); }
+html.light-mode .bg-\[\#0b0f19\]\/80 { background-color: rgba(255, 255, 255, 0.8) !important; }
+html.light-mode .bg-\[\#0b0f19\]\/90 { background-color: rgba(255, 255, 255, 0.9) !important; }
+html.light-mode .bg-\[\#050505\]\/60 { background-color: rgba(248, 250, 252, 0.7) !important; }
+html.light-mode .bg-\[\#050505\] { background-color: #f1f5f9 !important; }
+html.light-mode .bg-\[\#111622\] { background-color: #ffffff !important; box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+html.light-mode .bg-black\/50 { background-color: rgba(0, 0, 0, 0.03) !important; }
+
+/* Borders and Separators */
+html.light-mode .border-white\/5,
+html.light-mode .border-white\/\[0\.02\],
+html.light-mode .border-white\/\[0\.05\],
+html.light-mode .border-white\/\[0\.08\],
+html.light-mode .border-white\/10 {
+  border-color: rgba(0, 0, 0, 0.06) !important;
+}
+html.light-mode .divide-white\/\[0\.02\] > :not([hidden]) ~ :not([hidden]) {
+  border-color: rgba(0, 0, 0, 0.04) !important;
+}
+
+/* Semi-transparent Light Overlays */
+html.light-mode .bg-white\/5,
+html.light-mode .bg-white\/\[0\.03\],
+html.light-mode .bg-white\/\[0\.05\],
+html.light-mode .bg-white\/\[0\.06\] {
+  background-color: rgba(0, 0, 0, 0.03) !important;
+}
+html.light-mode .bg-white\/10,
+html.light-mode .bg-white\/\[0\.1\] {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+html.light-mode .hover\:bg-white\/\[0\.05\]:hover,
+html.light-mode .hover\:bg-white\/\[0\.1\]:hover,
+html.light-mode .hover\:bg-white\/\[0\.03\]:hover {
+  background-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+/* Elements */
+html.light-mode .bg-slate-900\/80 { background-color: #f1f5f9 !important; border-color: rgba(0,0,0,0.05); color: #334155 !important; }
+html.light-mode .bg-slate-800 { background-color: #e2e8f0 !important; }
+html.light-mode .bg-slate-800\/60 { background-color: rgba(226, 232, 240, 0.6) !important; }
+
+/* Invert Background Stream for subtle effect */
+html.light-mode .data-stream-bg {
+  opacity: 0.1;
+  filter: invert(1);
+}
+
+/* Chart Grids */
+html.light-mode .recharts-cartesian-grid-horizontal line,
+html.light-mode .recharts-cartesian-grid-vertical line {
+  stroke: rgba(0, 0, 0, 0.06) !important;
+}
+html.light-mode .recharts-text {
+  fill: #64748b !important;
+}
+
+/* Tame Heavy Dark Drop Shadows */
+html.light-mode [class*="shadow-\[0_30px_70px_rgba\(0\,0\,0\,0\.9\)"],
+html.light-mode [class*="shadow-\[0_20px_50px_rgba\(0\,0\,0\,0\.9\)"],
+html.light-mode [class*="shadow-\[0_30px_60px_rgba\(0\,0\,0\,0\.9\)"],
+html.light-mode [class*="shadow-\[0_30px_60px_rgba\(0\,0\,0\,0\.8\)"],
+html.light-mode [class*="shadow-\[0_20px_40px_rgba\(0\,0\,0\,0\.6\)"] {
+  box-shadow: 0 20px 40px rgba(0,0,0,0.06) !important;
+}
+
+

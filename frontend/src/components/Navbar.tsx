@@ -86,6 +86,14 @@ const Navbar: React.FC<NavbarProps> = ({
 
   // Individual Menu States
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  
+  // Theme Toggle State
+  const [isLightMode, setIsLightMode] = useState(false);
+
+  const toggleTheme = () => {
+    setIsLightMode(!isLightMode);
+    document.documentElement.classList.toggle('light-mode');
+  };
 
   if (isHome) return null;
 
@@ -99,8 +107,8 @@ const Navbar: React.FC<NavbarProps> = ({
     { label: 'Country', val: selectedCountry, items: ['ALL', ...availableCountries], onSelect: onCountryChange, color: 'pink', hasSearch: true },
     { label: 'Port', val: selectedPortName, items: ['ALL', ...availablePortNames], onSelect: onPortNameChange, color: 'rose', hasSearch: true },
     { label: 'Code', val: selectedPortCode, items: ['ALL', ...availablePortCodes], onSelect: onPortCodeChange, color: 'sky', hasSearch: true },
-    { label: 'Alloc.', val: selectedAllocation, items: ['ALL', ...availableAllocations], onSelect: onAllocationChange, color: 'rose', hasSearch: true },
-    { label: 'Prio.', val: selectedPriority, items: ['ALL', ...availablePriorities], onSelect: onPriorityChange, color: 'orange' },
+    { label: 'Allocation', val: selectedAllocation, items: ['ALL', ...availableAllocations], onSelect: onAllocationChange, color: 'rose', hasSearch: true },
+    { label: 'Priority', val: selectedPriority, items: ['ALL', ...availablePriorities], onSelect: onPriorityChange, color: 'orange' },
   ];
 
   return (
@@ -117,13 +125,13 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center bg-black/50 rounded-[20px] px-5 h-[64px] border border-white/[0.03] shadow-inner relative z-10 group/id shrink-0 cursor-pointer self-start md:self-center" onClick={() => navigate('/')}>
             <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${showBack ? 'bg-white/[0.03] border-white/[0.08] group-hover/id:border-cyan-500/50 group-hover/id:bg-cyan-500/10' : 'bg-cyan-500/10 border-cyan-500/20'}`}>
               {showBack ? (
-                <svg className="w-4 h-4 text-slate-400 transition-transform group-hover/id:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+                <svg className="w-4 h-4 text-slate-300 transition-transform group-hover/id:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
               ) : (
                 <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
               )}
             </div>
             <div className="hidden sm:flex flex-col ml-4">
-              <span className="text-[8px] font-black text-cyan-500/60 uppercase tracking-[0.4em] leading-none mb-1">UNIT</span>
+              <span className="text-[8px] font-black text-cyan-1000/60 uppercase tracking-[0.4em] leading-none mb-1">UNIT</span>
               <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">Quantum</span>
             </div>
           </div>
@@ -140,16 +148,16 @@ const Navbar: React.FC<NavbarProps> = ({
                     ? `bg-${f.color}-500/15 border-${f.color}-500/40 text-${f.color}-300 ring-1 ring-${f.color}-500/20`
                     : f.val !== 'ALL'
                       ? 'bg-white/[0.06] border-white/15 text-white hover:bg-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
-                      : 'bg-[#0b0f19]/80 border-white/[0.03] text-slate-400 hover:border-white/[0.08] hover:bg-white/[0.05]'
+                      : 'bg-[#0b0f19]/80 border-white/[0.03] text-slate-300 hover:border-white/[0.08] hover:bg-white/[0.05]'
                     }`}
                 >
                   <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
 
                   <div className="flex flex-col items-start min-w-0 pr-1">
-                    <span className={`text-[7px] font-bold uppercase tracking-[0.2em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-white/70' : 'text-slate-500/60'}`}>{f.label}</span>
-                    <span className="text-[11px] font-bold uppercase tracking-widest truncate w-full text-left antialiased">{f.val === 'ALL' ? 'GLOBAL' : f.val}</span>
+                    <span className={`text-[9px] font-black uppercase tracking-[0.15em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-white' : 'text-white'}`}>{f.label}</span>
+                    <span className="text-[10px] font-bold uppercase tracking-widest truncate w-full text-left antialiased text-cyan-100">{f.val === 'ALL' ? 'Select' : f.val}</span>
                   </div>
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors shrink-0 ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-300` : 'bg-white/5 text-slate-500 group-hover:bg-white/10 group-hover:text-slate-300'}`}>
+                  <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors shrink-0 ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-300` : 'bg-white/5 text-slate-300 group-hover:bg-white/10 group-hover:text-slate-300'}`}>
                     <svg className={`w-3 h-3 transition-transform duration-300 ${openMenu === f.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                 </button>
@@ -189,16 +197,28 @@ const Navbar: React.FC<NavbarProps> = ({
                 onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL'); onLaneChange?.('ALL'); onAllocationChange?.('ALL'); onPriorityChange?.('ALL');
                 onRegionChange?.('ALL'); onCountryChange?.('ALL'); onPortNameChange?.('ALL'); onPortCodeChange?.('ALL');
               }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all bg-white/[0.03] border border-white/5 text-slate-500 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"
+              className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all bg-white/[0.03] border border-white/5 text-slate-300 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"
               title="Reset All"
             >
               <svg className="w-4 h-4 transition-transform group-hover/reset:-rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
 
             <button
+              onClick={toggleTheme}
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all border ${isLightMode ? 'bg-amber-500/20 border-amber-500/40 text-amber-300' : 'bg-white/[0.03] border-white/5 text-slate-300 hover:text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/10'}`}
+              title="Toggle Theme"
+            >
+              {isLightMode ? (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+              ) : (
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+              )}
+            </button>
+
+            <button
               onClick={onSync}
               disabled={isSyncing}
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all group/sync relative overflow-hidden ${isSyncing ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-400' : 'bg-white/[0.03] border border-white/5 text-slate-500 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10'
+              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all group/sync relative overflow-hidden ${isSyncing ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-400' : 'bg-white/[0.03] border border-white/5 text-slate-300 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10'
                 }`}
             >
               <motion.div animate={isSyncing ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 2, repeat: isSyncing ? Infinity : 0, ease: "linear" }}>
@@ -254,7 +274,7 @@ const FilterSelect: React.FC<{
         };
       default:
         return {
-          active: 'bg-slate-500/10 text-slate-400 border border-slate-500/20',
+          active: 'bg-slate-500/10 text-slate-300 border border-slate-500/20',
           dot: 'bg-slate-400',
           shadow: '0 0 15px rgba(148,163,184,0.1)'
         };
@@ -273,7 +293,7 @@ const FilterSelect: React.FC<{
             placeholder="Refine..."
             value={search}
             onChange={e => setSearch(e.target.value)}
-            className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-[10px] font-mono text-white placeholder:text-slate-700 focus:outline-none focus:border-cyan-500/30 transition-all"
+            className="w-full bg-black/50 border border-white/10 rounded-lg px-3 py-2 text-[10px] font-mono text-white placeholder:text-slate-300 focus:outline-none focus:border-cyan-500/30 transition-all"
           />
         </div>
       )}
@@ -285,7 +305,7 @@ const FilterSelect: React.FC<{
             onClick={() => onSelect?.(item)}
             className={`w-full text-left px-4 py-3 rounded-xl text-[12px] md:text-[13px] font-black uppercase tracking-widest transition-all mb-1 flex items-center justify-between ${selected === item
                 ? colors.active
-                : 'text-slate-400 hover:bg-white/5 hover:text-white'
+                : 'text-slate-300 hover:bg-white/5 hover:text-white'
               }`}
             style={
               selected === item
@@ -294,7 +314,7 @@ const FilterSelect: React.FC<{
             }
           >
             <span className="truncate">
-              {item === 'ALL' ? 'Global' : item}
+              {item === 'ALL' ? 'Please Select' : item}
             </span>
 
             {selected === item && (

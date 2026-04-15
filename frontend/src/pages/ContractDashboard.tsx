@@ -136,12 +136,33 @@ const ContractDashboard: React.FC = () => {
       const matchAlloc = selectedAllocation === 'ALL' || (master && master.notes === selectedAllocation);
 
       // Hierarchical Filter Matches
-      const portMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort || p.code === b.dischargePort || p.name === b.dischargePort);
+      const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
+      const dPortMeta = PORT_HIERARCHY.find(p => p.code === b.dischargePort || p.name === b.dischargePort);
 
-      const matchRegion = selectedRegion === 'ALL' || (portMeta && portMeta.region === selectedRegion);
-      const matchCountry = selectedCountry === 'ALL' || (portMeta && portMeta.country === selectedCountry);
-      const matchPortName = selectedPortName === 'ALL' || (portMeta && portMeta.name === selectedPortName);
-      const matchPortCode = selectedPortCode === 'ALL' || (portMeta && portMeta.code === selectedPortCode);
+      const getRegionRobust = (locCode: string, altRegion: string) => {
+        if (!locCode) return altRegion;
+        const cc = locCode.substring(0, 2).toUpperCase();
+        if (['CN', 'JP', 'KR', 'TW', 'HK'].includes(cc)) return 'NEA';
+        if (['VN', 'TH', 'ID', 'MY', 'SG', 'PH', 'KH', 'MM'].includes(cc)) return 'SEA';
+        if (['AU', 'NZ', 'PG', 'FJ'].includes(cc)) return 'OCE';
+        if (['DE', 'NL', 'BE', 'IT', 'FR', 'GB', 'ES', 'PT', 'SE', 'DK', 'FI', 'NO', 'PL'].includes(cc)) return 'EUR';
+        if (['US', 'CA', 'MX'].includes(cc)) return 'NAM';
+        return altRegion;
+      };
+
+      const finalORegion = oPortMeta?.region || getRegionRobust(b.loadPort, b.originRegion);
+      const finalDRegion = dPortMeta?.region || getRegionRobust(b.dischargePort, b.destRegion);
+
+      const matchRegion = selectedRegion === 'ALL' || 
+        finalORegion === selectedRegion || 
+        finalDRegion === selectedRegion ||
+        (b.lane && b.lane.includes(selectedRegion)) ||
+        b.originRegion === selectedRegion ||
+        b.destRegion === selectedRegion;
+
+      const matchCountry = selectedCountry === 'ALL' || (oPortMeta?.country === selectedCountry) || (dPortMeta?.country === selectedCountry);
+      const matchPortName = selectedPortName === 'ALL' || (oPortMeta?.name === selectedPortName) || (dPortMeta?.name === selectedPortName);
+      const matchPortCode = selectedPortCode === 'ALL' || (oPortMeta?.code === selectedPortCode) || (dPortMeta?.code === selectedPortCode);
 
       return matchWeek && matchContract && matchOrigin && matchDest && matchLane && matchPriority && matchAlloc &&
         matchRegion && matchCountry && matchPortName && matchPortCode;
@@ -150,19 +171,39 @@ const ContractDashboard: React.FC = () => {
 
   const filteredBookings = getFilteredData();
 
+  const activeWeekCount = selectedWeek === 'ALL' ? AVAILABLE_WEEKS.length : 1;
+  const weekScale = activeWeekCount / AVAILABLE_WEEKS.length;
+
   const getContractMetrics = () => {
-    if (selectedContract === 'ALL' && selectedOrigin === 'ALL' && selectedDestination === 'ALL' && selectedLane === 'ALL') {
-      return currentWeekTrendRaw;
+    const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+    
+    const isAllFiltersClear = selectedContract === 'ALL' && 
+      selectedOrigin === 'ALL' && 
+      selectedDestination === 'ALL' && 
+      selectedLane === 'ALL' &&
+      selectedAllocation === 'ALL' &&
+      selectedPriority === 'ALL' &&
+      selectedRegion === 'ALL' &&
+      selectedCountry === 'ALL' &&
+      selectedPortName === 'ALL' &&
+      selectedPortCode === 'ALL';
+
+    let allocNode = 0;
+
+    if (isAllFiltersClear) {
+      allocNode = currentWeekTrendRaw.alloc;
+    } else {
+      const contractSummaryItem = CONTRACT_UTIL_DATA
+        .find(c => c.id === selectedContract || c.carrier === selectedContract);
+
+      const activeContractIds = new Set(filteredBookings.map(b => b.contract));
+      allocNode = contractSummaryItem 
+        ? Math.round(contractSummaryItem.alloc * weekScale)
+        : CONTRACT_UTIL_DATA
+            .filter(c => activeContractIds.has(c.id))
+            .reduce((sum, c) => sum + Math.round(c.alloc * weekScale), 0);
     }
 
-    const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-
-    // For allocation, if a specific contract is selected, we use its master allocation
-    // If other filters are on, we still use the contract's base allocation for % comparison
-    const contractSummaryItem = CONTRACT_UTIL_DATA
-      .find(c => c.id === selectedContract || c.carrier === selectedContract);
-
-    const allocNode = contractSummaryItem ? contractSummaryItem.alloc : (selectedContract === 'ALL' ? currentWeekTrendRaw.alloc : 0);
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
 
     return { alloc: allocNode, booked: bookedNode, util: utilNode };
@@ -186,8 +227,8 @@ const ContractDashboard: React.FC = () => {
   ];
 
   // Performance Matrix Derivation
-  const CONTRACT_WEEKLY_BREAKDOWN = Array.from(new Set(BOOKING_LOG_DATA.map(b => b.contract))).map(cid => {
-    const contractBookings = BOOKING_LOG_DATA.filter(b => b.contract === cid);
+  const CONTRACT_WEEKLY_BREAKDOWN = Array.from(new Set(filteredBookings.map(b => b.contract))).map(cid => {
+    const contractBookings = filteredBookings.filter(b => b.contract === cid);
     const weeklyData: Record<string, any> = {};
 
     AVAILABLE_WEEKS.forEach(wk => {
@@ -195,8 +236,8 @@ const ContractDashboard: React.FC = () => {
       const wkBookings = contractBookings.filter(b => b.mscWeek === wkNum);
       const booked = wkBookings.reduce((s, b) => s + b.teu, 0);
       const master = CONTRACT_UTIL_DATA.find(c => c.id === cid);
-      const alloc = master ? master.alloc : 0;
-      weeklyData[wk] = { alloc, booked, util: alloc > 0 ? (booked / alloc) * 100 : 0 };
+      const weeklyAlloc = master ? (master.alloc / AVAILABLE_WEEKS.length) : 0;
+      weeklyData[wk] = { alloc: weeklyAlloc, booked, util: weeklyAlloc > 0 ? (booked / weeklyAlloc) * 100 : 0 };
     });
 
     return {
@@ -206,24 +247,49 @@ const ContractDashboard: React.FC = () => {
     };
   });
 
-  const reactiveBranchSnapshot = BRANCH_SNAPSHOT
-    .map(b => {
+
+  const reactiveBranchSnapshot = (() => {
+    const knownBranches = new Set(BRANCH_SNAPSHOT.map(b => b.branch));
+    const snapshot = BRANCH_SNAPSHOT.map(b => {
       // If contract or week is selected, we need to show hub performance appropriately
-      const hubBookings = filteredBookings.filter(row => row.branch === b.branch);
+      const scaledAlloc = Math.round(b.alloc * weekScale);
+      
+      // Auto-merge Fremantle (FR1) into Perth (PR1) if it appears in bookings
+      const matchBranches = b.branch === 'PR1' ? ['PR1', 'FR1'] : [b.branch];
+      const hubBookings = filteredBookings.filter(row => matchBranches.includes(row.branch));
       const booked = hubBookings.reduce((sum, row) => sum + (row.teu || 0), 0);
-      const utilFloat = b.alloc > 0 ? (booked / b.alloc) * 100 : 0;
-      return { ...b, booked, avail: b.alloc - booked, util: utilFloat };
-    }).map(b => ({
-      ...b,
-      utilFloat: b.util
-    }));
+      const utilFloat = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
+      
+      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat };
+    });
+
+    // Check if any bookings are completely unmatched and create OTHER category
+    const unmatchedBookings = filteredBookings.filter(b => !knownBranches.has(b.branch) && b.branch !== 'FR1');
+    const otherBooked = unmatchedBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+    
+    if (otherBooked > 0) {
+      snapshot.push({
+        branch: 'OTH',
+        branchName: 'OTHER PORTS',
+        alloc: 0,
+        booked: otherBooked,
+        avail: -otherBooked,
+        util: 0,
+        utilFloat: 0,
+        status: 'Unplanned'
+      });
+    }
+
+    return snapshot;
+  })();
 
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
     .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
     .map(c => {
+      const scaledAlloc = Math.round(c.alloc * weekScale);
       const contractBookings = filteredBookings.filter(b => b.contract === c.id);
       const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-      const util = c.alloc > 0 ? (booked / c.alloc) * 100 : 0;
+      const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
 
       const getBranchBooked = (branchCodes: string[]) => {
         return contractBookings
@@ -233,6 +299,7 @@ const ContractDashboard: React.FC = () => {
 
       return {
         ...c,
+        alloc: scaledAlloc,
         booked,
         util,
         syd: { ...c.syd, booked: getBranchBooked(['SYDNEY', 'SY1']) },
@@ -446,7 +513,7 @@ const ContractDashboard: React.FC = () => {
             </div>
           )}
         </div>
-        <span className="block text-[9px] lg:text-[10px] xl:text-xs mt-2 lg:mt-3 text-slate-500 font-medium tracking-wide truncate">
+        <span className="block text-[9px] lg:text-[10px] xl:text-xs mt-2 lg:mt-3 text-slate-300 font-medium tracking-wide truncate">
           {kpi.sub}
         </span>
       </motion.div>
@@ -678,7 +745,7 @@ const ContractDashboard: React.FC = () => {
                   <div className="relative z-10 flex items-center justify-between">
                     <div className="flex flex-col gap-1.5">
                       <div className="flex items-center gap-3">
-                        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded border font-mono text-[9px] font-black tracking-tighter transition-colors ${isActive ? 'bg-cyan-500 text-black border-cyan-400' : 'bg-slate-900 text-slate-500 border-white/5 group-hover/node:text-slate-300'
+                        <div className={`flex items-center gap-1.5 px-2 py-0.5 rounded border font-mono text-[9px] font-black tracking-tighter transition-colors ${isActive ? 'bg-cyan-500 text-black border-cyan-400' : 'bg-slate-900 text-slate-300 border-white/5 group-hover/node:text-slate-300'
                           }`}>
                           <span className="opacity-50">{shortCode}</span>
                           <span className="w-[1px] h-2 bg-current opacity-20" />
@@ -699,7 +766,7 @@ const ContractDashboard: React.FC = () => {
 
                       <div className={`text-xs font-black uppercase tracking-[0.25em] transition-all duration-300 ${isActive
                         ? 'text-white translate-x-1'
-                        : 'text-slate-500 group-hover/node:text-slate-300'
+                        : 'text-slate-300 group-hover/node:text-slate-300'
                         }`}>
                         {tag}
                       </div>
@@ -707,7 +774,7 @@ const ContractDashboard: React.FC = () => {
 
                     <div className={`w-8 h-8 rounded-xl flex items-center justify-center transition-all duration-500 ${isActive
                       ? 'bg-cyan-500 text-black shadow-[0_0_20px_rgba(34,211,238,0.6)] scale-110'
-                      : 'bg-white/[0.03] border border-white/5 text-slate-600 group-hover/node:bg-white/[0.08] group-hover/node:text-slate-400'
+                      : 'bg-white/[0.03] border border-white/5 text-slate-400 group-hover/node:bg-white/[0.08] group-hover/node:text-slate-400'
                       }`}>
                       <svg className={`w-4 h-4 transition-transform ${isActive ? 'translate-x-0.5' : 'group-hover/node:translate-x-1'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M13 7l5 5m0 0l-5 5m5-5H6" />
@@ -755,7 +822,7 @@ const ContractDashboard: React.FC = () => {
                 </div>
                 <div className="mt-6 lg:mt-0 px-5 py-3 bg-[#050505]/60 border border-slate-700/80 rounded-2xl flex items-center gap-4 backdrop-blur-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)] transform hover:scale-105 transition-transform duration-500 cursor-default">
                   <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">Mission Time</span>
+                    <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">Mission Time</span>
                     <span className="text-sm font-bold tracking-wide text-white"><TacticalNumber value={selectedWeek} /> <span className="text-slate-400 font-medium">| FY 2026</span></span>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.5)] text-white relative overflow-hidden">
@@ -765,12 +832,122 @@ const ContractDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* 6 Hyper-Modern KPI Cards */}
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 xl:gap-6 w-full perspective-1000">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 xl:gap-6 w-full perspective-1000">
                 {reactiveKpis.map((kpi, idx) => (
                   <QuantumKpiCard key={idx} kpi={kpi} idx={idx} onClick={() => setActiveKpi(kpi)} />
                 ))}
               </div>
+
+              {/* ── Inline Branch Performance Snapshot Matrix ── */}
+              <motion.div
+                initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.25, ease: [0.16, 1, 0.3, 1] }}
+                className="rounded-[28px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_20px_40px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.04)] overflow-hidden"
+              >
+                {/* Header */}
+                <div className="flex items-center justify-between px-6 py-4 border-b border-white/[0.05]">
+                  <div className="flex items-center gap-3">
+                    <div className="w-7 h-7 rounded-lg bg-indigo-500/15 border border-indigo-500/25 flex items-center justify-center text-indigo-400">
+                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 10h18M3 14h18m-9-4v8m-7 0h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" /></svg>
+                    </div>
+                    <div>
+                      <h3 className="text-slate-200 font-semibold text-xs tracking-widest uppercase">Branch Performance Snapshot</h3>
+                      <p className="text-[10px] text-slate-500 mt-0.5">Live · Reacts to all active filters</p>
+                    </div>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">{reactiveBranchSnapshot.length} Hubs</span>
+                  </div>
+                </div>
+
+                {/* Column Headers */}
+                <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 bg-white/[0.02] border-b border-white/[0.04] px-6 py-2.5">
+                  <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-[0.18em]">Hub</span>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Alloc (TEU)</span>
+                  <span className="text-[9px] font-bold text-cyan-500 uppercase tracking-[0.18em] text-right">Booked</span>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Available</span>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right pr-2">Utilisation</span>
+                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-center">Status</span>
+                </div>
+
+                {/* Data Rows */}
+                <div className="divide-y divide-white/[0.025]">
+                  {reactiveBranchSnapshot.map((row, i) => {
+                    const isOverbooked = row.util > 100;
+                    const isOnTrack = row.status === 'On Track';
+                    const isNearFull = row.status === 'Near Full';
+                    const s = isOverbooked
+                      ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
+                      : isOnTrack
+                        ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-400' }
+                        : isNearFull
+                          ? { badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25', dot: 'bg-amber-400', util: 'text-amber-400', bar: 'bg-amber-400' }
+                          : { badge: 'bg-slate-800/60 text-slate-400 border-slate-700/40', dot: 'bg-slate-600', util: 'text-slate-400', bar: 'bg-slate-600' };
+                    return (
+                      <div key={i} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-3 items-center hover:bg-white/[0.015] transition-colors">
+                        {/* Hub */}
+                        <div className="flex items-center gap-2 min-w-0">
+                          <span className={`w-2 h-2 rounded-full shrink-0 ${s.dot}`} />
+                          <span className="font-mono font-bold text-slate-200 text-[12px] tracking-wide">{row.branch}</span>
+                          {row.branchName && <span className="text-[10px] text-slate-500 truncate hidden md:block">{row.branchName}</span>}
+                        </div>
+                        {/* Alloc */}
+                        <span className="font-mono text-slate-400 text-[12px] text-right tabular-nums">{row.alloc}</span>
+                        {/* Booked */}
+                        <div className="flex justify-end">
+                          <span className={`font-mono font-bold text-[12px] px-2 py-0.5 rounded-md border tabular-nums ${row.booked > 0 ? 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5' : 'text-slate-600 border-slate-700/30'}`}>
+                            {row.booked.toFixed(1)}
+                          </span>
+                        </div>
+                        {/* Available */}
+                        <span className={`font-mono text-[12px] text-right tabular-nums ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>
+                          {row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}
+                        </span>
+                        {/* Utilisation + bar */}
+                        <div className="flex flex-col items-end gap-1 pr-2">
+                          <span className={`font-mono font-semibold text-[12px] tabular-nums ${s.util}`}>{row.util.toFixed(1)}%</span>
+                          <div className="w-16 h-[3px] bg-white/5 rounded-full overflow-hidden">
+                            <div className={`h-full rounded-full ${s.bar}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
+                          </div>
+                        </div>
+                        {/* Status */}
+                        <div className="flex justify-center">
+                          <span className={`px-2.5 py-1 text-[9px] font-bold rounded-full border uppercase tracking-wider whitespace-nowrap ${s.badge}`}>
+                            {row.status}
+                          </span>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+
+                {/* Totals Footer */}
+                <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-3 border-t border-white/[0.06] bg-gradient-to-r from-cyan-900/10 to-transparent items-center">
+                  <div className="flex items-center gap-2">
+                    <div className="w-1 h-3.5 rounded-full bg-gradient-to-b from-cyan-400 to-indigo-500" />
+                    <span className="text-[10px] font-bold text-white uppercase tracking-widest">Total</span>
+                  </div>
+                  <span className="font-mono font-bold text-white text-[12px] text-right tabular-nums">
+                    {reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0).toFixed(0)}
+                  </span>
+                  <div className="flex justify-end">
+                    <span className="font-mono font-bold text-cyan-400 text-[12px] tabular-nums drop-shadow-[0_0_6px_rgba(34,211,238,0.5)]">
+                      {reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0).toFixed(1)}
+                    </span>
+                  </div>
+                  <span className="font-mono font-bold text-slate-300 text-[12px] text-right tabular-nums">
+                    {reactiveBranchSnapshot.reduce((s, r) => s + r.avail, 0).toFixed(1)}
+                  </span>
+                  <div className="flex justify-end pr-2">
+                    {(() => {
+                      const tA = reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0);
+                      const tB = reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0);
+                      return <span className="font-mono font-bold text-white text-[12px]">{tA > 0 ? ((tB / tA) * 100).toFixed(1) : '0.0'}%</span>;
+                    })()}
+                  </div>
+                  <div />
+                </div>
+              </motion.div>
 
               {/* Neo-Brutalist Graph Container with Sweep Reflection */}
               <motion.div
@@ -1097,7 +1274,7 @@ const ContractDashboard: React.FC = () => {
                       <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" /> Data Insight
                     </h4>
                     <h2 className="text-xl text-slate-200 font-medium mb-3">Contract Matrix</h2>
-                    <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                    <p className="text-xs text-slate-300 leading-relaxed mb-6">
                       This data matrix isolates performance across individual contracted agreements, comparing total TEU booked against the weekly designated allocation limits.
                     </p>
                     <div className="flex flex-col gap-3">
@@ -1198,7 +1375,7 @@ const ContractDashboard: React.FC = () => {
                       <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" /> Data Insight
                     </h4>
                     <h2 className="text-xl text-slate-200 font-medium mb-3">Branch Network Hubs</h2>
-                    <p className="text-xs text-slate-500 leading-relaxed mb-6">
+                    <p className="text-xs text-slate-300 leading-relaxed mb-6">
                       The Branch table unpacks regional allocation vs fulfillment percentages. It inherently visualizes geographic load distribution and identifies localized bottlenecks.
                     </p>
                     <div className="flex flex-col gap-3">
@@ -1252,7 +1429,7 @@ const ContractDashboard: React.FC = () => {
                       className={`px-5 py-3 rounded-2xl ${p.bg} border ${p.border} flex flex-col items-center gap-1 cursor-pointer transition-all hover:shadow-[0_0_20px_rgba(167,139,250,0.2)]`}
                     >
                       <span className={`text-xl font-display font-bold ${p.color}`}>{p.value}</span>
-                      <span className="text-[9px] font-bold text-slate-500 uppercase tracking-widest">{p.label}</span>
+                      <span className="text-[9px] font-bold text-slate-300 uppercase tracking-widest">{p.label}</span>
                     </motion.div>
                   ))}
                 </div>
@@ -1274,7 +1451,7 @@ const ContractDashboard: React.FC = () => {
                         <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(167,139,250,0.8)]" /> Carrier Allocation vs Booked TEU
                       </h4>
                       {/* Dynamic graph insight text */}
-                      <p className="text-xs text-slate-500 leading-relaxed max-w-lg border-l-2 border-violet-500/40 pl-3">{cuGraphInsight}</p>
+                      <p className="text-xs text-slate-300 leading-relaxed max-w-lg border-l-2 border-violet-500/40 pl-3">{cuGraphInsight}</p>
                     </div>
                     <div className="flex gap-4 shrink-0">
                       <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-sm bg-violet-500/60" /><span className="text-[9px] text-slate-400 font-bold uppercase">Allocation</span></div>
@@ -1297,7 +1474,7 @@ const ContractDashboard: React.FC = () => {
                             {/* Label */}
                             <div className="w-[130px] shrink-0 flex flex-col">
                               <span className="text-[11px] font-bold text-white font-mono truncate">{row.id}</span>
-                              <span className="text-[9px] text-slate-500 truncate">{row.carrier}</span>
+                              <span className="text-[9px] text-slate-300 truncate">{row.carrier}</span>
                             </div>
                             {/* Stacked bar area */}
                             <div className="flex-1 flex flex-col gap-1.5 relative">
@@ -1327,8 +1504,8 @@ const ContractDashboard: React.FC = () => {
                             </div>
                             {/* TEU numbers */}
                             <div className="w-[80px] shrink-0 text-right hidden md:flex flex-col">
-                              <span className="text-[10px] text-slate-500 font-mono">{row.booked}<span className="text-slate-700">/{row.alloc}</span></span>
-                              <span className={`text-[9px] font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-500'}`}>{row.avail < 0 ? `+${Math.abs(row.avail)} OVR` : `${row.avail} avail`}</span>
+                              <span className="text-[10px] text-slate-300 font-mono">{row.booked}<span className="text-slate-300">/{row.alloc}</span></span>
+                              <span className={`text-[9px] font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>{row.avail < 0 ? `+${Math.abs(row.avail)} OVR` : `${row.avail} avail`}</span>
                             </div>
                           </div>
                         );
@@ -1341,14 +1518,14 @@ const ContractDashboard: React.FC = () => {
                 <div className="xl:col-span-4 rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
                   <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent">
                     <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
-                    <p className="text-[10px] text-slate-500 mt-1">Per-branch booked vs alloc across carriers</p>
+                    <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
                   </div>
                   <div className="flex-1 overflow-y-auto elegant-scrollbar p-4">
                     {/* Column headers */}
                     <div className="grid grid-cols-6 gap-1 mb-2 px-1">
-                      <div className="text-[8px] text-slate-600 font-bold uppercase col-span-1">ID</div>
+                      <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
                       {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
-                        <div key={b} className="text-[9px] text-slate-500 font-bold uppercase text-center">{b}</div>
+                        <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
                       ))}
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -1380,7 +1557,7 @@ const ContractDashboard: React.FC = () => {
                       {[['bg-rose-500/80', 'Overbooked'], ['bg-amber-400/70', 'Near Full'], ['bg-emerald-400/60', 'On Track'], ['bg-cyan-500/40', 'Low'], ['bg-slate-800/60', 'Empty']].map(([col, lbl]) => (
                         <div key={lbl} className="flex items-center gap-1.5">
                           <div className={`w-3 h-3 rounded-sm ${col}`} />
-                          <span className="text-[8px] text-slate-500 uppercase font-bold">{lbl}</span>
+                          <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
                         </div>
                       ))}
                     </div>
@@ -1394,7 +1571,7 @@ const ContractDashboard: React.FC = () => {
                 <div className="p-6 md:p-8 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
                   <div className="flex flex-col gap-1">
                     <span className="text-white font-bold text-lg tracking-wide">Full Contract Matrix</span>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+                    <span className="text-[10px] text-slate-300 uppercase tracking-widest font-bold">
                       {reactiveContractUtilData.length} carriers · Total {cuTotalAlloc} TEU allocated · {cuTotalBooked} TEU booked · {cuOverallUtil}% network utilisation
                     </span>
                   </div>
@@ -1446,11 +1623,11 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-4 py-4 text-center"><span className={`text-[9px] font-bold px-2 py-1 rounded border uppercase tracking-wide ${statusStyle}`}>{row.status}</span></td>
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => {
                               const bPct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
-                              const bCol = bPct > 100 ? 'text-rose-400' : bPct > 85 ? 'text-amber-400' : bPct > 0 ? 'text-slate-300' : 'text-slate-600';
+                              const bCol = bPct > 100 ? 'text-rose-400' : bPct > 85 ? 'text-amber-400' : bPct > 0 ? 'text-slate-300' : 'text-slate-400';
                               return (
                                 <td key={bi} className="px-3 py-4 text-center">
                                   <div className="flex flex-col items-center gap-0.5">
-                                    <span className={`font-mono text-[10px] font-bold ${bCol}`}>{b.booked}<span className="text-slate-600">/{b.alloc}</span></span>
+                                    <span className={`font-mono text-[10px] font-bold ${bCol}`}>{b.booked}<span className="text-slate-400">/{b.alloc}</span></span>
                                     <div className="w-10 h-1 bg-slate-900 rounded-full overflow-hidden">
                                       <div className={`h-full rounded-full ${bPct > 100 ? 'bg-rose-500' : bPct > 85 ? 'bg-amber-400' : 'bg-violet-500/60'}`} style={{ width: `${Math.min(bPct, 100)}%` }} />
                                     </div>
@@ -1489,10 +1666,10 @@ const ContractDashboard: React.FC = () => {
 
                 <div className="mt-6 lg:mt-0 flex gap-4">
                   <div className="px-6 py-4 bg-black/40 border border-white/10 rounded-2xl flex flex-col gap-1 backdrop-blur-3xl">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Global Utilisation</span>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Global Utilisation</span>
                     <div className="flex items-end gap-2">
                       <span className="text-3xl font-display font-bold text-white">57</span>
-                      <span className="text-lg font-bold text-slate-500 mb-1">.1%</span>
+                      <span className="text-lg font-bold text-slate-300 mb-1">.1%</span>
                     </div>
                   </div>
                 </div>
@@ -1506,7 +1683,7 @@ const ContractDashboard: React.FC = () => {
                   <div className="flex justify-between items-start mb-12 relative z-10">
                     <div>
                       <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs mb-2">Branch Performance <span className="text-amber-400">Flux Aggregate</span></h4>
-                      <p className="text-xs text-slate-500 max-w-xl">Multi-branch comparison of theoretical capacity versus actual cargo confirmation across all major tactical hubs.</p>
+                      <p className="text-xs text-slate-300 max-w-xl">Multi-branch comparison of theoretical capacity versus actual cargo confirmation across all major tactical hubs.</p>
                     </div>
                   </div>
 
@@ -1548,8 +1725,8 @@ const ContractDashboard: React.FC = () => {
                                   </div>
                                   <div className="grid grid-cols-2 gap-6">
                                     <div className="flex flex-col">
-                                      <span className="text-[9px] text-slate-500 font-bold uppercase mb-1">Total Capacity</span>
-                                      <span className="text-xl font-display font-light text-white">{data.alloc} <span className="text-[10px] text-slate-500">TEU</span></span>
+                                      <span className="text-[9px] text-slate-300 font-bold uppercase mb-1">Total Capacity</span>
+                                      <span className="text-xl font-display font-light text-white">{data.alloc} <span className="text-[10px] text-slate-300">TEU</span></span>
                                     </div>
                                     <div className="flex flex-col">
                                       <span className="text-[9px] text-amber-500 font-bold uppercase mb-1">Active Bookings</span>
@@ -1563,7 +1740,7 @@ const ContractDashboard: React.FC = () => {
                                       </div>
                                       <span className="text-[10px] font-bold text-emerald-400">{data.util}%</span>
                                     </div>
-                                    <span className="text-[9px] text-slate-600 font-mono font-bold tracking-widest">{data.alloc - data.booked} AVAIL</span>
+                                    <span className="text-[9px] text-slate-400 font-mono font-bold tracking-widest">{data.alloc - data.booked} AVAIL</span>
                                   </div>
                                 </motion.div>
                               );
@@ -1621,7 +1798,7 @@ const ContractDashboard: React.FC = () => {
                 <div className="p-8 md:p-10 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
                   <div className="flex flex-col gap-1">
                     <span className="text-white font-bold text-xl tracking-wide">Branch Allocation Breakdown</span>
-                    <span className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Comprehensive Regional Utilisation Matrix</span>
+                    <span className="text-[10px] text-slate-300 uppercase tracking-widest font-bold">Comprehensive Regional Utilisation Matrix</span>
                   </div>
                   <div className="flex items-center gap-4">
                     <button
@@ -1649,7 +1826,7 @@ const ContractDashboard: React.FC = () => {
                         <th colSpan={3} className="px-2 py-4 text-center bg-[#6BCB77]/10 border-b border-r border-[#6BCB77]/20 text-[#6BCB77] text-[10px] font-black uppercase tracking-[0.2em] font-display">Perth</th>
                         <th colSpan={3} className="px-2 py-4 text-center bg-[#9B59B6]/10 border-b border-white/10 text-[#9B59B6] text-[10px] font-black uppercase tracking-[0.2em] font-display">Adelaide</th>
                       </tr>
-                      <tr className="bg-slate-900/30 font-bold text-[9px] text-slate-500 uppercase tracking-widest">
+                      <tr className="bg-slate-900/30 font-bold text-[9px] text-slate-300 uppercase tracking-widest">
                         {['Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%'].map((h, i) => (
                           <th key={i} className={`px-2 py-3 text-center border-b border-r border-white/[0.05] ${i % 3 === 2 ? 'bg-white/[0.1]' : ''}`}>{h}</th>
                         ))}
@@ -1670,7 +1847,7 @@ const ContractDashboard: React.FC = () => {
                               <React.Fragment key={bi}>
                                 <td className="px-1 py-4 text-center font-mono text-[11px] text-slate-400">{b.alloc}</td>
                                 <td className={`px-1 py-4 text-center font-mono text-[11px] font-bold ${isCrit ? 'text-rose-400' : isLow ? 'text-amber-400' : 'text-slate-200'}`}>{b.booked.toFixed(1)}</td>
-                                <td className={`px-1 py-4 text-center border-r border-white/5 font-mono text-[11px] font-black ${isCrit ? 'text-rose-400 animate-pulse' : isLow ? 'text-amber-400' : 'text-slate-500'}`}>{util.toFixed(0)}%</td>
+                                <td className={`px-1 py-4 text-center border-r border-white/5 font-mono text-[11px] font-black ${isCrit ? 'text-rose-400 animate-pulse' : isLow ? 'text-amber-400' : 'text-slate-300'}`}>{util.toFixed(0)}%</td>
                               </React.Fragment>
                             );
                           })}
@@ -1777,7 +1954,7 @@ const ContractDashboard: React.FC = () => {
                             if (active && payload && payload.length) {
                               return (
                                 <div className="bg-[#050505]/95 backdrop-blur-3xl border border-white/10 p-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
-                                  <div className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mb-2 border-b border-white/5 pb-1">{payload[0].payload.week}</div>
+                                  <div className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mb-2 border-b border-white/5 pb-1">{payload[0].payload.week}</div>
                                   <div className="flex flex-col gap-2 pt-1">
                                     <div className="flex justify-between items-center gap-8">
                                       <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_currentColor]"></div><span className="text-[10px] text-slate-400">Total Allocation</span></div>
@@ -1822,7 +1999,7 @@ const ContractDashboard: React.FC = () => {
                       </div>
                       <h3 className="text-white font-bold tracking-widest uppercase text-xs">Network Pulse</h3>
                     </div>
-                    <span className="text-[9px] font-mono text-slate-500">REALTIME SYNC</span>
+                    <span className="text-[9px] font-mono text-slate-300">REALTIME SYNC</span>
                   </div>
                   <div className="flex-1 p-2">
                     <table className="w-full text-left border-collapse">
@@ -1855,17 +2032,17 @@ const ContractDashboard: React.FC = () => {
               <div className="flex items-center justify-between px-8 py-4 bg-[#050505]/40 border-l border-indigo-500/50 border-r border-indigo-500/50 rounded-2xl">
                 <div className="flex items-center gap-6">
                   <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Global Matrix</span>
+                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Global Matrix</span>
                     <span className="text-xl font-display text-white font-light uppercase tracking-widest">Complex <span className="font-bold text-indigo-400">Node Data</span></span>
                   </div>
                   <div className="h-10 w-[1px] bg-white/10" />
                   <div className="flex items-center gap-3">
-                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" /><span className="text-[9px] text-slate-500 font-bold uppercase">Overflow</span></span>
+                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" /><span className="text-[9px] text-slate-300 font-bold uppercase">Overflow</span></span>
                   </div>
                 </div>
                 <div className="mt-6 lg:mt-0 px-5 py-3 bg-[#050505]/60 border border-slate-700/80 rounded-2xl flex items-center gap-4 backdrop-blur-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)] transform hover:scale-105 transition-transform duration-500 cursor-default">
                   <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-semibold tracking-widest text-slate-500 uppercase">Mission Operations</span>
+                    <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">Mission Operations</span>
                     <span className="text-sm font-bold tracking-wide text-white">WK 12 <span className="text-indigo-400/80 font-medium">| ACTIVE</span></span>
                   </div>
                   <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.5)] text-white relative overflow-hidden">
@@ -1929,11 +2106,11 @@ const ContractDashboard: React.FC = () => {
                                   <div className="flex flex-col gap-4">
                                     <div className="flex justify-between items-center bg-white/[0.03] p-4 rounded-2xl border border-white/5">
                                       <div className="flex flex-col">
-                                        <span className="text-slate-500 text-[8px] uppercase font-bold tracking-widest mb-1">Capacity</span>
+                                        <span className="text-slate-300 text-[8px] uppercase font-bold tracking-widest mb-1">Capacity</span>
                                         <span className="text-xl text-white font-mono font-bold leading-none">{payload[1]?.value || 0}</span>
                                       </div>
                                       <div className="flex flex-col items-end">
-                                        <span className="text-slate-500 text-[8px] uppercase font-bold tracking-widest mb-1">Booked</span>
+                                        <span className="text-slate-300 text-[8px] uppercase font-bold tracking-widest mb-1">Booked</span>
                                         <span className="text-xl text-emerald-400 font-mono font-bold leading-none">{payload[0]?.value || 0}</span>
                                       </div>
                                     </div>
@@ -2001,9 +2178,9 @@ const ContractDashboard: React.FC = () => {
                     <table className="w-full text-left border-collapse">
                       <thead>
                         <tr className="bg-black/30">
-                          <th className="px-5 py-3 font-bold text-slate-500 text-[10px] tracking-widest uppercase border-b border-white/5">Week</th>
-                          <th className="px-5 py-3 font-bold text-slate-500 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Alloc</th>
-                          <th className="px-5 py-3 font-bold text-slate-500 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Booked</th>
+                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase border-b border-white/5">Week</th>
+                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Alloc</th>
+                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Booked</th>
                           <th className="px-5 py-3 font-bold text-indigo-400 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Util%</th>
                         </tr>
                       </thead>
@@ -2042,7 +2219,7 @@ const ContractDashboard: React.FC = () => {
                     </div>
                     <div>
                       <h3 className="text-white font-bold tracking-widest uppercase text-sm">Contract-Branch Performance Matrix</h3>
-                      <p className="text-[10px] text-slate-500 font-bold uppercase tracking-widest mt-1">Granular Node Utilization Analysis</p>
+                      <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mt-1">Granular Node Utilization Analysis</p>
                     </div>
                   </div>
                   <button
@@ -2081,7 +2258,7 @@ const ContractDashboard: React.FC = () => {
                                 </td>
                                 {AVAILABLE_WEEKS.map(wk => {
                                   const d = (contractRow.data as any)[wk] || { alloc: 0, booked: 0, util: 0 };
-                                  const utilColor = d.util >= 100 ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : d.util >= 90 ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : d.util > 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-transparent text-slate-600 border-transparent';
+                                  const utilColor = d.util >= 100 ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : d.util >= 90 ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : d.util > 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-transparent text-slate-400 border-transparent';
                                   return (
                                     <React.Fragment key={wk}>
                                       <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[10px] text-slate-300">{d.alloc}</td>
@@ -2107,11 +2284,11 @@ const ContractDashboard: React.FC = () => {
                                   </td>
                                   {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                     const d = (branch.data as any)[wk];
-                                    const utilColor = d.util >= 100 ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : d.util >= 90 ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : d.util > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-transparent text-slate-700/40 border-transparent';
+                                    const utilColor = d.util >= 100 ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : d.util >= 90 ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : d.util > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-transparent text-slate-300/40 border-transparent';
                                     return (
                                       <React.Fragment key={wk}>
-                                        <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[9px] text-slate-500 group-hover/branch:text-slate-400">{d.alloc}</td>
-                                        <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[9px] text-slate-500 group-hover/branch:text-slate-400">{d.booked.toFixed(1)}</td>
+                                        <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[9px] text-slate-300 group-hover/branch:text-slate-400">{d.alloc}</td>
+                                        <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[9px] text-slate-300 group-hover/branch:text-slate-400">{d.booked.toFixed(1)}</td>
                                         <td className={`px-1 py-4 text-center border-r border-white/5 font-mono font-medium text-[10px] antialiased ${utilColor.split(' ')[1]}`}>
                                           <div className={`mx-auto px-1 rounded ${utilColor.split(' ').slice(0, 1).join('')} ${utilColor.split(' ').slice(2).join('')}`}>
                                             {d.util > 0 ? `${d.util}%` : '-'}
@@ -2131,7 +2308,7 @@ const ContractDashboard: React.FC = () => {
                           <td className="px-6 py-6 sticky left-0 bg-black z-10 border-r border-white/10">
                             <div className="flex flex-col">
                               <span className="text-[10px] font-bold text-cyan-400 tracking-[0.2em] uppercase">GRAND TOTAL</span>
-                              <span className="text-[9px] text-slate-500 font-bold uppercase">All Contracts</span>
+                              <span className="text-[9px] text-slate-300 font-bold uppercase">All Contracts</span>
                             </div>
                           </td>
                           {reactiveWeeklyTrendData.map((wk, i) => {
@@ -2286,8 +2463,8 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-5 font-mono text-xs text-indigo-300">{row.order}</td>
                             <td className="px-6 py-5 text-[10px] text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
                             <td className="px-6 py-5 text-xs text-slate-300">{row.depVessel} {row.depVoyage}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-500">{row.etd}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-500">{row.eta}</td>
+                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.etd}</td>
+                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.eta}</td>
                             <td className="px-6 py-5 text-center font-mono text-[10px] bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
                             <td className="px-6 py-5 font-mono text-sm font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
                           </tr>
@@ -2298,11 +2475,11 @@ const ContractDashboard: React.FC = () => {
                 </div>
 
                 <div className="bg-slate-900/30 px-6 py-4 flex justify-between items-center border-t border-white/5 relative z-10">
-                  <div className="flex items-center gap-2 text-[10px] text-slate-500 uppercase tracking-widest font-bold">
+                  <div className="flex items-center gap-2 text-[10px] text-slate-300 uppercase tracking-widest font-bold">
                     <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse" />
                     Viewing latest {BOOKING_LOG_DATA.length} booking records natively tracked by System
                   </div>
-                  <div className="text-[10px] text-slate-500 font-mono tracking-widest border border-slate-700/50 px-2 py-1 flex items-center bg-slate-800/30 rounded">
+                  <div className="text-[10px] text-slate-300 font-mono tracking-widest border border-slate-700/50 px-2 py-1 flex items-center bg-slate-800/30 rounded">
                     Sync Checksum: 0x9F3EA4
                   </div>
                 </div>
@@ -2313,10 +2490,10 @@ const ContractDashboard: React.FC = () => {
           {/* Placeholder for other tags */}
 
           {((activeTag as string) !== 'Branch Summary' && (activeTag as string) !== 'Performance Charts' && (activeTag as string) !== 'Week Analysis' && (activeTag as string) !== 'Booking Log' && (activeTag as string) !== 'Contract Utilisation' && (activeTag as string) !== 'Branch Allocation') && (
-            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center h-[600px] text-slate-500 rounded-3xl border border-slate-800 border-dashed bg-slate-900/20 backdrop-blur-sm">
-              <svg className="w-12 h-12 mb-4 text-slate-700" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="flex flex-col items-center justify-center h-[600px] text-slate-300 rounded-3xl border border-slate-800 border-dashed bg-slate-900/20 backdrop-blur-sm">
+              <svg className="w-12 h-12 mb-4 text-slate-300" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" /></svg>
               <p className="text-xl font-light">The <span className="font-semibold text-cyan-500">{activeTag}</span> module is isolated.</p>
-              <p className="text-sm mt-3 text-slate-600">Select <span className="text-slate-400">Branch Summary</span> to view the primary dashboard view.</p>
+              <p className="text-sm mt-3 text-slate-400">Select <span className="text-slate-400">Branch Summary</span> to view the primary dashboard view.</p>
             </motion.div>
           )}
 
@@ -2362,19 +2539,19 @@ const ContractDashboard: React.FC = () => {
                     <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-pulse shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
                     Data Inspector
                   </h3>
-                  <div className="text-[11px] uppercase tracking-widest text-slate-500 mb-2">{activeKpi.label}</div>
+                  <div className="text-[11px] uppercase tracking-widest text-slate-300 mb-2">{activeKpi.label}</div>
                   <div className="flex items-end mb-4">
                     <span className={`text-5xl font-display font-bold ${activeKpi.accentColor} drop-shadow-[0_0_15px_currentColor]`}>{activeKpi.value}</span>
-                    {activeKpi.type === 'ring' && <span className="text-xl text-slate-500 font-bold ml-1 mb-1">%</span>}
+                    {activeKpi.type === 'ring' && <span className="text-xl text-slate-300 font-bold ml-1 mb-1">%</span>}
                   </div>
 
                   <div className="mt-4 p-3 rounded-xl bg-black/40 border border-white/5 space-y-2">
                     <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest">
-                      <span className="text-slate-500">Source</span>
+                      <span className="text-slate-300">Source</span>
                       <span className="text-indigo-400">Live DB</span>
                     </div>
                     <div className="flex justify-between items-center text-[10px] uppercase font-bold tracking-widest">
-                      <span className="text-slate-500">Method</span>
+                      <span className="text-slate-300">Method</span>
                       <span className="text-emerald-400 border-b border-emerald-400/30 border-dashed">Aggregated</span>
                     </div>
                   </div>
@@ -2395,7 +2572,7 @@ const ContractDashboard: React.FC = () => {
                               <span className="font-mono text-sm text-white">{b.alloc}</span>
                             </div>
                             <div className="w-full h-[2px] bg-slate-900 rounded-full overflow-hidden">
-                              <motion.div initial={{ width: 0 }} animate={{ width: `${(b.alloc / 1360) * 100}%` }} transition={{ duration: 0.6, delay: i * 0.05 }} className="h-full bg-indigo-500" />
+                              <motion.div initial={{ width: 0 }} animate={{ width: `${(b.alloc / (contractMetrics.alloc || 1)) * 100}%` }} transition={{ duration: 0.6, delay: i * 0.05 }} className="h-full bg-indigo-500" />
                             </div>
                           </div>
                         ))}
@@ -2412,7 +2589,7 @@ const ContractDashboard: React.FC = () => {
                               <span className="font-mono text-sm text-white">{b.booked}</span>
                             </div>
                             <div className="w-full h-[2px] bg-slate-900 rounded-full overflow-hidden">
-                              <motion.div initial={{ width: 0 }} animate={{ width: `${(b.booked / 946) * 100}%` }} transition={{ duration: 0.6, delay: i * 0.05 }} className="h-full bg-cyan-400" />
+                              <motion.div initial={{ width: 0 }} animate={{ width: `${(b.booked / (contractMetrics.booked || 1)) * 100}%` }} transition={{ duration: 0.6, delay: i * 0.05 }} className="h-full bg-cyan-400" />
                             </div>
                           </div>
                         ))}
@@ -2422,17 +2599,17 @@ const ContractDashboard: React.FC = () => {
                     {/* UTILISATION BREAKDOWN */}
                     {activeKpi.label === 'OVERALL UTIL %' && (
                       <div className="flex flex-col gap-3">
-                        <div className="flex justify-between px-4 py-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl items-center"><span className="text-xs uppercase tracking-widest text-cyan-400">Total Booked</span><span className="text-lg text-white font-bold font-sans">946</span></div>
-                        <div className="w-full flex justify-center text-slate-500"><svg className="w-4 h-4 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
-                        <div className="flex justify-between px-4 py-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl items-center"><span className="text-xs uppercase tracking-widest text-indigo-400">Total Allocation</span><span className="text-lg text-white font-bold font-sans">1,360</span></div>
+                        <div className="flex justify-between px-4 py-3 bg-cyan-500/10 border border-cyan-500/20 rounded-xl items-center"><span className="text-xs uppercase tracking-widest text-cyan-400">Total Booked</span><span className="text-lg text-white font-bold font-sans">{contractMetrics.booked.toLocaleString()}</span></div>
+                        <div className="w-full flex justify-center text-slate-300"><svg className="w-4 h-4 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 13l-7 7-7-7m14-8l-7 7-7-7" /></svg></div>
+                        <div className="flex justify-between px-4 py-3 bg-indigo-500/10 border border-indigo-500/20 rounded-xl items-center"><span className="text-xs uppercase tracking-widest text-indigo-400">Total Allocation</span><span className="text-lg text-white font-bold font-sans">{contractMetrics.alloc.toLocaleString()}</span></div>
 
                         <div className="px-4 py-3 bg-emerald-500/10 border border-emerald-500/30 rounded-xl mt-2">
                           <div className="flex justify-between items-center mb-2">
                             <span className="text-emerald-400 text-xs font-bold uppercase tracking-widest">Coefficient</span>
-                            <span className="text-lg font-bold text-white font-sans">69.6%</span>
+                            <span className="text-lg font-bold text-white font-sans">{contractMetrics.util.toFixed(1)}%</span>
                           </div>
                           <div className="w-full h-1 bg-slate-900 rounded-full overflow-hidden">
-                            <motion.div initial={{ width: 0 }} animate={{ width: `69.6%` }} transition={{ duration: 1, ease: "easeOut" }} className="h-full bg-emerald-400" />
+                            <motion.div initial={{ width: 0 }} animate={{ width: `${Math.min(100, contractMetrics.util)}%` }} transition={{ duration: 1, ease: "easeOut" }} className="h-full bg-emerald-400" />
                           </div>
                         </div>
                       </div>
@@ -2441,8 +2618,12 @@ const ContractDashboard: React.FC = () => {
                     {/* OVERBOOKED BREAKDOWN */}
                     {activeKpi.label === 'OVERBOOKED' && (
                       <div className="flex flex-col gap-2">
-                        <div className="flex justify-between items-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20"><span className="text-white text-sm">Singapore</span><span className="text-xs text-rose-400 font-bold">200 / 150</span></div>
-                        <div className="flex justify-between items-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20"><span className="text-white text-sm">Hong Kong</span><span className="text-xs text-rose-400 font-bold">140 / 100</span></div>
+                        {cuOverbooked.length > 0 ? cuOverbooked.map(c => (
+                          <div key={c.id} className="flex justify-between items-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
+                            <span className="text-white text-sm truncate max-w-[200px]" title={c.carrier}>{c.id}</span>
+                            <span className="text-xs text-rose-400 font-bold whitespace-nowrap">{c.booked.toFixed(1)} / {c.alloc.toFixed(1)}</span>
+                          </div>
+                        )) : <div className="text-slate-300 italic p-4 text-center">No contracts overbooked</div>}
                       </div>
                     )}
 
@@ -2459,12 +2640,13 @@ const ContractDashboard: React.FC = () => {
                     )}
 
                     {/* ACTIVE WEEK */}
-                    {activeKpi.label === 'ACTIVE WEEK' && (
+                    {activeKpi.label === 'ACTIVE WEEKS' && (
                       <div className="flex flex-col items-center justify-center py-6">
                         <div className="w-16 h-16 rounded-full border border-slate-600 flex items-center justify-center mb-4">
                           <svg className="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
                         </div>
-                        <div className="text-2xl text-white font-display">Week <span className="font-bold text-slate-300">12</span></div>
+                        <div className="text-2xl text-white font-display">Week <span className="font-bold text-slate-300">{selectedWeek === 'ALL' ? 'ALL' : selectedWeek.split(' ')[1]}</span></div>
+                        <div className="text-sm text-slate-300 mt-2">Active Weeks Monitored: {AVAILABLE_WEEKS.length}</div>
                       </div>
                     )}
                   </div>
@@ -2495,7 +2677,7 @@ const ContractDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-slate-200 font-bold tracking-wide text-sm">Matrix <span className="text-indigo-400">Projection Popup</span></h3>
-                    <p className="text-xs text-slate-500">Immersive Data Node Inspection Layer</p>
+                    <p className="text-xs text-slate-300">Immersive Data Node Inspection Layer</p>
                   </div>
                 </div>
                 <button
@@ -2520,8 +2702,8 @@ const ContractDashboard: React.FC = () => {
                           <th className="px-8 py-3 border-r border-white/10 sticky left-0 bg-[#0b0f19] z-20" />
                           {Array(8).fill(0).map((_, i) => (
                             <React.Fragment key={i}>
-                              <th className="px-2 py-3 text-[9px] font-bold text-slate-500 text-center border-r border-white/10 uppercase tracking-widest">Allocation</th>
-                              <th className="px-2 py-3 text-[9px] font-bold text-slate-500 text-center border-r border-white/10 uppercase tracking-widest">Booked</th>
+                              <th className="px-2 py-3 text-[9px] font-bold text-slate-300 text-center border-r border-white/10 uppercase tracking-widest">Allocation</th>
+                              <th className="px-2 py-3 text-[9px] font-bold text-slate-300 text-center border-r border-white/10 uppercase tracking-widest">Booked</th>
                               <th className="px-2 py-3 text-[9px] font-bold text-indigo-400 text-center border-r border-white/10 uppercase tracking-widest bg-indigo-500/5">Util%</th>
                             </React.Fragment>
                           ))}
@@ -2535,7 +2717,7 @@ const ContractDashboard: React.FC = () => {
                                 <td className="px-8 py-6 font-display font-bold text-white text-sm border-r border-indigo-500/30 sticky left-0 bg-[#0b0f19] z-10">{contractRow.contract}</td>
                                 {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                   const d = (contractRow.data as any)[wk];
-                                  const utilColor = d.util >= 100 ? 'bg-rose-500/30 text-rose-400 border-rose-500/50' : d.util >= 90 ? 'bg-amber-500/30 text-amber-400 border-amber-500/50' : d.util > 0 ? 'bg-emerald-500/30 text-emerald-400 border-emerald-500/50' : 'text-slate-600';
+                                  const utilColor = d.util >= 100 ? 'bg-rose-500/30 text-rose-400 border-rose-500/50' : d.util >= 90 ? 'bg-amber-500/30 text-amber-400 border-amber-500/50' : d.util > 0 ? 'bg-emerald-500/30 text-emerald-400 border-emerald-500/50' : 'text-slate-400';
                                   return (
                                     <React.Fragment key={wk}>
                                       <td className="px-2 py-6 text-center border-r border-white/10 font-mono text-xs text-slate-300">{d.alloc}</td>
@@ -2556,11 +2738,11 @@ const ContractDashboard: React.FC = () => {
                                   </td>
                                   {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                     const d = (branch.data as any)[wk];
-                                    const utilColor = d.util >= 100 ? 'text-rose-400' : d.util >= 90 ? 'text-amber-400' : d.util > 0 ? 'text-emerald-400' : 'text-slate-700';
+                                    const utilColor = d.util >= 100 ? 'text-rose-400' : d.util >= 90 ? 'text-amber-400' : d.util > 0 ? 'text-emerald-400' : 'text-slate-300';
                                     return (
                                       <React.Fragment key={wk}>
-                                        <td className="px-2 py-5 text-center border-r border-white/10 font-mono text-xs text-slate-500">{d.alloc}</td>
-                                        <td className="px-2 py-5 text-center border-r border-white/10 font-mono text-xs text-slate-500">{d.booked.toFixed(1)}</td>
+                                        <td className="px-2 py-5 text-center border-r border-white/10 font-mono text-xs text-slate-300">{d.alloc}</td>
+                                        <td className="px-2 py-5 text-center border-r border-white/10 font-mono text-xs text-slate-300">{d.booked.toFixed(1)}</td>
                                         <td className={`px-2 py-5 text-center border-r border-white/10 font-mono font-bold text-xs ${utilColor}`}>
                                           {d.util > 0 ? `${d.util}%` : '-'}
                                         </td>
@@ -2578,7 +2760,7 @@ const ContractDashboard: React.FC = () => {
                           <td className="px-8 py-8 sticky left-0 bg-black z-10 font-display font-bold text-white text-xl uppercase tracking-tighter shadow-[20px_0_40px_rgba(0,0,0,0.5)]">
                             <div className="flex flex-col">
                               <span className="text-sm font-bold text-cyan-400 tracking-[0.2em] uppercase">GRAND TOTAL</span>
-                              <span className="text-xs text-slate-500 font-bold uppercase mt-1">All Contracts</span>
+                              <span className="text-xs text-slate-300 font-bold uppercase mt-1">All Contracts</span>
                             </div>
                           </td>
                           {reactiveWeeklyTrendData.map((wk, i) => (
@@ -2612,7 +2794,7 @@ const ContractDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-slate-200 font-bold tracking-wide text-sm">Branch <span className="text-emerald-400">Summary</span></h3>
-                    <p className="text-xs text-slate-500">Booking Log Aggregate View</p>
+                    <p className="text-xs text-slate-300">Booking Log Aggregate View</p>
                   </div>
                 </div>
                 <button onClick={() => setIsBookingBranchModalOpen(false)} className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-500 rounded-lg p-2 backdrop-blur">
@@ -2663,7 +2845,7 @@ const ContractDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-slate-200 font-bold tracking-wide text-sm">Contract <span className="text-cyan-400">Breakdown</span></h3>
-                    <p className="text-xs text-slate-500">Log Aggregate Pivot</p>
+                    <p className="text-xs text-slate-300">Log Aggregate Pivot</p>
                   </div>
                 </div>
                 <button onClick={() => setIsBookingContractModalOpen(false)} className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-500 rounded-lg p-2 backdrop-blur">
@@ -2765,22 +2947,22 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-8 py-6 font-mono text-xs text-slate-400 whitespace-nowrap">{row.etd}</td>
                             <td className="px-8 py-6 font-mono text-xs text-slate-400 whitespace-nowrap">{row.eta}</td>
                             <td className="px-8 py-6 text-sm text-slate-300 whitespace-nowrap">{row.depVessel}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-500 whitespace-nowrap">{row.depVoyage}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-300 whitespace-nowrap">{row.depVoyage}</td>
                             <td className="px-8 py-6 text-sm text-slate-300 whitespace-nowrap">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-500 whitespace-nowrap">-</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-300 whitespace-nowrap">-</td>
                             <td className="px-8 py-6 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
                             <td className="px-8 py-6 text-xs text-indigo-400 font-medium uppercase">{row.destRegion}</td>
-                            <td className="px-8 py-6 font-mono text-[11px] text-slate-500">N/A</td>
-                            <td className="px-8 py-6 font-mono text-[11px] text-slate-500">N/A</td>
+                            <td className="px-8 py-6 font-mono text-[11px] text-slate-300">N/A</td>
+                            <td className="px-8 py-6 font-mono text-[11px] text-slate-300">N/A</td>
                             <td className="px-8 py-6 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20 font-mono tracking-widest">{row.branch}</div></td>
                             <td className="px-8 py-6 font-mono text-lg font-bold text-emerald-400 text-right drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{(row.teu || 0).toFixed(2)}</td>
                             <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">{row.containers || '-'}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-500">{row.mscWeek}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
                             <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">{(row.teu || 0).toFixed(2)}</td>
                             <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-500 whitespace-nowrap">WK {row.mscWeek}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 whitespace-nowrap">WK {row.mscWeek}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">2026</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
@@ -2820,7 +3002,7 @@ const ContractDashboard: React.FC = () => {
                   </div>
                   <div>
                     <h3 className="text-slate-200 font-bold tracking-wide text-sm">Branch Performance Snapshot Matrix</h3>
-                    <p className="text-xs text-slate-500">Live operational readout from Cargowise DB</p>
+                    <p className="text-xs text-slate-300">Live operational readout from Cargowise DB</p>
                   </div>
                 </div>
                 <button onClick={() => setIsModalOpen(false)} className="text-slate-400 hover:text-white transition-colors bg-slate-800 hover:bg-slate-700/80 border border-slate-700 hover:border-slate-500 rounded-lg p-2 backdrop-blur">
@@ -2833,8 +3015,8 @@ const ContractDashboard: React.FC = () => {
                   <thead>
                     <tr>
                       <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800">Operational Hub</th>
-                      <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider text-right border-b border-slate-800">Allocation <span className="text-slate-600">(TEU)</span></th>
-                      <th className="px-5 py-3 font-semibold text-cyan-500/80 text-xs uppercase tracking-wider text-right border-b border-slate-800">Booked <span className="text-slate-600">(TEU)</span></th>
+                      <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider text-right border-b border-slate-800">Allocation <span className="text-slate-400">(TEU)</span></th>
+                      <th className="px-5 py-3 font-semibold text-cyan-500/80 text-xs uppercase tracking-wider text-right border-b border-slate-800">Booked <span className="text-slate-400">(TEU)</span></th>
                       <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider text-right border-b border-slate-800">Available</th>
                       <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider text-right border-b border-slate-800">Utilisation %</th>
                       <th className="px-5 py-3 font-semibold text-slate-400 text-xs uppercase tracking-wider border-b border-slate-800 text-center">Status Flag</th>
@@ -2853,7 +3035,7 @@ const ContractDashboard: React.FC = () => {
                             {row.booked}
                           </span>
                         </td>
-                        <td className="px-5 py-4 text-right text-slate-500 font-mono">{row.avail}</td>
+                        <td className="px-5 py-4 text-right text-slate-300 font-mono">{row.avail}</td>
                         <td className={`px-5 py-4 text-right font-mono font-semibold ${row.status === 'Low Uptake' ? 'text-slate-400' : 'text-emerald-400'}`}>{row.util}</td>
                         <td className="px-5 py-4 text-center">
                           <span className={`px-3 py-1 text-xs font-semibold rounded-full border ${row.status === 'On Track'
@@ -2869,11 +3051,11 @@ const ContractDashboard: React.FC = () => {
                 </table>
               </div>
               <div className="bg-slate-900/50 px-6 py-4 flex justify-between items-center border-t border-slate-800/80">
-                <div className="flex items-center gap-2 text-xs text-slate-500">
+                <div className="flex items-center gap-2 text-xs text-slate-300">
                   <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse" />
                   System Auto-Generated
                 </div>
-                <div className="text-xs text-slate-500 font-mono">
+                <div className="text-xs text-slate-300 font-mono">
                   Report ID: CW-190326-0634
                 </div>
               </div>
@@ -2930,7 +3112,7 @@ const ContractDashboard: React.FC = () => {
               <div className="p-8 border-b border-white/5 flex justify-between items-center bg-black/40">
                 <div className="flex flex-col gap-1">
                   <h3 className="text-3xl font-display font-light text-white">Full Carrier <span className="font-bold text-violet-400">Capacity Matrix</span></h3>
-                  <p className="text-xs text-slate-500 uppercase tracking-widest font-bold">Comprehensive Multi-Carrier Allocation Breakdown</p>
+                  <p className="text-xs text-slate-300 uppercase tracking-widest font-bold">Comprehensive Multi-Carrier Allocation Breakdown</p>
                 </div>
                 <button
                   onClick={() => setIsCuTableModalOpen(false)}
@@ -2960,7 +3142,7 @@ const ContractDashboard: React.FC = () => {
                           <tr key={i} className="hover:bg-white/[0.03] transition-colors group/mod">
                             <td className="px-6 py-6 font-mono text-sm font-bold text-violet-300">{row.id}</td>
                             <td className="px-6 py-6 text-sm text-slate-300 font-medium">{row.carrier}</td>
-                            <td className="px-6 py-6 font-mono text-xs text-slate-500">{row.lane}</td>
+                            <td className="px-6 py-6 font-mono text-xs text-slate-300">{row.lane}</td>
                             <td className="px-6 py-6 text-right font-mono text-base text-slate-300">{row.alloc}</td>
                             <td className="px-6 py-6 text-right font-mono text-base font-bold text-cyan-400">{row.booked}</td>
                             <td className={`px-6 py-6 text-right font-mono text-base font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
@@ -2969,7 +3151,7 @@ const ContractDashboard: React.FC = () => {
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => (
                               <td key={bi} className="px-6 py-6 text-center font-mono text-sm">
                                 <span className={b.booked > b.alloc ? 'text-rose-400' : 'text-slate-300'}>{b.booked}</span>
-                                <span className="text-slate-600">/{b.alloc}</span>
+                                <span className="text-slate-400">/{b.alloc}</span>
                               </td>
                             ))}
                           </tr>
@@ -2979,7 +3161,7 @@ const ContractDashboard: React.FC = () => {
                   </table>
                 </div>
               </div>
-              <div className="p-8 bg-black/40 border-t border-white/5 flex justify-between items-center text-xs text-slate-500 font-bold uppercase tracking-[0.3em]">
+              <div className="p-8 bg-black/40 border-t border-white/5 flex justify-between items-center text-xs text-slate-300 font-bold uppercase tracking-[0.3em]">
                 <div>Network Integrity Verified</div>
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
@@ -3003,7 +3185,7 @@ const ContractDashboard: React.FC = () => {
                     <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
                     <h3 className="text-4xl font-display font-light text-white">Branch <span className="font-bold text-amber-400">Allocation breakdown</span></h3>
                   </div>
-                  <p className="text-xs text-slate-500 uppercase tracking-widest font-black ml-5">Global Hub Strategic Capacity matrix | LIVE</p>
+                  <p className="text-xs text-slate-300 uppercase tracking-widest font-black ml-5">Global Hub Strategic Capacity matrix | LIVE</p>
                 </div>
                 <button
                   onClick={() => setIsBranchTableModalOpen(false)}
@@ -3027,7 +3209,7 @@ const ContractDashboard: React.FC = () => {
                         <th colSpan={3} className="px-2 py-6 text-center bg-emerald-500/10 border-b border-r border-emerald-500/20 text-emerald-400 text-xs font-black uppercase tracking-[0.3em] font-display">Perth</th>
                         <th colSpan={3} className="px-2 py-6 text-center bg-indigo-500/10 border-b border-white/10 text-indigo-400 text-xs font-black uppercase tracking-[0.3em] font-display">Adelaide</th>
                       </tr>
-                      <tr className="bg-slate-950 font-black text-[10px] text-slate-600 uppercase tracking-widest">
+                      <tr className="bg-slate-950 font-black text-[10px] text-slate-400 uppercase tracking-widest">
                         {['Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%'].map((h, i) => (
                           <th key={i} className={`px-4 py-5 text-center border-b border-r border-white/[0.05] ${i % 3 === 2 ? 'bg-white/[0.01]' : ''}`}>{h}</th>
                         ))}
@@ -3043,9 +3225,9 @@ const ContractDashboard: React.FC = () => {
                             const util = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
                             return (
                               <React.Fragment key={bi}>
-                                <td className="px-2 py-8 text-center font-mono text-xs text-slate-500">{b.alloc}</td>
+                                <td className="px-2 py-8 text-center font-mono text-xs text-slate-300">{b.alloc}</td>
                                 <td className={`px-2 py-8 text-center font-mono text-sm font-black ${util > 100 ? 'text-rose-400' : 'text-slate-200'}`}>{b.booked}</td>
-                                <td className={`px-2 py-8 text-center border-r border-white/5 font-mono text-[11px] font-black ${util > 100 ? 'text-rose-400' : 'text-slate-700'}`}>{util.toFixed(0)}%</td>
+                                <td className={`px-2 py-8 text-center border-r border-white/5 font-mono text-[11px] font-black ${util > 100 ? 'text-rose-400' : 'text-slate-300'}`}>{util.toFixed(0)}%</td>
                               </React.Fragment>
                             );
                           })}

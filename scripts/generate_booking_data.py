@@ -1,372 +1,289 @@
 import pandas as pd
 import json
-import math
-import numpy as np
 import re
+import math
 import os
-from datetime import datetime
 
 # Paths
-orders_path = r'D:\Dashboards\Orders 10 APril.xlsx'
-master_path = r'D:\Dashboards\Contract_Master_All_Data Update.xlsx'
-carrier_profiles_path = r'D:\Dashboards\Carrier Profiles.xlsx'
-port_listing_path = r'D:\Dashboards\CONTRACT_PORT_CODE_LISTING.xlsx'
+ORDERS_PATH = 'D:/Dashboards/Orders 10 APril.xlsx'
+MASTER_PATH = 'D:/Dashboards/Contract_Master_All_Data Update.xlsx'
+PORT_CODE_PATH = 'D:/Dashboards/CONTRACT_PORT_CODE_LISTING.xlsx'
+CARRIER_PATH = 'D:/Dashboards/Carrier Profiles.xlsx'
+OUTPUT_TS_PATH = 'D:/Dashboards/frontend/src/BookingData.ts'
 
-print("Loading Master Data Sources...")
-master_df = pd.read_excel(master_path)
-carrier_df = pd.read_excel(carrier_profiles_path)
-orders_df = pd.read_excel(orders_path)
-port_listing_df = pd.read_excel(port_listing_path)
+def safe_str(val):
+    if pd.isna(val) or val is None:
+        return '0'
+    return str(val).strip()
 
-# Build Carrier Map from Profiles
-carrier_meta = {}
-# Columns found: ['Code', 'Full Name', ...]
-for _, row in carrier_df.iterrows():
-    code = str(row['Code']).strip() if 'Code' in row else str(row.get('Client Code', '')).strip()
-    name = str(row['Full Name']).strip() if 'Full Name' in row else str(row.get('Organization Name', '')).strip()
-    if code:
-        carrier_meta[code] = name
+def safe_float(val):
+    if pd.isna(val) or val is None:
+        return 0.0
+    try:
+        return float(val)
+    except:
+        return 0.0
 
-# Helper to parse allocation strings
-def parse_allocation_to_teu(alloc_str):
-    if not isinstance(alloc_str, str) or not alloc_str:
-        try:
-            val = float(alloc_str)
-            if not math.isnan(val): return val
-        except:
-            pass
+def safe_int(val):
+    if pd.isna(val) or val is None:
         return 0
+    try:
+        return int(float(val))
+    except:
+        return 0
+
+def parse_alloc_str(s):
+    if pd.isna(s): return 0
+    s = str(s).upper()
+    match = re.search(r'(\d+)', s)
+    if match: return int(match.group(1))
+    return 0
+
+def parse_office_alloc(s):
+    # e.g., "AAW BNE = 2 TEU, AAW ADL= 6 TEU, AAW MEL= 4 TEU"
+    branch_map = {'syd': 0, 'mel': 0, 'bne': 0, 'per': 0, 'adl': 0}
+    if pd.isna(s): return branch_map
+    s = str(s).upper()
+    patterns = {
+        'syd': r'SYD[^\d]*(\d+)',
+        'mel': r'MEL[^\d]*(\d+)',
+        'bne': r'BNE[^\d]*(\d+)',
+        'per': r'PER[^\d]*(\d+)',
+        'adl': r'ADL[^\d]*(\d+)'
+    }
+    for k, pat in patterns.items():
+        m = re.search(pat, s)
+        if m: branch_map[k] = int(m.group(1))
+    return branch_map
+
+def main():
+    print("Loading datasets...")
+    df_ports = pd.read_excel(PORT_CODE_PATH)
+    df_master = pd.read_excel(MASTER_PATH)
+    df_orders = pd.read_excel(ORDERS_PATH)
     
-    # Matches: [Number] [Unit (FEU/TEU)]
-    matches = re.findall(r'([\d.]+)\s*(FEU|TEU)', alloc_str, re.IGNORECASE)
-    total_teu = 0
-    if not matches:
-        # Try to find just a number
-        num_match = re.search(r'([\d.]+)', alloc_str)
-        if num_match:
-            return float(num_match.group(1))
-        return 0
+    # 1. Port Code Hierarchy
+    port_hierarchy = []
+    port_dict = {} # port_code -> {region, country, name}
+    for _, row in df_ports.iterrows():
+        code = str(row['PORT CODE']).strip() if pd.notna(row['PORT CODE']) else ''
+        if not code: continue
+        entry = {
+            "region": str(row['REGION']).strip() if pd.notna(row['REGION']) else 'UNKNOWN',
+            "country": str(row['COUNTRY ']).strip() if pd.notna(row['COUNTRY ']) else 'UNKNOWN',
+            "name": str(row['PORT NAME']).strip() if pd.notna(row['PORT NAME']) else code,
+            "code": code
+        }
+        port_hierarchy.append(entry)
+        port_dict[code] = entry
         
-    for val, unit in matches:
-        try:
-            v = float(val)
-            if unit.upper() == 'FEU':
-                total_teu += v * 2
-            else:
-                total_teu += v
-        except:
-            continue
-    return total_teu
+    # 2. Master Dict
+    master_dict = {}
+    for _, row in df_master.iterrows():
+        cid = str(row['Contract #']).strip() if pd.notna(row['Contract #']) else ''
+        if not cid: continue
+        
+        valid_alloc = parse_alloc_str(row['Allocation Total'])
+        valid_office_alloc = parse_office_alloc(row['Office Allocation'])
+        
+        if cid not in master_dict:
+            master_dict[cid] = {
+                'carrier': str(row['Carrier']).strip() if pd.notna(row['Carrier']) else 'Unknown Carrier',
+                'allocTotalStr': str(row['Allocation Total']).strip() if pd.notna(row['Allocation Total']) else '0',
+                'allocTotal': valid_alloc,
+                'officeAlloc': valid_office_alloc,
+                'priority': str(row['Priority']).strip() if pd.notna(row['Priority']) else 'Normal',
+                'lane': f"{str(row['Origin']).strip() if pd.notna(row['Origin']) else ''} to {str(row['Destination']).strip() if pd.notna(row['Destination']) else ''}"
+            }
+        else:
+            master_dict[cid]['allocTotal'] += valid_alloc
+            for br, vl in valid_office_alloc.items():
+                master_dict[cid]['officeAlloc'][br] += vl
 
-# Build Master Map
-contract_master_map = {}
-for _, row in master_df.iterrows():
-    c_id = str(row['Contract #']).strip()
-    if not c_id: continue
+    # 3. Orders Log
+    booking_log_data = []
+    origins, destinations, lanes, allocations_set, priorities, contracts, weeks = set(), set(), set(), set(), set(), set(), set()
+    regions, countries, port_names, port_codes = set(), set(), set(), set()
     
-    # The new sheet uses 'Allocation Total'
-    alloc_col = 'Allocation Total' if 'Allocation Total' in row else 'Allocation'
-    alloc_teu = parse_allocation_to_teu(row[alloc_col])
+    for entry in port_hierarchy:
+        regions.add(entry['region'])
+        countries.add(entry['country'])
+        port_names.add(entry['name'])
+        port_codes.add(entry['code'])
+
+    # Determine TEU col
+    teu_col = 'TEU _x001F_' if 'TEU _x001F_' in df_orders.columns else ('TEU Count _x001F_' if 'TEU Count _x001F_' in df_orders.columns else None)
+    cont_col = 'No of Containers _x001F_' if 'No of Containers _x001F_' in df_orders.columns else None
     
-    contract_master_map[c_id] = {
-        "carrier": str(row['Carrier']),
-        "origin": str(row['Origin']),
-        "destination": str(row['Destination']),
-        "type": str(row['Contract Type']),
-        "rateType": str(row['Rate Type']),
-        "expiry": str(row['Expiry Date']),
-        "priority": str(row['Priority']),
-        "freeTime": str(row['Free Time']),
-        "allocation": alloc_teu,
-        "owner": str(row['Contract Owner']),
-        "rawAlloc": str(row[alloc_col]),
-        "officeAlloc": str(row.get('Office Allocation', ''))
+    branch_norm = {
+        'AD1': 'adl', 'SY1': 'syd', 'BN1': 'bne', 'ME1': 'mel', 'PR1': 'per', 'FR1': 'per'
     }
 
-print(f"Loaded {len(contract_master_map)} master contracts and {len(carrier_meta)} carrier profiles.")
-
-# Clean Orders
-for col in orders_df.columns:
-    if orders_df[col].dtype == 'object':
-        orders_df[col] = orders_df[col].fillna('').astype(str)
-    else:
-        orders_df[col] = orders_df[col].fillna(0)
-
-def safe_get(d, col, default=""):
-    return str(d[col]).strip() if col in d and str(d[col]).strip() != '' else default
-
-def get_region(port):
-    port = str(port).upper()
-    if any(x in port for x in ['CN', 'HK', 'TW', 'KR', 'JP']): return 'NEA'
-    if any(x in port for x in ['SG', 'MY', 'VN', 'TH', 'ID', 'PH']): return 'SEA'
-    if any(x in port for x in ['DE', 'NL', 'FR', 'GB', 'IT', 'ES', 'PL', 'GR', 'DK']): return 'EUROPE'
-    if any(x in port for x in ['US', 'CA', 'MX', 'BR', 'AR', 'CL']): return 'AMERICAS'
-    if any(x in port for x in ['AU', 'NZ', 'FJ', 'PG']): return 'OCEANIA'
-    if any(x in port for x in ['AE', 'IN', 'PK', 'SA', 'TR']): return 'MIDDLE EAST'
-    return 'OTHER'
-
-booking_log_data = []
-
-# MSC Week Mapping
-def date_to_week(date_str):
-    if not date_str or date_str == '0' or date_str == '' or date_str == 'nan': return '12' # Fallback
-    try:
-        dt = pd.to_datetime(date_str)
-        return str(dt.isocalendar()[1])
-    except:
-        return '12'
-
-print("Processing Orders...")
-
-for _, row in orders_df.iterrows():
-    teu = float(row.get('TEU _x001F_', 0.0))
-    contract = str(row.get('Contract', 'UNKNOWN')).strip()
-    order = str(row.get('Order Number', 'UNKNOWN'))
-    branch = str(row.get('Created Branch', row.get('Branch', 'UNKNOWN')))
-    
-    # Resolve Date/Week
-    etd = safe_get(row, 'Est. Departure', '')
-    msc_week = safe_get(row, 'Week No', '')
-    if not msc_week or msc_week == '0' or msc_week == 'nan' or msc_week == '':
-        msc_week = date_to_week(etd)
-    msc_week = msc_week.split('.')[0] # Remove decimal
-    
-    loadPort = safe_get(row, 'Load Port', '')
-    dischargePort = safe_get(row, 'Discharge Port', '')
-    
-    origin_region = get_region(loadPort)
-    dest_region = get_region(dischargePort)
-    lane = f"{origin_region} to {dest_region}"
-    
-    master = contract_master_map.get(contract, {})
-    carrier_code = master.get('carrier', safe_get(row, 'Planned Carrier', 'UNKNOWN'))
-    carrier_name = carrier_meta.get(carrier_code, carrier_code)
-    priority = master.get('priority', 'Normal')
-    
-    booking_log_data.append({
-        "contract": contract,
-        "order": order,
-        "etd": etd.split(' ')[0],
-        "eta": safe_get(row, 'Est. Arrival', '').split(' ')[0],
-        "depVessel": safe_get(row, 'Departure Vessel', ''),
-        "depVoyage": safe_get(row, 'Departure Voyage', ''),
-        "buyer": safe_get(row, 'Buyer', ''),
-        "supplier": safe_get(row, 'Supplier', ''),
-        "loadPort": loadPort,
-        "dischargePort": dischargePort,
-        "branch": branch,
-        "carrierName": carrier_name,
-        "priority": priority,
-        "teu": teu,
-        "containers": int(row.get('No of Containers _x001F_', 0)),
-        "mscWeek": msc_week,
-        "lane": lane,
-        "originRegion": origin_region,
-        "destRegion": dest_region
-    })
-
-# AGGREGATIONS
-
-def split_and_clean(series):
-    items = []
-    for val in series.dropna().unique():
-        # Split by comma, semicolon, or slash
-        parts = re.split(r'[,;/]', str(val))
-        for p in parts:
-            clean = p.strip()
-            if clean and clean != 'nan':
-                items.append(clean)
-    return sorted(list(set(items)))
-
-# 1. Filters Constants from Master Data for precision
-master_origins = split_and_clean(master_df['Origin'])
-master_destinations = split_and_clean(master_df['Destination'])
-
-# Derive Lanes from Master if 'Trade Lane' is missing
-if 'Trade Lane' in master_df.columns:
-    master_lanes = split_and_clean(master_df['Trade Lane'])
-else:
-    # Build unique Lane combinations
-    lane_tokens = []
-    for _, row in master_df.iterrows():
-        if pd.notna(row['Origin']) and pd.notna(row['Destination']):
-            origins = [o.strip() for o in re.split(r'[,;/]', str(row['Origin'])) if o.strip()]
-            dests = [d.strip() for d in re.split(r'[,;/]', str(row['Destination'])) if d.strip()]
-            for o in origins:
-                for d in dests:
-                    lane_tokens.append(f"{o} to {d}")
-    master_lanes = sorted(list(set(lane_tokens)))
-
-alloc_col_master = 'Allocation Total' if 'Allocation Total' in master_df.columns else 'Allocation'
-master_allocations = split_and_clean(master_df[alloc_col_master])
-master_priorities = split_and_clean(master_df['Priority'])
-
-# Hierarchical Port Extraction
-REGIONS = sorted(list(set(port_listing_df['REGION'].dropna().astype(str).unique())))
-countries_header = [c for c in port_listing_df.columns if 'COUNTRY' in c.upper()][0]
-COUNTRIES = sorted(list(set(port_listing_df[countries_header].dropna().astype(str).unique())))
-PORT_NAMES = sorted(list(set(port_listing_df['PORT NAME'].dropna().astype(str).unique())))
-PORT_CODES = sorted(list(set(port_listing_df['PORT CODE'].dropna().astype(str).unique())))
-
-port_hierarchy = []
-for _, row in port_listing_df.iterrows():
-    port_hierarchy.append({
-        'region': str(row['REGION']).strip(),
-        'country': str(row[countries_header]).strip(),
-        'name': str(row['PORT NAME']).strip(),
-        'code': str(row['PORT CODE']).strip()
-    })
-
-contracts_list = sorted(list(set(str(c) for c in master_df['Contract #'].dropna().unique())))
-weeks_list = sorted(list(set(f"WK {b['mscWeek']}" for b in booking_log_data)), key=lambda x: int(x.split(' ')[1]) if x.split(' ')[1].isdigit() else 0)
-
-# 2. Weekly Trend
-week_stats = {}
-for b in booking_log_data:
-    wk = f"WK {b['mscWeek']}"
-    if wk not in week_stats: week_stats[wk] = 0
-    week_stats[wk] += b['teu']
-
-total_master_alloc = sum(m['allocation'] for m in contract_master_map.values())
-weekly_trend_data = []
-for wk in weeks_list:
-    booked = week_stats.get(wk, 0)
-    alloc = total_master_alloc # Do not cook data, use actual master total
-    weekly_trend_data.append({
-        "week": wk,
-        "alloc": round(alloc, 1),
-        "booked": round(booked, 1),
-        "util": round((booked/alloc)*100, 1) if alloc > 0 else 0
-    })
-
-# 3. Branch Snapshot
-branch_stats = {}
-branch_teu = {}
-for b in booking_log_data:
-    br = b['branch']
-    if br not in branch_teu: 
-        branch_teu[br] = 0
-        branch_stats[br] = {"booked": 0, "bookings": 0}
-    branch_teu[br] += b['teu']
-    branch_stats[br]["booked"] += b['teu']
-    branch_stats[br]["bookings"] += 1
-
-def extract_branch_alloc(office_str, branch_keys):
-    if not office_str or office_str.lower() in ['open', 'nan', '']: return 0
-    matches = re.findall(r'([A-Za-z\s]+)\s*=\s*([\d.]+)', str(office_str))
-    total = 0
-    for name, val in matches:
-        if any(bk.upper() in name.upper() for bk in branch_keys):
-            try: total += float(val)
-            except: pass
-    if total == 0:
-        # Try to match PILLA = 5 TEU where name is PILLA
-        for name, val in matches:
-            for bk in branch_keys:
-                if name.upper().strip() == bk.upper().strip():
-                    try: total += float(val)
-                    except: pass
-    return total
-
-branch_snapshot = []
-for br_id, booked in branch_teu.items():
-    # Try to map branch name to keys
-    keys = [br_id.upper()]
-    if 'SYD' in keys[0]: keys.extend(['SYDNEY', 'SYD'])
-    elif 'MEL' in keys[0]: keys.extend(['MELBOURNE', 'MEL'])
-    elif 'BNE' in keys[0]: keys.extend(['BRISBANE', 'BNE'])
-    elif 'PER' in keys[0] or 'FRE' in keys[0]: keys.extend(['PERTH', 'FRE', 'FREMANTLE'])
-    elif 'ADL' in keys[0]: keys.extend(['ADELAIDE', 'ADL'])
-    elif 'AKL' in keys[0] or 'AUCK' in keys[0]: keys.extend(['AUCKLAND', 'AKL', 'NZ'])
-    
-    # Calculate real allocation from master contracts for this branch
-    alloc = 0
-    for m in contract_master_map.values():
-        alloc += extract_branch_alloc(m.get('officeAlloc', ''), keys)
+    for _, row in df_orders.iterrows():
+        cid = safe_str(row.get('Contract', '0'))
         
-    util = (booked / alloc) * 100 if alloc > 0 else 0
-    branch_snapshot.append({
-        "branch": br_id,
-        "code": br_id,
-        "alloc": round(alloc, 1),
-        "booked": round(booked, 1),
-        "avail": round(alloc - booked, 1),
-        "util": f"{round(util, 1)}%",
-        "status": "On Track" if util < 90 else "Critical"
-    })
+        load_port = safe_str(row.get('Load Port', '0'))
+        discharge_port = safe_str(row.get('Discharge Port', '0'))
+        
+        o_region = port_dict.get(load_port, {}).get('region', load_port if load_port != '0' else 'UNKNOWN')
+        d_region = port_dict.get(discharge_port, {}).get('region', discharge_port if discharge_port != '0' else 'UNKNOWN')
+        
+        o_name = port_dict.get(load_port, {}).get('name', load_port)
+        d_name = port_dict.get(discharge_port, {}).get('name', discharge_port)
 
-# 4. Contract Util Data
-contract_stats = {}
-for b in booking_log_data:
-    ctr = b['contract']
-    if ctr not in contract_stats: contract_stats[ctr] = {"booked": 0, "branches": {}, "bookings": 0, "region": b['originRegion']}
-    contract_stats[ctr]["booked"] += b['teu']
-    contract_stats[ctr]["bookings"] += 1
-    br = b['branch']
-    if br not in contract_stats[ctr]["branches"]: contract_stats[ctr]["branches"][br] = 0
-    contract_stats[ctr]["branches"][br] += b['teu']
+        lane = f"{o_region} to {d_region}"
+        
+        origins.add(o_name)
+        destinations.add(d_name)
+        lanes.add(lane)
+        contracts.add(cid)
+        
+        master_info = master_dict.get(cid, {
+            'carrier': 'Unknown Carrier',
+            'allocTotalStr': '0',
+            'allocTotal': 0,
+            'officeAlloc': {'syd':0,'mel':0,'bne':0,'per':0,'adl':0},
+            'priority': safe_str(row.get('Order Is Priority', 'Normal')),
+            'lane': lane
+        })
+        
+        allocations_set.add(master_info['allocTotalStr'])
+        priorities.add(master_info['priority'])
+        
+        wk = safe_str(row.get('Week No', '0'))
+        week_label = f"WK {wk}" if wk != '0' else wk
+        weeks.add(week_label)
+        
+        item = {
+            "contract": cid,
+            "order": safe_str(row.get('Order Number', '0')),
+            "etd": safe_str(row.get('Est. Departure', '0')),
+            "eta": safe_str(row.get('Est. Arrival', '0')),
+            "depVessel": safe_str(row.get('Departure Vessel', '0')),
+            "depVoyage": safe_str(row.get('Departure Voyage', '0')),
+            "buyer": safe_str(row.get('Buyer', '0')),
+            "supplier": safe_str(row.get('Supplier', '0')),
+            "loadPort": load_port,
+            "dischargePort": discharge_port,
+            "branch": safe_str(row.get('Branch', '0')),
+            "carrierName": master_info['carrier'],
+            "priority": master_info['priority'],
+            "teu": safe_float(row[teu_col]) if teu_col else 0.0,
+            "containers": safe_int(row[cont_col]) if cont_col else 0,
+            "mscWeek": wk,
+            "lane": lane,
+            "originRegion": o_region,
+            "destRegion": d_region
+        }
+        booking_log_data.append(item)
 
-contract_util_data = []
-for ctr, dat in contract_stats.items():
-    master = contract_master_map.get(ctr, {})
-    alloc = master.get('allocation', 0)
+    # 4. Weekly Trend Data
+    weekly_trend_data = [] # week, alloc, booked, util
+    sorted_weeks = sorted(list(weeks))
+    for w in sorted_weeks:
+        w_num = w.split(' ')[1] if ' ' in w else w
+        w_bookings = [b for b in booking_log_data if b['mscWeek'] == w_num]
+        booked = sum(b['teu'] for b in w_bookings)
+        
+        active_contracts = set(b['contract'] for b in w_bookings)
+        alloc = sum(master_dict.get(c, {}).get('allocTotal', 0) for c in active_contracts)
+        
+        util = (booked / alloc * 100) if alloc > 0 else 0
+        weekly_trend_data.append({
+            "week": w,
+            "alloc": alloc,
+            "booked": round(booked, 1),
+            "util": round(util, 1)
+        })
+
+    # 5. Branch Snapshot
+    # aggregate over all weeks just for the snapshot cards
+    branch_snapshot = []
+    # Hardcode the standard active branches
+    std_branches = [('SYDNEY', 'SY1', 'syd'), ('MELBOURNE', 'ME1', 'mel'), ('BRISBANE', 'BN1', 'bne'), ('PERTH', 'PR1', 'per'), ('ADELAIDE', 'AD1', 'adl')]
     
-    booked = dat['booked']
-    util = (booked / alloc) * 100 if alloc > 0 else 0
-    
-    office_str = master.get('officeAlloc', '')
-    
-    contract_util_data.append({
-        "id": ctr,
-        "carrier": master.get('carrier', 'UNKNOWN'),
-        "lane": master.get('destination', 'UNKNOWN'),
-        "type": master.get('type', 'FAK'),
-        "priority": master.get('priority', 'Medium'),
-        "expiry": master.get('expiry', 'N/A'),
-        "alloc": round(alloc, 1),
-        "booked": round(booked, 1),
-        "avail": round(alloc - booked, 1),
-        "util": round(util, 1),
-        "status": "Active" if util < 95 else "Overloaded",
-        "verif": ctr in contract_master_map,
-        "owner": master.get('owner', 'N/A'),
-        "notes": master.get('rawAlloc', ''),
-        # Real branch allocations from 'Office Allocation'
-        "syd": {"booked": round(dat['branches'].get('SYDNEY', dat['branches'].get('SY1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['SYD', 'SYDNEY'])},
-        "mel": {"booked": round(dat['branches'].get('MELBOURNE', dat['branches'].get('ME1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['MEL', 'MELBOURNE'])},
-        "bne": {"booked": round(dat['branches'].get('BRISBANE', dat['branches'].get('BN1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['BNE', 'BRISBANE'])},
-        "per": {"booked": round(dat['branches'].get('PERTH', dat['branches'].get('PR1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['PER', 'PERTH', 'FRE', 'FREMANTLE'])},
-        "adl": {"booked": round(dat['branches'].get('ADELAIDE', dat['branches'].get('AD1', 0)), 1), "alloc": extract_branch_alloc(office_str, ['ADL', 'ADELAIDE'])}
-    })
+    for bname, bcode, bnorm in std_branches:
+        b_bookings = [b for b in booking_log_data if b['branch'] in [bcode, bnorm, bnorm.upper()]]
+        booked = sum(b['teu'] for b in b_bookings)
+        alloc = sum(master_dict.get(c, {}).get('officeAlloc', {}).get(bnorm, 0) for c in master_dict.keys())
+        # Actually alloc usually applies to the whole period, but it's "per week". We might want to sum weeks?
+        # Let's take weekly alloc * number of active weeks
+        active_week_count = len(sorted_weeks)
+        total_alloc_period = alloc * active_week_count
+        
+        util = (booked / total_alloc_period * 100) if total_alloc_period > 0 else 0
+        
+        branch_snapshot.append({
+            "branch": bcode,
+            "branchName": bname,
+            "alloc": round(total_alloc_period, 1),
+            "booked": round(booked, 1),
+            "avail": round(total_alloc_period - booked, 1),
+            "util": round(util, 1),
+            "status": 'On Track' if util > 70 else ('Low Uptake' if util < 40 else 'Near Full')
+        })
 
-# EXPORT
+    # 6. Contract Util Data
+    contract_util_data = []
+    for cid in contracts:
+        minfo = master_dict.get(cid, {})
+        c_bookings = [b for b in booking_log_data if b['contract'] == cid]
+        booked = sum(b['teu'] for b in c_bookings)
+        
+        alloc_week = minfo.get('allocTotal', 0)
+        total_alloc_period = alloc_week * active_week_count
+        util = (booked / total_alloc_period * 100) if total_alloc_period > 0 else 0
+        
+        def gbranch(bnorm, bcode):
+            bk = sum(b['teu'] for b in c_bookings if b['branch'] in [bcode, bnorm, bnorm.upper()])
+            al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
+            return {"alloc": al, "booked": round(bk, 1), "util": round(bk/al*100, 1) if al > 0 else 0}
+            
+        contract_util_data.append({
+            "id": cid,
+            "carrier": minfo.get('carrier', 'Unknown'),
+            "lane": minfo.get('lane', 'Unknown'),
+            "notes": minfo.get('allocTotalStr', ''),
+            "priority": minfo.get('priority', 'Normal'),
+            "alloc": total_alloc_period,
+            "booked": round(booked, 1),
+            "avail": round(total_alloc_period - booked, 1),
+            "util": round(util, 1),
+            "syd": gbranch('syd', 'SY1'),
+            "mel": gbranch('mel', 'ME1'),
+            "bne": gbranch('bne', 'BN1'),
+            "per": gbranch('per', 'PR1'), # Using PR1 for general perth
+            "adl": gbranch('adl', 'AD1')
+        })
 
-print(f"Exporting to BookingData.ts...")
-output = f"""
-export const ORIGINS = {json.dumps(master_origins)};
-export const DESTINATIONS = {json.dumps(master_destinations)};
-export const LANES = {json.dumps(master_lanes)};
-export const ALLOCATIONS = {json.dumps(master_allocations)};
-export const PRIORITIES = {json.dumps(master_priorities)};
-export const CONTRACTS = {json.dumps(contracts_list)};
-export const WEEKS = {json.dumps(weeks_list)};
-export const REGIONS = {json.dumps(REGIONS)};
-export const COUNTRIES = {json.dumps(COUNTRIES)};
-export const PORT_NAMES = {json.dumps(PORT_NAMES)};
-export const PORT_CODES = {json.dumps(PORT_CODES)};
-export const PORT_HIERARCHY = {json.dumps(port_hierarchy)};
+    # Helper function to dump json safely (handling nans and infs)
+    def to_js(var_name, obj):
+        jsn = json.dumps(obj, indent=2)
+        jsn = re.sub(r'NaN', '0', jsn)
+        jsn = re.sub(r'Infinity', '0', jsn)
+        return f"export const {var_name} = {jsn};\n"
 
-export const BOOKING_LOG_DATA = {json.dumps(booking_log_data, indent=2)};
-export const WEEKLY_TREND_DATA = {json.dumps(weekly_trend_data, indent=2)};
-export const BRANCH_SNAPSHOT = {json.dumps(branch_snapshot, indent=2)};
-export const CONTRACT_UTIL_DATA = {json.dumps(contract_util_data, indent=2)};
+    print("Writing TS Output...")
+    with open(OUTPUT_TS_PATH, 'w', encoding='utf-8') as f:
+        f.write('// Auto-generated by generate_booking_data.py\n\n')
+        f.write(to_js('ORIGINS', sorted(list(origins))))
+        f.write(to_js('DESTINATIONS', sorted(list(destinations))))
+        f.write(to_js('LANES', sorted(list(lanes))))
+        f.write(to_js('ALLOCATIONS', sorted(list(allocations_set))))
+        f.write(to_js('PRIORITIES', sorted(list(priorities))))
+        f.write(to_js('CONTRACTS', sorted(list(contracts))))
+        f.write(to_js('WEEKS', sorted(list(weeks))))
+        f.write(to_js('REGIONS', sorted(list(regions))))
+        f.write(to_js('COUNTRIES', sorted(list(countries))))
+        f.write(to_js('PORT_NAMES', sorted(list(port_names))))
+        f.write(to_js('PORT_CODES', sorted(list(port_codes))))
+        f.write(to_js('PORT_HIERARCHY', port_hierarchy))
+        f.write(to_js('BOOKING_LOG_DATA', booking_log_data))
+        f.write(to_js('WEEKLY_TREND_DATA', weekly_trend_data))
+        f.write(to_js('BRANCH_SNAPSHOT', branch_snapshot))
+        f.write(to_js('CONTRACT_UTIL_DATA', contract_util_data))
 
-// Summary aggregates
-export const BOOKING_BRANCH_SUMMARY = {json.dumps([{"code": "ALL", "branch": "All Branches", "teu": round(sum(b['teu'] for b in booking_log_data), 1), "bookings": len(booking_log_data), "contracts": len(contract_stats)}] + [{"code": k, "branch": k, "teu": round(v['booked'], 1), "bookings": v['bookings'], "contracts": 1} for k, v in branch_stats.items()], indent=2)};
-export const BOOKING_CONTRACT_BREAKDOWN = {json.dumps([{"contract": k, "teu": round(v['booked'], 1), "region": v['region'], "bookings": v['bookings']} for k, v in list(contract_stats.items())[:15]], indent=2)};
-"""
+    print("Success!")
 
-with open(r'D:\Dashboards\frontend\src\BookingData.ts', 'w', encoding='utf-8') as f:
-    f.write(output)
-
-print("Done!")
+if __name__ == '__main__':
+    main()
