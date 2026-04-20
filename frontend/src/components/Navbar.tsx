@@ -14,8 +14,12 @@ interface NavbarProps {
   onDestinationChange?: (dest: string) => void;
   selectedLane?: string;
   onLaneChange?: (lane: string) => void;
+  /** @deprecated – Allocation filter removed per stakeholder request */
   selectedAllocation?: string;
+  /** @deprecated – Allocation filter removed per stakeholder request */
   onAllocationChange?: (val: string) => void;
+  selectedBranch?: string;
+  onBranchChange?: (val: string) => void;
   selectedPriority?: string;
   onPriorityChange?: (val: string) => void;
   selectedRegion?: string;
@@ -33,6 +37,7 @@ interface NavbarProps {
   availableDestinations?: string[];
   availableLanes?: string[];
   availableAllocations?: string[];
+  availableBranches?: string[];
   availablePriorities?: string[];
   availableRegions?: string[];
   availableCountries?: string[];
@@ -40,6 +45,9 @@ interface NavbarProps {
   availablePortCodes?: string[];
   onSync?: () => void;
 }
+
+// Branch list – FRE replaces PER; PIL, PRJ, AKL, OTH are new
+const ALL_BRANCHES = ['ALL', 'SYD', 'MEL', 'BNE', 'FRE', 'ADL', 'PIL', 'PRJ', 'AKL', 'OTH'];
 
 const Navbar: React.FC<NavbarProps> = ({
   showBack = false,
@@ -53,8 +61,8 @@ const Navbar: React.FC<NavbarProps> = ({
   onDestinationChange,
   selectedLane = 'ALL',
   onLaneChange,
-  selectedAllocation = 'ALL',
-  onAllocationChange,
+  selectedBranch = 'ALL',
+  onBranchChange,
   selectedPriority = 'ALL',
   onPriorityChange,
   selectedRegion = 'ALL',
@@ -72,7 +80,7 @@ const Navbar: React.FC<NavbarProps> = ({
   availableOrigins = [],
   availableDestinations = [],
   availableLanes = [],
-  availableAllocations = [],
+  availableBranches = ALL_BRANCHES,
   availablePriorities = [],
   availableRegions = [],
   availableCountries = [],
@@ -103,11 +111,13 @@ const Navbar: React.FC<NavbarProps> = ({
     { label: 'Trade Lane', val: selectedLane, items: ['ALL', ...availableLanes], onSelect: onLaneChange, color: 'violet' },
     { label: 'Origin', val: selectedOrigin, items: ['ALL', ...availableOrigins], onSelect: onOriginChange, color: 'indigo', hasSearch: true },
     { label: 'Dest.', val: selectedDestination, items: ['ALL', ...availableDestinations], onSelect: onDestinationChange, color: 'amber', hasSearch: true },
+    // Branch dropdown – FRE replaces PER; PIL, PRJ, AKL, OTH added
+    { label: 'Branch', val: selectedBranch, items: availableBranches, onSelect: onBranchChange, color: 'sky' },
+    // Region – returns all contracts (incl. port-to-port) servicing selected region
     { label: 'Region', val: selectedRegion, items: ['ALL', ...availableRegions], onSelect: onRegionChange, color: 'fuchsia' },
     { label: 'Country', val: selectedCountry, items: ['ALL', ...availableCountries], onSelect: onCountryChange, color: 'pink', hasSearch: true },
     { label: 'Port', val: selectedPortName, items: ['ALL', ...availablePortNames], onSelect: onPortNameChange, color: 'rose', hasSearch: true },
     { label: 'Code', val: selectedPortCode, items: ['ALL', ...availablePortCodes], onSelect: onPortCodeChange, color: 'sky', hasSearch: true },
-    { label: 'Allocation', val: selectedAllocation, items: ['ALL', ...availableAllocations], onSelect: onAllocationChange, color: 'rose', hasSearch: true },
     { label: 'Priority', val: selectedPriority, items: ['ALL', ...availablePriorities], onSelect: onPriorityChange, color: 'orange' },
   ];
 
@@ -194,7 +204,8 @@ const Navbar: React.FC<NavbarProps> = ({
           <div className="flex items-center gap-3 relative z-10 shrink-0 self-start md:self-center">
             <button
               onClick={() => {
-                onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL'); onLaneChange?.('ALL'); onAllocationChange?.('ALL'); onPriorityChange?.('ALL');
+                onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL'); onLaneChange?.('ALL');
+                onBranchChange?.('ALL'); onPriorityChange?.('ALL');
                 onRegionChange?.('ALL'); onCountryChange?.('ALL'); onPortNameChange?.('ALL'); onPortCodeChange?.('ALL');
               }}
               className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all bg-white/[0.03] border border-white/5 text-slate-300 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"

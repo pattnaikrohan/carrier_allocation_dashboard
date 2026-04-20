@@ -130,7 +130,8 @@ const ContractDataExplorer: React.FC = () => {
                     <th colSpan={2} className="px-4 py-2 border-r border-slate-700 text-center text-xs text-indigo-400 uppercase tracking-widest bg-indigo-500/10">Sydney</th>
                     <th colSpan={2} className="px-4 py-2 border-r border-slate-700 text-center text-xs text-purple-400 uppercase tracking-widest bg-purple-500/10">Melbourne</th>
                     <th colSpan={2} className="px-4 py-2 border-r border-slate-700 text-center text-xs text-pink-400 uppercase tracking-widest bg-pink-500/10">Brisbane</th>
-                    <th colSpan={2} className="px-4 py-2 border-r border-slate-700 text-center text-xs text-amber-400 uppercase tracking-widest bg-amber-500/10">Perth</th>
+                    {/* FRE replaces PER */}
+                    <th colSpan={2} className="px-4 py-2 border-r border-slate-700 text-center text-xs text-fuchsia-400 uppercase tracking-widest bg-fuchsia-500/10">Fremantle</th>
                     <th colSpan={2} className="px-4 py-2 text-center text-xs text-cyan-400 uppercase tracking-widest bg-cyan-500/10">Adelaide</th>
                   </tr>
                   <tr className="text-xs uppercase tracking-wider text-slate-400 border-b border-slate-700">
@@ -153,7 +154,10 @@ const ContractDataExplorer: React.FC = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-800 text-sm">
                   {CONTRACT_UTIL_DATA.map((row, i) => {
-                    const isOver = row.util > 100;
+                    // NEW colour logic: Red = underperforming (≤80%), Green = healthy/overutilised
+                    const util = row.util ?? 0;
+                    const isHealthy = util > 80;
+                    const isUnder   = util <= 80;
                     return (
                     <tr key={i} className="hover:bg-slate-800/40 transition-colors">
                       <td className="px-4 py-3 font-mono text-cyan-300 sticky left-0 z-10 bg-slate-900/50 backdrop-blur border-r border-slate-700/50">{row.id}</td>
@@ -162,20 +166,23 @@ const ContractDataExplorer: React.FC = () => {
                       <td className="px-4 py-3 text-right font-mono">{row.alloc}</td>
                       <td className="px-4 py-3 text-right font-mono font-bold text-slate-200">{row.booked}</td>
                       <td className={`px-4 py-3 text-right font-mono ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
-                      <td className={`px-4 py-3 text-right font-mono font-bold ${isOver ? 'text-rose-500 bg-rose-500/10' : 'text-emerald-400 bg-emerald-500/10'}`}>{row.util}%</td>
+                      {/* Inverted: green = healthy (>80%), red = underperforming */}
+                      <td className={`px-4 py-3 text-right font-mono font-bold ${isHealthy ? 'text-emerald-400 bg-emerald-500/10' : 'text-rose-500 bg-rose-500/10'}`}>{util}%</td>
                       <td className="px-4 py-3 border-r border-slate-700">
-                        <span className={`px-2 py-1 rounded text-xs border ${isOver ? 'bg-rose-500/20 text-rose-300 border-rose-500/30' : 
-                          row.status === 'Warning' ? 'bg-amber-500/20 text-amber-300 border-amber-500/30' : 'bg-slate-700 text-slate-300 border-slate-600'}`}>
+                        <span className={`px-2 py-1 rounded text-xs border ${isHealthy
+                          ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+                          : isUnder && util > 50 ? 'bg-rose-500/20 text-rose-300 border-rose-500/30'
+                          : 'bg-rose-900/40 text-rose-200 border-rose-700/30'}`}>
                           {row.status}
                         </span>
                       </td>
 
-                      {/* Branch Data cells */}
-                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-indigo-500/5">{row.syd.alloc}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-indigo-500/5 ${row.syd.booked > row.syd.alloc ? 'text-rose-400' : 'text-slate-200'}`}>{row.syd.booked}</td>
-                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-purple-500/5">{row.mel.alloc}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-purple-500/5 ${row.mel.booked > row.mel.alloc ? 'text-rose-400' : 'text-slate-200'}`}>{row.mel.booked}</td>
-                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-pink-500/5">{row.bne.alloc}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-pink-500/5 ${row.bne.booked > row.bne.alloc ? 'text-rose-400' : 'text-slate-200'}`}>{row.bne.booked}</td>
-                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-amber-500/5">{row.per.alloc}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-amber-500/5 ${row.per.booked > row.per.alloc ? 'text-rose-400' : 'text-slate-200'}`}>{row.per.booked}</td>
-                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-cyan-500/5">{row.adl.alloc}</td><td className={`px-3 py-3 text-right font-mono bg-cyan-500/5 ${row.adl.booked > row.adl.alloc ? 'text-rose-400' : 'text-slate-200'}`}>{row.adl.booked}</td>
+                      {/* Branch Data cells — green=overbooked, slate=normal, no red for over-alloc */}
+                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-indigo-500/5">{row.syd?.alloc ?? 0}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-indigo-500/5 ${(row.syd?.booked ?? 0) > (row.syd?.alloc ?? 0) ? 'text-cyan-400' : 'text-slate-200'}`}>{row.syd?.booked ?? 0}</td>
+                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-purple-500/5">{row.mel?.alloc ?? 0}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-purple-500/5 ${(row.mel?.booked ?? 0) > (row.mel?.alloc ?? 0) ? 'text-cyan-400' : 'text-slate-200'}`}>{row.mel?.booked ?? 0}</td>
+                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-pink-500/5">{row.bne?.alloc ?? 0}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-pink-500/5 ${(row.bne?.booked ?? 0) > (row.bne?.alloc ?? 0) ? 'text-cyan-400' : 'text-slate-200'}`}>{row.bne?.booked ?? 0}</td>
+                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-amber-500/5">{row.fre?.alloc ?? row.per?.alloc ?? 0}</td><td className={`px-3 py-3 text-right font-mono border-r border-slate-700/30 bg-amber-500/5 ${(row.fre?.booked ?? row.per?.booked ?? 0) > (row.fre?.alloc ?? row.per?.alloc ?? 0) ? 'text-cyan-400' : 'text-slate-200'}`}>{row.fre?.booked ?? row.per?.booked ?? 0}</td>
+                      <td className="px-3 py-3 text-right font-mono text-slate-400 bg-cyan-500/5">{row.adl?.alloc ?? 0}</td><td className={`px-3 py-3 text-right font-mono bg-cyan-500/5 ${(row.adl?.booked ?? 0) > (row.adl?.alloc ?? 0) ? 'text-cyan-400' : 'text-slate-200'}`}>{row.adl?.booked ?? 0}</td>
                     </tr>
                     );
                   })}

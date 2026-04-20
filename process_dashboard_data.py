@@ -1,160 +1,244 @@
 import pandas as pd
 import json
 import os
+import glob
+import re
+import math
 
 # Paths
-ORDERS_PATH = 'D:/Dashboards/Orders.xlsx'
-ALLOCATIONS_PATH = 'D:/Dashboards/AAW_Contract Dashboard.xlsx'
-OUTPUT_PATH = 'D:/Dashboards/frontend/src/data/dashboard_data.json'
+ROOT_DIR = 'D:/Dashboards'
+DATA_SOURCE_DIR = os.path.join(ROOT_DIR, 'data_source')
+MASTER_PATH = os.path.join(ROOT_DIR, 'Contract_Master_All_Data Update.xlsx')
+PORT_CODE_PATH = os.path.join(ROOT_DIR, 'CONTRACT_PORT_CODE_LISTING.xlsx')
+# Output directly to the file the frontend imports
+OUTPUT_PATH = os.path.join(ROOT_DIR, 'frontend/src/BookingData.ts')
+
+def get_latest_file(pattern, default):
+    files = glob.glob(os.path.join(DATA_SOURCE_DIR, pattern))
+    if not files:
+        files = glob.glob(os.path.join(ROOT_DIR, pattern))
+    return max(files, key=os.path.getmtime) if files else default
+
+def parse_alloc_str(s):
+    if s is None or (isinstance(s, float) and math.isnan(s)): return 0
+    match = re.search(r'(\d+)', str(s))
+    return int(match.group(1)) if match else 0
+
+def parse_office_alloc(s):
+    branch_map = {'syd': 0, 'mel': 0, 'bne': 0, 'fre': 0, 'adl': 0, 'pil': 0, 'prj': 0, 'akl': 0, 'oth': 0}
+    if s is None or (isinstance(s, float) and math.isnan(s)): return branch_map
+    s = str(s).upper()
+    patterns = {
+        'syd': r'SYD[^\d]*(\d+)', 'mel': r'MEL[^\d]*(\d+)', 'bne': r'BNE[^\d]*(\d+)',
+        'fre': r'(?:FRE|PER)[^\d]*(\d+)', 'adl': r'ADL[^\d]*(\d+)', 'pil': r'PIL[^\d]*(\d+)',
+        'prj': r'PRJ[^\d]*(\d+)', 'akl': r'AKL[^\d]*(\d+)', 'oth': r'OTH[^\d]*(\d+)',
+    }
+    for k, pat in patterns.items():
+        m = re.search(pat, s)
+        if m: branch_map[k] = int(m.group(1))
+    return branch_map
 
 def process_data():
-    print("Reading Orders.xlsx...")
-    df_orders = pd.read_excel(ORDERS_PATH)
+    orders_path = get_latest_file('Orders*.xlsx', os.path.join(ROOT_DIR, 'Orders.xlsx'))
+    print(f"Reading Orders from: {orders_path}")
+    df = pd.read_excel(orders_path)
     
-    # Rename columns to standard internal names
-    # Detect the most specific TEU column first
-    if 'TEU _x001F_' in df_orders.columns:
-        df_orders['teu_actual'] = df_orders['TEU _x001F_']
-    elif 'TEU Count _x001F_' in df_orders.columns:
-        df_orders['teu_actual'] = df_orders['TEU Count _x001F_']
-    else:
-        teu_cols = [c for c in df_orders.columns if 'TEU' in str(c)]
-        if teu_cols:
-            df_orders['teu_actual'] = df_orders[teu_cols[0]]
-        else:
-            df_orders['teu_actual'] = 0
-
-    # Mapping
-    df_orders = df_orders.rename(columns={
-        'teu_actual': 'teu',
-        'Contract': 'contract',
-        'Branch': 'branch',
-        'Week No': 'week',
-        'Order Number': 'order',
-        'Est. Departure': 'etd',
-        'Est. Arrival': 'eta',
-        'Departure Vessel': 'depVessel',
-        'Departure Voyage': 'depVoyage',
-        'Arrival Vessel': 'arrVessel',
-        'Arrival Voyage': 'arrVoyage',
-        'Buyer': 'buyer',
-        'Supplier': 'supplier',
-        'Goods Origin': 'goodsOrigin',
-        'Load Port': 'loadPort',
-        'Discharge Port': 'dischargePort',
-        'Goods Destination': 'goodsDest',
-        'House Bill': 'houseBill',
-        'Master Bill': 'masterBill'
-    })
-
-    # Filter out empty weeks and convert to integer
-    df_orders = df_orders.dropna(subset=['week'])
-    df_orders['week'] = df_orders['week'].astype(int)
-    
-    # Clean up dates
-    for col in ['etd', 'eta']:
-        if col in df_orders.columns:
-            df_orders[col] = pd.to_datetime(df_orders[col], errors='coerce').dt.strftime('%d/%m/%Y')
-
-    # Get Allocations (Hardcoded fallback if file parsing fails, but we'll try to read it)
-    # Target allocations based on the mock data as a baseline if we can't find them in the Excel
-    allocations = {
-        'SY1': 393,
-        'ME1': 368,
-        'BN1': 315,
-        'FR1': 222,
-        'AD1': 144,
-        'PR1': 100
-    }
-    
-    try:
-        print("Reading Allocations from AAW_Contract Dashboard.xlsx...")
-        # Try to find a sheet with allocation data
-        df_alloc = pd.read_excel(ALLOCATIONS_PATH, sheet_name='Branch Allocation')
-        # This is a bit tricky as the Excel might have a different format
-        # For now, we'll use the hardcoded ones if the structure is too complex, 
-        # but let's try to see if we can extract something.
-        # (Based on the head() output earlier, it was complex)
-    except Exception as e:
-        print(f"Note: Could not parse allocations file automatically: {e}. Using baseline allocations.")
-
-    # Aggregate Data
-    df_orders = df_orders.replace({pd.NA: None, float('nan'): None})
-    weeks = sorted(df_orders['week'].unique().tolist())
-    
-    final_data = {
-        'weeks': weeks,
-        'availableWeeks': [f"WK {w}" for w in weeks],
-        'branchSummary': {},
-        'contractSummary': {},
-        'weeklyTrend': [],
-        'bookingLog': df_orders.to_dict('records')
-    }
-
-    for w in weeks:
-        week_label = f"WK {w}"
-        df_w = df_orders[df_orders['week'] == w]
+    # Load Master Data for actual allocations
+    print(f"Reading Master Data from: {MASTER_PATH}")
+    df_master = pd.read_excel(MASTER_PATH)
+    master_dict = {}
+    for _, row in df_master.iterrows():
+        cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
+        if not cid: continue
         
-        # Branch Snapshot for this week
-        branch_stats = []
-        for branch, alloc in allocations.items():
-            booked = df_w[df_w['branch'] == branch]['teu'].sum()
-            util = (booked / alloc * 100) if alloc > 0 else 0
-            status = 'On Track' if util > 70 else ('Low Uptake' if util < 50 else 'Near Full')
-            branch_stats.append({
-                'branch': branch,
-                'alloc': alloc,
-                'booked': round(booked, 1),
-                'avail': round(alloc - booked, 1),
-                'util': f"{util:.1f}%",
-                'status': status
-            })
-        final_data['branchSummary'][week_label] = branch_stats
+        office_alloc = parse_office_alloc(row.get('Office Allocation'))
+        # Sum hubs to get a guaranteed accurate total for this row
+        alloc_total = sum(office_alloc.values())
+        
+        carrier = str(row.get('Carrier', 'Unknown'))
+        priority = str(row.get('Priority', 'Normal'))
+        lane = f"{str(row.get('Origin','')).strip()} to {str(row.get('Destination','')).strip()}"
 
-        # Contract Utilisation for this week
-        contract_stats = []
-        contracts = df_w['contract'].unique()
-        for c in contracts:
-            c_booked = df_w[df_w['contract'] == c]['teu'].sum()
-            # We don't have per-contract allocations, so we'll estimate or use a placeholder
-            c_alloc = 100 # Placeholder
-            contract_stats.append({
-                'id': str(c),
-                'carrier': 'Unknown', # Needs mapping if possible
-                'lane': 'Various',
-                'alloc': c_alloc,
-                'booked': round(c_booked, 1),
-                'avail': round(c_alloc - c_booked, 1),
-                'util': round((c_booked / c_alloc * 100), 1) if c_alloc > 0 else 0,
-                'status': 'Active'
-            })
-        final_data['contractSummary'][week_label] = contract_stats
+        if cid not in master_dict:
+            master_dict[cid] = {
+                'carrier': carrier,
+                'allocTotal': alloc_total,
+                'officeAlloc': office_alloc,
+                'priority': priority,
+                'lane': lane
+            }
+        else:
+            # Accumulate if duplicate CID found in master rows
+            master_dict[cid]['allocTotal'] += alloc_total
+            for hub, val in office_alloc.items():
+                master_dict[cid]['officeAlloc'][hub] = master_dict[cid]['officeAlloc'].get(hub, 0) + val
 
-        # Weekly Trend
-        total_booked = df_w['teu'].sum()
-        total_alloc = sum(allocations.values())
-        final_data['weeklyTrend'].append({
-            'week': week_label,
-            'alloc': total_alloc,
-            'booked': round(total_booked, 1),
-            'util': round((total_booked / total_alloc * 100), 1) if total_alloc > 0 else 0,
-            'color': '#3b82f6'
+    col_map = {
+        'Contract': 'contract', 'Branch': 'branch', 'Week No': 'week',
+        'Order Number': 'order', 'Est. Departure': 'etd', 'Est. Arrival': 'eta',
+        'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage',
+        'Buyer': 'buyer', 'Supplier': 'supplier', 'Load Port': 'loadPort',
+        'Discharge Port': 'dischargePort', 'Region': 'region',
+        'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
+    }
+    
+    # Detect TEU
+    teu_col = next((c for c in ['TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
+    df['teu'] = df[teu_col] if teu_col else 0
+    
+    # Detect Branch
+    branch_col = next((c for c in ['Branch', 'Created Branch'] if c in df.columns), None)
+    if branch_col: df['branch_clean'] = df[branch_col]
+
+    existing_cols = {k: v for k, v in col_map.items() if k in df.columns}
+    df = df.rename(columns=existing_cols)
+    if 'branch_clean' in df.columns: df['branch'] = df['branch_clean']
+    df = df.loc[:, ~df.columns.duplicated()]
+    
+    df = df.dropna(subset=['week'])
+    df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
+    df['mscWeek'] = df['week_num'].astype(str)
+    
+    # Aggregates
+    origins = sorted(df['loadPort'].dropna().unique().tolist())
+    destinations = sorted(df['dischargePort'].dropna().unique().tolist())
+    contracts = sorted(df['contract'].dropna().unique().tolist())
+    weeks = sorted([f"WK {w}" for w in df['week_num'].unique()])
+    active_week_count = max(len(weeks), 1)
+
+    # BRANCH_SNAPSHOT
+    branch_snapshot = []
+    std_branches = [
+        ('SYDNEY', 'SY1', 'syd'), ('MELBOURNE', 'ME1', 'mel'), ('BRISBANE', 'BN1', 'bne'),
+        ('FREMANTLE', 'FR1', 'fre'), ('ADELAIDE', 'AD1', 'adl'), ('PIL', 'PIL', 'pil'),
+        ('PROJECTS', 'PRJ', 'prj'), ('AUCKLAND', 'AKL', 'akl'), ('OTHER', 'OTH', 'oth')
+    ]
+    for bname, bcode, bnorm in std_branches:
+        b_df = df[df['branch'].isin([bcode, bnorm, bnorm.upper()])]
+        booked = round(b_df['teu'].sum(), 1)
+        alloc_pw = sum(m.get('officeAlloc', {}).get(bnorm, 0) for m in master_dict.values())
+        total_alloc = alloc_pw * active_week_count
+        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        
+        status = 'Healthy' if util > 80 else ('Underperforming' if util > 50 else 'Low Uptake')
+        branch_snapshot.append({
+            "branch": bcode, "branchName": bname, "alloc": round(total_alloc, 1),
+            "booked": booked, "avail": round(total_alloc - booked, 1), "util": round(util, 1), "status": status
         })
 
-    # Save to JSON
-    class DataEncoder(json.JSONEncoder):
-        def default(self, obj):
-            if hasattr(obj, 'tolist'):
-                return obj.tolist()
-            if hasattr(obj, 'item'):
-                return obj.item()
-            return str(obj)
+    # CONTRACT_UTIL_DATA
+    # Iterate over ALL master contracts to ensure total allocation is correct
+    all_master_cids = sorted(list(master_dict.keys()))
+    contract_util_data = []
+    for cid in all_master_cids:
+        minfo = master_dict.get(cid, {})
+        c_bookings = df[df['contract'] == cid]
+        booked = round(c_bookings['teu'].sum(), 1)
+        alloc_pw = minfo.get('allocTotal', 0)
+        total_alloc = alloc_pw * active_week_count
+        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        
+        def gbr(bnorm, *codes):
+            bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
+            al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
+            return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk/al*100, 1) if al > 0 else 0}
 
-    os.makedirs(os.path.dirname(OUTPUT_PATH), exist_ok=True)
-    with open(OUTPUT_PATH, 'w') as f:
-        json.dump(final_data, f, indent=2, cls=DataEncoder)
-    
-    print(f"Successfully generated {OUTPUT_PATH}")
+        contract_util_data.append({
+            "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
+            "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
+            "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
+            "fre": gbr('fre', 'FR1'), "adl": gbr('adl', 'AD1'), "pil": gbr('pil', 'PIL'),
+            "prj": gbr('prj', 'PRJ'), "akl": gbr('akl', 'AKL'), "oth": gbr('oth', 'OTH')
+        })
+
+    # WEEKLY_TREND_DATA
+    weekly_trend_data = []
+    total_master_alloc = sum(m.get('allocTotal', 0) for m in master_dict.values())
+    for w_label in weeks:
+        w_num = w_label.split(' ')[1]
+        w_df = df[df['mscWeek'] == w_num]
+        booked = round(w_df['teu'].sum(), 1)
+        weekly_trend_data.append({
+            "week": w_label, "alloc": round(total_master_alloc, 1), "booked": booked,
+            "util": round(booked/total_master_alloc*100, 1) if total_master_alloc > 0 else 0
+        })
+
+    # CARRIER_BREAKDOWN
+    carrier_map = {}
+    for _, row in df.iterrows():
+        # Heuristic: Priority to plannedCarrier if available, then carrierName, then default to Various
+        c = row.get('plannedCarrier') or row.get('carrierName') or 'Various'
+        c = str(c).replace('_AU', '').replace('_AU1', '') # Clean the codes
+        if c not in carrier_map: carrier_map[c] = {'teu': 0, 'bookings': 0}
+        carrier_map[c]['teu'] += row['teu']
+        carrier_map[c]['bookings'] += 1
+    total_teu = df['teu'].sum() or 1
+    carrier_breakdown = sorted([
+        {
+            "carrier": k, "bookings": v['bookings'], "teu": round(v['teu'], 1),
+            "pct": round(v['teu']/total_teu*100, 1),
+            "allocated": round(sum(m.get('allocTotal', 0) for m in master_dict.values() if m.get('carrier') == k) * active_week_count, 1)
+        } for k, v in carrier_map.items()
+    ], key=lambda x: -x['teu'])[:15]
+
+    # QUARTERLY_ALLOC_UTIL
+    q_data = {}
+    for _, row in df.iterrows():
+        q = f"Q{math.ceil(row['week_num'] / 13)}"
+        if q not in q_data: q_data[q] = {'booked': 0, 'alloc': 0}
+        q_data[q]['booked'] += row['teu']
+    for cid, minfo in master_dict.items():
+        al = minfo.get('allocTotal', 0)
+        for w in weeks:
+            wn = int(w.split(' ')[1])
+            q = f"Q{math.ceil(wn / 13)}"
+            if q not in q_data: q_data[q] = {'booked': 0, 'alloc': 0}
+            q_data[q]['alloc'] += al
+    quarterly_alloc_util = [
+        {"quarter": q, "Allocation": round(d['alloc'], 1), "Utilisation": round(d['booked'], 1), "UtilPct": round(d['booked']/d['alloc']*100, 1) if d['alloc'] > 0 else 0}
+        for q, d in sorted(q_data.items())
+    ]
+
+    # BOOKING_LOG
+    booking_log = df.replace({pd.NA: None, float('nan'): None}).to_dict('records')
+
+    # Construct TS
+    class CustomEncoder(json.JSONEncoder):
+        def default(self, obj):
+            if hasattr(obj, 'tolist'): return obj.tolist()
+            if hasattr(obj, 'item'): return obj.item()
+            if hasattr(obj, 'isoformat'): return obj.isoformat()
+            return super().default(obj)
+
+    def clean_list(items):
+        if items is None: return []
+        if hasattr(items, 'tolist'): items = items.tolist()
+        return sorted(list(set([str(x) for x in items if pd.notna(x) and str(x) != 'nan'])))
+
+    ts_content = f"""// Auto-generated restored logic
+export const ORIGINS = {json.dumps(clean_list(origins), indent=2, cls=CustomEncoder)};
+export const DESTINATIONS = {json.dumps(clean_list(destinations), indent=2, cls=CustomEncoder)};
+export const LANES = {json.dumps(sorted((df['loadPort'].fillna('N/A').astype(str) + " to " + df['dischargePort'].fillna('N/A').astype(str)).unique().tolist()), indent=2, cls=CustomEncoder)};
+export const ALLOCATIONS = ["Regular FAK", "Contractual"];
+export const PRIORITIES = ["High", "Medium", "Low"];
+export const CONTRACTS = {json.dumps(clean_list(all_master_cids), indent=2, cls=CustomEncoder)};
+export const WEEKS = {json.dumps(weeks, indent=2, cls=CustomEncoder)};
+export const REGIONS = {json.dumps(clean_list(df['region']) if 'region' in df.columns else [], indent=2, cls=CustomEncoder)};
+export const COUNTRIES = [];
+export const PORT_NAMES = {json.dumps(clean_list(origins + destinations), indent=2, cls=CustomEncoder)};
+export const PORT_CODES = [];
+export const PORT_HIERARCHY = [];
+
+export const BOOKING_LOG_DATA = {json.dumps(booking_log, indent=2, cls=CustomEncoder)};
+export const BRANCH_SNAPSHOT = {json.dumps(branch_snapshot, indent=2, cls=CustomEncoder)};
+export const CONTRACT_UTIL_DATA = {json.dumps(contract_util_data, indent=2, cls=CustomEncoder)};
+export const WEEKLY_TREND_DATA = {json.dumps(weekly_trend_data, indent=2, cls=CustomEncoder)};
+export const QUARTERLY_ALLOC_UTIL = {json.dumps(quarterly_alloc_util, indent=2, cls=CustomEncoder)};
+export const CARRIER_BREAKDOWN = {json.dumps(carrier_breakdown, indent=2, cls=CustomEncoder)};
+"""
+    with open(OUTPUT_PATH, 'w') as f: f.write(ts_content)
+    print(f"Successfully restored data to {OUTPUT_PATH}")
 
 if __name__ == "__main__":
     process_data()

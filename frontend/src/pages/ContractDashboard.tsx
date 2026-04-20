@@ -7,26 +7,57 @@ import { BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, CONTRACT_UTIL_DAT
 
 
 
+// NEW: KPI definitions use updated colour/terminology
+// Underperforming (≤80%) replaces Overbooked; Healthy = >80%
 const AVAILABLE_WEEKS = WEEKLY_TREND_DATA.map(w => w.week);
 const totalAlloc = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.alloc, 0);
-const totalBook = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0);
-const totalUtl = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
-const overbooked = CONTRACT_UTIL_DATA.filter(c => c.booked > c.alloc).length;
-const lowUtil = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
-const noNodeNum = 'node-';
+const totalBook  = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0);
+const totalUtl   = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
+// underperforming = ≤80% utilisation (the primary risk metric)
+const underperforming = CONTRACT_UTIL_DATA.filter(c => c.alloc > 0 && (c.booked / c.alloc) <= 0.8).length;
+const lowUtil    = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
+const noNodeNum  = 'node-';
 
 const KPI_DATA = [
-  { id: 'alloc', label: 'TOTAL ALLOCATION', value: totalAlloc.toLocaleString(), sub: 'Max Capacity', accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]', type: 'bar', percent: 100, barColor: 'bg-indigo-500' },
-  { id: 'book', label: 'TOTAL BOOKED', value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed', accentColor: 'text-cyan-400', shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]', type: 'bar', percent: totalUtl, barColor: 'bg-cyan-400' },
-  { id: 'util', label: 'OVERALL UTIL %', value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: 80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
-  { id: 'ovr', label: 'OVERBOOKED', value: overbooked.toString(), sub: 'Active Contracts', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
-  { id: 'low', label: 'LOW UTILISATION', value: lowUtil.toString(), sub: 'Underperforming', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
-  { id: 'wk', label: 'ACTIVE WEEKS', value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2025', accentColor: 'text-slate-300', shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
+  { id: 'alloc', label: 'TOTAL ALLOCATION',    value: totalAlloc.toLocaleString(), sub: 'Max Capacity',              accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]',   type: 'bar',      percent: 100,      barColor: 'bg-indigo-500' },
+  { id: 'book',  label: 'TOTAL BOOKED',         value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed',      accentColor: 'text-cyan-400',   shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]',  type: 'bar',      percent: totalUtl, barColor: 'bg-cyan-400'   },
+  { id: 'util',  label: 'OVERALL UTIL %',        value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
+  // Colour inversion: underperforming ≤80% is the risk → red
+  { id: 'undr',  label: 'UNDERPERFORMING (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk',       accentColor: 'text-rose-500',   shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]',   type: 'alert',    isPulse: true },
+  { id: 'low',   label: 'LOW UTILISATION',       value: lowUtil.toString(),          sub: 'Below 50%',                accentColor: 'text-amber-400',  shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]',  type: 'text' },
+  { id: 'wk',    label: 'ACTIVE WEEKS',          value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026',            accentColor: 'text-slate-300',  shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
 ];
 
 const SIDE_TAGS = ['Branch Summary', 'Performance Charts', 'Week Analysis', 'Booking Log', 'Contract Utilisation', 'Branch Allocation'];
 
 function round(num: number) { return Math.round(num); }
+
+/**
+ * Global colour helper — enforces the underutilisation-risk rule:
+ *   util ≤ 80%  → Red   (Underperforming / risk)
+ *   util 80-100% → Emerald (Healthy)
+ *   util > 100%  → Cyan   (Overutilised — still healthy)
+ */
+function getUtilColor(util: number, mode: 'text' | 'bg' | 'bar' | 'badge' = 'text') {
+  if (mode === 'text') {
+    if (util > 100) return 'text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]';
+    if (util > 80)  return 'text-emerald-400';
+    return 'text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]';
+  }
+  if (mode === 'bar') {
+    if (util > 100) return 'bg-cyan-400';
+    if (util > 80)  return 'bg-emerald-500';
+    return 'bg-rose-500';
+  }
+  if (mode === 'badge') {
+    if (util > 100) return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
+    if (util > 80)  return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+    return 'bg-rose-500/20 text-rose-300 border-rose-500/40';
+  }
+  // bg mode
+  if (util > 80) return 'bg-emerald-500/20';
+  return 'bg-rose-500/20';
+}
 
 /* ─── Component ─── */
 
@@ -45,7 +76,7 @@ const ContractDashboard: React.FC = () => {
   const [selectedOrigin, setSelectedOrigin] = useState('ALL');
   const [selectedDestination, setSelectedDestination] = useState('ALL');
   const [selectedLane, setSelectedLane] = useState('ALL');
-  const [selectedAllocation, setSelectedAllocation] = useState('ALL');
+  const [selectedBranch, setSelectedBranch] = useState('ALL');  // replaces Allocation
   const [selectedPriority, setSelectedPriority] = useState('ALL');
   const [selectedRegion, setSelectedRegion] = useState('ALL');
   const [selectedCountry, setSelectedCountry] = useState('ALL');
@@ -53,29 +84,55 @@ const ContractDashboard: React.FC = () => {
   const [selectedPortCode, setSelectedPortCode] = useState('ALL');
   const [isCuTableModalOpen, setIsCuTableModalOpen] = useState(false);
   const [isBranchTableModalOpen, setIsBranchTableModalOpen] = useState(false);
+  const [isBranchSnapshotModalOpen, setIsBranchSnapshotModalOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activeCuKpi, setActiveCuKpi] = useState<any | null>(null);
 
   const [isSyncing, setIsSyncing] = useState(false);
   const [showSyncSuccess, setShowSyncSuccess] = useState(false);
+  const [mounted, setMounted] = useState(false);
+  const [filterMode, setFilterMode] = useState<'ALL' | 'UNDERPERFORMING' | 'LOW_UTIL'>('ALL');
+
+  useEffect(() => { setMounted(true); }, []);
+
 
   // Real-time Data Sync Engine (Scramble-to-Lock)
   const [syncState, setSyncState] = useState<'IDLE' | 'SYCHRONIZING' | 'LOCKED'>('IDLE');
 
-  const handleSyncTrigger = () => {
+  const handleSyncTrigger = async () => {
     setIsSyncing(true);
     setSyncState('SYCHRONIZING');
     setShowSyncSuccess(false);
 
-    // Total scan cycle is 2.8s, but numbers lock at 1.8s (matching line sweep)
-    setTimeout(() => {
-      setSyncState('LOCKED');
-    }, 1800);
+    try {
+      // Trigger backend sync on port 8001 to avoid conflicts
+      const response = await fetch('http://localhost:8001/api/sync', {
+        method: 'POST',
+      });
+      const data = await response.json();
 
-    setTimeout(() => {
+      if (data.status === 'success') {
+        setSyncState('LOCKED');
+        setTimeout(() => {
+          setIsSyncing(false);
+          setShowSyncSuccess(true);
+          // Wait for the success animation before reloading
+          setTimeout(() => {
+            window.location.reload();
+          }, 1500);
+        }, 1000);
+      } else {
+        console.error('Sync failed:', data.message);
+        setIsSyncing(false);
+        setSyncState('IDLE');
+        alert(`Sync failed: ${data.message}`);
+      }
+    } catch (err) {
+      console.error('API Error:', err);
       setIsSyncing(false);
-      setShowSyncSuccess(true);
-      setTimeout(() => setShowSyncSuccess(false), 3500);
-    }, 2800);
+      setSyncState('IDLE');
+      alert('Could not connect to sync service. Please ensure the backend is running.');
+    }
   };
 
   const TacticalNumber: React.FC<{ value: string | number }> = ({ value }) => {
@@ -131,9 +188,17 @@ const ContractDashboard: React.FC = () => {
         b.dischargePort === selectedDestination ||
         b.destRegion === selectedDestination;
 
-      const matchLane = selectedLane === 'ALL' || b.lane === selectedLane;
-      const matchPriority = selectedPriority === 'ALL' || b.priority === selectedPriority;
-      const matchAlloc = selectedAllocation === 'ALL' || (master && master.notes === selectedAllocation);
+      const matchLane     = selectedLane === 'ALL' || b.lane === selectedLane;
+      const matchPriority  = selectedPriority === 'ALL' || b.priority === selectedPriority;
+      // Branch filter (replaces Allocation filter)
+      const matchBranch = selectedBranch === 'ALL' || (() => {
+        const branchCodeMap: Record<string, string[]> = {
+          SYD: ['SY1'], MEL: ['ME1'], BNE: ['BN1'],
+          FRE: ['FR1', 'PR1'], ADL: ['AD1'],
+          PIL: ['PIL'], PRJ: ['PRJ'], AKL: ['AKL'], OTH: ['OTH'],
+        };
+        return (branchCodeMap[selectedBranch] || [selectedBranch]).includes(b.branch);
+      })();
 
       // Hierarchical Filter Matches
       const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
@@ -153,20 +218,33 @@ const ContractDashboard: React.FC = () => {
       const finalORegion = oPortMeta?.region || getRegionRobust(b.loadPort, b.originRegion);
       const finalDRegion = dPortMeta?.region || getRegionRobust(b.dischargePort, b.destRegion);
 
-      const matchRegion = selectedRegion === 'ALL' || 
-        finalORegion === selectedRegion || 
+      // Region filter includes all contracts (incl. port-to-port) touching the selected region
+      const matchRegion = selectedRegion === 'ALL' ||
+        finalORegion === selectedRegion ||
         finalDRegion === selectedRegion ||
         (b.lane && b.lane.includes(selectedRegion)) ||
         b.originRegion === selectedRegion ||
         b.destRegion === selectedRegion;
 
-      const matchCountry = selectedCountry === 'ALL' || (oPortMeta?.country === selectedCountry) || (dPortMeta?.country === selectedCountry);
-      const matchPortName = selectedPortName === 'ALL' || (oPortMeta?.name === selectedPortName) || (dPortMeta?.name === selectedPortName);
-      const matchPortCode = selectedPortCode === 'ALL' || (oPortMeta?.code === selectedPortCode) || (dPortMeta?.code === selectedPortCode);
+      const matchCountry  = selectedCountry  === 'ALL' || (oPortMeta?.country === selectedCountry)  || (dPortMeta?.country === selectedCountry);
+      const matchPortName = selectedPortName === 'ALL' || (oPortMeta?.name   === selectedPortName)  || (dPortMeta?.name   === selectedPortName);
+      const matchPortCode = selectedPortCode === 'ALL' || (oPortMeta?.code   === selectedPortCode)  || (dPortMeta?.code   === selectedPortCode);
 
-      return matchWeek && matchContract && matchOrigin && matchDest && matchLane && matchPriority && matchAlloc &&
+      return matchWeek && matchContract && matchOrigin && matchDest && matchLane && matchPriority && matchBranch &&
         matchRegion && matchCountry && matchPortName && matchPortCode;
     });
+
+    // Integrated Filter Mode (Drill-down from KPI cards)
+    if (filterMode === 'UNDERPERFORMING') {
+      const underPerformingIds = new Set(reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80).map(c => c.id));
+      return filtered.filter(b => underPerformingIds.has(b.contract));
+    }
+    if (filterMode === 'LOW_UTIL') {
+      const lowUtilIds = new Set(reactiveContractUtilData.filter(c => c.util < 50).map(c => c.id));
+      return filtered.filter(b => lowUtilIds.has(b.contract));
+    }
+
+    return filtered;
   };
 
   const filteredBookings = getFilteredData();
@@ -177,11 +255,11 @@ const ContractDashboard: React.FC = () => {
   const getContractMetrics = () => {
     const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
     
-    const isAllFiltersClear = selectedContract === 'ALL' && 
-      selectedOrigin === 'ALL' && 
-      selectedDestination === 'ALL' && 
+    const isAllFiltersClear = selectedContract === 'ALL' &&
+      selectedOrigin === 'ALL' &&
+      selectedDestination === 'ALL' &&
       selectedLane === 'ALL' &&
-      selectedAllocation === 'ALL' &&
+      selectedBranch === 'ALL' &&
       selectedPriority === 'ALL' &&
       selectedRegion === 'ALL' &&
       selectedCountry === 'ALL' &&
@@ -190,38 +268,108 @@ const ContractDashboard: React.FC = () => {
 
     let allocNode = 0;
 
-    if (isAllFiltersClear) {
-      allocNode = currentWeekTrendRaw.alloc;
+    // Use a more robust calculation for total allocation
+    if (selectedContract !== 'ALL') {
+      const cItem = CONTRACT_UTIL_DATA.find(c => c.id === selectedContract);
+      allocNode = cItem ? Math.round(cItem.alloc * weekScale) : 0;
     } else {
-      const contractSummaryItem = CONTRACT_UTIL_DATA
-        .find(c => c.id === selectedContract || c.carrier === selectedContract);
-
-      const activeContractIds = new Set(filteredBookings.map(b => b.contract));
-      allocNode = contractSummaryItem 
-        ? Math.round(contractSummaryItem.alloc * weekScale)
-        : CONTRACT_UTIL_DATA
-            .filter(c => activeContractIds.has(c.id))
-            .reduce((sum, c) => sum + Math.round(c.alloc * weekScale), 0);
+      // If no specific contract is selected, sum up all relevant ones
+      // If no other filters are active, we show the full pool allocation
+      const isGlobalFilter = selectedOrigin === 'ALL' && selectedDestination === 'ALL' && 
+                             selectedLane === 'ALL' && selectedBranch === 'ALL' && 
+                             selectedRegion === 'ALL' && selectedCountry === 'ALL';
+      
+      if (isGlobalFilter) {
+        // Total pool allocation for the selected week coverage
+        allocNode = CONTRACT_UTIL_DATA.reduce((sum, c) => sum + (c.alloc * weekScale), 0);
+      } else {
+        // If geographic filters are active, we only count allocations for contracts 
+        // that have actual bookings in those regions
+        const activeContractIds = new Set(filteredBookings.map(b => b.contract));
+        allocNode = CONTRACT_UTIL_DATA
+          .filter(c => activeContractIds.has(c.id))
+          .reduce((sum, c) => sum + (c.alloc * weekScale), 0);
+      }
     }
 
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
 
-    return { alloc: allocNode, booked: bookedNode, util: utilNode };
+    return { alloc: Math.round(allocNode), booked: bookedNode, util: utilNode };
   };
 
   const contractMetrics = getContractMetrics();
+
+  // Underperformance logic: ≤80% utilisation
+  const reactiveContractUtilData = CONTRACT_UTIL_DATA
+    .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
+    .map(c => {
+      const scaledAlloc = Math.round(c.alloc * weekScale);
+      const contractBookings = filteredBookings.filter(b => b.contract === c.id);
+      const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+      const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
+
+      const getBranchBooked = (branchCodes: string[]) =>
+        contractBookings
+          .filter(b => b.branch && branchCodes.includes(b.branch))
+          .reduce((sum, b) => sum + (b.teu || 0), 0);
+
+      const freBase = c.fre ?? c.per ?? { alloc: 0, booked: 0, util: 0 };
+
+      return {
+        ...c,
+        type: (c as any).type ?? 'LT',
+        expiry: (c as any).expiry ?? 'N/A',
+        alloc: scaledAlloc,
+        booked,
+        util,
+        syd: { ...(c.syd ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['SYDNEY', 'SY1']) },
+        mel: { ...(c.mel ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['MELBOURNE', 'ME1']) },
+        bne: { ...(c.bne ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['BRISBANE', 'BN1']) },
+        fre: { ...freBase, booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
+        per: { ...freBase, booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
+        adl: { ...(c.adl ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['ADELAIDE', 'AD1']) },
+      };
+    })
+    // Ensure all filters are respected: if a branch is selected, we only show contracts that have bookings in that branch
+    .filter(c => {
+      if (selectedBranch === 'ALL') return true;
+      const branchCodeMap: Record<string, string[]> = {
+        SYD: ['SY1'], MEL: ['ME1'], BNE: ['BN1'],
+        FRE: ['FR1', 'PR1'], ADL: ['AD1'],
+        PIL: ['PIL'], PRJ: ['PRJ'], AKL: ['AKL'], OTH: ['OTH'],
+      };
+      const codes = branchCodeMap[selectedBranch] || [selectedBranch];
+      return c.booked > 0 || codes.some(code => (c as any)[code.toLowerCase()]?.alloc > 0);
+    });
+
+  const underperformingList = reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80);
+  const lowUtilList = reactiveContractUtilData.filter(c => c.util < 50);
+
+  const handleKpiClick = (kpi: any) => {
+    if (kpi.id === 'undr') {
+      setFilterMode(filterMode === 'UNDERPERFORMING' ? 'ALL' : 'UNDERPERFORMING');
+    } else if (kpi.id === 'low') {
+      setFilterMode(filterMode === 'LOW_UTIL' ? 'ALL' : 'LOW_UTIL');
+    } else {
+      setActiveKpi(kpi);
+    }
+  };
 
   const reactiveKpis = [
     { ...KPI_DATA[0], value: contractMetrics.alloc.toLocaleString() },
     { ...KPI_DATA[1], value: contractMetrics.booked.toLocaleString(), percent: contractMetrics.util },
     { ...KPI_DATA[2], value: contractMetrics.util.toFixed(1), percent: contractMetrics.util },
     {
-      ...KPI_DATA[3], value: CONTRACT_UTIL_DATA
-        .filter(c => (selectedContract === 'ALL' || c.id === selectedContract) && c.util > 100).length.toString()
+      ...KPI_DATA[3],
+      value: underperformingList.length.toString(),
+      list: underperformingList,
+      isActive: filterMode === 'UNDERPERFORMING'
     },
     {
-      ...KPI_DATA[4], value: CONTRACT_UTIL_DATA
-        .filter(c => (selectedContract === 'ALL' || c.id === selectedContract) && c.util < 50).length.toString()
+      ...KPI_DATA[4],
+      value: lowUtilList.length.toString(),
+      list: lowUtilList,
+      isActive: filterMode === 'LOW_UTIL'
     },
     { ...KPI_DATA[5], value: selectedWeek === 'ALL' ? 'ALL' : selectedWeek.split(' ')[1] },
   ];
@@ -260,7 +408,9 @@ const ContractDashboard: React.FC = () => {
       const booked = hubBookings.reduce((sum, row) => sum + (row.teu || 0), 0);
       const utilFloat = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
       
-      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat };
+      const activeContracts = Array.from(new Set(hubBookings.map(bk => bk.contract))).sort();
+      
+      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, activeContracts };
     });
 
     // Check if any bookings are completely unmatched and create OTHER category
@@ -276,39 +426,14 @@ const ContractDashboard: React.FC = () => {
         avail: -otherBooked,
         util: 0,
         utilFloat: 0,
-        status: 'Unplanned'
+        status: 'Unplanned',
+        activeContracts: Array.from(new Set(unmatchedBookings.map(b => b.contract))).sort()
       });
     }
 
     return snapshot;
   })();
 
-  const reactiveContractUtilData = CONTRACT_UTIL_DATA
-    .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
-    .map(c => {
-      const scaledAlloc = Math.round(c.alloc * weekScale);
-      const contractBookings = filteredBookings.filter(b => b.contract === c.id);
-      const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-      const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
-
-      const getBranchBooked = (branchCodes: string[]) => {
-        return contractBookings
-          .filter(b => branchCodes.includes(b.branch))
-          .reduce((sum, b) => sum + (b.teu || 0), 0);
-      };
-
-      return {
-        ...c,
-        alloc: scaledAlloc,
-        booked,
-        util,
-        syd: { ...c.syd, booked: getBranchBooked(['SYDNEY', 'SY1']) },
-        mel: { ...c.mel, booked: getBranchBooked(['MELBOURNE', 'ME1']) },
-        bne: { ...c.bne, booked: getBranchBooked(['BRISBANE', 'BN1']) },
-        per: { ...c.per, booked: getBranchBooked(['PERTH', 'PR1']) },
-        adl: { ...c.adl, booked: getBranchBooked(['ADELAIDE', 'AD1']) }
-      };
-    });
 
   // Simplified booking aggregations for summary insights
   const reactiveBookingBranchSummary = filteredBookings
@@ -402,11 +527,12 @@ const ContractDashboard: React.FC = () => {
   })();
 
   const branchMatrixTotals = {
-    syd: { alloc: reactiveContractUtilData.reduce((s, r) => s + r.syd.alloc, 0), booked: reactiveContractUtilData.reduce((s, r) => s + r.syd.booked, 0) },
-    mel: { alloc: reactiveContractUtilData.reduce((s, r) => s + r.mel.alloc, 0), booked: reactiveContractUtilData.reduce((s, r) => s + r.mel.booked, 0) },
-    bne: { alloc: reactiveContractUtilData.reduce((s, r) => s + r.bne.alloc, 0), booked: reactiveContractUtilData.reduce((s, r) => s + r.bne.booked, 0) },
-    per: { alloc: reactiveContractUtilData.reduce((s, r) => s + r.per.alloc, 0), booked: reactiveContractUtilData.reduce((s, r) => s + r.per.booked, 0) },
-    adl: { alloc: reactiveContractUtilData.reduce((s, r) => s + r.adl.alloc, 0), booked: reactiveContractUtilData.reduce((s, r) => s + r.adl.booked, 0) }
+    syd: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.syd?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.syd?.booked ?? 0), 0) },
+    mel: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.mel?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.mel?.booked ?? 0), 0) },
+    bne: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.bne?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.bne?.booked ?? 0), 0) },
+    fre: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.fre?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.fre?.booked ?? 0), 0) },
+    per: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.fre?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.fre?.booked ?? 0), 0) },
+    adl: { alloc: reactiveContractUtilData.reduce((s, r) => s + (r.adl?.alloc ?? 0), 0), booked: reactiveContractUtilData.reduce((s, r) => s + (r.adl?.booked ?? 0), 0) },
   };
 
   // 3D Tilt Hook for KPI Cards
@@ -677,8 +803,8 @@ const ContractDashboard: React.FC = () => {
           onDestinationChange={setSelectedDestination}
           selectedLane={selectedLane}
           onLaneChange={setSelectedLane}
-          selectedAllocation={selectedAllocation}
-          onAllocationChange={setSelectedAllocation}
+          selectedBranch={selectedBranch}
+          onBranchChange={setSelectedBranch}
           selectedPriority={selectedPriority}
           onPriorityChange={setSelectedPriority}
           selectedRegion={selectedRegion}
@@ -696,7 +822,7 @@ const ContractDashboard: React.FC = () => {
           availableOrigins={ORIGINS}
           availableDestinations={DESTINATIONS}
           availableLanes={LANES}
-          availableAllocations={ALLOCATIONS}
+          availableBranches={['ALL', 'SYD', 'MEL', 'BNE', 'FRE', 'ADL', 'PIL', 'PRJ', 'AKL', 'OTH']}
           availablePriorities={PRIORITIES}
           availableRegions={REGIONS}
           availableCountries={Array.from(new Set(PORT_HIERARCHY.filter(p => selectedRegion === 'ALL' || p.region === selectedRegion).map(p => p.country)))}
@@ -705,9 +831,19 @@ const ContractDashboard: React.FC = () => {
         />
       </div>
 
-      <main className="flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[240px] pb-12 grid grid-cols-1 md:grid-cols-[320px_1fr] gap-8 relative z-10 items-start">
+      <main className={`flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[240px] pb-12 grid ${isSidebarCollapsed ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-[320px_1fr]'} gap-8 relative z-10 items-start transition-all duration-500`}>
 
-        <aside className="w-full hidden md:flex flex-col bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] group/sidebar overflow-hidden relative h-full">
+        {isSidebarCollapsed && (
+          <button onClick={() => setIsSidebarCollapsed(false)} className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] p-2 bg-slate-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-r-2xl border-l-0 text-cyan-400 hover:text-white transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:pr-4 group">
+            <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          </button>
+        )}
+
+        <aside className={`${isSidebarCollapsed ? 'hidden' : 'w-full hidden md:flex'} flex-col bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] group/sidebar overflow-hidden relative h-full shrink-0`}>
+
+          <button onClick={() => setIsSidebarCollapsed(true)} className="absolute top-[10%] -translate-y-1/2 right-0 z-50 p-1.5 flex items-center gap-1 bg-slate-800/80 backdrop-blur-md rounded-l-xl border border-white/10 border-r-0 text-slate-300 hover:text-cyan-400 hover:bg-slate-700 transition-all shadow-[-4px_0_10px_rgba(0,0,0,0.3)] group cursor-pointer">
+            <svg className="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
+          </button>
 
 
           <div className="p-6 pb-0 relative z-20">
@@ -832,9 +968,9 @@ const ContractDashboard: React.FC = () => {
                 </div>
               </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 xl:gap-6 w-full perspective-1000">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 xl:gap-6 w-full perspective-1000">
                 {reactiveKpis.map((kpi, idx) => (
-                  <QuantumKpiCard key={idx} kpi={kpi} idx={idx} onClick={() => setActiveKpi(kpi)} />
+                  <QuantumKpiCard key={idx} kpi={kpi} idx={idx} onClick={() => handleKpiClick(kpi)} />
                 ))}
               </div>
 
@@ -856,7 +992,11 @@ const ContractDashboard: React.FC = () => {
                   </div>
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
-                    <span className="text-[10px] font-semibold text-emerald-400 uppercase tracking-widest">{reactiveBranchSnapshot.length} Hubs</span>
+                    <span className="text-[10px] items-center flex gap-3 font-semibold text-emerald-400 uppercase tracking-widest">{reactiveBranchSnapshot.length} Hubs
+                        <button onClick={() => setIsBranchSnapshotModalOpen(true)} className="w-6 h-6 flex items-center justify-center bg-white/5 rounded-md border border-white/10 hover:bg-emerald-500/20 hover:text-emerald-400 transition-colors text-slate-400">
+                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                        </button>
+                    </span>
                   </div>
                 </div>
 
@@ -873,23 +1013,32 @@ const ContractDashboard: React.FC = () => {
                 {/* Data Rows */}
                 <div className="divide-y divide-white/[0.025]">
                   {reactiveBranchSnapshot.map((row, i) => {
-                    const isOverbooked = row.util > 100;
-                    const isOnTrack = row.status === 'On Track';
-                    const isNearFull = row.status === 'Near Full';
-                    const s = isOverbooked
-                      ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
-                      : isOnTrack
-                        ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-400' }
-                        : isNearFull
-                          ? { badge: 'bg-amber-500/10 text-amber-400 border-amber-500/25', dot: 'bg-amber-400', util: 'text-amber-400', bar: 'bg-amber-400' }
-                          : { badge: 'bg-slate-800/60 text-slate-400 border-slate-700/40', dot: 'bg-slate-600', util: 'text-slate-400', bar: 'bg-slate-600' };
+                    // NEW colour logic: Red = underutilisation risk, Green = healthy/overutilised
+                    const isHealthy          = row.util > 80;
+                    const isOverutilised     = row.util > 100;
+                    const isUnderperforming  = !isHealthy && row.util > 50;
+                    const isLowUptake        = row.util <= 50;
+                    const s = isOverutilised
+                      ? { badge: 'bg-emerald-400/10 text-emerald-300 border-emerald-400/25', dot: 'bg-emerald-300', util: 'text-emerald-300', bar: 'bg-emerald-400' }
+                      : isHealthy
+                        ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-500' }
+                        : isUnderperforming
+                          ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
+                          : { badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25',  dot: 'bg-orange-500', util: 'text-orange-400', bar: 'bg-orange-600' };
                     return (
                       <div key={i} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-3 items-center hover:bg-white/[0.015] transition-colors">
                         {/* Hub */}
-                        <div className="flex items-center gap-2 min-w-0">
-                          <span className={`w-2 h-2 rounded-full shrink-0 ${s.dot}`} />
-                          <span className="font-mono font-bold text-slate-200 text-[12px] tracking-wide">{row.branch}</span>
-                          {row.branchName && <span className="text-[10px] text-slate-500 truncate hidden md:block">{row.branchName}</span>}
+                        <div className="flex flex-col min-w-0 justify-center">
+                          <div className="flex items-center gap-2">
+                            <span className={`w-2 h-2 rounded-full shrink-0 ${s.dot}`} />
+                            <span className="font-mono font-bold text-slate-200 text-[12px] tracking-wide">{row.branch}</span>
+                            {row.branchName && <span className="text-[10px] text-slate-500 truncate hidden md:block">{row.branchName}</span>}
+                          </div>
+                          {(row as any).activeContracts && (row as any).activeContracts.length > 0 && (
+                            <div className="text-[8.5px] text-indigo-400/70 font-mono mt-1 pl-4 truncate pr-2" title={(row as any).activeContracts.join(', ')}>
+                              ↳ {(row as any).activeContracts.join(', ')}
+                            </div>
+                          )}
                         </div>
                         {/* Alloc */}
                         <span className="font-mono text-slate-400 text-[12px] text-right tabular-nums">{row.alloc}</span>
@@ -1001,65 +1150,35 @@ const ContractDashboard: React.FC = () => {
 
                       <defs>
                         <linearGradient id="colorAllocArea" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#818cf8" stopOpacity={0.2} />
-                          <stop offset="100%" stopColor="#818cf8" stopOpacity={0} />
-                        </linearGradient>
-                        <linearGradient id="colorAllocBackground" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#312e81" stopOpacity={0.8} />
-                          <stop offset="100%" stopColor="#1e1b4b" stopOpacity={0.4} />
+                          <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.8} />
+                          <stop offset="100%" stopColor="#22d3ee" stopOpacity={0.1} />
                         </linearGradient>
                         <linearGradient id="colorBookedBar" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#22d3ee" stopOpacity={1} />
-                          <stop offset="100%" stopColor="#0891b2" stopOpacity={0.6} />
+                          <stop offset="0%" stopColor="#818cf8" stopOpacity={1} />
+                          <stop offset="100%" stopColor="#818cf8" stopOpacity={0.4} />
                         </linearGradient>
                       </defs>
 
-                      {/* Layer 1: Soft glowing area representing the maximum ceiling limit (Allocation) */}
-                      <Area type="monotone" dataKey="alloc" name="Base Capacity" fill="url(#colorAllocArea)" stroke="#6366f1" strokeWidth={0} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" />
-
-                      {/* Layer 2: Premium Background bars for Allocation visual scaling */}
-                      <Bar dataKey="alloc" name="Planned Ceiling" fill="url(#colorAllocBackground)" radius={[8, 8, 0, 0]} maxBarSize={50} stroke="#6366f1" strokeOpacity={0.3} strokeWidth={1} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" />
-
-                      {/* Layer 3: Vibrant foreground bars for actual Booked */}
-                      <Bar dataKey="booked" name="Actual Load" fill="url(#colorBookedBar)" radius={[8, 8, 0, 0]} maxBarSize={30} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out">
-                        {reactiveBranchSnapshot.map((entry, i) => {
-                          const colors: Record<string, string> = {
-                            'SYD': '#FF4D4D', 'SY1': '#FF4D4D', 'SYDNEY': '#FF4D4D',
-                            'MEL': '#4D96FF', 'ME1': '#4D96FF', 'MELBOURNE': '#4D96FF',
-                            'BNE': '#FFD93D', 'BN1': '#FFD93D', 'BRISBANE': '#FFD93D',
-                            'PER': '#6BCB77', 'PR1': '#6BCB77', 'PERTH': '#6BCB77',
-                            'ADL': '#9B59B6', 'AD1': '#9B59B6', 'ADELAIDE': '#9B59B6'
-                          };
-                          return <Cell key={i} fill={colors[entry.branch] || colors[entry.code] || '#06b6d4'} />;
-                        })}
-                      </Bar>
-
-                      {/* Layer 4: Neon tracking line emphasizing the booked trend across branches */}
-                      <Line
-                        type="monotone"
-                        dataKey="booked"
-                        name="Flow Vector"
-                        stroke="#f8fafc"
-                        strokeWidth={2}
-                        strokeDasharray="5 5"
-                        isAnimationActive={true}
-                        animationDuration={2500}
-                        animationEasing="ease-in-out"
-                        dot={(props: any) => {
-                          const { cx, cy, index } = props;
-                          const currentVal = reactiveBranchSnapshot[index].booked;
-                          const prevVal = index === 0 ? currentVal : reactiveBranchSnapshot[index - 1].booked;
-                          const isUp = currentVal >= prevVal;
-                          const color = isUp ? '#10b981' : '#f43f5e';
-                          return (
-                            <g key={`dot-${index}`}>
-                              <circle cx={cx} cy={cy} r={14} fill={color} opacity={0.15} />
-                              <circle cx={cx} cy={cy} r={5} fill="#0b0f19" stroke={color} strokeWidth={2.5} />
-                            </g>
-                          );
-                        }}
-                        activeDot={{ r: 8, fill: '#fff', strokeWidth: 0 }}
+                      <Bar 
+                        dataKey="alloc" 
+                        name="Allocation" 
+                        fill="url(#colorAllocArea)" 
+                        radius={[6, 6, 0, 0]} 
+                        maxBarSize={40} 
+                        isAnimationActive={true} 
+                        animationDuration={1500} 
                       />
+
+                      <Bar 
+                        dataKey="booked" 
+                        name="Booked TEU" 
+                        fill="url(#colorBookedBar)" 
+                        radius={[6, 6, 0, 0]} 
+                        maxBarSize={40} 
+                        isAnimationActive={true} 
+                        animationDuration={1500} 
+                      />
+
                     </ComposedChart>
                   </ResponsiveContainer>
                 </div>
@@ -1111,6 +1230,10 @@ const ContractDashboard: React.FC = () => {
                             <stop offset="0%" stopColor="#22d3ee" stopOpacity={1} />
                             <stop offset="100%" stopColor="#0891b2" stopOpacity={0.3} />
                           </linearGradient>
+                          <linearGradient id="areaAllocChart1" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#34d399" stopOpacity={0.1} />
+                            <stop offset="100%" stopColor="#34d399" stopOpacity={0} />
+                          </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#2dd4bf" vertical={false} opacity={0.05} />
                         <XAxis dataKey="id" stroke="#64748b" tickLine={false} axisLine={false} dy={10} fontSize={11} fontWeight={600} />
@@ -1121,8 +1244,19 @@ const ContractDashboard: React.FC = () => {
                           itemStyle={{ fontFamily: 'monospace' }}
                         />
                         <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
-                        <Bar dataKey="booked" name="Booked Volume" fill="url(#cyanNeon)" barSize={40} radius={[6, 6, 0, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" />
-                        <Line type="monotone" dataKey="alloc" name="Wk Allocation Target" stroke="#34d399" strokeWidth={4} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" dot={{ r: 4, fill: '#0b0f19', strokeWidth: 3 }} activeDot={{ r: 8, fill: '#fff', strokeWidth: 0 }} style={{ filter: 'drop-shadow(0px 10px 10px rgba(52,211,153,0.5))' }} />
+                        
+                        {/* Layer 1: Allocation Ceiling */}
+                        <Area type="stepAfter" dataKey="alloc" name="Designated Capacity" fill="url(#areaAllocChart1)" stroke="#34d399" strokeWidth={2} strokeDasharray="5 5" isAnimationActive={true} animationDuration={2000} />
+                        
+                        {/* Layer 2: 80% Efficiency Threshold */}
+                        <Line type="stepAfter" dataKey={(d) => d.alloc * 0.8} name="Efficiency Target (80%)" stroke="#f59e0b" strokeWidth={1} strokeDasharray="3 3" dot={false} opacity={0.5} />
+                        
+                        {/* Layer 3: Actual Booked */}
+                        <Bar dataKey="booked" name="Booked Volume" fill="url(#cyanNeon)" barSize={35} radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={1500}>
+                          {reactiveContractUtilData.map((entry, index) => (
+                            <Cell key={`cell-${index}`} fill={entry.util > 100 ? '#10b981' : entry.util > 80 ? '#34d399' : entry.util > 50 ? '#f43f5e' : '#f97316'} />
+                          ))}
+                        </Bar>
                       </ComposedChart>
                     </ResponsiveContainer>
                   </div>
@@ -1159,7 +1293,14 @@ const ContractDashboard: React.FC = () => {
                           itemStyle={{ fontFamily: 'monospace' }}
                         />
                         <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
-                        <Bar dataKey="utilFloat" name="Network Load %" fill="url(#indigoNeonHoriz)" barSize={20} radius={[0, 6, 6, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" />
+                        <Bar dataKey="utilFloat" name="Network Load %" barSize={20} radius={[0, 6, 6, 0]} isAnimationActive={true} animationDuration={2500}>
+                          {reactiveBranchSnapshot.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={entry.util > 100 ? '#10b981' : entry.util > 80 ? '#34d399' : entry.util > 50 ? '#f43f5e' : '#f97316'} 
+                            />
+                          ))}
+                        </Bar>
                       </BarChart>
                     </ResponsiveContainer>
                   </div>
@@ -1220,8 +1361,8 @@ const ContractDashboard: React.FC = () => {
                               </td>
                               <td className="px-6 py-4 text-center border-r border-white/5">
                                 <div className="flex flex-col items-center">
-                                  <span className="text-[11px] text-slate-300">{row.expiry}</span>
-                                  {row.expiry !== 'N/A' && !row.expiry.includes('2026') && (
+                                  <span className="text-[11px] text-slate-300">{row.expiry ?? 'N/A'}</span>
+                                  {row.expiry && row.expiry !== 'N/A' && !row.expiry.includes('2026') && (
                                     <span className="text-[8px] text-rose-500 font-bold uppercase animate-pulse">Critical</span>
                                   )}
                                 </div>
@@ -1275,16 +1416,18 @@ const ContractDashboard: React.FC = () => {
                     </h4>
                     <h2 className="text-xl text-slate-200 font-medium mb-3">Contract Matrix</h2>
                     <p className="text-xs text-slate-300 leading-relaxed mb-6">
-                      This data matrix isolates performance across individual contracted agreements, comparing total TEU booked against the weekly designated allocation limits.
+                      Performance matrix across {reactiveContractUtilData.length} active agreements. Comparing total {contractMetrics.booked.toFixed(0)} TEU booked against {contractMetrics.alloc} designation.
                     </p>
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-between items-center border-b border-white/5 pb-2">
                         <span className="text-xs text-slate-400 font-mono">Monitored Contracts</span>
-                        <span className="text-xs font-bold text-slate-200">3 Active Series</span>
+                        <span className="text-xs font-bold text-slate-200">{reactiveContractUtilData.length} Active</span>
                       </div>
                       <div className="flex justify-between items-center border-b border-white/5 pb-2">
                         <span className="text-xs text-slate-400 font-mono">Highest Network Draw</span>
-                        <span className="text-xs font-bold text-amber-400">129% (4319-1-LT)</span>
+                        <span className="text-xs font-bold text-emerald-400">
+                          {reactiveContractUtilData.length > 0 ? `${Math.max(...reactiveContractUtilData.map(c=>c.util)).toFixed(0)}% (${reactiveContractUtilData.sort((a,b)=>b.util-a.util)[0]?.id})` : 'N/A'}
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -1376,16 +1519,16 @@ const ContractDashboard: React.FC = () => {
                     </h4>
                     <h2 className="text-xl text-slate-200 font-medium mb-3">Branch Network Hubs</h2>
                     <p className="text-xs text-slate-300 leading-relaxed mb-6">
-                      The Branch table unpacks regional allocation vs fulfillment percentages. It inherently visualizes geographic load distribution and identifies localized bottlenecks.
+                      The Branch table unpacks allocation fulfillment. Current network throughput is {((reactiveBranchSnapshot.reduce((s, r)=>s+r.booked,0)/reactiveBranchSnapshot.reduce((s, r)=>s+r.alloc,0))*100 || 0).toFixed(1)}% across {reactiveBranchSnapshot.length} monitored facilities.
                     </p>
                     <div className="flex flex-col gap-3">
                       <div className="flex justify-between items-center border-b border-white/5 pb-2">
                         <span className="text-xs text-slate-400 font-mono">Geographic Nodes</span>
-                        <span className="text-xs font-bold text-slate-200">6 Facilities</span>
+                        <span className="text-xs font-bold text-slate-200">{reactiveBranchSnapshot.length} Facilities</span>
                       </div>
                       <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                        <span className="text-xs text-slate-400 font-mono">Most Overbooked</span>
-                        <span className="text-xs font-bold text-rose-400">183% (Fremantle)</span>
+                        <span className="text-xs text-slate-400 font-mono">Primary Bottleneck</span>
+                        <span className="text-xs font-bold text-rose-400">{reactiveBranchSnapshot.length > 0 ? `${Math.min(...reactiveBranchSnapshot.map(b=>b.util)).toFixed(0)}% (${(reactiveBranchSnapshot.sort((a,b)=>a.util-b.util)[0]?.branch || 'N/A')})` : 'N/A'}</span>
                       </div>
                     </div>
                   </div>
@@ -1416,10 +1559,10 @@ const ContractDashboard: React.FC = () => {
                 {/* Summary KPI Pills */}
                 <div className="mt-6 lg:mt-0 flex flex-wrap gap-3">
                   {[
-                    { label: 'Total Alloc', value: `${cuTotalAlloc}`, color: 'text-violet-400', border: 'border-violet-500/30', bg: 'bg-violet-500/10', sub: 'Network Threshold', trend: 'Fixed Capacity', details: `This represents the total theoretical TEU capacity allocated across all carriers for this reporting period. Current threshold is set at ${cuTotalAlloc} TEU.` },
-                    { label: 'Total Booked', value: `${cuTotalBooked}`, color: 'text-emerald-400', border: 'border-emerald-500/30', bg: 'bg-emerald-500/10', sub: 'Confirmed Volume', trend: '+12% vs LW', details: `Confirmed cargo currently assigned to contract allocations. ${cuTotalBooked} TEU has been validated through the booking log against a ${cuTotalAlloc} TEU ceiling.` },
-                    { label: 'Overall Util', value: `${cuOverallUtil}%`, color: 'text-cyan-400', border: 'border-cyan-500/30', bg: 'bg-cyan-500/10', sub: 'Network Efficiency', trend: 'Critical Level', details: `Operational efficiency at ${cuOverallUtil}%. Ideally, network utilization should hover between 85-95%. Current levels indicate ${parseFloat(cuOverallUtil) < 70 ? 'under-utilized capacity' : 'approaching ceiling'}.` },
-                    { label: 'Overbooked', value: `${cuOverbooked.length}`, color: 'text-rose-400', border: 'border-rose-500/30', bg: 'bg-rose-500/10', sub: 'Capacity Breach', trend: 'High Risk', details: `${cuOverbooked.length} carriers have exceeded their contractual allocation. This requires immediate re-routing or spot-market procurement to avoid roll-over risks.` },
+                    { label: 'Total Alloc', value: `${cuTotalAlloc}`, color: 'text-violet-400', border: 'border-violet-500/30', bg: 'bg-violet-500/10', sub: 'Network Threshold', trend: 'Fixed Capacity', details: `Total contracted TEU capacity across all carriers for this period. Threshold: ${cuTotalAlloc} TEU.` },
+                    { label: 'Total Booked', value: `${cuTotalBooked}`, color: 'text-cyan-400', border: 'border-cyan-500/30', bg: 'bg-cyan-500/10', sub: 'Confirmed Volume', trend: 'Live', details: `Confirmed cargo assigned to contract allocations. ${cuTotalBooked} TEU validated against a ${cuTotalAlloc} TEU ceiling.` },
+                    { label: 'Overall Util', value: `${cuOverallUtil}%`, color: parseFloat(cuOverallUtil) > 80 ? 'text-emerald-400' : 'text-rose-400', border: parseFloat(cuOverallUtil) > 80 ? 'border-emerald-500/30' : 'border-rose-500/30', bg: parseFloat(cuOverallUtil) > 80 ? 'bg-emerald-500/10' : 'bg-rose-500/10', sub: parseFloat(cuOverallUtil) > 80 ? 'Healthy' : 'Underutilisation Risk', trend: parseFloat(cuOverallUtil) > 80 ? 'On Track' : 'Attention Required', details: `Network efficiency at ${cuOverallUtil}%. Target is >80%. ${parseFloat(cuOverallUtil) <= 80 ? 'Current levels indicate underutilisation — contracts at risk.' : 'Healthy utilisation across the network.'}` },
+                    { label: 'Underperforming (≤80%)', value: `${cuLowUptake.length}`, color: 'text-rose-400', border: 'border-rose-500/30', bg: 'bg-rose-500/10', sub: 'Utilisation Risk', trend: 'Action Required', details: `${cuLowUptake.length} contract(s) are below the 80% utilisation threshold — the primary risk metric. Review allocation commitments and increase bookings to avoid compliance exposure.` },
                   ].map(p => (
                     <motion.div
                       whileHover={{ scale: 1.05, y: -5 }}
@@ -1514,50 +1657,123 @@ const ContractDashboard: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Right: Branch Heat Grid */}
-                <div className="xl:col-span-4 rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
-                  <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent">
-                    <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
-                    <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
-                  </div>
-                  <div className="flex-1 overflow-y-auto elegant-scrollbar p-4">
-                    {/* Column headers */}
-                    <div className="grid grid-cols-6 gap-1 mb-2 px-1">
-                      <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
-                      {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
-                        <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
-                      ))}
+                {/* Right: Branch Heat Grid + NEW Carrier Breakdown Donut */}
+                <div className="xl:col-span-4 flex flex-col gap-8">
+                  {/* Heat Map Panel */}
+                  <div className="rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
+                    <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent">
+                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
+                      <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
                     </div>
-                    <div className="flex flex-col gap-1.5">
-                      {reactiveContractUtilData.map((row) => {
-                        const branches = [
-                          { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
-                          { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
-                          { b: row.adl, name: 'ADL' },
-                        ];
-                        return (
-                          <div key={row.id} className="grid grid-cols-6 gap-1 items-center group/heat hover:bg-white/[0.03] rounded-xl px-1 py-0.5 transition-colors">
-                            <span className="text-[9px] text-slate-400 font-mono font-bold truncate col-span-1">{row.id.split('-')[0]}</span>
-                            {branches.map(({ b, name }) => {
-                              const pct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
-                              const col = pct > 110 ? 'bg-rose-500/80' : pct > 90 ? 'bg-amber-400/70' : pct > 60 ? 'bg-emerald-400/60' : pct > 20 ? 'bg-cyan-500/40' : 'bg-slate-800/60';
-                              return (
-                                <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
-                                  className={`h-6 rounded-md ${col} flex items-center justify-center transition-all group-hover/heat:scale-105`}>
-                                  <span className="text-[8px] font-bold text-white/70">{pct > 0 ? `${pct.toFixed(0)}` : '-'}</span>
-                                </div>
-                              );
-                            })}
+                    <div className="flex-1 overflow-y-auto elegant-scrollbar p-4 max-h-[350px]">
+                      {/* Column headers */}
+                      <div className="grid grid-cols-6 gap-1 mb-2 px-1">
+                        <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
+                        {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
+                          <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
+                        ))}
+                      </div>
+                      <div className="flex flex-col gap-1.5">
+                        {reactiveContractUtilData.map((row) => {
+                          const branches = [
+                            { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
+                            { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
+                            { b: row.adl, name: 'ADL' },
+                          ];
+                          return (
+                            <div key={row.id} className="grid grid-cols-6 gap-1 items-center group/heat hover:bg-white/[0.03] rounded-xl px-1 py-0.5 transition-colors">
+                              <span className="text-[9px] text-slate-400 font-mono font-bold truncate col-span-1">{row.id.split('-')[0]}</span>
+                              {branches.map(({ b, name }) => {
+                                const pct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
+                                // Colour rule: ≤80% = risk (red), >80% = healthy (emerald), >100% = overutilised (cyan)
+                                const col = pct <= 0 ? 'bg-slate-800/60' : pct <= 50 ? 'bg-rose-700/80' : pct <= 80 ? 'bg-rose-500/70' : pct <= 100 ? 'bg-emerald-400/60' : 'bg-cyan-400/70';
+                                return (
+                                  <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
+                                    className={`h-6 rounded-md ${col} flex items-center justify-center transition-all group-hover/heat:scale-105`}>
+                                    <span className="text-[8px] font-bold text-white/70">{pct > 0 ? `${pct.toFixed(0)}` : '-'}</span>
+                                  </div>
+                                );
+                              })}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      {/* Legend */}
+                      <div className="mt-4 flex flex-wrap gap-2 px-1 pt-3 border-t border-white/5">
+                        {[['bg-rose-700/80', 'Critical ≤50%'], ['bg-rose-500/70', 'Underperforming ≤80%'], ['bg-emerald-400/60', 'Healthy >80%'], ['bg-cyan-400/70', 'Overutilised >100%']].map(([col, lbl]) => (
+                          <div key={lbl} className="flex items-center gap-1.5">
+                            <div className={`w-3 h-3 rounded-sm ${col}`} />
+                            <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
                           </div>
-                        );
-                      })}
+                        ))}
+                      </div>
                     </div>
-                    {/* Legend */}
-                    <div className="mt-4 flex flex-wrap gap-2 px-1 pt-3 border-t border-white/5">
-                      {[['bg-rose-500/80', 'Overbooked'], ['bg-amber-400/70', 'Near Full'], ['bg-emerald-400/60', 'On Track'], ['bg-cyan-500/40', 'Low'], ['bg-slate-800/60', 'Empty']].map(([col, lbl]) => (
-                        <div key={lbl} className="flex items-center gap-1.5">
-                          <div className={`w-3 h-3 rounded-sm ${col}`} />
-                          <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
+                  </div>
+
+                  {/* NEW: Carrier Breakdown Donut Chart */}
+                  <div className="rounded-[40px] bg-[#0b0f19] border border-white/5 shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-8 flex flex-col relative overflow-hidden group">
+                    <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-[60px] pointer-events-none" />
+                    <h4 className="text-white font-bold tracking-[0.2em] uppercase text-[10px] mb-1">Carrier Breakdown</h4>
+                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-6 font-bold">% of bookings by TEU · All Branches</p>
+                    
+                    <div className="h-[220px] w-full relative">
+                      <ResponsiveContainer width="100%" height="100%">
+                        <PieChart>
+                          <Pie
+                            data={reactiveContractUtilData.filter(d => d.booked > 0).map(d => ({ name: d.id, value: d.booked, carrier: d.carrier }))}
+                            cx="50%" cy="50%"
+                            innerRadius={65}
+                            outerRadius={85}
+                            paddingAngle={5}
+                            dataKey="value"
+                            stroke="none"
+                            isAnimationActive={true}
+                          >
+                            {reactiveContractUtilData.filter(d => d.booked > 0).map((_entry, index) => {
+                              const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf', '#22d3ee', '#10b981', '#fbbf24', '#f43f5e'];
+                              return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} style={{ filter: 'drop-shadow(0 0 4px rgba(167,139,250,0.3))' }} />;
+                            })}
+                          </Pie>
+                          <Tooltip
+                            content={({ active, payload }) => {
+                              if (active && payload && payload.length) {
+                                const total = reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0);
+                                const percentage = ((payload[0].value as number / total) * 100).toFixed(1);
+                                return (
+                                  <div className="bg-[#050505]/95 border border-white/10 p-3 rounded-xl shadow-2xl backdrop-blur-md">
+                                    <div className="text-[10px] font-bold text-violet-400 uppercase mb-1">{payload[0].payload.carrier}</div>
+                                    <div className="flex justify-between gap-6">
+                                      <span className="text-[10px] text-slate-400">Total Booked</span>
+                                      <span className="text-[10px] font-bold text-white font-mono">{payload[0].value} TEU</span>
+                                    </div>
+                                    <div className="flex justify-between gap-6 border-t border-white/5 mt-1 pt-1">
+                                      <span className="text-[10px] text-slate-400">Network Share</span>
+                                      <span className="text-[10px] font-bold text-emerald-400 font-mono">{percentage}%</span>
+                                    </div>
+                                  </div>
+                                );
+                              }
+                              return null;
+                            }}
+                          />
+                        </PieChart>
+                      </ResponsiveContainer>
+                      {/* Center Label */}
+                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                        <span className="text-2xl font-bold text-white tracking-tighter">
+                          {reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0).toFixed(0)}
+                        </span>
+                        <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Total TEU</span>
+                      </div>
+                    </div>
+                    
+                    {/* Compact Legend Grid */}
+                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 px-2">
+                      {reactiveContractUtilData.filter(d => d.booked > 0).slice(0, 4).map((d, i) => (
+                        <div key={d.id} className="flex items-center gap-2">
+                          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf'][i % 4] }} />
+                          <span className="text-[9px] text-slate-400 truncate max-w-[80px]">{d.carrier}</span>
+                          <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r)=>s+r.booked, 0)) * 100).toFixed(0)}%</span>
                         </div>
                       ))}
                     </div>
@@ -1598,12 +1814,11 @@ const ContractDashboard: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-white/[0.02]">
                       {reactiveContractUtilData.map((row, i) => {
-                        const statusStyle = row.util > 100 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                          : row.util >= 85 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                            : row.util >= 70 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                              : 'bg-slate-700/30 text-slate-400 border-slate-600/30';
-                        const utilColor = row.util > 100 ? 'text-rose-400 drop-shadow-[0_0_8px_rgba(239,68,68,0.5)]'
-                          : row.util >= 85 ? 'text-amber-400' : row.util >= 70 ? 'text-emerald-400' : 'text-slate-400';
+                        // ≤80% = red risk, >80% = green healthy, >100% = cyan overutilised
+                        const statusStyle = row.util > 100 ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
+                          : row.util > 80 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
+                            : 'bg-rose-500/20 text-rose-300 border-rose-500/40';
+                        const utilColor = getUtilColor(row.util, 'text');
                         return (
                           <tr key={i} className="hover:bg-white/[0.03] transition-colors group/cu">
                             <td className="px-4 py-4 font-mono text-xs font-bold text-violet-300">{row.id}</td>
@@ -1616,20 +1831,19 @@ const ContractDashboard: React.FC = () => {
                               <div className="flex flex-col items-end gap-1">
                                 <span>{row.util.toFixed(1)}%</span>
                                 <div className="w-14 h-1 bg-slate-900 rounded-full overflow-hidden">
-                                  <div className={`h-full rounded-full ${row.util > 100 ? 'bg-rose-500' : row.util >= 85 ? 'bg-amber-400' : row.util >= 70 ? 'bg-emerald-400' : 'bg-slate-600'}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
+                                  <div className={`h-full rounded-full ${getUtilColor(row.util, 'bar')}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
                                 </div>
                               </div>
                             </td>
                             <td className="px-4 py-4 text-center"><span className={`text-[9px] font-bold px-2 py-1 rounded border uppercase tracking-wide ${statusStyle}`}>{row.status}</span></td>
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => {
                               const bPct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
-                              const bCol = bPct > 100 ? 'text-rose-400' : bPct > 85 ? 'text-amber-400' : bPct > 0 ? 'text-slate-300' : 'text-slate-400';
                               return (
                                 <td key={bi} className="px-3 py-4 text-center">
                                   <div className="flex flex-col items-center gap-0.5">
-                                    <span className={`font-mono text-[10px] font-bold ${bCol}`}>{b.booked}<span className="text-slate-400">/{b.alloc}</span></span>
+                                    <span className={`font-mono text-[10px] font-bold ${getUtilColor(bPct, 'text')}`}>{b.booked}<span className="text-slate-400">/{b.alloc}</span></span>
                                     <div className="w-10 h-1 bg-slate-900 rounded-full overflow-hidden">
-                                      <div className={`h-full rounded-full ${bPct > 100 ? 'bg-rose-500' : bPct > 85 ? 'bg-amber-400' : 'bg-violet-500/60'}`} style={{ width: `${Math.min(bPct, 100)}%` }} />
+                                      <div className={`h-full rounded-full ${getUtilColor(bPct, 'bar')}`} style={{ width: `${Math.min(bPct, 100)}%` }} />
                                     </div>
                                   </div>
                                 </td>
@@ -1934,15 +2148,15 @@ const ContractDashboard: React.FC = () => {
 
                   <div className="h-[400px] w-full relative z-10 antialiased">
                     <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: -20 }} barGap={6}>
+                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
                         <defs>
-                          <linearGradient id="allocGlow" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#0ea5e9" stopOpacity={0.9} />
-                            <stop offset="100%" stopColor="#0ea5e9" stopOpacity={0.1} />
+                          <linearGradient id="areaAllocWeek" x1="0" y1="0" x2="0" y2="1">
+                            <stop offset="0%" stopColor="#6366f1" stopOpacity={0.1} />
+                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
                           </linearGradient>
-                          <linearGradient id="bookGlow" x1="0" y1="0" x2="0" y2="1">
+                          <linearGradient id="bookBarGlow" x1="0" y1="0" x2="0" y2="1">
                             <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
-                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0.4} />
+                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0.6} />
                           </linearGradient>
                         </defs>
                         <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" vertical={false} opacity={0.03} />
@@ -1957,16 +2171,16 @@ const ContractDashboard: React.FC = () => {
                                   <div className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mb-2 border-b border-white/5 pb-1">{payload[0].payload.week}</div>
                                   <div className="flex flex-col gap-2 pt-1">
                                     <div className="flex justify-between items-center gap-8">
-                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-cyan-400 shadow-[0_0_5px_currentColor]"></div><span className="text-[10px] text-slate-400">Total Allocation</span></div>
+                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div><span className="text-[10px] text-slate-400">Allocation</span></div>
                                       <span className="font-mono text-xs text-white font-bold">{payload[0].payload.alloc} TEU</span>
                                     </div>
                                     <div className="flex justify-between items-center gap-8">
-                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400 shadow-[0_0_5px_currentColor]"></div><span className="text-[10px] text-slate-400">Total Booked</span></div>
-                                      <span className="font-mono text-xs text-indigo-400 font-bold">{payload[0].payload.booked} TEU</span>
+                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-violet-400"></div><span className="text-[10px] text-slate-400">Booked</span></div>
+                                      <span className="font-mono text-xs text-violet-400 font-bold">{payload[0].payload.booked} TEU</span>
                                     </div>
                                     <div className="flex justify-between items-center gap-8 pt-1.5 border-t border-white/5 mt-1">
                                       <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Utilisation</span>
-                                      <span className={`font-mono text-xs font-bold ${payload[0].payload.util >= 100 ? 'text-rose-400' : 'text-emerald-400'}`}>{payload[0].payload.util}%</span>
+                                      <span className={`font-mono text-xs font-bold ${getUtilColor(payload[0].payload.util, 'text')}`}>{payload[0].payload.util}%</span>
                                     </div>
                                   </div>
                                 </div>
@@ -1975,20 +2189,26 @@ const ContractDashboard: React.FC = () => {
                             return null;
                           }}
                         />
-                        <Bar dataKey="alloc" barSize={18} radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out">
-                          {reactiveWeeklyTrendData.map((_entry, index) => (
-                            <Cell key={`cell-alloc-${index}`} fill="url(#allocGlow)" style={{ filter: 'drop-shadow(0px 0px 4px rgba(14,165,233,0.3))' }} />
-                          ))}
-                        </Bar>
-                        <Bar dataKey="booked" barSize={18} radius={[4, 4, 0, 0]} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out">
-                          {reactiveWeeklyTrendData.map((_entry, index) => (
-                            <Cell key={`cell-book-${index}`} fill="url(#bookGlow)" style={{ filter: 'drop-shadow(0px 0px 6px rgba(139,92,246,0.6))' }} />
+                        
+                        {/* Layer 1: Allocation Ceiling */}
+                        <Area type="stepAfter" dataKey="alloc" name="Capacity Limit" fill="url(#areaAllocWeek)" stroke="#6366f1" strokeWidth={2} strokeDasharray="5 5" isAnimationActive={true} animationDuration={2000} />
+                        
+                        {/* Layer 2: Healthy Threshold (80%) */}
+                        <Line type="stepAfter" dataKey={(d) => d.alloc * 0.8} name="Efficiency Target (80%)" stroke="#fbbf24" strokeWidth={1} strokeDasharray="3 3" dot={false} opacity={0.6} />
+
+                        {/* Layer 3: Booked Bars */}
+                        <Bar dataKey="booked" name="Booked Volume" barSize={30} radius={[6, 6, 0, 0]} isAnimationActive={true} animationDuration={1500}>
+                          {reactiveWeeklyTrendData.map((entry, index) => (
+                            <Cell 
+                              key={`cell-${index}`} 
+                              fill={entry.util > 100 ? '#22d3ee' : entry.util > 80 ? '#10b981' : entry.util > 50 ? '#f43f5e' : '#f97316'} 
+                            />
                           ))}
                         </Bar>
                       </ComposedChart>
                     </ResponsiveContainer>
-                  </div>
                 </div>
+              </div>
 
                 {/* Weekly Pulse Summary Table */}
                 <div className="xl:w-[420px] bg-[#0b0f19]/80 border border-white/5 rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-3xl flex flex-col group">
@@ -2017,7 +2237,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-2.5 font-bold text-slate-300 text-xs tracking-wider">{row.week}</td>
                             <td className="px-4 py-2.5 text-center font-mono text-xs text-slate-400">{row.alloc}</td>
                             <td className="px-4 py-2.5 text-center font-mono text-xs text-slate-300 antialiased">{row.booked.toFixed(1)}</td>
-                            <td className={`px-6 py-2.5 text-right font-mono font-bold text-sm ${row.util >= 100 ? 'text-rose-400 drop-shadow-[0_0_5px_rgba(244,63,94,0.5)]' : row.util >= 90 ? 'text-amber-400' : 'text-emerald-400 transition-colors group-hover/pulse:text-emerald-300'}`}>
+                            <td className={`px-6 py-2.5 text-right font-mono font-bold text-sm ${getUtilColor(row.util, 'text')}`}>
                               {row.util}%
                             </td>
                           </tr>
@@ -2033,11 +2253,11 @@ const ContractDashboard: React.FC = () => {
                 <div className="flex items-center gap-6">
                   <div className="flex flex-col">
                     <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Global Matrix</span>
-                    <span className="text-xl font-display text-white font-light uppercase tracking-widest">Complex <span className="font-bold text-indigo-400">Node Data</span></span>
+                    <span className="text-xl font-display text-white font-light uppercase tracking-widest">Underperforming <span className="font-bold text-indigo-400">Node Data</span></span>
                   </div>
                   <div className="h-10 w-[1px] bg-white/10" />
                   <div className="flex items-center gap-3">
-                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" /><span className="text-[9px] text-slate-300 font-bold uppercase">Overflow</span></span>
+                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" /><span className="text-[9px] text-slate-300 font-bold uppercase">Underperforming</span></span>
                   </div>
                 </div>
                 <div className="mt-6 lg:mt-0 px-5 py-3 bg-[#050505]/60 border border-slate-700/80 rounded-2xl flex items-center gap-4 backdrop-blur-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)] transform hover:scale-105 transition-transform duration-500 cursor-default">
@@ -2117,7 +2337,7 @@ const ContractDashboard: React.FC = () => {
 
                                     <div className="flex items-center justify-between px-2">
                                       <div className="text-[10px] font-bold text-slate-400">NETWORK EFFICIENCY</div>
-                                      <div className={`text-xl font-display font-bold ${utilVal >= 100 ? 'text-rose-400 shadow-[0_0_20px_rgba(244,63,94,0.3)]' : 'text-emerald-400 shadow-[0_0_20px_rgba(16,185,129,0.3)]'}`}>
+                                      <div className={`text-xl font-display font-bold ${getUtilColor(utilVal, 'text')}`}>
                                         {utilVal}%
                                       </div>
                                     </div>
@@ -2197,7 +2417,7 @@ const ContractDashboard: React.FC = () => {
                               </td>
                               <td className="px-5 py-3 font-mono text-slate-400 text-xs text-right group-hover:text-slate-200">{row.alloc}</td>
                               <td className="px-5 py-3 font-mono text-cyan-400 text-xs text-right group-hover:text-cyan-300 font-bold">{row.booked.toFixed(1)}</td>
-                              <td className={`px-5 py-3 font-mono text-xs text-right font-bold antialiased ${row.util >= 100 ? 'text-rose-400' : 'text-emerald-400'}`}>
+                              <td className={`px-5 py-3 font-mono text-xs text-right font-bold antialiased ${getUtilColor(row.util, 'text')}`}>
                                 <span className="px-2 py-0.5 rounded bg-black/40 border border-white/5">{row.util.toFixed(1)}%</span>
                               </td>
                             </tr>
@@ -2258,7 +2478,8 @@ const ContractDashboard: React.FC = () => {
                                 </td>
                                 {AVAILABLE_WEEKS.map(wk => {
                                   const d = (contractRow.data as any)[wk] || { alloc: 0, booked: 0, util: 0 };
-                                  const utilColor = d.util >= 100 ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : d.util >= 90 ? 'bg-amber-500/20 text-amber-400 border-amber-500/30' : d.util > 0 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-transparent text-slate-400 border-transparent';
+                                  // ≤80% = red risk, >80% = green, >100% = cyan
+                                  const utilColor = d.util <= 0 ? 'bg-transparent text-slate-400 border-transparent' : d.util <= 80 ? 'bg-rose-500/20 text-rose-400 border-rose-500/30' : d.util <= 100 ? 'bg-emerald-500/20 text-emerald-400 border-emerald-500/30' : 'bg-cyan-500/20 text-cyan-400 border-cyan-500/30';
                                   return (
                                     <React.Fragment key={wk}>
                                       <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[10px] text-slate-300">{d.alloc}</td>
@@ -2284,7 +2505,7 @@ const ContractDashboard: React.FC = () => {
                                   </td>
                                   {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                     const d = (branch.data as any)[wk];
-                                    const utilColor = d.util >= 100 ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : d.util >= 90 ? 'bg-amber-500/10 text-amber-400 border-amber-500/20' : d.util > 0 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-transparent text-slate-300/40 border-transparent';
+                                    const utilColor = d.util <= 0 ? 'bg-transparent text-slate-300/40 border-transparent' : d.util <= 80 ? 'bg-rose-500/10 text-rose-400 border-rose-500/20' : d.util <= 100 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/20' : 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20';
                                     return (
                                       <React.Fragment key={wk}>
                                         <td className="px-1 py-4 text-center border-r border-white/5 font-mono text-[9px] text-slate-300 group-hover/branch:text-slate-400">{d.alloc}</td>
@@ -2312,7 +2533,7 @@ const ContractDashboard: React.FC = () => {
                             </div>
                           </td>
                           {reactiveWeeklyTrendData.map((wk, i) => {
-                            const utilColor = wk.util >= 100 ? 'text-rose-400' : wk.util >= 90 ? 'text-amber-400' : 'text-emerald-400';
+                            const utilColor = getUtilColor(wk.util, 'text');
                             return (
                               <React.Fragment key={i}>
                                 <td className="px-1 py-6 text-center border-r border-white/5 font-mono font-bold text-xs text-white uppercase">{wk.alloc}</td>
@@ -2446,6 +2667,8 @@ const ContractDashboard: React.FC = () => {
                       <tr className="bg-slate-900/60 rounded-xl">
                         <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 rounded-tl-xl">Contract Key</th>
                         <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Order No.</th>
+                        {/* NEW: Branch column added per stakeholder request */}
+                        <th className="px-6 py-4 font-bold text-sky-400 text-[10px] tracking-widest uppercase border-b border-white/5">Branch</th>
                         <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 truncate">Client / Source</th>
                         <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Transit Vessel</th>
                         <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">ETD</th>
@@ -2457,10 +2680,24 @@ const ContractDashboard: React.FC = () => {
                     <tbody className="divide-y divide-white/[0.02]">
                       {filteredBookings.map((row, i) => {
                         const rTeu = row.teu || 0;
+                        // Branch colour for quick visual identification
+                        const branchColorMap: Record<string, string> = {
+                          SY1: 'text-violet-400', ME1: 'text-indigo-400', BN1: 'text-amber-400',
+                          FR1: 'text-fuchsia-400', PR1: 'text-fuchsia-400',
+                          AD1: 'text-rose-400', PIL: 'text-sky-400', PRJ: 'text-emerald-400',
+                          AKL: 'text-cyan-400', OTH: 'text-slate-400',
+                        };
+                        const brCls = branchColorMap[row.branch] || 'text-slate-400';
                         return (
                           <tr key={row.order + i} className="hover:bg-white/[0.03] transition-colors group">
                             <td className="px-6 py-5 font-mono text-xs font-bold text-slate-300">{row.contract}</td>
-                            <td className="px-6 py-5 font-mono text-xs text-indigo-300">{row.order}</td>
+                            <td className="px-6 py-5 font-mono text-xs">
+                              <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
+                                {row.order}
+                              </a>
+                            </td>
+                            {/* Branch cell */}
+                            <td className={`px-6 py-5 font-mono text-[10px] font-bold ${brCls}`}>{row.branch}</td>
                             <td className="px-6 py-5 text-[10px] text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
                             <td className="px-6 py-5 text-xs text-slate-300">{row.depVessel} {row.depVoyage}</td>
                             <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.etd}</td>
@@ -2615,15 +2852,15 @@ const ContractDashboard: React.FC = () => {
                       </div>
                     )}
 
-                    {/* OVERBOOKED BREAKDOWN */}
-                    {activeKpi.label === 'OVERBOOKED' && (
+                    {/* UNDERPERFORMING (≤80%) BREAKDOWN */}
+                    {(activeKpi.label === 'OVERBOOKED' || activeKpi.label === 'UNDERPERFORMING (≤80%)' || activeKpi.label === 'Underperforming (≤80%)') && (
                       <div className="flex flex-col gap-2">
-                        {cuOverbooked.length > 0 ? cuOverbooked.map(c => (
+                        {cuLowUptake.length > 0 ? cuLowUptake.map(c => (
                           <div key={c.id} className="flex justify-between items-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
-                            <span className="text-white text-sm truncate max-w-[200px]" title={c.carrier}>{c.id}</span>
-                            <span className="text-xs text-rose-400 font-bold whitespace-nowrap">{c.booked.toFixed(1)} / {c.alloc.toFixed(1)}</span>
+                            <span className="text-white text-sm truncate max-w-[200px]" title={c.carrier}>{c.id} – {c.carrier}</span>
+                            <span className="text-xs text-rose-400 font-bold whitespace-nowrap">{c.util.toFixed(1)}% util</span>
                           </div>
-                        )) : <div className="text-slate-300 italic p-4 text-center">No contracts overbooked</div>}
+                        )) : <div className="text-emerald-400 italic p-4 text-center">✓ All contracts above 80% utilisation</div>}
                       </div>
                     )}
 
@@ -2717,7 +2954,7 @@ const ContractDashboard: React.FC = () => {
                                 <td className="px-8 py-6 font-display font-bold text-white text-sm border-r border-indigo-500/30 sticky left-0 bg-[#0b0f19] z-10">{contractRow.contract}</td>
                                 {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                   const d = (contractRow.data as any)[wk];
-                                  const utilColor = d.util >= 100 ? 'bg-rose-500/30 text-rose-400 border-rose-500/50' : d.util >= 90 ? 'bg-amber-500/30 text-amber-400 border-amber-500/50' : d.util > 0 ? 'bg-emerald-500/30 text-emerald-400 border-emerald-500/50' : 'text-slate-400';
+                                  const utilColor = d.util <= 0 ? 'text-slate-400 border-transparent' : d.util <= 80 ? 'bg-rose-500/30 text-rose-400 border-rose-500/50' : d.util <= 100 ? 'bg-emerald-500/30 text-emerald-400 border-emerald-500/50' : 'bg-cyan-500/30 text-cyan-400 border-cyan-500/50';
                                   return (
                                     <React.Fragment key={wk}>
                                       <td className="px-2 py-6 text-center border-r border-white/10 font-mono text-xs text-slate-300">{d.alloc}</td>
@@ -2738,7 +2975,7 @@ const ContractDashboard: React.FC = () => {
                                   </td>
                                   {['WK12', 'WK13', 'WK14', 'WK15', 'WK16', 'WK17', 'WK18', 'WK19'].map(wk => {
                                     const d = (branch.data as any)[wk];
-                                    const utilColor = d.util >= 100 ? 'text-rose-400' : d.util >= 90 ? 'text-amber-400' : d.util > 0 ? 'text-emerald-400' : 'text-slate-300';
+                                    const utilColor = d.util <= 0 ? 'text-slate-300' : getUtilColor(d.util, 'text');
                                     return (
                                       <React.Fragment key={wk}>
                                         <td className="px-2 py-5 text-center border-r border-white/10 font-mono text-xs text-slate-300">{d.alloc}</td>
@@ -2767,7 +3004,7 @@ const ContractDashboard: React.FC = () => {
                             <React.Fragment key={i}>
                               <td className="px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-lg text-white">{wk.alloc}</td>
                               <td className="px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-lg text-white">{wk.booked.toFixed(1)}</td>
-                              <td className={`px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-xl ${wk.util >= 100 ? 'text-rose-400' : 'text-emerald-400'} drop-shadow-[0_0_10px_currentColor]`}>{wk.util}%</td>
+                              <td className={`px-2 py-8 text-center border-r border-white/10 font-mono font-bold text-xl ${getUtilColor(wk.util, 'text')} drop-shadow-[0_0_10px_currentColor]`}>{wk.util}%</td>
                             </React.Fragment>
                           ))}
                         </tr>
@@ -2941,7 +3178,11 @@ const ContractDashboard: React.FC = () => {
                               <div className="w-2 h-2 rounded-full bg-slate-700 group-hover:bg-emerald-400 transition-colors" />
                               {row.contract}
                             </td>
-                            <td className="px-8 py-6 font-mono text-sm text-indigo-300 font-bold sticky left-48 z-10 bg-[#0b0f19] border-r border-white/5 group-hover:bg-[#111928]">{row.order}</td>
+                            <td className="px-8 py-6 font-mono text-sm font-bold sticky left-48 z-10 bg-[#0b0f19] border-r border-white/5 group-hover:bg-[#111928]">
+                              <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
+                                {row.order}
+                              </a>
+                            </td>
                             <td className="px-8 py-6 text-sm text-slate-300 truncate max-w-xs" title={row.buyer}>{row.buyer}</td>
                             <td className="px-8 py-6 text-sm text-slate-400 truncate max-w-xs" title={row.supplier}>{row.supplier}</td>
                             <td className="px-8 py-6 font-mono text-xs text-slate-400 whitespace-nowrap">{row.etd}</td>
@@ -3146,7 +3387,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-6 text-right font-mono text-base text-slate-300">{row.alloc}</td>
                             <td className="px-6 py-6 text-right font-mono text-base font-bold text-cyan-400">{row.booked}</td>
                             <td className={`px-6 py-6 text-right font-mono text-base font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
-                            <td className={`px-6 py-6 text-right font-mono text-base font-bold ${row.util > 100 ? 'text-rose-400' : row.util >= 85 ? 'text-amber-400' : 'text-emerald-400'}`}>{row.util.toFixed(1)}%</td>
+                            <td className={`px-6 py-6 text-right font-mono text-base font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</td>
                             <td className="px-6 py-6 text-center"><span className={`text-[10px] font-bold px-3 py-1 rounded border uppercase tracking-wider ${statusStyle}`}>{row.status}</span></td>
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => (
                               <td key={bi} className="px-6 py-6 text-center font-mono text-sm">
@@ -3166,6 +3407,90 @@ const ContractDashboard: React.FC = () => {
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-violet-500 animate-pulse" />
                   Live Data Stream
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Fullscreen Branch Performance Snapshot Modal */}
+      <AnimatePresence>
+        {isBranchSnapshotModalOpen && (
+          <div className="fixed inset-0 z-[140] flex items-center justify-center p-4">
+            <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} onClick={() => setIsBranchSnapshotModalOpen(false)} className="absolute inset-0 bg-slate-950/90 backdrop-blur-2xl" />
+            <motion.div initial={{ opacity: 0, scale: 0.95, y: 40 }} animate={{ opacity: 1, scale: 1, y: 0 }} exit={{ opacity: 0, scale: 0.95, y: 40 }} className="relative w-full max-w-[95vw] h-[90vh] bg-[#0b0e14] border border-white/10 shadow-[0_60px_120px_rgba(0,0,0,1)] rounded-[40px] overflow-hidden z-20 flex flex-col">
+              <div className="p-10 border-b border-white/5 flex justify-between items-center bg-black/40">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse" />
+                    <h3 className="text-4xl font-display font-light text-white">Branch <span className="font-bold text-emerald-400">Performance Snapshot</span></h3>
+                  </div>
+                  <p className="text-xs text-slate-300 uppercase tracking-widest font-black ml-5">Expanded Geographic Hub View | LIVE</p>
+                </div>
+                <button
+                  onClick={() => setIsBranchSnapshotModalOpen(false)}
+                  className="w-16 h-16 bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-500/50 rounded-3xl flex items-center justify-center text-slate-400 hover:text-white transition-all shadow-2xl"
+                >
+                  <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
+                </button>
+              </div>
+              <div className="flex-1 overflow-auto elegant-scrollbar p-10 bg-[#050505]/40">
+                <div className="bg-[#0b0f19] border border-white/10 rounded-[30px] overflow-hidden shadow-2xl">
+                  {/* Re-using the same table structure for the modal */}
+                  <table className="w-full text-left border-separate border-spacing-0">
+                    <thead>
+                      <tr className="bg-slate-900/60 font-bold border-b-2 border-emerald-500/20">
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 w-1/3">Hub</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Alloc (TEU)</th>
+                        <th className="p-8 text-cyan-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Booked</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Available</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Utilisation</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-center">Status</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.05]">
+                      {reactiveBranchSnapshot.map((row, i) => {
+                        const isHealthy          = row.util > 80;
+                        const isOverutilised     = row.util > 100;
+                        const isUnderperforming  = !isHealthy && row.util > 50;
+                        const s = isOverutilised
+                          ? { badge: 'bg-emerald-400/10 text-emerald-300 border-emerald-400/25', dot: 'bg-emerald-300', util: 'text-emerald-300', bar: 'bg-emerald-400' }
+                          : isHealthy
+                            ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-500' }
+                            : isUnderperforming
+                              ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
+                              : { badge: 'bg-rose-900/40 text-rose-300 border-rose-700/40',  dot: 'bg-rose-700', util: 'text-rose-300', bar: 'bg-rose-700' };
+                        return (
+                          <tr key={i} className="hover:bg-white/[0.04] transition-all duration-300 group/mod">
+                            <td className="p-8">
+                              <div className="flex flex-col min-w-0">
+                                <div className="flex items-center gap-3">
+                                  <span className={`w-3 h-3 rounded-full shrink-0 ${s.dot}`} />
+                                  <span className="font-mono font-bold text-slate-200 text-lg tracking-wide">{row.branch}</span>
+                                  {row.branchName && <span className="text-xs text-slate-500">{row.branchName}</span>}
+                                </div>
+                                {(row as any).activeContracts && (row as any).activeContracts.length > 0 && (
+                                  <div className="text-xs text-indigo-400/70 font-mono mt-3 pl-6">
+                                    ↳ Contributing: {(row as any).activeContracts.join(', ')}
+                                  </div>
+                                )}
+                              </div>
+                            </td>
+                            <td className="p-8 text-right font-mono text-xl text-slate-300">{row.alloc}</td>
+                            <td className="p-8 text-right font-mono text-xl text-cyan-400 font-bold">{row.booked.toFixed(1)}</td>
+                            <td className={`p-8 text-right font-mono text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}</td>
+                            <td className={`p-8 text-right font-mono text-xl font-bold ${s.util}`}>{row.util.toFixed(1)}%</td>
+                            <td className="p-8 text-center">
+                              <span className={`px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider ${s.badge}`}>
+                                {row.status}
+                              </span>
+                            </td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </motion.div>

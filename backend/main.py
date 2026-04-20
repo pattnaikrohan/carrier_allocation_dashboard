@@ -3,18 +3,20 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import datetime
+import subprocess
+import os
+import sys
 
 app = FastAPI(title="AAW Dashboards API", version="1.0.0")
 
 # CORS — allow local Vite dev server
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
+    allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 # ─── Models ────────────────────────────────────────────────────────────────────
 
@@ -40,6 +42,39 @@ class DashboardSummary(BaseModel):
 
 
 # ─── Routes ────────────────────────────────────────────────────────────────────
+
+
+@app.post("/api/sync")
+async def sync_data():
+    """Triggers the data ingestion pipeline."""
+    try:
+        # Path to the python script
+        script_path = "D:/Dashboards/process_dashboard_data.py"
+        
+        # Run the script using the same python interpreter
+        result = subprocess.run([sys.executable, script_path], capture_output=True, text=True)
+        
+        if result.returncode == 0:
+            return {
+                "status": "success",
+                "message": "Data synchronized successfully",
+                "output": result.stdout,
+                "timestamp": datetime.datetime.utcnow().isoformat()
+            }
+        else:
+            return {
+                "status": "error",
+                "message": "Data synchronization failed",
+                "error": result.stderr,
+                "timestamp": datetime.datetime.utcnow().isoformat()
+            }
+    except Exception as e:
+        return {
+            "status": "error",
+            "message": str(e),
+            "timestamp": datetime.datetime.utcnow().isoformat()
+        }
+
 
 @app.get("/api/health")
 def health():
