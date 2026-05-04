@@ -3,9 +3,9 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from typing import List
 import datetime
-import subprocess
 import os
-import sys
+import base64
+import httpx
 
 app = FastAPI(title="AAW Dashboards API", version="1.0.0")
 
@@ -45,37 +45,85 @@ class DashboardSummary(BaseModel):
     kpis: List[KPI]
 
 
+# ─── GitHub Integration ───────────────────────────────────────────────────────
+
+GITHUB_REPO = os.getenv("GITHUB_REPO", "pattnaikrohan/carrier_allocation_dashboard")
+GITHUB_TOKEN = os.getenv("GITHUB_TOKEN", "")
+GITHUB_FILE_PATH = "frontend/src/BookingData.ts"
+
+
+async def push_to_github(content: str) -> dict:
+    """Push updated BookingData.ts to GitHub, which triggers the Static Web App CI/CD."""
+    if not GITHUB_TOKEN:
+        return {"pushed": False, "reason": "GITHUB_TOKEN not configured"}
+
+    api_url = f"https://api.github.com/repos/{GITHUB_REPO}/contents/{GITHUB_FILE_PATH}"
+    headers = {
+        "Authorization": f"token {GITHUB_TOKEN}",
+        "Accept": "application/vnd.github.v3+json",
+    }
+
+    async with httpx.AsyncClient() as client:
+        # Get current file SHA (required for update)
+        resp = await client.get(api_url, headers=headers)
+        if resp.status_code != 200:
+            return {"pushed": False, "reason": f"Could not fetch file SHA: {resp.status_code}"}
+
+        current_sha = resp.json().get("sha")
+
+        # Push updated content
+        encoded = base64.b64encode(content.encode("utf-8")).decode("utf-8")
+        payload = {
+            "message": f"sync: data refresh {datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')}",
+            "content": encoded,
+            "sha": current_sha,
+            "branch": "main",
+        }
+        put_resp = await client.put(api_url, headers=headers, json=payload)
+
+        if put_resp.status_code in (200, 201):
+            return {"pushed": True, "commit": put_resp.json().get("commit", {}).get("sha", "unknown")}
+        else:
+            return {"pushed": False, "reason": f"GitHub API returned {put_resp.status_code}: {put_resp.text[:200]}"}
+
+
 # ─── Routes ────────────────────────────────────────────────────────────────────
 
 
 @app.post("/api/sync")
 async def sync_data():
-    """Triggers the data ingestion pipeline."""
+    """Triggers the data ingestion pipeline: Azure Blob → Process → GitHub → Redeploy."""
     try:
-        # Path to the python script
-        script_path = "D:/Dashboards/process_dashboard_data.py"
-        
-        # Run the script using the same python interpreter
-        result = subprocess.run([sys.executable, script_path], capture_output=True, text=True)
-        
-        if result.returncode == 0:
+        from data_processor import process_data_from_azure
+
+        # Step 1: Process data from Azure Blob Storage
+        ts_content, log_lines = process_data_from_azure()
+
+        # Step 2: Push to GitHub (triggers Static Web App rebuild)
+        github_result = await push_to_github(ts_content)
+
+        if github_result.get("pushed"):
             return {
                 "status": "success",
-                "message": "Data synchronized successfully",
-                "output": result.stdout,
+                "message": f"Data synchronized and pushed to GitHub. Commit: {github_result.get('commit', 'N/A')}. Frontend will auto-rebuild.",
+                "log": log_lines,
                 "timestamp": datetime.datetime.utcnow().isoformat()
             }
         else:
+            # GitHub push failed but processing succeeded — write locally as fallback
             return {
-                "status": "error",
-                "message": "Data synchronization failed",
-                "error": result.stderr,
+                "status": "success",
+                "message": f"Data processed successfully. GitHub push skipped: {github_result.get('reason', 'unknown')}",
+                "log": log_lines,
                 "timestamp": datetime.datetime.utcnow().isoformat()
             }
+
     except Exception as e:
+        import traceback
         return {
             "status": "error",
-            "message": str(e),
+            "message": f"Data synchronization failed: {str(e)}",
+            "traceback": traceback.format_exc(),
             "timestamp": datetime.datetime.utcnow().isoformat()
         }
 

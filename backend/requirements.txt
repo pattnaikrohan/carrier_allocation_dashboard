@@ -2,3 +2,8 @@ fastapi
 uvicorn[standard]
 pydantic
 python-multipart
+python-dotenv
+azure-storage-blob
+pandas
+openpyxl
+httpx
