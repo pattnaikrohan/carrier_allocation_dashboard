@@ -100,8 +100,11 @@ const ContractDashboard: React.FC = () => {
     setShowSyncSuccess(false);
 
     try {
-      // Trigger backend sync on port 8001 to avoid conflicts
-      const response = await fetch('http://localhost:8001/api/sync', {
+      // Use Azure backend in production, localhost in development
+      const API_BASE = window.location.hostname === 'localhost' 
+        ? 'http://localhost:8001' 
+        : 'https://carrier-allocation-dashboard.azurewebsites.net';
+      const response = await fetch(`${API_BASE}/api/sync`, {
         method: 'POST',
       });
       const data = await response.json();

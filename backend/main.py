@@ -9,10 +9,14 @@ import sys
 
 app = FastAPI(title="AAW Dashboards API", version="1.0.0")
 
-# CORS — allow local Vite dev server
+# CORS — allow Azure Static Web App + local dev
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=[
+        "https://orange-wave-035251f00.7.azurestaticapps.net",
+        "http://localhost:5173",
+        "http://localhost:3000",
+    ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

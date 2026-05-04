@@ -13,30 +13,45 @@ load_dotenv()
 
 # Config & Paths
 ROOT_DIR = 'D:/Dashboards'
-AZURE_CONN_STR = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
-AZURE_CONTAINER = os.getenv('AZURE_CONTAINER_NAME', 'dashboards-data')
+AZURE_ACCOUNT = os.getenv('AZURE_STORAGE_ACCOUNT')
+AZURE_SAS_TOKEN = os.getenv('AZURE_SAS_TOKEN')
+AZURE_CONTAINER = os.getenv('AZURE_CONTAINER_NAME', 'carrier-allocation')
 
 # Output directly to the file the frontend imports
 OUTPUT_PATH = os.path.join(ROOT_DIR, 'frontend/src/BookingData.ts')
 
+def _get_blob_service_client():
+    """Create a BlobServiceClient using SAS token authentication."""
+    account_url = f"https://{AZURE_ACCOUNT}.blob.core.windows.net"
+    return BlobServiceClient(account_url=account_url, credential=f"?{AZURE_SAS_TOKEN}")
+
+def _is_azure_configured():
+    """Check if Azure Blob Storage is properly configured."""
+    return bool(AZURE_ACCOUNT and AZURE_SAS_TOKEN)
+
 def get_latest_file(pattern, default):
     # Check Azure first if configured
-    if AZURE_CONN_STR and AZURE_CONN_STR != "your_connection_string_here":
+    if _is_azure_configured():
         try:
             print(f"Searching Azure Blob Storage ({AZURE_CONTAINER})...")
-            blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONN_STR)
+            blob_service_client = _get_blob_service_client()
             container_client = blob_service_client.get_container_client(AZURE_CONTAINER)
             blobs = list(container_client.list_blobs())
+            print(f"  Found {len(blobs)} blob(s) in container.")
             
             # Convert glob pattern to regex
             regex_pattern = pattern.replace('.', '\\.').replace('*', '.*')
-            matching_blobs = [b for b in blobs if re.match(regex_pattern, b.name)]
+            matching_blobs = [b for b in blobs if re.match(regex_pattern, b.name, re.IGNORECASE)]
             
             if matching_blobs:
                 latest_blob = max(matching_blobs, key=lambda b: b.last_modified)
-                print(f"Found latest blob: {latest_blob.name} (Modified: {latest_blob.last_modified})")
+                print(f"  Matched blob: {latest_blob.name} (Modified: {latest_blob.last_modified})")
                 blob_client = container_client.get_blob_client(latest_blob.name)
-                return io.BytesIO(blob_client.download_blob().readall())
+                data = blob_client.download_blob().readall()
+                print(f"  Downloaded {len(data)} bytes from Azure.")
+                return io.BytesIO(data)
+            else:
+                print(f"  No blobs matching pattern '{pattern}' found in Azure.")
         except Exception as e:
             print(f"Azure fetch failed: {e}. Falling back to local.")
 
@@ -52,13 +67,17 @@ def get_latest_file(pattern, default):
     return default
 
 def get_static_file(filename, fallback_path):
-    if AZURE_CONN_STR and AZURE_CONN_STR != "your_connection_string_here":
+    if _is_azure_configured():
         try:
-            blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONN_STR)
+            blob_service_client = _get_blob_service_client()
             blob_client = blob_service_client.get_blob_client(container=AZURE_CONTAINER, blob=filename)
             if blob_client.exists():
                 print(f"Fetching static file from Azure: {filename}")
-                return io.BytesIO(blob_client.download_blob().readall())
+                data = blob_client.download_blob().readall()
+                print(f"  Downloaded {len(data)} bytes.")
+                return io.BytesIO(data)
+            else:
+                print(f"  Blob '{filename}' not found in Azure.")
         except Exception as e:
             print(f"Azure static fetch failed for {filename}: {e}")
     
