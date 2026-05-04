@@ -245,29 +245,44 @@ export const CONTRACTS = [
   "TBNEN00429A"
 ];
 export const WEEKS = [
-  "WK 0",
-  "WK 10",
-  "WK 11",
-  "WK 12",
-  "WK 13",
-  "WK 14",
-  "WK 15",
-  "WK 16",
-  "WK 17",
-  "WK 18",
-  "WK 19",
-  "WK 20",
-  "WK 21",
-  "WK 6",
-  "WK 7",
-  "WK 8",
-  "WK 9"
+  "WK 0-2026",
+  "WK 6-2026",
+  "WK 7-2026",
+  "WK 8-2026",
+  "WK 9-2026",
+  "WK 10-2026",
+  "WK 11-2026",
+  "WK 12-2026",
+  "WK 13-2026",
+  "WK 14-2026",
+  "WK 15-2026",
+  "WK 16-2026",
+  "WK 17-2026",
+  "WK 18-2026",
+  "WK 19-2026",
+  "WK 20-2026",
+  "WK 21-2026"
 ];
 export const REGIONS = [
-  "NEA",
-  "SEA"
+  "Asia",
+  "Oceania",
+  "Other"
 ];
-export const COUNTRIES = [];
+export const COUNTRIES = [
+  "Australia",
+  "China",
+  "Hong Kong",
+  "Indonesia",
+  "Japan",
+  "KR",
+  "Malaysia",
+  "NZ",
+  "PH",
+  "SG",
+  "Taiwan",
+  "Thailand",
+  "Vietnam"
+];
 export const PORT_NAMES = [
   "AUADL",
   "AUBNE",
@@ -339,7 +354,416 @@ export const PORT_NAMES = [
   "VNVUT"
 ];
 export const PORT_CODES = [];
-export const PORT_HIERARCHY = [];
+export const PORT_HIERARCHY = [
+  {
+    "code": "IDSUB",
+    "name": "IDSUB",
+    "country": "Indonesia",
+    "region": "Asia"
+  },
+  {
+    "code": "TWKEL",
+    "name": "TWKEL",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "IDJKT",
+    "name": "IDJKT",
+    "country": "Indonesia",
+    "region": "Asia"
+  },
+  {
+    "code": "JPTOY",
+    "name": "JPTOY",
+    "country": "Japan",
+    "region": "Asia"
+  },
+  {
+    "code": "JPUKB",
+    "name": "JPUKB",
+    "country": "Japan",
+    "region": "Asia"
+  },
+  {
+    "code": "CNQIN",
+    "name": "CNQIN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSZP",
+    "name": "CNSZP",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNGUT",
+    "name": "CNGUT",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MYNTL",
+    "name": "MYNTL",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "CNFOS",
+    "name": "CNFOS",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "AUSYD",
+    "name": "AUSYD",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "TWKHH",
+    "name": "TWKHH",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "VNHPH",
+    "name": "VNHPH",
+    "country": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "code": "CNCZX",
+    "name": "CNCZX",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "HKHKG",
+    "name": "HKHKG",
+    "country": "Hong Kong",
+    "region": "Asia"
+  },
+  {
+    "code": "PHMNL",
+    "name": "PHMNL",
+    "country": "PH",
+    "region": "Other"
+  },
+  {
+    "code": "VNDAD",
+    "name": "VNDAD",
+    "country": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSHA",
+    "name": "CNSHA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "THNPM",
+    "name": "THNPM",
+    "country": "Thailand",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSAD",
+    "name": "CNSAD",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNYTN",
+    "name": "CNYTN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MYPEN",
+    "name": "MYPEN",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "KRPUS",
+    "name": "KRPUS",
+    "country": "KR",
+    "region": "Other"
+  },
+  {
+    "code": "AUHBA",
+    "name": "AUHBA",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNFUZ",
+    "name": "CNFUZ",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "AUMEL",
+    "name": "AUMEL",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNHKO",
+    "name": "CNHKO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNTAO",
+    "name": "CNTAO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSHK",
+    "name": "CNSHK",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MYPGU",
+    "name": "MYPGU",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "MYTPP",
+    "name": "MYTPP",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "KRINC",
+    "name": "KRINC",
+    "country": "KR",
+    "region": "Other"
+  },
+  {
+    "code": "MYPKG",
+    "name": "MYPKG",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "AUBNE",
+    "name": "AUBNE",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "AUPER",
+    "name": "AUPER",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNDAL",
+    "name": "CNDAL",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "SGSIN",
+    "name": "SGSIN",
+    "country": "SG",
+    "region": "Other"
+  },
+  {
+    "code": "TWTXG",
+    "name": "TWTXG",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "VNSGN",
+    "name": "VNSGN",
+    "country": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSZH",
+    "name": "CNSZH",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNZHE",
+    "name": "CNZHE",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSHG",
+    "name": "CNSHG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNTYN",
+    "name": "CNTYN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "THLCH",
+    "name": "THLCH",
+    "country": "Thailand",
+    "region": "Asia"
+  },
+  {
+    "code": "THLKR",
+    "name": "THLKR",
+    "country": "Thailand",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNBG",
+    "name": "CNNBG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNSA",
+    "name": "CNNSA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNTG",
+    "name": "CNNTG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "THBKK",
+    "name": "THBKK",
+    "country": "Thailand",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSNZ",
+    "name": "CNSNZ",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNCH",
+    "name": "CNNCH",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNYPG",
+    "name": "CNYPG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "AUFRE",
+    "name": "AUFRE",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNYGP",
+    "name": "CNYGP",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNBO",
+    "name": "CNNBO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSGH",
+    "name": "CNSGH",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNQDG",
+    "name": "CNQDG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNGOM",
+    "name": "CNGOM",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXAM",
+    "name": "CNXAM",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXMG",
+    "name": "CNXMG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "VNVUT",
+    "name": "VNVUT",
+    "country": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "code": "NZPOE",
+    "name": "NZPOE",
+    "country": "NZ",
+    "region": "Other"
+  },
+  {
+    "code": "AUADL",
+    "name": "AUADL",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNTNG",
+    "name": "CNTNG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNTXG",
+    "name": "CNTXG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXMN",
+    "name": "CNXMN",
+    "country": "China",
+    "region": "Asia"
+  }
+];
 
 export const BOOKING_LOG_DATA = [
   {
@@ -373,7 +797,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -406,7 +831,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -439,7 +865,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -472,7 +899,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -505,7 +933,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -538,7 +967,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -571,7 +1001,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -604,7 +1035,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -637,7 +1069,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -670,7 +1103,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -703,7 +1137,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -736,7 +1171,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -769,7 +1205,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -802,7 +1239,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -835,7 +1273,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -868,7 +1307,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -901,7 +1341,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -934,7 +1375,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -967,7 +1409,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -1000,7 +1443,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1033,7 +1477,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1066,7 +1511,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1099,7 +1545,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1132,7 +1579,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AGENT",
@@ -1165,7 +1613,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1198,7 +1647,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -1231,7 +1681,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -1264,7 +1715,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -1297,7 +1749,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -1330,7 +1783,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1363,7 +1817,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1396,7 +1851,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1429,7 +1885,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1462,7 +1919,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1495,7 +1953,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -1528,7 +1987,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -1561,7 +2021,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -1594,7 +2055,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -1627,7 +2089,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -1660,7 +2123,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -1693,7 +2157,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -1726,7 +2191,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -1759,7 +2225,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -1792,7 +2259,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AUT82546",
@@ -1825,7 +2293,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "14301-2-LT",
@@ -1858,7 +2327,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -1891,7 +2361,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -1924,7 +2395,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -1957,7 +2429,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -1990,7 +2463,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2023,7 +2497,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -2056,7 +2531,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -2089,7 +2565,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2122,7 +2599,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "14301-2-LT",
@@ -2155,7 +2633,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AGENT",
@@ -2188,7 +2667,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "14301-2-LT",
@@ -2221,7 +2701,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -2254,7 +2735,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2287,7 +2769,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -2320,7 +2803,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2353,7 +2837,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2386,7 +2871,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2419,7 +2905,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2452,7 +2939,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2485,7 +2973,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2518,7 +3007,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2551,7 +3041,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -2584,7 +3075,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2617,7 +3109,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2650,7 +3143,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2683,7 +3177,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2716,7 +3211,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2749,7 +3245,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2782,7 +3279,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2815,7 +3313,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2848,7 +3347,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -2881,7 +3381,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -2914,7 +3415,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2947,7 +3449,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -2980,7 +3483,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -3013,7 +3517,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3046,7 +3551,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3079,7 +3585,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3112,7 +3619,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3145,7 +3653,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3178,7 +3687,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3211,7 +3721,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3244,7 +3755,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3277,7 +3789,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3310,7 +3823,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3343,7 +3857,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3376,7 +3891,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3409,7 +3925,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3442,7 +3959,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3475,7 +3993,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3508,7 +4027,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -3541,7 +4061,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3574,7 +4095,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3607,7 +4129,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3640,7 +4163,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3673,7 +4197,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3706,7 +4231,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3739,7 +4265,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3772,7 +4299,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3805,7 +4333,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3838,7 +4367,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -3871,7 +4401,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -3904,7 +4435,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -3937,7 +4469,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -3970,7 +4503,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4003,7 +4537,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -4036,7 +4571,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -4069,7 +4605,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -4102,7 +4639,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -4135,7 +4673,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4168,7 +4707,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AGENT",
@@ -4201,7 +4741,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4234,7 +4775,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -4267,7 +4809,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4300,7 +4843,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4333,7 +4877,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -4366,7 +4911,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -4399,7 +4945,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -4432,7 +4979,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "SPOT",
@@ -4465,7 +5013,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -4498,7 +5047,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -4531,7 +5081,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4564,7 +5115,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4597,7 +5149,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -4630,7 +5183,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 14,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -4663,7 +5217,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -4696,7 +5251,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "MELLN250040",
@@ -4729,7 +5285,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "MELLN250040",
@@ -4762,7 +5319,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "MELLN250040",
@@ -4795,7 +5353,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -4828,7 +5387,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4861,7 +5421,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4894,7 +5455,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -4927,7 +5489,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4960,7 +5523,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -4993,7 +5557,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -5026,7 +5591,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -5059,7 +5625,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -5092,7 +5659,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5125,7 +5693,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5158,7 +5727,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AGENT",
@@ -5191,7 +5761,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AGENT",
@@ -5224,7 +5795,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AGENT",
@@ -5257,7 +5829,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -5290,7 +5863,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -5323,7 +5897,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -5356,7 +5931,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5389,7 +5965,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5422,7 +5999,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -5455,7 +6033,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5488,7 +6067,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5521,7 +6101,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5554,7 +6135,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5587,7 +6169,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5620,7 +6203,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5653,7 +6237,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5686,7 +6271,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -5719,7 +6305,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5752,7 +6339,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -5785,7 +6373,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -5818,7 +6407,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -5851,7 +6441,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -5884,7 +6475,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299163347",
@@ -5917,7 +6509,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -5950,7 +6543,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AUT82546",
@@ -5983,7 +6577,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -6016,7 +6611,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -6049,7 +6645,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -6082,7 +6679,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -6115,7 +6713,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -6148,7 +6747,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -6181,7 +6781,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6214,7 +6815,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6247,7 +6849,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6280,7 +6883,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6313,7 +6917,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6346,7 +6951,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6379,7 +6985,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6412,7 +7019,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6445,7 +7053,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -6478,7 +7087,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6511,7 +7121,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6544,7 +7155,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AGENT",
@@ -6577,7 +7189,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -6610,7 +7223,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -6643,7 +7257,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -6676,7 +7291,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -6709,7 +7325,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -6742,7 +7359,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -6775,7 +7393,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -6808,7 +7427,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -6841,7 +7461,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -6874,7 +7495,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AUT82546",
@@ -6907,7 +7529,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -6940,7 +7563,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -6973,7 +7597,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -7006,7 +7631,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "OTH",
@@ -7039,7 +7665,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -7072,7 +7699,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "OTH",
@@ -7105,7 +7733,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "MELLN250040",
@@ -7138,7 +7767,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "MELLN250040",
@@ -7171,7 +7801,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -7204,7 +7835,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -7237,7 +7869,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -7270,7 +7903,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -7303,7 +7937,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -7336,7 +7971,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -7369,7 +8005,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -7402,7 +8039,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -7435,7 +8073,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -7468,7 +8107,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "299424850",
@@ -7501,7 +8141,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -7534,7 +8175,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -7567,7 +8209,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -7600,7 +8243,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -7633,7 +8277,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -7666,7 +8311,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -7699,7 +8345,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -7732,7 +8379,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -7765,7 +8413,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -7798,7 +8447,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -7831,7 +8481,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -7864,7 +8515,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -7897,7 +8549,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -7930,7 +8583,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AUT82546",
@@ -7963,7 +8617,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -7996,7 +8651,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "AUT82546",
@@ -8029,7 +8685,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -8062,7 +8719,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AUT82546",
@@ -8095,7 +8753,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8128,7 +8787,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8161,7 +8821,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -8194,7 +8855,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -8227,7 +8889,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8260,7 +8923,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8293,7 +8957,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8326,7 +8991,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8359,7 +9025,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8392,7 +9059,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8425,7 +9093,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8458,7 +9127,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -8491,7 +9161,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8524,7 +9195,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -8557,7 +9229,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -8590,7 +9263,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "SPOT",
@@ -8623,7 +9297,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -8656,7 +9331,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8689,7 +9365,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8722,7 +9399,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8755,7 +9433,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8788,7 +9467,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -8821,7 +9501,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -8854,7 +9535,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -8887,7 +9569,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -8920,7 +9603,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -8953,7 +9637,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -8986,7 +9671,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -9019,7 +9705,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -9052,7 +9739,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -9085,7 +9773,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9118,7 +9807,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9151,7 +9841,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -9184,7 +9875,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9217,7 +9909,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9250,7 +9943,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9283,7 +9977,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -9316,7 +10011,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -9349,7 +10045,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9382,7 +10079,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -9415,7 +10113,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -9448,7 +10147,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9481,7 +10181,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AUT82546",
@@ -9514,7 +10215,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9547,7 +10249,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9580,7 +10283,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9613,7 +10317,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -9646,7 +10351,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9679,7 +10385,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299163347",
@@ -9712,7 +10419,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9745,7 +10453,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9778,7 +10487,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9811,7 +10521,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9844,7 +10555,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9877,7 +10589,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9910,7 +10623,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9943,7 +10657,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -9976,7 +10691,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -10009,7 +10725,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 26,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10042,7 +10759,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -10075,7 +10793,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10108,7 +10827,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10141,7 +10861,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -10174,7 +10895,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10207,7 +10929,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10240,7 +10963,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10273,7 +10997,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10306,7 +11031,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10339,7 +11065,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10372,7 +11099,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -10405,7 +11133,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -10438,7 +11167,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10471,7 +11201,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10504,7 +11235,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10537,7 +11269,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -10570,7 +11303,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -10603,7 +11337,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -10636,7 +11371,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -10669,7 +11405,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -10702,7 +11439,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "MELLN250040",
@@ -10735,7 +11473,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "MELLN250040",
@@ -10768,7 +11507,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -10801,7 +11541,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -10834,7 +11575,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -10867,7 +11609,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -10900,7 +11643,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -10933,7 +11677,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "299424850",
@@ -10966,7 +11711,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "AGENT",
@@ -10999,7 +11745,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AGENT",
@@ -11032,7 +11779,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AGENT",
@@ -11065,7 +11813,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AGENT",
@@ -11098,7 +11847,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "SPOT",
@@ -11131,7 +11881,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -11164,7 +11915,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -11197,7 +11949,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -11230,7 +11983,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "MELLN250040",
@@ -11263,7 +12017,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "MELLN250040",
@@ -11296,7 +12051,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "MELLN250040",
@@ -11329,7 +12085,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -11362,7 +12119,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -11395,7 +12153,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11428,7 +12187,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11461,7 +12221,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -11494,7 +12255,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11527,7 +12289,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11560,7 +12323,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -11593,7 +12357,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11626,7 +12391,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": null,
@@ -11659,7 +12425,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11692,7 +12459,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11725,7 +12493,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-ST",
@@ -11758,7 +12527,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11791,7 +12561,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -11824,7 +12595,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "299424850",
@@ -11857,7 +12629,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -11890,7 +12663,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -11923,7 +12697,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -11956,7 +12731,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "MELLN250040",
@@ -11989,7 +12765,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -12022,7 +12799,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12055,7 +12833,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -12088,7 +12867,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12121,7 +12901,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -12154,7 +12935,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -12187,7 +12969,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -12220,7 +13003,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12253,7 +13037,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12286,7 +13071,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -12319,7 +13105,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12352,7 +13139,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12385,7 +13173,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "299424850",
@@ -12418,7 +13207,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -12451,7 +13241,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -12484,7 +13275,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -12517,7 +13309,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -12550,7 +13343,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -12583,7 +13377,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -12616,7 +13411,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -12649,7 +13445,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -12682,7 +13479,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -12715,7 +13513,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AUT82546",
@@ -12748,7 +13547,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AUT82546",
@@ -12781,7 +13581,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AUT82546",
@@ -12814,7 +13615,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AUT82546",
@@ -12847,7 +13649,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -12880,7 +13683,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -12913,7 +13717,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "MELLN250040",
@@ -12946,7 +13751,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "4319-1-ST",
@@ -12979,7 +13785,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": null,
@@ -13012,7 +13819,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -13045,7 +13853,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -13078,7 +13887,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "SPOT",
@@ -13111,7 +13921,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -13144,7 +13955,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "AUT82546",
@@ -13177,7 +13989,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "299424850",
@@ -13210,7 +14023,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -13243,7 +14057,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -13276,7 +14091,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -13309,7 +14125,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -13342,7 +14159,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -13375,7 +14193,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -13408,7 +14227,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -13441,7 +14261,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -13474,7 +14295,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -13507,7 +14329,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -13540,7 +14363,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -13573,7 +14397,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -13606,7 +14431,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -13639,7 +14465,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -13672,7 +14499,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -13705,7 +14533,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "299424850",
@@ -13738,7 +14567,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -13771,7 +14601,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -13804,7 +14635,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -13837,7 +14669,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -13870,7 +14703,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 10,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -13903,7 +14737,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -13936,7 +14771,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AGENT",
@@ -13969,7 +14805,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AGENT",
@@ -14002,7 +14839,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -14035,7 +14873,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "SPOT",
@@ -14068,7 +14907,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "SPOT",
@@ -14101,7 +14941,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "AUT82546",
@@ -14134,7 +14975,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299163347",
@@ -14167,7 +15009,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -14200,7 +15043,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -14233,7 +15077,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -14266,7 +15111,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -14299,7 +15145,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -14332,7 +15179,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -14365,7 +15213,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -14398,7 +15247,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -14431,7 +15281,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -14464,7 +15315,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AUT82546",
@@ -14497,7 +15349,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": "AUT82546",
@@ -14530,7 +15383,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 6,
-    "mscWeek": "6"
+    "year": 2026,
+    "mscWeek": "6-2026"
   },
   {
     "contract": null,
@@ -14563,7 +15417,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14596,7 +15451,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -14629,7 +15485,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14662,7 +15519,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14695,7 +15553,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14728,7 +15587,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14761,7 +15621,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14794,7 +15655,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14827,7 +15689,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14860,7 +15723,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -14893,7 +15757,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14926,7 +15791,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -14959,7 +15825,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -14992,7 +15859,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15025,7 +15893,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15058,7 +15927,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15091,7 +15961,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -15124,7 +15995,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15157,7 +16029,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -15190,7 +16063,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -15223,7 +16097,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -15256,7 +16131,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -15289,7 +16165,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -15322,7 +16199,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -15355,7 +16233,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -15388,7 +16267,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -15421,7 +16301,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -15454,7 +16335,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15487,7 +16369,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -15520,7 +16403,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -15553,7 +16437,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -15586,7 +16471,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -15619,7 +16505,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -15652,7 +16539,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -15685,7 +16573,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AGENT",
@@ -15718,7 +16607,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -15751,7 +16641,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -15784,7 +16675,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "299424850",
@@ -15817,7 +16709,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "AGENT",
@@ -15850,7 +16743,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -15883,7 +16777,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "AD1",
     "week_num": 7,
-    "mscWeek": "7"
+    "year": 2026,
+    "mscWeek": "7-2026"
   },
   {
     "contract": "AGENT",
@@ -15916,7 +16811,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 8,
-    "mscWeek": "8"
+    "year": 2026,
+    "mscWeek": "8-2026"
   },
   {
     "contract": "299424850",
@@ -15949,7 +16845,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -15982,7 +16879,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -16015,7 +16913,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16048,7 +16947,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16081,7 +16981,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16114,7 +17015,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16147,7 +17049,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16180,7 +17083,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16213,7 +17117,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16246,7 +17151,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "MELLN250040",
@@ -16279,7 +17185,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -16312,7 +17219,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -16345,7 +17253,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -16378,7 +17287,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -16411,7 +17321,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -16444,7 +17355,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -16477,7 +17389,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -16510,7 +17423,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -16543,7 +17457,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -16576,7 +17491,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -16609,7 +17525,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -16642,7 +17559,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -16675,7 +17593,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -16708,7 +17627,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -16741,7 +17661,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "AD1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -16774,7 +17695,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -16807,7 +17729,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -16840,7 +17763,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -16873,7 +17797,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -16906,7 +17831,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -16939,7 +17865,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -16972,7 +17899,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17005,7 +17933,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -17038,7 +17967,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -17071,7 +18001,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17104,7 +18035,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -17137,7 +18069,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -17170,7 +18103,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17203,7 +18137,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17236,7 +18171,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17269,7 +18205,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -17302,7 +18239,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -17335,7 +18273,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "299424850",
@@ -17368,7 +18307,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -17401,7 +18341,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -17434,7 +18375,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -17467,7 +18409,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -17500,7 +18443,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17533,7 +18477,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -17566,7 +18511,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -17599,7 +18545,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -17632,7 +18579,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -17665,7 +18613,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AGENT",
@@ -17698,7 +18647,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "SPOT",
@@ -17731,7 +18681,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "SPOT",
@@ -17764,7 +18715,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "SPOT",
@@ -17797,7 +18749,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17830,7 +18783,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -17863,7 +18817,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -17896,7 +18851,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -17929,7 +18885,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -17962,7 +18919,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -17995,7 +18953,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -18028,7 +18987,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -18061,7 +19021,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -18094,7 +19055,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -18127,7 +19089,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -18160,7 +19123,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -18193,7 +19157,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": "SPOT",
@@ -18226,7 +19191,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -18259,7 +19225,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -18292,7 +19259,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -18325,7 +19293,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -18358,7 +19327,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -18391,7 +19361,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -18424,7 +19395,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -18457,7 +19429,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -18490,7 +19463,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -18523,7 +19497,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 9,
-    "mscWeek": "9"
+    "year": 2026,
+    "mscWeek": "9-2026"
   },
   {
     "contract": null,
@@ -18556,7 +19531,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -18589,7 +19565,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -18622,7 +19599,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -18655,7 +19633,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -18688,7 +19667,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -18721,7 +19701,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -18754,7 +19735,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -18787,7 +19769,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -18820,7 +19803,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -18853,7 +19837,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -18886,7 +19871,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -18919,7 +19905,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -18952,7 +19939,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -18985,7 +19973,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -19018,7 +20007,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19051,7 +20041,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -19084,7 +20075,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19117,7 +20109,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -19150,7 +20143,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19183,7 +20177,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -19216,7 +20211,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 13,
     "branch_clean": "FR1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -19249,7 +20245,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19282,7 +20279,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19315,7 +20313,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19348,7 +20347,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19381,7 +20381,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19414,7 +20415,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19447,7 +20449,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -19480,7 +20483,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -19513,7 +20517,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -19546,7 +20551,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19579,7 +20585,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19612,7 +20619,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19645,7 +20653,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19678,7 +20687,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19711,7 +20721,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19744,7 +20755,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -19777,7 +20789,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19810,7 +20823,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19843,7 +20857,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -19876,7 +20891,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -19909,7 +20925,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -19942,7 +20959,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -19975,7 +20993,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -20008,7 +21027,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -20041,7 +21061,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20074,7 +21095,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -20107,7 +21129,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -20140,7 +21163,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -20173,7 +21197,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20206,7 +21231,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20239,7 +21265,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -20272,7 +21299,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -20305,7 +21333,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20338,7 +21367,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -20371,7 +21401,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -20404,7 +21435,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -20437,7 +21469,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -20470,7 +21503,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -20503,7 +21537,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -20536,7 +21571,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -20569,7 +21605,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -20602,7 +21639,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "AUT82546",
@@ -20635,7 +21673,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -20668,7 +21707,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -20701,7 +21741,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -20734,7 +21775,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20767,7 +21809,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20800,7 +21843,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": null,
@@ -20833,7 +21877,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -20866,7 +21911,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -20899,7 +21945,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 10,
-    "mscWeek": "10"
+    "year": 2026,
+    "mscWeek": "10-2026"
   },
   {
     "contract": null,
@@ -20932,7 +21979,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": null,
@@ -20965,7 +22013,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -20998,7 +22047,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "ME1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -21031,7 +22081,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -21064,7 +22115,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AGENT",
@@ -21097,7 +22149,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AGENT",
@@ -21130,7 +22183,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -21163,7 +22217,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -21196,7 +22251,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -21229,7 +22285,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -21262,7 +22319,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21295,7 +22353,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -21328,7 +22387,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21361,7 +22421,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21394,7 +22455,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21427,7 +22489,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21460,7 +22523,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21493,7 +22557,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21526,7 +22591,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -21559,7 +22625,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -21592,7 +22659,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -21625,7 +22693,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -21658,7 +22727,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "16646",
@@ -21691,7 +22761,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "16646",
@@ -21724,7 +22795,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT26704",
@@ -21757,7 +22829,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21790,7 +22863,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21823,7 +22897,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -21856,7 +22931,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -21889,7 +22965,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -21922,7 +22999,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -21955,7 +23033,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -21988,7 +23067,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -22021,7 +23101,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -22054,7 +23135,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "16646",
@@ -22087,7 +23169,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -22120,7 +23203,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -22153,7 +23237,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AGENT",
@@ -22186,7 +23271,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AGENT",
@@ -22219,7 +23305,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -22252,7 +23339,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 11,
-    "mscWeek": "11"
+    "year": 2026,
+    "mscWeek": "11-2026"
   },
   {
     "contract": "299424850",
@@ -22285,7 +23373,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "299424850",
@@ -22318,7 +23407,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "MELLN250040",
@@ -22351,7 +23441,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -22384,7 +23475,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -22417,7 +23509,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -22450,7 +23543,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "MELLN250040",
@@ -22483,7 +23577,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -22516,7 +23611,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -22549,7 +23645,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "SY1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -22582,7 +23679,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -22615,7 +23713,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -22648,7 +23747,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -22681,7 +23781,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -22714,7 +23815,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -22747,7 +23849,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -22780,7 +23883,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -22813,7 +23917,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -22846,7 +23951,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": "AUT82546",
@@ -22879,7 +23985,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 12,
-    "mscWeek": "12"
+    "year": 2026,
+    "mscWeek": "12-2026"
   },
   {
     "contract": null,
@@ -22912,7 +24019,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -22945,7 +24053,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -22978,7 +24087,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -23011,7 +24121,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "299424850",
@@ -23044,7 +24155,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AGENT",
@@ -23077,7 +24189,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT26704",
@@ -23110,7 +24223,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -23143,7 +24257,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT82546",
@@ -23176,7 +24291,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT26704",
@@ -23209,7 +24325,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -23242,7 +24359,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT82546",
@@ -23275,7 +24393,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AUT82546",
@@ -23308,7 +24427,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -23341,7 +24461,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23374,7 +24495,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "OTH",
@@ -23407,7 +24529,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 13,
-    "mscWeek": "13"
+    "year": 2026,
+    "mscWeek": "13-2026"
   },
   {
     "contract": "AGENT",
@@ -23440,7 +24563,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AGENT",
@@ -23473,7 +24597,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23506,7 +24631,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -23539,7 +24665,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 20,
-    "mscWeek": "20"
+    "year": 2026,
+    "mscWeek": "20-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23572,7 +24699,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -23605,7 +24733,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -23638,7 +24767,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "AUT26704",
@@ -23671,7 +24801,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AGENT",
@@ -23704,7 +24835,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -23737,7 +24869,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -23770,7 +24903,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23803,7 +24937,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -23836,7 +24971,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23869,7 +25005,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23902,7 +25039,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -23935,7 +25073,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AGENT",
@@ -23968,7 +25107,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24001,7 +25141,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24034,7 +25175,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24067,7 +25209,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "16646",
@@ -24100,7 +25243,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -24133,7 +25277,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "16646",
@@ -24166,7 +25311,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -24199,7 +25345,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -24232,7 +25379,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26705",
@@ -24265,7 +25413,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26705",
@@ -24298,7 +25447,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "16646",
@@ -24331,7 +25481,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299992850",
@@ -24364,7 +25515,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -24397,7 +25549,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "16646",
@@ -24430,7 +25583,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -24463,7 +25617,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -24496,7 +25651,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -24529,7 +25685,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24562,7 +25719,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24595,7 +25753,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24628,7 +25787,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -24661,7 +25821,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24694,7 +25855,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -24727,7 +25889,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24760,7 +25923,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -24793,7 +25957,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24826,7 +25991,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24859,7 +26025,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -24892,7 +26059,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -24925,7 +26093,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "OTH",
@@ -24958,7 +26127,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -24991,7 +26161,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -25024,7 +26195,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -25057,7 +26229,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -25090,7 +26263,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -25123,7 +26297,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -25156,7 +26331,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -25189,7 +26365,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "PIL",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -25222,7 +26399,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -25255,7 +26433,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -25288,7 +26467,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -25321,7 +26501,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -25354,7 +26535,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "16646",
@@ -25387,7 +26569,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -25420,7 +26603,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -25453,7 +26637,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -25486,7 +26671,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "16646",
@@ -25519,7 +26705,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "16646",
@@ -25552,7 +26739,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -25585,7 +26773,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -25618,7 +26807,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -25651,7 +26841,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -25684,7 +26875,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -25717,7 +26909,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -25750,7 +26943,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -25783,7 +26977,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -25816,7 +27011,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -25849,7 +27045,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -25882,7 +27079,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -25915,7 +27113,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "SY1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -25948,7 +27147,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "MELLN250040",
@@ -25981,7 +27181,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -26014,7 +27215,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "OTH",
@@ -26047,7 +27249,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -26080,7 +27283,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -26113,7 +27317,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -26146,7 +27351,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -26179,7 +27385,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -26212,7 +27419,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": null,
@@ -26245,7 +27453,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -26278,7 +27487,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -26311,7 +27521,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -26344,7 +27555,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -26377,7 +27589,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -26410,7 +27623,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "MELLN250040",
@@ -26443,7 +27657,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -26476,7 +27691,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -26509,7 +27725,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -26542,7 +27759,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -26575,7 +27793,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -26608,7 +27827,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -26641,7 +27861,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -26674,7 +27895,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -26707,7 +27929,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AGENT",
@@ -26740,7 +27963,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -26773,7 +27997,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -26806,7 +28031,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -26839,7 +28065,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -26872,7 +28099,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -26905,7 +28133,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "OTH",
@@ -26938,7 +28167,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "OTH",
@@ -26971,7 +28201,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27004,7 +28235,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27037,7 +28269,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27070,7 +28303,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27103,7 +28337,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27136,7 +28371,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27169,7 +28405,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27202,7 +28439,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27235,7 +28473,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -27268,7 +28507,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27301,7 +28541,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -27334,7 +28575,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -27367,7 +28609,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -27400,7 +28643,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -27433,7 +28677,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -27466,7 +28711,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -27499,7 +28745,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -27532,7 +28779,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -27565,7 +28813,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -27598,7 +28847,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -27631,7 +28881,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -27664,7 +28915,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -27697,7 +28949,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -27730,7 +28983,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27763,7 +29017,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -27796,7 +29051,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -27829,7 +29085,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -27862,7 +29119,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -27895,7 +29153,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -27928,7 +29187,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -27961,7 +29221,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "SPOT",
@@ -27994,7 +29255,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -28027,7 +29289,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -28060,7 +29323,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -28093,7 +29357,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -28126,7 +29391,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28159,7 +29425,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28192,7 +29459,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28225,7 +29493,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28258,7 +29527,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -28291,7 +29561,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -28324,7 +29595,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -28357,7 +29629,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28390,7 +29663,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28423,7 +29697,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -28456,7 +29731,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28489,7 +29765,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28522,7 +29799,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28555,7 +29833,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -28588,7 +29867,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28621,7 +29901,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -28654,7 +29935,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -28687,7 +29969,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -28720,7 +30003,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -28753,7 +30037,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -28786,7 +30071,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28819,7 +30105,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -28852,7 +30139,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AGENT",
@@ -28885,7 +30173,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "50013512",
@@ -28918,7 +30207,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -28951,7 +30241,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -28984,7 +30275,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29017,7 +30309,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29050,7 +30343,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 5,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29083,7 +30377,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "ME1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29116,7 +30411,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -29149,7 +30445,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 5,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -29182,7 +30479,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 5,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29215,7 +30513,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 5,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -29248,7 +30547,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -29281,7 +30581,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -29314,7 +30615,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -29347,7 +30649,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "CAU2200050",
@@ -29380,7 +30683,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -29413,7 +30717,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AGENT",
@@ -29446,7 +30751,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -29479,7 +30785,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -29512,7 +30819,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26705",
@@ -29545,7 +30853,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26705",
@@ -29578,7 +30887,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29611,7 +30921,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29644,7 +30955,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "SPOT",
@@ -29677,7 +30989,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29710,7 +31023,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -29743,7 +31057,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29776,7 +31091,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -29809,7 +31125,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29842,7 +31159,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -29875,7 +31193,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -29908,7 +31227,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -29941,7 +31261,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -29974,7 +31295,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30007,7 +31329,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -30040,7 +31363,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -30073,7 +31397,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30106,7 +31431,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -30139,7 +31465,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -30172,7 +31499,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -30205,7 +31533,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": null,
@@ -30238,7 +31567,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "SPOT",
@@ -30271,7 +31601,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -30304,7 +31635,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -30337,7 +31669,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -30370,7 +31703,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -30403,7 +31737,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -30436,7 +31771,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -30469,7 +31805,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AUT26704",
@@ -30502,7 +31839,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -30535,7 +31873,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -30568,7 +31907,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -30601,7 +31941,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -30634,7 +31975,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -30667,7 +32009,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -30700,7 +32043,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30733,7 +32077,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30766,7 +32111,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -30799,7 +32145,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -30832,7 +32179,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -30865,7 +32213,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30898,7 +32247,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -30931,7 +32281,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AGENT",
@@ -30964,7 +32315,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -30997,7 +32349,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -31030,7 +32383,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31063,7 +32417,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31096,7 +32451,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -31129,7 +32485,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -31162,7 +32519,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -31195,7 +32553,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "299424850",
@@ -31228,7 +32587,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -31261,7 +32621,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -31294,7 +32655,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -31327,7 +32689,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -31360,7 +32723,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31393,7 +32757,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 5,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": null,
@@ -31426,7 +32791,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -31459,7 +32825,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -31492,7 +32859,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "16646",
@@ -31525,7 +32893,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -31558,7 +32927,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -31591,7 +32961,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -31624,7 +32995,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -31657,7 +33029,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -31690,7 +33063,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -31723,7 +33097,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -31756,7 +33131,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31789,7 +33165,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "ME1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -31822,7 +33199,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 7,
     "branch_clean": "PIL",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31855,7 +33233,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "PIL",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "50013512",
@@ -31888,7 +33267,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 14,
-    "mscWeek": "14"
+    "year": 2026,
+    "mscWeek": "14-2026"
   },
   {
     "contract": "299424850",
@@ -31921,7 +33301,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "AGENT",
@@ -31954,7 +33335,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 15,
-    "mscWeek": "15"
+    "year": 2026,
+    "mscWeek": "15-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -31987,7 +33369,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32020,7 +33403,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32053,7 +33437,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32086,7 +33471,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -32119,7 +33505,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "FR1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32152,7 +33539,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32185,7 +33573,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -32218,7 +33607,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -32251,7 +33641,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -32284,7 +33675,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "AGENT",
@@ -32317,7 +33709,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "SPOT",
@@ -32350,7 +33743,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "AUT26704",
@@ -32383,7 +33777,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "AUT26704",
@@ -32416,7 +33811,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "AGENT",
@@ -32449,7 +33845,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -32482,7 +33879,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32515,7 +33913,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -32548,7 +33947,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "16646",
@@ -32581,7 +33981,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 20,
-    "mscWeek": "20"
+    "year": 2026,
+    "mscWeek": "20-2026"
   },
   {
     "contract": "299424850",
@@ -32614,7 +34015,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32647,7 +34049,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AGENT",
@@ -32680,7 +34083,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32713,7 +34117,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -32746,7 +34151,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -32779,7 +34185,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "MELLN250040",
@@ -32812,7 +34219,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -32845,7 +34253,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32878,7 +34287,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -32911,7 +34321,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -32944,7 +34355,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "AUT26704",
@@ -32977,7 +34389,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -33010,7 +34423,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -33043,7 +34457,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33076,7 +34491,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -33109,7 +34525,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -33142,7 +34559,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33175,7 +34593,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33208,7 +34627,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33241,7 +34661,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -33274,7 +34695,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "16646",
@@ -33307,7 +34729,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 20,
-    "mscWeek": "20"
+    "year": 2026,
+    "mscWeek": "20-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -33340,7 +34763,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33373,7 +34797,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -33406,7 +34831,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -33439,7 +34865,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -33472,7 +34899,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -33505,7 +34933,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -33538,7 +34967,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -33571,7 +35001,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -33604,7 +35035,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -33637,7 +35069,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -33670,7 +35103,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -33703,7 +35137,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "AGENT",
@@ -33736,7 +35171,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -33769,7 +35205,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -33802,7 +35239,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "PIL",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -33835,7 +35273,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -33868,7 +35307,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "TBNEN00429A",
@@ -33901,7 +35341,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 8,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -33934,7 +35375,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -33967,7 +35409,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": null,
@@ -34000,7 +35443,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "BN1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -34033,7 +35477,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-LT",
@@ -34066,7 +35511,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -34099,7 +35545,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -34132,7 +35579,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34165,7 +35613,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -34198,7 +35647,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": null,
@@ -34231,7 +35681,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34264,7 +35715,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -34297,7 +35749,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "PIL",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34330,7 +35783,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "PIL",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -34363,7 +35817,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -34396,7 +35851,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -34429,7 +35885,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "299424850",
@@ -34462,7 +35919,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AGENT",
@@ -34495,7 +35953,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 16,
-    "mscWeek": "16"
+    "year": 2026,
+    "mscWeek": "16-2026"
   },
   {
     "contract": "AUT26704",
@@ -34528,7 +35987,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "AUT26704",
@@ -34561,7 +36021,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "AUT26704",
@@ -34594,7 +36055,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34627,7 +36089,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "SY1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -34660,7 +36123,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -34693,7 +36157,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -34726,7 +36191,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -34759,7 +36225,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -34792,7 +36259,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "FR1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -34825,7 +36293,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "BN1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -34858,7 +36327,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "BN1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34891,7 +36361,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -34924,7 +36395,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -34957,7 +36429,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "BNEB00159A",
@@ -34990,7 +36463,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 6,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "299424850",
@@ -35023,7 +36497,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "16646",
@@ -35056,7 +36531,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -35089,7 +36565,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 19,
-    "mscWeek": "19"
+    "year": 2026,
+    "mscWeek": "19-2026"
   },
   {
     "contract": "299424850",
@@ -35122,7 +36599,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "ME1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "4319-1-8888-ST",
@@ -35155,7 +36633,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 18,
-    "mscWeek": "18"
+    "year": 2026,
+    "mscWeek": "18-2026"
   },
   {
     "contract": "16646",
@@ -35188,7 +36667,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 3,
     "branch_clean": "AD1",
     "week_num": 20,
-    "mscWeek": "20"
+    "year": 2026,
+    "mscWeek": "20-2026"
   },
   {
     "contract": "299424850",
@@ -35221,7 +36701,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 1,
     "branch_clean": "AD1",
     "week_num": 17,
-    "mscWeek": "17"
+    "year": 2026,
+    "mscWeek": "17-2026"
   },
   {
     "contract": "299424850",
@@ -35254,7 +36735,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 4,
     "branch_clean": "AD1",
     "week_num": 20,
-    "mscWeek": "20"
+    "year": 2026,
+    "mscWeek": "20-2026"
   },
   {
     "contract": "GSCIF220008",
@@ -35287,7 +36769,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 2,
     "branch_clean": "AD1",
     "week_num": 21,
-    "mscWeek": "21"
+    "year": 2026,
+    "mscWeek": "21-2026"
   },
   {
     "contract": null,
@@ -35320,7 +36803,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35353,7 +36837,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35386,7 +36871,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35419,7 +36905,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35452,7 +36939,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35485,7 +36973,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35518,7 +37007,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35551,7 +37041,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35584,7 +37075,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35617,7 +37109,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35650,7 +37143,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35683,7 +37177,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35716,7 +37211,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35749,7 +37245,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35782,7 +37279,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35815,7 +37313,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35848,7 +37347,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35881,7 +37381,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35914,7 +37415,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35947,7 +37449,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -35980,7 +37483,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36013,7 +37517,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36046,7 +37551,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36079,7 +37585,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36112,7 +37619,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36145,7 +37653,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36178,7 +37687,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36211,7 +37721,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36244,7 +37755,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36277,7 +37789,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36310,7 +37823,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36343,7 +37857,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36376,7 +37891,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36409,7 +37925,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36442,7 +37959,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36475,7 +37993,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36508,7 +38027,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36541,7 +38061,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36574,7 +38095,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36607,7 +38129,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36640,7 +38163,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36673,7 +38197,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36706,7 +38231,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36739,7 +38265,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36772,7 +38299,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36805,7 +38333,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36838,7 +38367,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36871,7 +38401,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36904,7 +38435,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36937,7 +38469,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -36970,7 +38503,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -37003,7 +38537,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   },
   {
     "contract": null,
@@ -37036,7 +38571,8 @@ export const BOOKING_LOG_DATA = [
     "teu": 0,
     "branch_clean": null,
     "week_num": 0,
-    "mscWeek": "0"
+    "year": 2026,
+    "mscWeek": "0-2026"
   }
 ];
 export const BRANCH_SNAPSHOT = [
@@ -38260,123 +39796,123 @@ export const CONTRACT_UTIL_DATA = [
 ];
 export const WEEKLY_TREND_DATA = [
   {
-    "week": "WK 0",
+    "week": "WK 0-2026",
     "alloc": 268,
     "booked": 0,
     "util": 0.0
   },
   {
-    "week": "WK 10",
-    "alloc": 268,
-    "booked": 70,
-    "util": 26.1
-  },
-  {
-    "week": "WK 11",
-    "alloc": 268,
-    "booked": 100,
-    "util": 37.3
-  },
-  {
-    "week": "WK 12",
-    "alloc": 268,
-    "booked": 165,
-    "util": 61.6
-  },
-  {
-    "week": "WK 13",
-    "alloc": 268,
-    "booked": 148,
-    "util": 55.2
-  },
-  {
-    "week": "WK 14",
-    "alloc": 268,
-    "booked": 105,
-    "util": 39.2
-  },
-  {
-    "week": "WK 15",
-    "alloc": 268,
-    "booked": 219,
-    "util": 81.7
-  },
-  {
-    "week": "WK 16",
-    "alloc": 268,
-    "booked": 222,
-    "util": 82.8
-  },
-  {
-    "week": "WK 17",
-    "alloc": 268,
-    "booked": 188,
-    "util": 70.1
-  },
-  {
-    "week": "WK 18",
-    "alloc": 268,
-    "booked": 79,
-    "util": 29.5
-  },
-  {
-    "week": "WK 19",
-    "alloc": 268,
-    "booked": 27,
-    "util": 10.1
-  },
-  {
-    "week": "WK 20",
-    "alloc": 268,
-    "booked": 11,
-    "util": 4.1
-  },
-  {
-    "week": "WK 21",
-    "alloc": 268,
-    "booked": 2,
-    "util": 0.7
-  },
-  {
-    "week": "WK 6",
+    "week": "WK 6-2026",
     "alloc": 268,
     "booked": 132,
     "util": 49.3
   },
   {
-    "week": "WK 7",
+    "week": "WK 7-2026",
     "alloc": 268,
     "booked": 95,
     "util": 35.4
   },
   {
-    "week": "WK 8",
+    "week": "WK 8-2026",
     "alloc": 268,
     "booked": 194,
     "util": 72.4
   },
   {
-    "week": "WK 9",
+    "week": "WK 9-2026",
     "alloc": 268,
     "booked": 60,
     "util": 22.4
+  },
+  {
+    "week": "WK 10-2026",
+    "alloc": 268,
+    "booked": 70,
+    "util": 26.1
+  },
+  {
+    "week": "WK 11-2026",
+    "alloc": 268,
+    "booked": 100,
+    "util": 37.3
+  },
+  {
+    "week": "WK 12-2026",
+    "alloc": 268,
+    "booked": 165,
+    "util": 61.6
+  },
+  {
+    "week": "WK 13-2026",
+    "alloc": 268,
+    "booked": 148,
+    "util": 55.2
+  },
+  {
+    "week": "WK 14-2026",
+    "alloc": 268,
+    "booked": 105,
+    "util": 39.2
+  },
+  {
+    "week": "WK 15-2026",
+    "alloc": 268,
+    "booked": 219,
+    "util": 81.7
+  },
+  {
+    "week": "WK 16-2026",
+    "alloc": 268,
+    "booked": 222,
+    "util": 82.8
+  },
+  {
+    "week": "WK 17-2026",
+    "alloc": 268,
+    "booked": 188,
+    "util": 70.1
+  },
+  {
+    "week": "WK 18-2026",
+    "alloc": 268,
+    "booked": 79,
+    "util": 29.5
+  },
+  {
+    "week": "WK 19-2026",
+    "alloc": 268,
+    "booked": 27,
+    "util": 10.1
+  },
+  {
+    "week": "WK 20-2026",
+    "alloc": 268,
+    "booked": 11,
+    "util": 4.1
+  },
+  {
+    "week": "WK 21-2026",
+    "alloc": 268,
+    "booked": 2,
+    "util": 0.7
   }
 ];
 export const QUARTERLY_ALLOC_UTIL = [
   {
-    "quarter": "Q0",
+    "quarter": "Q0 2026",
     "Allocation": 268,
     "Utilisation": 0,
     "UtilPct": 0.0
   },
   {
-    "quarter": "Q1",
+    "quarter": "Q1 2026",
     "Allocation": 2144,
     "Utilisation": 964,
     "UtilPct": 45.0
   },
   {
-    "quarter": "Q2",
+    "quarter": "Q2 2026",
     "Allocation": 2144,
     "Utilisation": 853,
     "UtilPct": 39.8

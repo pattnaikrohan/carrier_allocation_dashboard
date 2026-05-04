@@ -84,7 +84,7 @@ const ACCENT = {
 const CARDS = [
   {
     id: 'contract',
-    title: 'Contractual Nav-Charts',
+    title: 'Contractual\nNav-Charts',
     subtitle: 'VESSEL_REGISTRY // 01',
     route: '/contract',
     accent: 'cyan' as const,
@@ -93,7 +93,7 @@ const CARDS = [
   },
   {
     id: 'procurement',
-    title: 'Procurement Log-Book',
+    title: 'Procurement\nLog-Book',
     subtitle: 'SUPPLY_MANIFEST // 02',
     route: '/procurement',
     accent: 'purple' as const,
@@ -290,6 +290,9 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ card, index }) => {
 
   const [hovered, setHovered] = useState(false);
   const [mouse, setMouse] = useState<{ x: number; y: number }>({ x: 50, y: 50 });
+  const [isLocked, setIsLocked] = useState(card.id === 'procurement');
+  const [showPin, setShowPin] = useState(false);
+  const [pin, setPin] = useState('');
 
   const mx = useMotionValue(0);
   const my = useMotionValue(0);
@@ -336,7 +339,13 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ card, index }) => {
         onMouseMove={handleMouseMove}
         onMouseEnter={() => setHovered(true)}
         onMouseLeave={handleMouseLeave}
-        onClick={() => navigate(card.route)}
+        onClick={() => {
+          if (isLocked) {
+            setShowPin(true);
+          } else {
+            navigate(card.route);
+          }
+        }}
         whileHover={{
           scale: 1.03,
           boxShadow: `0 40px 100px -20px rgba(0,0,0,0.8), 0 0 80px ${ac.glow}`,
@@ -388,7 +397,7 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ card, index }) => {
           </span>
 
           <h2
-            className="text-2xl font-bold text-white uppercase tracking-widest mb-8"
+            className="text-2xl font-bold text-white uppercase tracking-widest mb-8 whitespace-pre-line"
             style={{ fontFamily: "'Playfair Display', serif" }}
           >
             {card.title}
@@ -407,6 +416,52 @@ const PremiumCard: React.FC<PremiumCardProps> = ({ card, index }) => {
             ))}
           </div>
         </div>
+
+        {/* Lock Overlay */}
+        <AnimatePresence>
+          {isLocked && showPin && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 10 }}
+              className="absolute inset-0 z-50 flex flex-col items-center justify-center bg-black/80 backdrop-blur-md rounded-[24px]"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div className="w-12 h-12 mb-4 rounded-full bg-purple-500/20 flex items-center justify-center border border-purple-500/40">
+                <svg className="w-6 h-6 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+              </div>
+              <h3 className="text-white font-bold tracking-widest uppercase mb-4 text-sm">Enter Passcode</h3>
+              <input
+                type="password"
+                autoFocus
+                maxLength={4}
+                value={pin}
+                onChange={(e) => {
+                  const val = e.target.value.replace(/\D/g, '');
+                  setPin(val);
+                  if (val === '7772') {
+                    setIsLocked(false);
+                    setShowPin(false);
+                    setTimeout(() => navigate(card.route), 300);
+                  }
+                }}
+                className="w-32 bg-white/5 border border-purple-500/30 rounded-lg px-4 py-2 text-center text-xl text-white font-mono tracking-[0.5em] focus:outline-none focus:border-purple-400 placeholder:text-slate-600"
+                placeholder="****"
+              />
+              <button 
+                onClick={(e) => { e.stopPropagation(); setShowPin(false); setPin(''); }}
+                className="mt-6 text-[10px] text-slate-400 hover:text-white uppercase tracking-widest transition-colors"
+              >
+                Cancel
+              </button>
+            </motion.div>
+          )}
+          {isLocked && !showPin && (
+            <div className="absolute top-6 right-6 z-20">
+              <svg className="w-5 h-5 text-purple-400/50" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+            </div>
+          )}
+        </AnimatePresence>
       </motion.div>
     </motion.div>
   );

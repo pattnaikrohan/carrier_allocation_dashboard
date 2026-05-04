@@ -2,6 +2,11 @@ import React, { useState } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 
+interface HierarchyNode {
+  label: string;
+  children?: HierarchyNode[];
+}
+
 interface NavbarProps {
   showBack?: boolean;
   selectedWeek?: string;
@@ -12,37 +17,14 @@ interface NavbarProps {
   onOriginChange?: (origin: string) => void;
   selectedDestination?: string;
   onDestinationChange?: (dest: string) => void;
-  selectedLane?: string;
-  onLaneChange?: (lane: string) => void;
-  /** @deprecated – Allocation filter removed per stakeholder request */
-  selectedAllocation?: string;
-  /** @deprecated – Allocation filter removed per stakeholder request */
-  onAllocationChange?: (val: string) => void;
   selectedBranch?: string;
   onBranchChange?: (val: string) => void;
-  selectedPriority?: string;
-  onPriorityChange?: (val: string) => void;
-  selectedRegion?: string;
-  onRegionChange?: (val: string) => void;
-  selectedCountry?: string;
-  onCountryChange?: (val: string) => void;
-  selectedPortName?: string;
-  onPortNameChange?: (val: string) => void;
-  selectedPortCode?: string;
-  onPortCodeChange?: (val: string) => void;
   isSyncing?: boolean;
   availableWeeks?: string[];
   availableContracts?: string[];
-  availableOrigins?: string[];
-  availableDestinations?: string[];
-  availableLanes?: string[];
-  availableAllocations?: string[];
+  availableOrigins?: (string | HierarchyNode)[];
+  availableDestinations?: (string | HierarchyNode)[];
   availableBranches?: string[];
-  availablePriorities?: string[];
-  availableRegions?: string[];
-  availableCountries?: string[];
-  availablePortNames?: string[];
-  availablePortCodes?: string[];
   onSync?: () => void;
 }
 
@@ -59,33 +41,15 @@ const Navbar: React.FC<NavbarProps> = ({
   onOriginChange,
   selectedDestination = 'ALL',
   onDestinationChange,
-  selectedLane = 'ALL',
-  onLaneChange,
   selectedBranch = 'ALL',
   onBranchChange,
-  selectedPriority = 'ALL',
-  onPriorityChange,
-  selectedRegion = 'ALL',
-  onRegionChange,
-  selectedCountry = 'ALL',
-  onCountryChange,
-  selectedPortName = 'ALL',
-  onPortNameChange,
-  selectedPortCode = 'ALL',
-  onPortCodeChange,
   isSyncing,
   onSync,
   availableWeeks = [],
   availableContracts = [],
   availableOrigins = [],
   availableDestinations = [],
-  availableLanes = [],
-  availableBranches = ALL_BRANCHES,
-  availablePriorities = [],
-  availableRegions = [],
-  availableCountries = [],
-  availablePortNames = [],
-  availablePortCodes = []
+  availableBranches = ALL_BRANCHES
 }) => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -108,17 +72,9 @@ const Navbar: React.FC<NavbarProps> = ({
   const filters = [
     { label: 'Week', val: selectedWeek, items: ['ALL', ...availableWeeks], onSelect: onWeekChange, color: 'emerald' },
     { label: 'Contract', val: selectedContract, items: availableContracts, onSelect: onContractChange, color: 'cyan', hasSearch: true },
-    { label: 'Trade Lane', val: selectedLane, items: ['ALL', ...availableLanes], onSelect: onLaneChange, color: 'violet' },
-    { label: 'Origin', val: selectedOrigin, items: ['ALL', ...availableOrigins], onSelect: onOriginChange, color: 'indigo', hasSearch: true },
-    { label: 'Dest.', val: selectedDestination, items: ['ALL', ...availableDestinations], onSelect: onDestinationChange, color: 'amber', hasSearch: true },
-    // Branch dropdown – FRE replaces PER; PIL, PRJ, AKL, OTH added
+    { label: 'Origin', val: selectedOrigin, items: availableOrigins, onSelect: onOriginChange, color: 'indigo', isHierarchical: true },
+    { label: 'Dest.', val: selectedDestination, items: availableDestinations, onSelect: onDestinationChange, color: 'amber', isHierarchical: true },
     { label: 'Branch', val: selectedBranch, items: availableBranches, onSelect: onBranchChange, color: 'sky' },
-    // Region – returns all contracts (incl. port-to-port) servicing selected region
-    { label: 'Region', val: selectedRegion, items: ['ALL', ...availableRegions], onSelect: onRegionChange, color: 'fuchsia' },
-    { label: 'Country', val: selectedCountry, items: ['ALL', ...availableCountries], onSelect: onCountryChange, color: 'pink', hasSearch: true },
-    { label: 'Port', val: selectedPortName, items: ['ALL', ...availablePortNames], onSelect: onPortNameChange, color: 'rose', hasSearch: true },
-    { label: 'Code', val: selectedPortCode, items: ['ALL', ...availablePortCodes], onSelect: onPortCodeChange, color: 'sky', hasSearch: true },
-    { label: 'Priority', val: selectedPriority, items: ['ALL', ...availablePriorities], onSelect: onPriorityChange, color: 'orange' },
   ];
 
   return (
@@ -127,48 +83,46 @@ const Navbar: React.FC<NavbarProps> = ({
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-        className="w-full max-w-[1920px] mx-auto px-4 md:px-6 pointer-events-auto min-h-[140px] flex items-center justify-center"
+        className="w-full max-w-[1920px] mx-auto px-4 md:px-6 pointer-events-auto min-h-[100px] flex items-center justify-center"
       >
-        <div className="flex items-center gap-4 p-3 quantum-glass rounded-[32px] min-h-[110px] w-full border border-white/[0.08] shadow-[0_30px_70px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.1)] relative overflow-visible backdrop-blur-3xl px-6 flex-col md:flex-row">
+        <div className="flex items-center gap-3 p-2.5 bg-[#0b0f19] rounded-[24px] min-h-[72px] w-max border border-white/[0.12] shadow-[0_20px_50px_rgba(0,0,0,0.9)] relative overflow-visible px-5 flex-row">
 
           {/* Identity Segment */}
-          <div className="flex items-center bg-black/50 rounded-[20px] px-5 h-[64px] border border-white/[0.03] shadow-inner relative z-10 group/id shrink-0 cursor-pointer self-start md:self-center" onClick={() => navigate('/')}>
-            <div className={`w-10 h-10 rounded-xl flex items-center justify-center border transition-all ${showBack ? 'bg-white/[0.03] border-white/[0.08] group-hover/id:border-cyan-500/50 group-hover/id:bg-cyan-500/10' : 'bg-cyan-500/10 border-cyan-500/20'}`}>
+          <div className="flex items-center bg-black/50 rounded-[16px] px-4 h-[48px] border border-white/[0.03] shadow-inner relative z-10 group/id shrink-0 cursor-pointer" onClick={() => navigate('/')}>
+            <div className={`w-8 h-8 rounded-lg flex items-center justify-center border transition-all ${showBack ? 'bg-white/[0.03] border-white/[0.08] group-hover/id:border-cyan-500/50 group-hover/id:bg-cyan-500/10' : 'bg-cyan-500/10 border-cyan-500/20'}`}>
               {showBack ? (
-                <svg className="w-4 h-4 text-slate-300 transition-transform group-hover/id:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+                <svg className="w-3.5 h-3.5 text-slate-300 transition-transform group-hover/id:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
               ) : (
-                <svg className="w-4 h-4 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                <svg className="w-3.5 h-3.5 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
               )}
             </div>
-            <div className="hidden sm:flex flex-col ml-4">
-              <span className="text-[8px] font-black text-cyan-1000/60 uppercase tracking-[0.4em] leading-none mb-1">UNIT</span>
-              <span className="text-[12px] font-black uppercase tracking-[0.2em] text-white">Quantum</span>
+            <div className="hidden sm:flex flex-col ml-3">
+              <span className="text-[7px] font-black text-white/40 uppercase tracking-[0.4em] leading-none mb-0.5">UNIT</span>
+              <span className="text-[11px] font-black uppercase tracking-[0.2em] text-white">Quantum</span>
             </div>
           </div>
 
           <div className="w-[1px] h-6 bg-white/5 mx-1 relative z-10 shrink-0" />
 
-          {/* Individual Filter Dropdowns (Grid based for 2 lines) */}
-          <div className="flex-1 w-full grid grid-cols-2 min-[480px]:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-2.5 py-1">
+          {/* Individual Filter Dropdowns */}
+          <div className="flex items-center gap-2">
             {filters.map((f, i) => (
-              <div key={f.label} className="relative w-full overflow-visible" style={{ zIndex: openMenu === f.label ? 40 : 20 - i }}>
+              <div key={f.label} className="relative overflow-visible" style={{ zIndex: openMenu === f.label ? 40 : 20 - i }}>
                 <button
                   onClick={() => setOpenMenu(openMenu === f.label ? null : f.label)}
-                  className={`w-full flex items-center justify-between px-3.5 h-[52px] rounded-2xl border transition-all duration-500 relative group overflow-hidden ${openMenu === f.label
+                  className={`flex items-center gap-3 px-4 h-[44px] rounded-[14px] border transition-all duration-500 relative group min-w-[120px] ${openMenu === f.label
                     ? `bg-${f.color}-500/15 border-${f.color}-500/40 text-${f.color}-300 ring-1 ring-${f.color}-500/20`
                     : f.val !== 'ALL'
-                      ? 'bg-white/[0.06] border-white/15 text-white hover:bg-white/[0.1] shadow-[inset_0_1px_1px_rgba(255,255,255,0.05)]'
-                      : 'bg-[#0b0f19]/80 border-white/[0.03] text-slate-300 hover:border-white/[0.08] hover:bg-white/[0.05]'
+                      ? 'bg-white/[0.06] border-white/10 text-white hover:bg-white/[0.1] shadow-inner'
+                      : 'bg-[#0b0f19]/60 border-white/[0.03] text-slate-400 hover:border-white/[0.1] hover:bg-white/[0.03]'
                     }`}
                 >
-                  <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-[100%] group-hover:translate-x-[100%] transition-transform duration-1000 ease-in-out" />
-
                   <div className="flex flex-col items-start min-w-0 pr-1">
-                    <span className={`text-[9px] font-black uppercase tracking-[0.15em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-white' : 'text-white'}`}>{f.label}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest truncate w-full text-left antialiased text-cyan-100">{f.val === 'ALL' ? 'Select' : f.val}</span>
+                    <span className={`text-[8px] font-black uppercase tracking-[0.15em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-white/60' : 'text-slate-500'}`}>{f.label}</span>
+                    <span className="text-[10.5px] font-bold uppercase tracking-widest truncate w-full text-left antialiased">{f.val === 'ALL' ? 'Select' : f.val}</span>
                   </div>
-                  <div className={`w-5 h-5 rounded-full flex items-center justify-center transition-colors shrink-0 ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-300` : 'bg-white/5 text-slate-300 group-hover:bg-white/10 group-hover:text-slate-300'}`}>
-                    <svg className={`w-3 h-3 transition-transform duration-300 ${openMenu === f.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                  <div className={`w-4 h-4 rounded-full flex items-center justify-center transition-colors shrink-0 ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-300` : 'bg-white/5 text-slate-500 group-hover:text-slate-300'}`}>
+                    <svg className={`w-2.5 h-2.5 transition-transform duration-300 ${openMenu === f.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                 </button>
 
@@ -177,19 +131,31 @@ const Navbar: React.FC<NavbarProps> = ({
                     <>
                       <div className="fixed inset-0 z-10" onClick={() => setOpenMenu(null)} />
                       <motion.div
-                        initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                        initial={{ opacity: 0, y: 8, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
-                        exit={{ opacity: 0, y: 10, scale: 0.95 }}
-                        className="absolute top-[56px] left-0 min-w-[240px] bg-[#111622] border border-white/10 rounded-2xl shadow-[0_30px_60px_rgba(0,0,0,0.9)] p-2 z-30"
+                        exit={{ opacity: 0, y: 8, scale: 0.98 }}
+                        className={`absolute top-[48px] bg-[#0d111a] border border-white/15 rounded-[24px] shadow-[0_30px_70px_rgba(0,0,0,1)] p-2 z-50 ${
+                          f.label === 'Origin' || f.label === 'Dest.' ? 'right-0 origin-top-right' : 
+                          'left-1/2 -translate-x-1/2 origin-top'
+                        } ${f.isHierarchical ? 'min-w-[720px]' : 'min-w-[220px]'}`}
                       >
-                        <FilterSelect
-                          items={f.items}
-                          selected={f.val}
-                          onSelect={(val) => { f.onSelect?.(val); setOpenMenu(null); }}
-                          accentColor={f.color}
-                          hasSearch={f.hasSearch}
-                          height="400px"
-                        />
+                        {f.isHierarchical ? (
+                          <HierarchicalSelect
+                            data={f.items as HierarchyNode[]}
+                            selected={f.val}
+                            onSelect={(val) => { f.onSelect?.(val); setOpenMenu(null); }}
+                            accentColor={f.color}
+                          />
+                        ) : (
+                          <FilterSelect
+                            items={f.items as string[]}
+                            selected={f.val}
+                            onSelect={(val) => { f.onSelect?.(val); setOpenMenu(null); }}
+                            accentColor={f.color}
+                            hasSearch={f.hasSearch}
+                            height="350px"
+                          />
+                        )}
                       </motion.div>
                     </>
                   )}
@@ -198,48 +164,150 @@ const Navbar: React.FC<NavbarProps> = ({
             ))}
           </div>
 
-          <div className="hidden md:block w-[1px] h-10 bg-white/5 mx-2 relative z-10 shrink-0" />
+          <div className="w-[1px] h-8 bg-white/5 mx-1 relative z-10 shrink-0" />
 
           {/* Commands Segment */}
-          <div className="flex items-center gap-3 relative z-10 shrink-0 self-start md:self-center">
+          <div className="flex items-center gap-2 relative z-10 shrink-0">
             <button
               onClick={() => {
-                onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL'); onLaneChange?.('ALL');
-                onBranchChange?.('ALL'); onPriorityChange?.('ALL');
-                onRegionChange?.('ALL'); onCountryChange?.('ALL'); onPortNameChange?.('ALL'); onPortCodeChange?.('ALL');
+                onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL');
+                onBranchChange?.('ALL');
               }}
-              className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all bg-white/[0.03] border border-white/5 text-slate-300 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"
+              className="w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-white/[0.03] border border-white/5 text-slate-400 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"
               title="Reset All"
             >
-              <svg className="w-4 h-4 transition-transform group-hover/reset:-rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+              <svg className="w-3.5 h-3.5 transition-transform group-hover/reset:-rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
             </button>
 
             <button
               onClick={toggleTheme}
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all border ${isLightMode ? 'bg-amber-500/20 border-amber-500/40 text-amber-300' : 'bg-white/[0.03] border-white/5 text-slate-300 hover:text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/10'}`}
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all border ${isLightMode ? 'bg-amber-500/20 border-amber-500/40 text-amber-300' : 'bg-white/[0.03] border-white/5 text-slate-400 hover:text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/10'}`}
               title="Toggle Theme"
             >
               {isLightMode ? (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
               ) : (
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
               )}
             </button>
 
             <button
               onClick={onSync}
               disabled={isSyncing}
-              className={`w-12 h-12 rounded-2xl flex items-center justify-center transition-all group/sync relative overflow-hidden ${isSyncing ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-400' : 'bg-white/[0.03] border border-white/5 text-slate-300 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10'
+              className={`w-10 h-10 rounded-xl flex items-center justify-center transition-all group/sync relative overflow-hidden ${isSyncing ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-400' : 'bg-white/[0.03] border border-white/5 text-slate-400 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10'
                 }`}
             >
               <motion.div animate={isSyncing ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 2, repeat: isSyncing ? Infinity : 0, ease: "linear" }}>
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
               </motion.div>
             </button>
           </div>
         </div>
       </motion.nav>
     </header>
+  );
+};
+
+const HierarchicalSelect: React.FC<{
+  data: HierarchyNode[];
+  selected: string;
+  onSelect: (val: string) => void;
+  accentColor: string;
+}> = ({ data, selected, onSelect, accentColor }) => {
+  const [activePath, setActivePath] = useState<string[]>([]);
+  const [search, setSearch] = useState('');
+
+  const getColorClasses = (color: string) => {
+    switch (color) {
+      case 'indigo': return { active: 'bg-indigo-500/10 text-indigo-400 border-indigo-500/20', dot: 'bg-indigo-400' };
+      case 'amber': return { active: 'bg-amber-500/10 text-amber-400 border-amber-500/20', dot: 'bg-amber-400' };
+      default: return { active: 'bg-cyan-500/10 text-cyan-400 border-cyan-500/20', dot: 'bg-cyan-400' };
+    }
+  };
+  const colors = getColorClasses(accentColor);
+
+  const getNodesAtLevel = (level: number) => {
+    if (level === 0) return data.filter(n => n.label.toLowerCase().includes(search.toLowerCase()) || (n.children && n.children.some(c => c.label.toLowerCase().includes(search.toLowerCase()))));
+    let current = data;
+    for (let i = 0; i < level; i++) {
+      const found = current.find(n => n.label === activePath[i]);
+      if (!found || !found.children) return [];
+      current = found.children;
+    }
+    return current;
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      {/* Universal Search */}
+      <div className="px-3 pt-1 pb-2 border-b border-white/5">
+        <input
+          type="text"
+          autoFocus
+          placeholder="Refine Network..."
+          value={search}
+          onChange={e => setSearch(e.target.value)}
+          className="w-full bg-black/40 border border-white/10 rounded-xl px-4 py-2.5 text-[10px] font-mono text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/30 transition-all"
+        />
+      </div>
+
+      <div className="flex flex-row items-stretch divide-x divide-white/10 h-[400px]">
+        {[0, 1, 2].map((level) => {
+          const nodes = getNodesAtLevel(level);
+          const labels = ['Region', 'Country', 'Port'];
+
+          return (
+            <div key={level} className="flex-1 min-w-[230px] flex flex-col h-full overflow-hidden bg-[#0d111a]">
+              <div className="px-4 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-white/[0.03] mb-2">
+                {labels[level]}
+              </div>
+              <div className="flex-1 overflow-y-auto elegant-scrollbar px-2 pb-4">
+                {nodes.length === 0 ? (
+                  <div className="h-full flex items-center justify-center text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">
+                    Select {labels[level-1]}
+                  </div>
+                ) : (
+                  nodes.map((node) => {
+                    const hasChildren = node.children && node.children.length > 0;
+                    const isActive = activePath[level] === node.label;
+                    const isSelected = selected === node.label;
+
+                    return (
+                      <button
+                        key={node.label}
+                        onMouseEnter={() => {
+                          if (hasChildren) {
+                            setActivePath([...activePath.slice(0, level), node.label]);
+                          } else {
+                            setActivePath(activePath.slice(0, level));
+                          }
+                        }}
+                        onClick={() => onSelect(node.label)}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between group/item ${
+                          isSelected ? colors.active : 
+                          isActive ? 'bg-white/10 text-white shadow-md' : 
+                          'text-slate-400 hover:bg-white/5 hover:text-white'
+                        }`}
+                      >
+                        <span className="truncate">{node.label === 'ALL' ? 'Please Select' : node.label}</span>
+                        {hasChildren && (
+                          <svg className={`w-3 h-3 transition-transform duration-300 ${isActive ? 'translate-x-0.5 text-white' : 'text-slate-600 group-hover/item:text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
+                          </svg>
+                        )}
+                        {isSelected && !hasChildren && (
+                          <div className={`w-1 h-1 rounded-full ${colors.dot} shadow-[0_0_8px_currentColor]`} />
+                        )}
+                      </button>
+                    );
+                  })
+                )}
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
   );
 };
 
@@ -309,14 +377,14 @@ const FilterSelect: React.FC<{
         </div>
       )}
 
-      <div className="overflow-y-auto elegant-scrollbar pr-1 mt-2" style={{ maxHeight: height }}>
+      <div className="overflow-y-auto elegant-scrollbar pr-1 mt-1.5" style={{ maxHeight: height }}>
         {filteredItems.map((item, idx) => (
           <button
             key={item + idx}
             onClick={() => onSelect?.(item)}
-            className={`w-full text-left px-4 py-3 rounded-xl text-[12px] md:text-[13px] font-black uppercase tracking-widest transition-all mb-1 flex items-center justify-between ${selected === item
+            className={`w-full text-left px-3 py-2 rounded-lg text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between ${selected === item
                 ? colors.active
-                : 'text-slate-300 hover:bg-white/5 hover:text-white'
+                : 'text-slate-400 hover:bg-white/5 hover:text-white'
               }`}
             style={
               selected === item
@@ -327,7 +395,6 @@ const FilterSelect: React.FC<{
             <span className="truncate">
               {item === 'ALL' ? 'Please Select' : item}
             </span>
-
             {selected === item && (
               <div className={`w-1 h-1 rounded-full ${colors.dot} shadow-[0_0_8px_currentColor]`} />
             )}

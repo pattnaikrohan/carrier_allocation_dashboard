@@ -4,20 +4,66 @@ import os
 import glob
 import re
 import math
+import io
+from azure.storage.blob import BlobServiceClient
+from dotenv import load_dotenv
 
-# Paths
+# Load environment variables
+load_dotenv()
+
+# Config & Paths
 ROOT_DIR = 'D:/Dashboards'
-DATA_SOURCE_DIR = os.path.join(ROOT_DIR, 'data_source')
-MASTER_PATH = os.path.join(ROOT_DIR, 'Contract_Master_All_Data Update.xlsx')
-PORT_CODE_PATH = os.path.join(ROOT_DIR, 'CONTRACT_PORT_CODE_LISTING.xlsx')
+AZURE_CONN_STR = os.getenv('AZURE_STORAGE_CONNECTION_STRING')
+AZURE_CONTAINER = os.getenv('AZURE_CONTAINER_NAME', 'dashboards-data')
+
 # Output directly to the file the frontend imports
 OUTPUT_PATH = os.path.join(ROOT_DIR, 'frontend/src/BookingData.ts')
 
 def get_latest_file(pattern, default):
+    # Check Azure first if configured
+    if AZURE_CONN_STR and AZURE_CONN_STR != "your_connection_string_here":
+        try:
+            print(f"Searching Azure Blob Storage ({AZURE_CONTAINER})...")
+            blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONN_STR)
+            container_client = blob_service_client.get_container_client(AZURE_CONTAINER)
+            blobs = list(container_client.list_blobs())
+            
+            # Convert glob pattern to regex
+            regex_pattern = pattern.replace('.', '\\.').replace('*', '.*')
+            matching_blobs = [b for b in blobs if re.match(regex_pattern, b.name)]
+            
+            if matching_blobs:
+                latest_blob = max(matching_blobs, key=lambda b: b.last_modified)
+                print(f"Found latest blob: {latest_blob.name} (Modified: {latest_blob.last_modified})")
+                blob_client = container_client.get_blob_client(latest_blob.name)
+                return io.BytesIO(blob_client.download_blob().readall())
+        except Exception as e:
+            print(f"Azure fetch failed: {e}. Falling back to local.")
+
+    # Local fallback
+    DATA_SOURCE_DIR = os.path.join(ROOT_DIR, 'data_source')
     files = glob.glob(os.path.join(DATA_SOURCE_DIR, pattern))
     if not files:
         files = glob.glob(os.path.join(ROOT_DIR, pattern))
-    return max(files, key=os.path.getmtime) if files else default
+    
+    if files:
+        path = max(files, key=os.path.getmtime)
+        return path
+    return default
+
+def get_static_file(filename, fallback_path):
+    if AZURE_CONN_STR and AZURE_CONN_STR != "your_connection_string_here":
+        try:
+            blob_service_client = BlobServiceClient.from_connection_string(AZURE_CONN_STR)
+            blob_client = blob_service_client.get_blob_client(container=AZURE_CONTAINER, blob=filename)
+            if blob_client.exists():
+                print(f"Fetching static file from Azure: {filename}")
+                return io.BytesIO(blob_client.download_blob().readall())
+        except Exception as e:
+            print(f"Azure static fetch failed for {filename}: {e}")
+    
+    print(f"Using local static file: {fallback_path}")
+    return fallback_path
 
 def parse_alloc_str(s):
     if s is None or (isinstance(s, float) and math.isnan(s)): return 0
@@ -39,13 +85,15 @@ def parse_office_alloc(s):
     return branch_map
 
 def process_data():
-    orders_path = get_latest_file('Orders*.xlsx', os.path.join(ROOT_DIR, 'Orders.xlsx'))
-    print(f"Reading Orders from: {orders_path}")
-    df = pd.read_excel(orders_path)
+    # 1. Fetch Orders
+    orders_source = get_latest_file('Orders*.xlsx', os.path.join(ROOT_DIR, 'Orders.xlsx'))
+    print(f"Reading Orders from: {orders_source if isinstance(orders_source, str) else 'Azure Memory Stream'}")
+    df = pd.read_excel(orders_source)
     
-    # Load Master Data for actual allocations
-    print(f"Reading Master Data from: {MASTER_PATH}")
-    df_master = pd.read_excel(MASTER_PATH)
+    # 2. Load Master Data
+    master_source = get_static_file('Contract_Master_All_Data Update.xlsx', os.path.join(ROOT_DIR, 'Contract_Master_All_Data Update.xlsx'))
+    print(f"Reading Master Data from: {master_source if isinstance(master_source, str) else 'Azure Memory Stream'}")
+    df_master = pd.read_excel(master_source)
     master_dict = {}
     for _, row in df_master.iterrows():
         cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
@@ -97,13 +145,16 @@ def process_data():
     
     df = df.dropna(subset=['week'])
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
-    df['mscWeek'] = df['week_num'].astype(str)
+    df['year'] = pd.to_datetime(df['etd'], errors='coerce').dt.year.fillna(2026).astype(int)
+    df['mscWeek'] = df['week_num'].astype(str) + '-' + df['year'].astype(str)
     
     # Aggregates
     origins = sorted(df['loadPort'].dropna().unique().tolist())
     destinations = sorted(df['dischargePort'].dropna().unique().tolist())
     contracts = sorted(df['contract'].dropna().unique().tolist())
-    weeks = sorted([f"WK {w}" for w in df['week_num'].unique()])
+    
+    unique_weeks_df = df[['year', 'week_num', 'mscWeek']].drop_duplicates().sort_values(['year', 'week_num'])
+    weeks = [f"WK {row['mscWeek']}" for _, row in unique_weeks_df.iterrows()]
     active_week_count = max(len(weeks), 1)
 
     # BRANCH_SNAPSHOT
@@ -185,14 +236,16 @@ def process_data():
     # QUARTERLY_ALLOC_UTIL
     q_data = {}
     for _, row in df.iterrows():
-        q = f"Q{math.ceil(row['week_num'] / 13)}"
+        q = f"Q{math.ceil(row['week_num'] / 13)} {row['year']}"
         if q not in q_data: q_data[q] = {'booked': 0, 'alloc': 0}
         q_data[q]['booked'] += row['teu']
     for cid, minfo in master_dict.items():
         al = minfo.get('allocTotal', 0)
         for w in weeks:
-            wn = int(w.split(' ')[1])
-            q = f"Q{math.ceil(wn / 13)}"
+            wn_str = w.split(' ')[1]
+            wn = int(wn_str.split('-')[0])
+            year = wn_str.split('-')[1]
+            q = f"Q{math.ceil(wn / 13)} {year}"
             if q not in q_data: q_data[q] = {'booked': 0, 'alloc': 0}
             q_data[q]['alloc'] += al
     quarterly_alloc_util = [
@@ -202,6 +255,34 @@ def process_data():
 
     # BOOKING_LOG
     booking_log = df.replace({pd.NA: None, float('nan'): None}).to_dict('records')
+
+    # PORT_HIERARCHY generation
+    COUNTRY_DATA = {
+        'AU': ('Australia', 'Oceania'),
+        'BE': ('Belgium', 'Europe'),
+        'CN': ('China', 'Asia'),
+        'GB': ('UK', 'Europe'),
+        'HK': ('Hong Kong', 'Asia'),
+        'ID': ('Indonesia', 'Asia'),
+        'IN': ('India', 'Asia'),
+        'JP': ('Japan', 'Asia'),
+        'MY': ('Malaysia', 'Asia'),
+        'TH': ('Thailand', 'Asia'),
+        'TW': ('Taiwan', 'Asia'),
+        'VN': ('Vietnam', 'Asia')
+    }
+    
+    port_hierarchy = []
+    all_ports = set(origins + destinations)
+    for p in all_ports:
+        cc = str(p)[:2].upper()
+        cname, rname = COUNTRY_DATA.get(cc, (cc, 'Other'))
+        port_hierarchy.append({
+            "code": p,
+            "name": p,
+            "country": cname,
+            "region": rname
+        })
 
     # Construct TS
     class CustomEncoder(json.JSONEncoder):
@@ -224,11 +305,11 @@ export const ALLOCATIONS = ["Regular FAK", "Contractual"];
 export const PRIORITIES = ["High", "Medium", "Low"];
 export const CONTRACTS = {json.dumps(clean_list(all_master_cids), indent=2, cls=CustomEncoder)};
 export const WEEKS = {json.dumps(weeks, indent=2, cls=CustomEncoder)};
-export const REGIONS = {json.dumps(clean_list(df['region']) if 'region' in df.columns else [], indent=2, cls=CustomEncoder)};
-export const COUNTRIES = [];
+export const REGIONS = {json.dumps(sorted(list(set([h['region'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
+export const COUNTRIES = {json.dumps(sorted(list(set([h['country'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
 export const PORT_NAMES = {json.dumps(clean_list(origins + destinations), indent=2, cls=CustomEncoder)};
 export const PORT_CODES = [];
-export const PORT_HIERARCHY = [];
+export const PORT_HIERARCHY = {json.dumps(port_hierarchy, indent=2, cls=CustomEncoder)};
 
 export const BOOKING_LOG_DATA = {json.dumps(booking_log, indent=2, cls=CustomEncoder)};
 export const BRANCH_SNAPSHOT = {json.dumps(branch_snapshot, indent=2, cls=CustomEncoder)};
