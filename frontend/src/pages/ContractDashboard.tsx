@@ -28,7 +28,7 @@ const KPI_DATA = [
   { id: 'wk',    label: 'ACTIVE WEEKS',          value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026',            accentColor: 'text-slate-300',  shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
 ];
 
-const SIDE_TAGS = ['Branch Summary', 'Performance Charts', 'Week Analysis', 'Booking Log', 'Contract Utilisation', 'Branch Allocation'];
+const SIDE_TAGS = ['Branch Summary', 'Contract Utilisation', 'Booking Log'];
 
 function round(num: number) { return Math.round(num); }
 
@@ -76,9 +76,11 @@ const ContractDashboard: React.FC = () => {
   const [selectedOrigin, setSelectedOrigin] = useState('ALL');
   const [selectedDestination, setSelectedDestination] = useState('ALL');
   const [selectedBranch, setSelectedBranch] = useState('ALL');  // replaces Allocation
+  const [selectedCarrier, setSelectedCarrier] = useState('ALL');
   const [isCuTableModalOpen, setIsCuTableModalOpen] = useState(false);
   const [isBranchTableModalOpen, setIsBranchTableModalOpen] = useState(false);
   const [isBranchSnapshotModalOpen, setIsBranchSnapshotModalOpen] = useState(false);
+  const [isHeatmapModalOpen, setIsHeatmapModalOpen] = useState(false);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [activeCuKpi, setActiveCuKpi] = useState<any | null>(null);
 
@@ -171,7 +173,30 @@ const ContractDashboard: React.FC = () => {
   // Advanced multi-dimensional trend filtering
   const getFilteredData = () => {
     const baseFiltered = BOOKING_LOG_DATA.filter(b => {
-      const matchWeek = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
+      const matchWeek = (() => {
+        if (selectedWeek === 'ALL') return true;
+        const wkMatch = String(b.mscWeek).match(/^(\d+)/);
+        const wNum = wkMatch ? parseInt(wkMatch[1], 10) : null;
+        if (!wNum) return `WK ${b.mscWeek}` === selectedWeek;
+
+        if (selectedWeek.startsWith('Month:')) {
+          const month = selectedWeek.replace('Month: ', '').trim();
+          if (month === 'Jan') return wNum >= 1 && wNum <= 4;
+          if (month === 'Feb') return wNum >= 5 && wNum <= 8;
+          if (month === 'Mar') return wNum >= 9 && wNum <= 12;
+          if (month === 'Apr') return wNum >= 13 && wNum <= 16;
+          return false;
+        }
+        
+        if (selectedWeek.startsWith('Quarter:')) {
+          const quarter = selectedWeek.replace('Quarter: ', '').trim();
+          if (quarter === 'Q1') return wNum >= 1 && wNum <= 13;
+          if (quarter === 'Q2') return wNum >= 14 && wNum <= 26;
+          return false;
+        }
+
+        return `WK ${b.mscWeek}` === selectedWeek;
+      })();
       const matchContract = selectedContract === 'ALL' || b.contract === selectedContract;
 
       const master = CONTRACT_UTIL_DATA.find(c => c.id === b.contract);
@@ -202,7 +227,15 @@ const ContractDashboard: React.FC = () => {
         return (branchCodeMap[selectedBranch] || [selectedBranch]).includes(b.branch);
       })();
 
-      return matchWeek && matchContract && matchOrigin && matchDest && matchBranch;
+      // Carrier filter
+      const matchCarrier = selectedCarrier === 'ALL' || (() => {
+        if (master) {
+          return master.carrier.toLowerCase() === selectedCarrier.toLowerCase();
+        }
+        return false;
+      })();
+
+      return matchWeek && matchContract && matchOrigin && matchDest && matchBranch && matchCarrier;
     });
 
     // Integrated Filter Mode (Drill-down from KPI cards)
@@ -816,38 +849,13 @@ const ContractDashboard: React.FC = () => {
     );
   };
 
-  const SyncNotification = () => (
-    <AnimatePresence>
-      {showSyncSuccess && (
-        <motion.div
-          initial={{ opacity: 0, y: -40, scale: 0.9, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, scale: 1, filter: 'blur(0px)' }}
-          exit={{ opacity: 0, y: -20, scale: 0.95, filter: 'blur(10px)' }}
-          className="fixed top-28 left-1/2 -translate-x-1/2 z-[101] px-8 py-3 rounded-2xl quantum-glass border border-emerald-500/30 shadow-[0_20px_50px_rgba(0,0,0,0.8)] flex items-center gap-4 group"
-        >
-          <div className="w-8 h-8 rounded-full bg-emerald-500/20 flex items-center justify-center border border-emerald-500/40 relative">
-            <div className="absolute inset-0 bg-emerald-400/20 blur-md animate-pulse" />
-            <svg className="w-5 h-5 text-emerald-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" /></svg>
-          </div>
-          <div className="flex flex-col">
-            <span className="text-[8px] font-black text-emerald-500 uppercase tracking-widest leading-none mb-1">Status: OK</span>
-            <span className="text-[11px] font-black text-white uppercase tracking-[0.2em]">Data Stream Synchronized</span>
-          </div>
-          {/* Internal Progress Glow */}
-          <div className="absolute bottom-0 left-0 h-[2px] bg-emerald-500 rounded-full animate-[sync-progress_3.5s_linear_forwards]" />
-        </motion.div>
-      )}
-    </AnimatePresence>
-  );
-
   return (
     <div
       className="min-h-screen flex flex-col text-slate-200 relative overflow-x-hidden"
-      style={{ backgroundColor: '#030712' }}
+      style={{ backgroundColor: 'var(--bg-page)' }}
     >
       <DigitalRain />
       <ScanningOverlay />
-      <SyncNotification />
       <div className="absolute inset-0 z-0 pointer-events-none" style={{ backgroundImage: 'linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px)', backgroundSize: '60px 60px' }} />
       <div className="absolute top-[-20%] left-[-10%] w-[1200px] h-[1000px] bg-indigo-500/10 rounded-full blur-[150px] pointer-events-none z-0" />
       <div className="absolute bottom-[-20%] right-[-10%] w-[1000px] h-[800px] bg-cyan-500/5 rounded-full blur-[120px] pointer-events-none z-0" />
@@ -865,9 +873,11 @@ const ContractDashboard: React.FC = () => {
           onDestinationChange={setSelectedDestination}
           selectedBranch={selectedBranch}
           onBranchChange={setSelectedBranch}
+          selectedCarrier={selectedCarrier}
+          onCarrierChange={setSelectedCarrier}
           isSyncing={isSyncing}
           onSync={handleSyncTrigger}
-          availableWeeks={AVAILABLE_WEEKS}
+          availableWeeks={['Quarter: Q1', 'Month: Jan', 'Month: Feb', 'Month: Mar', ...AVAILABLE_WEEKS]}
           availableContracts={['ALL', ...Array.from(new Set(CONTRACT_UTIL_DATA.map(c => c.id)))]}
           availableOrigins={locationHierarchy}
           availableDestinations={locationHierarchy}
@@ -875,39 +885,48 @@ const ContractDashboard: React.FC = () => {
         />
       </div>
 
-      <main className={`flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[160px] pb-12 grid ${isSidebarCollapsed ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-[320px_1fr]'} gap-8 relative z-10 items-start transition-all duration-500`}>
+      <main className={`flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[128px] pb-12 grid ${isSidebarCollapsed ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-[320px_1fr]'} gap-8 relative z-10 items-start transition-all duration-500`}>
 
         {isSidebarCollapsed && (
-          <button onClick={() => setIsSidebarCollapsed(false)} className="fixed left-0 top-1/2 -translate-y-1/2 z-[100] p-2 bg-slate-900/80 backdrop-blur-xl border border-cyan-500/30 rounded-r-2xl border-l-0 text-cyan-400 hover:text-white transition-all shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:pr-4 group">
-            <svg className="w-6 h-6 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" /></svg>
+          <button 
+            onClick={() => setIsSidebarCollapsed(false)} 
+            className="fixed left-6 top-[112px] z-[100] w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 shadow-lg group cursor-pointer"
+            title="Expand Sidebar"
+          >
+            <svg className="w-5 h-5 transform group-hover:translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 5l7 7-7 7" /></svg>
           </button>
         )}
 
-        <aside className={`${isSidebarCollapsed ? 'hidden' : 'w-full hidden md:flex'} flex-col bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] group/sidebar overflow-hidden relative h-full shrink-0`}>
-
-          <button onClick={() => setIsSidebarCollapsed(true)} className="absolute top-[10%] -translate-y-1/2 right-0 z-50 p-1.5 flex items-center gap-1 bg-slate-800/80 backdrop-blur-md rounded-l-xl border border-white/10 border-r-0 text-slate-300 hover:text-cyan-400 hover:bg-slate-700 transition-all shadow-[-4px_0_10px_rgba(0,0,0,0.3)] group cursor-pointer">
-            <svg className="w-5 h-5 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" /></svg>
-          </button>
+        <aside className={`${isSidebarCollapsed ? 'hidden' : 'w-full hidden md:flex'} flex-col bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] shadow-[0_40px_80px_rgba(0,0,0,0.9),inset_0_1px_1px_rgba(255,255,255,0.05)] group/sidebar overflow-hidden relative h-fit shrink-0`}>
 
 
           <div className="p-6 pb-0 relative z-20">
-            <div className="flex items-center gap-4 mb-6">
-              <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
-                <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 8, ease: "linear" }} className="absolute inset-0 border border-cyan-500/30 rounded-xl" />
-                <div className="absolute inset-0 bg-cyan-500/20 rounded-xl rotate-45 animate-pulse" />
-                <svg className="w-7 h-7 text-cyan-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+            <div className="flex items-center justify-between gap-4 mb-6">
+              <div className="flex items-center gap-4">
+                <div className="relative w-12 h-12 flex items-center justify-center shrink-0">
+                  <motion.div animate={{ rotate: 360 }} transition={{ repeat: Infinity, duration: 8, ease: "linear" }} className="absolute inset-0 border border-cyan-500/30 rounded-xl" />
+                  <div className="absolute inset-0 bg-cyan-500/20 rounded-xl rotate-45 animate-pulse" />
+                  <svg className="w-7 h-7 text-cyan-400 relative z-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                </div>
+                <div className="flex flex-col">
+                  <span className="text-[10px] font-black text-cyan-500/60 uppercase tracking-[0.4em] leading-none">Intelligence</span>
+                  <h2 className="text-2xl font-display font-black text-slate-800 dark:text-white tracking-widest uppercase mt-1">Contract<span className="text-cyan-400 font-light">.AI</span></h2>
+                </div>
               </div>
-              <div className="flex flex-col">
-                <span className="text-[10px] font-black text-cyan-500/60 uppercase tracking-[0.4em] leading-none">Intelligence</span>
-                <h2 className="text-2xl font-display font-black text-white tracking-widest uppercase mt-1">Contract<span className="text-cyan-400 font-light">.AI</span></h2>
-              </div>
+
+              <button 
+                onClick={() => setIsSidebarCollapsed(true)} 
+                className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.03] dark:hover:bg-white/[0.08] border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 group cursor-pointer"
+                title="Collapse Sidebar"
+              >
+                <svg className="w-4 h-4 transform group-hover:-translate-x-0.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M15 19l-7-7 7-7" /></svg>
+              </button>
             </div>
             <div className="h-[1px] w-full bg-gradient-to-r from-cyan-500/50 via-white/10 to-transparent" />
           </div>
-
           <div className="flex-1 overflow-y-auto elegant-scrollbar hover-scrollbar px-5 py-8 flex flex-col gap-6 relative z-10">
             {SIDE_TAGS.map((tag, idx) => {
-              const shortCode = ['BS', 'PC', 'WA', 'BL', 'CU', 'BA'][idx];
+              const shortCode = ['BS', 'CU', 'BL'][idx];
               const nodeNum = '0' + (idx + 1);
               const isActive = activeTag === tag;
 
@@ -978,7 +997,7 @@ const ContractDashboard: React.FC = () => {
         </aside>
 
         {/* Main Content Area - Detached Floating Glass Pane */}
-        <div className="flex-1 min-w-0 w-full relative h-full rounded-[40px] bg-[#0b0f19]/70 backdrop-blur-3xl border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] p-8 md:p-14">
+        <div className="flex-1 min-w-0 w-full relative h-fit rounded-[40px] bg-[#0b0f19]/70 backdrop-blur-3xl border border-white/5 shadow-[0_50px_100px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] p-8 md:p-14">
 
           {/* Branch Summary View */}
           {activeTag === 'Branch Summary' && (
@@ -1000,16 +1019,7 @@ const ContractDashboard: React.FC = () => {
                     Analytics <span className="font-bold aurora-text animate-[glow-pulse_4s_ease-in-out_infinite] drop-shadow-[0_0_15px_rgba(6,182,212,0.4)]">Nexus</span>
                   </h1>
                 </div>
-                <div className="mt-6 lg:mt-0 px-5 py-3 bg-[#050505]/60 border border-slate-700/80 rounded-2xl flex items-center gap-4 backdrop-blur-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)] transform hover:scale-105 transition-transform duration-500 cursor-default">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">Mission Time</span>
-                    <span className="text-sm font-bold tracking-wide text-white"><TacticalNumber value={selectedWeek} /> <span className="text-slate-400 font-medium">| FY 2026</span></span>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center shadow-[0_0_20px_rgba(52,211,153,0.5)] text-white relative overflow-hidden">
-                    <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity" />
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" /></svg>
-                  </div>
-                </div>
+
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 xl:gap-6 w-full perspective-1000">
@@ -1180,26 +1190,33 @@ const ContractDashboard: React.FC = () => {
                 <div className="h-[450px] w-full relative z-0">
                   <ResponsiveContainer width="100%" height="100%">
                     <ComposedChart data={reactiveBranchSnapshot} margin={{ top: 20, right: 30, left: 10, bottom: 10 }}>
-                      <CartesianGrid strokeDasharray="3 3" stroke="#1e293b" vertical={false} opacity={0.5} />
-                      <XAxis dataKey="branch" stroke="#64748b" tickLine={false} axisLine={false} dy={15} fontSize={13} fontWeight={600} />
-                      <YAxis stroke="#64748b" tickLine={false} axisLine={false} dx={-10} fontSize={12} />
+                      <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.02)" vertical={false} />
+                      <XAxis dataKey="branch" stroke="#475569" tickLine={false} axisLine={false} dy={15} fontSize={12} fontWeight={700} />
+                      <YAxis stroke="#475569" tickLine={false} axisLine={false} dx={-10} fontSize={11} />
 
                       <Tooltip
-                        cursor={{ fill: 'rgba(30, 41, 59, 0.2)' }}
-                        contentStyle={{ backgroundColor: 'rgba(11, 15, 25, 0.95)', border: '1px solid rgba(255, 255, 255, 0.1)', borderRadius: '16px', padding: '16px', boxShadow: '0 25px 50px -12px rgba(0,0,0,0.8)' }}
-                        itemStyle={{ fontFamily: 'monospace', fontWeight: 'bold' }}
-                        labelStyle={{ color: '#94a3b8', marginBottom: '8px', fontWeight: '600', fontSize: '14px', textTransform: 'uppercase', letterSpacing: '0.05em' }}
+                        cursor={{ fill: 'rgba(99, 102, 241, 0.04)' }}
+                        contentStyle={{
+                          backgroundColor: '#02040a',
+                          border: '1px solid rgba(34, 211, 238, 0.3)',
+                          borderRadius: '20px',
+                          padding: '16px',
+                          boxShadow: '0 30px 60px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.05)',
+                          backdropFilter: 'blur(16px)',
+                        }}
+                        itemStyle={{ fontFamily: 'monospace', fontWeight: '800', color: '#cbd5e1' }}
+                        labelStyle={{ color: '#94a3b8', marginBottom: '8px', fontWeight: '800', fontSize: '12px', textTransform: 'uppercase', letterSpacing: '0.15em' }}
                       />
                       <Legend wrapperStyle={{ paddingTop: '30px' }} iconType="circle" />
 
                       <defs>
                         <linearGradient id="colorAllocArea" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#22d3ee" stopOpacity={0.8} />
-                          <stop offset="100%" stopColor="#22d3ee" stopOpacity={0.1} />
+                          <stop offset="0%" stopColor="#06b6d4" stopOpacity={0.8} />
+                          <stop offset="100%" stopColor="#02040a" stopOpacity={0.1} />
                         </linearGradient>
                         <linearGradient id="colorBookedBar" x1="0" y1="0" x2="0" y2="1">
-                          <stop offset="0%" stopColor="#818cf8" stopOpacity={1} />
-                          <stop offset="100%" stopColor="#818cf8" stopOpacity={0.4} />
+                          <stop offset="0%" stopColor="#6366f1" stopOpacity={0.9} />
+                          <stop offset="100%" stopColor="#02040a" stopOpacity={0.2} />
                         </linearGradient>
                       </defs>
 
@@ -1207,8 +1224,8 @@ const ContractDashboard: React.FC = () => {
                         dataKey="alloc" 
                         name="Allocation" 
                         fill="url(#colorAllocArea)" 
-                        radius={[6, 6, 0, 0]} 
-                        maxBarSize={40} 
+                        radius={[8, 8, 0, 0]} 
+                        maxBarSize={32} 
                         isAnimationActive={true} 
                         animationDuration={1500} 
                       />
@@ -1217,8 +1234,8 @@ const ContractDashboard: React.FC = () => {
                         dataKey="booked" 
                         name="Booked TEU" 
                         fill="url(#colorBookedBar)" 
-                        radius={[6, 6, 0, 0]} 
-                        maxBarSize={40} 
+                        radius={[8, 8, 0, 0]} 
+                        maxBarSize={32} 
                         isAnimationActive={true} 
                         animationDuration={1500} 
                       />
@@ -1227,383 +1244,6 @@ const ContractDashboard: React.FC = () => {
                   </ResponsiveContainer>
                 </div>
               </motion.div>
-            </motion.div>
-          )}
-
-          {/* Performance Charts View */}
-          {activeTag === 'Performance Charts' && (
-            <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-8 w-full"
-            >
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end pb-8 border-b border-white/[0.05] relative">
-                <div className="absolute -bottom-[1px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-emerald-500 to-transparent" />
-                <div className="flex flex-col gap-3">
-                  <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-emerald-500/10 border border-emerald-500/20 w-max mb-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-[pulse-ring_2s_infinite] shadow-[0_0_10px_rgba(52,211,153,1)]" />
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-emerald-400 uppercase">Performance Charts Overview</span>
-                  </div>
-                  <h1 className="text-5xl md:text-6xl text-white font-display font-light tracking-tighter">
-                    Week-on-Week <span className="font-bold bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">Utilisation</span>
-                  </h1>
-                </div>
-              </div>
-
-              {/* HUD Header Control Array (Decommissioned) */}
-
-              {/* Twin Charts Matrix (Moved Top) */}
-              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
-
-                {/* Chart 1: Contract Allocation */}
-                <div className="rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.05)] p-8 md:p-10 relative overflow-hidden group hover:scale-[1.01] transition-transform duration-500">
-                  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[40px]">
-                    <div className="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-cyan-400/[0.05] to-transparent w-[300%]" style={{ animation: 'sweep-shine 8s infinite linear' }} />
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_rgba(34,211,238,0.07)_0%,_rgba(0,0,0,0)_60%)] pointer-events-none z-0" />
-
-                  <h4 className="text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em] mb-8 relative z-10 flex items-center justify-between">
-                    <span>Contract Target vs Actual</span>
-                    <span className="px-3 py-1 bg-white/5 rounded-full font-mono text-[9px] text-emerald-400 border border-emerald-500/20">{selectedWeek === 'ALL' ? 'ALL WKS' : selectedWeek.replace(' ', '')} SYS</span>
-                  </h4>
-
-                  <div className="h-[320px] w-full relative z-10">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={reactiveContractUtilData} margin={{ top: 20, right: 20, bottom: 20, left: -20 }}>
-                        <defs>
-                          <linearGradient id="cyanNeon" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#22d3ee" stopOpacity={1} />
-                            <stop offset="100%" stopColor="#0891b2" stopOpacity={0.3} />
-                          </linearGradient>
-                          <linearGradient id="areaAllocChart1" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#34d399" stopOpacity={0.1} />
-                            <stop offset="100%" stopColor="#34d399" stopOpacity={0} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#2dd4bf" vertical={false} opacity={0.05} />
-                        <XAxis dataKey="id" stroke="#64748b" tickLine={false} axisLine={false} dy={10} fontSize={11} fontWeight={600} />
-                        <YAxis stroke="#475569" tickLine={false} axisLine={false} fontSize={12} />
-                        <Tooltip
-                          cursor={{ fill: 'rgba(34,211,238,0.05)' }}
-                          contentStyle={{ backgroundColor: 'rgba(11, 15, 25, 0.95)', border: '1px solid rgba(34, 211, 238, 0.2)', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.8)' }}
-                          itemStyle={{ fontFamily: 'monospace' }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
-                        
-                        {/* Layer 1: Allocation Ceiling */}
-                        <Area 
-                          type="monotone" 
-                          dataKey="alloc" 
-                          name="Designated Capacity" 
-                          fill="url(#areaAllocChart1)" 
-                          stroke="#34d399" 
-                          strokeWidth={2} 
-                          fillOpacity={0.1}
-                          isAnimationActive={true} 
-                          animationDuration={2000} 
-                        />
-                        
-                        {/* Layer 2: 80% Efficiency Threshold */}
-                        <Line 
-                          type="monotone" 
-                          dataKey={(d) => d.alloc * 0.8} 
-                          name="Efficiency Target (80%)" 
-                          stroke="#f59e0b" 
-                          strokeWidth={2} 
-                          strokeDasharray="4 4" 
-                          dot={false} 
-                        />
-                        
-                        {/* Layer 3: Actual Booked */}
-                        <Area
-                          type="monotone"
-                          dataKey="booked"
-                          name="Booked Volume"
-                          fill="url(#cyanNeon)"
-                          stroke="#22d3ee"
-                          strokeWidth={4}
-                          fillOpacity={0.4}
-                          isAnimationActive={true}
-                          animationDuration={1500}
-                          dot={{ r: 3, fill: '#22d3ee' }}
-                        />
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-
-                {/* Chart 2: Branch Utilisation Horizontal */}
-                <div className="rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.9),inset_0_1px_2px_rgba(255,255,255,0.05)] p-8 md:p-10 relative overflow-hidden group hover:scale-[1.01] transition-transform duration-500">
-                  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[40px]">
-                    <div className="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent w-[300%]" style={{ animation: 'sweep-shine 8s infinite linear' }} />
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[120%] h-[120%] bg-[radial-gradient(ellipse_at_center,_rgba(99,102,241,0.07)_0%,_rgba(0,0,0,0)_60%)] pointer-events-none z-0" />
-
-                  <h4 className="text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em] mb-8 relative z-10 flex items-center justify-between">
-                    <span>Branch Utilisation Coefficient</span>
-                    <span className="px-3 py-1 bg-white/5 rounded-full font-mono text-[9px] text-indigo-400 border border-indigo-500/20">{selectedWeek === 'ALL' ? 'ALL WKS' : selectedWeek.replace(' ', '')} RUN</span>
-                  </h4>
-
-                  <div className="h-[320px] w-full relative z-10">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <BarChart data={reactiveBranchSnapshot} layout="vertical" margin={{ top: 10, right: 30, bottom: 20, left: 10 }}>
-                        <defs>
-                          <linearGradient id="indigoNeonHoriz" x1="0" y1="0" x2="1" y2="0">
-                            <stop offset="0%" stopColor="#4f46e5" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="#818cf8" stopOpacity={1} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#818cf8" horizontal={false} opacity={0.05} />
-                        <XAxis type="number" stroke="#475569" tickLine={false} axisLine={false} dx={0} fontSize={11} tickFormatter={(val) => `${val}%`} />
-                        <YAxis type="category" dataKey="branch" stroke="#94a3b8" tickLine={false} axisLine={false} fontSize={12} fontWeight={600} width={80} />
-                        <Tooltip
-                          cursor={{ fill: 'rgba(99,102,241,0.05)' }}
-                          contentStyle={{ backgroundColor: 'rgba(11, 15, 25, 0.95)', border: '1px solid rgba(99, 102, 241, 0.2)', borderRadius: '16px', boxShadow: '0 20px 40px rgba(0,0,0,0.8)' }}
-                          formatter={(value: any) => { return [`${Number(value).toFixed(1)}%`, 'Utilisation']; }}
-                          itemStyle={{ fontFamily: 'monospace' }}
-                        />
-                        <Legend wrapperStyle={{ paddingTop: '20px' }} iconType="circle" />
-                        <Bar dataKey="utilFloat" name="Network Load %" barSize={20} radius={[0, 6, 6, 0]} isAnimationActive={true} animationDuration={2500}>
-                          {reactiveBranchSnapshot.map((entry, index) => (
-                            <Cell 
-                              key={`cell-${index}`} 
-                              fill={entry.util > 100 ? '#10b981' : entry.util > 80 ? '#34d399' : entry.util > 50 ? '#f43f5e' : '#f97316'} 
-                            />
-                          ))}
-                        </Bar>
-                      </BarChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-
-              </div>
-
-              {/* Spread Tables Framework */}
-              <div className="flex flex-col gap-8">
-
-                {/* Row 1: Contract Table + Info */}
-                <div className="flex flex-col xl:flex-row gap-6">
-                  {/* Contract Utilisation Table */}
-                  <div className="flex-1 bg-[#0b0f19]/90 border border-white/5 rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.6)] flex flex-col group">
-                    <div className="bg-gradient-to-r from-indigo-950/40 to-transparent border-b border-indigo-500/20 px-6 py-4 flex items-center justify-between">
-                      <h3 className="text-white font-bold tracking-[0.2em] uppercase text-xs flex items-center gap-3 drop-shadow-md">
-                        <svg className="w-5 h-5 text-indigo-400 drop-shadow-[0_0_8px_rgba(99,102,241,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
-                        Contract Utilisation
-                      </h3>
-                      <div className="px-3 py-1 rounded-full bg-indigo-500/10 border border-indigo-500/30 text-[9px] font-mono text-indigo-300">LIVE DATA</div>
-                    </div>
-                    <div className="w-full overflow-x-auto elegant-scrollbar">
-                      <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
-                        <thead>
-                          <tr className="bg-gradient-to-r from-transparent via-cyan-900/10 to-transparent">
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase border-b border-white/10 w-[140px]">Contract</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase border-b border-white/10">Carrier</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-center border-b border-white/10">Type</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-center border-b border-white/10">Priority</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-center border-b border-white/10">Expiry</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Alloc</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Booked</th>
-                            <th className="px-6 py-4 font-bold text-cyan-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Util%</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/[0.02]">
-                          {(reactiveContractUtilData.length > 0 ? reactiveContractUtilData : []).map((row, i) => (
-                            <tr key={i} className="hover:bg-cyan-500/[0.03] transition-colors group/row">
-                              <td className="px-6 py-4 border-r border-white/5">
-                                <span className="font-sans font-medium text-slate-100 text-[13px] antialiased tracking-wide shadow-sm group-hover/row:text-cyan-400 transition-colors">{row.id}</span>
-                              </td>
-                              <td className="px-6 py-4 border-r border-white/5 text-[11px] text-slate-400 font-bold uppercase tracking-wider">
-                                {row.carrier}
-                              </td>
-                              <td className="px-6 py-4 text-center border-r border-white/5">
-                                <span className="text-[10px] font-mono text-indigo-400 bg-indigo-500/10 px-2 py-0.5 rounded border border-indigo-500/20">{row.type}</span>
-                              </td>
-                              <td className="px-6 py-4 text-center border-r border-white/5">
-                                <span className={`inline-flex items-center gap-1.5 px-3 py-1 rounded-md border text-[10px] font-sans font-medium antialiased shadow-inner ${row.priority === 'High' ? 'bg-rose-500/10 border-rose-500/30 text-rose-400' :
-                                  row.priority === 'Medium' ? 'bg-amber-500/10 border-amber-500/30 text-amber-400' :
-                                    'bg-slate-500/10 border-slate-700/50 text-slate-400'
-                                  }`}>
-                                  <span className={`w-1 h-1 rounded-full ${row.priority === 'High' ? 'bg-rose-500 shadow-[0_0_5px_rgba(244,63,94,0.8)]' :
-                                    row.priority === 'Medium' ? 'bg-amber-500 shadow-[0_0_5px_rgba(251,191,36,0.8)]' :
-                                      'bg-slate-500'
-                                    }`} /> {row.priority}
-                                </span>
-                              </td>
-                              <td className="px-6 py-4 text-center border-r border-white/5">
-                                <div className="flex flex-col items-center">
-                                  <span className="text-[11px] text-slate-300">{row.expiry ?? 'N/A'}</span>
-                                  {row.expiry && row.expiry !== 'N/A' && !row.expiry.includes('2026') && (
-                                    <span className="text-[8px] text-rose-500 font-bold uppercase animate-pulse">Critical</span>
-                                  )}
-                                </div>
-                              </td>
-                              <td className="px-6 py-4 text-right border-r border-white/5">
-                                <span className="font-display font-medium text-lg text-slate-300 antialiased tracking-wide">{row.alloc}</span>
-                              </td>
-                              <td className="px-6 py-4 text-right border-r border-white/5">
-                                <span className="font-display font-medium text-lg text-cyan-400 antialiased tracking-wide drop-shadow-[0_0_8px_rgba(34,211,238,0.4)] group-hover/row:text-cyan-300 transition-colors">{row.booked.toFixed(1)}</span>
-                              </td>
-                              <td className="px-6 py-4 text-right">
-                                <div className="flex flex-col items-end gap-1.5">
-                                  <span className={`font-display font-medium text-base antialiased tracking-wide ${row.util > 100 ? 'text-amber-400 drop-shadow-[0_0_10px_rgba(251,191,36,0.3)]' : 'text-slate-200'}`}>{row.util.toFixed(1)}%</span>
-                                  <div className="w-16 h-1 bg-white/5 rounded-full overflow-hidden shadow-inner">
-                                    <div className={`h-full rounded-full ${row.util > 100 ? 'bg-amber-400 shadow-[0_0_8px_rgba(251,191,36,0.8)]' : 'bg-cyan-500 shadow-[0_0_8px_rgba(6,182,212,0.8)]'}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                        <tfoot>
-                          <tr className="bg-gradient-to-r from-indigo-900/20 to-indigo-900/40 relative group/foot">
-                            <td colSpan={5} className="px-6 py-5 font-bold text-white tracking-[0.3em] text-[10px] border-r border-indigo-500/20 uppercase text-center relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent" />
-                              Network Aggregate Performance
-                            </td>
-                            <td className="px-6 py-5 border-r border-indigo-500/20 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-white text-lg text-right drop-shadow-md">{cuTotalAlloc.toFixed(0)}</span>
-                            </td>
-                            <td className="px-6 py-5 border-r border-indigo-500/20 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-emerald-400 text-lg text-right drop-shadow-[0_0_10px_rgba(52,211,153,0.5)]">{cuTotalBooked.toFixed(1)}</span>
-                            </td>
-                            <td className="px-6 py-5 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-white text-lg text-right drop-shadow-md">{cuOverallUtil}%</span>
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Basic Info Panel */}
-                  <div className="xl:w-[240px] 2xl:w-[280px] shrink-0 bg-[#0b0f19] border border-white/5 rounded-[24px] p-8 shadow-inner flex flex-col justify-center relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-t from-indigo-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <h4 className="text-cyan-400 font-bold uppercase tracking-[0.2em] text-xs mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-cyan-400 animate-pulse" /> Data Insight
-                    </h4>
-                    <h2 className="text-xl text-slate-200 font-medium mb-3">Contract Matrix</h2>
-                    <p className="text-xs text-slate-300 leading-relaxed mb-6">
-                      Performance matrix across {reactiveContractUtilData.length} active agreements. Comparing total {contractMetrics.booked.toFixed(0)} TEU booked against {contractMetrics.alloc} designation.
-                    </p>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                        <span className="text-xs text-slate-400 font-mono">Monitored Contracts</span>
-                        <span className="text-xs font-bold text-slate-200">{reactiveContractUtilData.length} Active</span>
-                      </div>
-                      <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                        <span className="text-xs text-slate-400 font-mono">Highest Network Draw</span>
-                        <span className="text-xs font-bold text-emerald-400">
-                          {reactiveContractUtilData.length > 0 ? `${Math.max(...reactiveContractUtilData.map(c=>c.util)).toFixed(0)}% (${reactiveContractUtilData.sort((a,b)=>b.util-a.util)[0]?.id})` : 'N/A'}
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Row 2: Branch Table + Info */}
-                <div className="flex flex-col xl:flex-row gap-6">
-                  {/* Branch Utilisation Table */}
-                  <div className="flex-1 bg-[#0b0f19]/90 border border-white/5 rounded-[24px] overflow-hidden shadow-[0_20px_40px_rgba(0,0,0,0.6)] flex flex-col group">
-                    <div className="bg-gradient-to-r from-cyan-950/40 to-transparent border-b border-cyan-500/20 px-6 py-4 flex items-center justify-between">
-                      <h3 className="text-white font-bold tracking-[0.2em] uppercase text-xs flex items-center gap-3 drop-shadow-md">
-                        <svg className="w-5 h-5 text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.8)]" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" /></svg>
-                        Branch Utilisation
-                      </h3>
-                      <div className="px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/30 text-[9px] font-mono text-cyan-300">LIVE DATA</div>
-                    </div>
-                    <div className="w-full overflow-x-auto elegant-scrollbar">
-                      <table className="w-full text-left border-collapse table-fixed min-w-[900px]">
-                        <thead>
-                          <tr className="bg-gradient-to-r from-transparent via-indigo-900/10 to-transparent">
-                            <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase text-center border-b border-white/10 w-24">Code</th>
-                            <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase border-b border-white/10">Branch Name</th>
-                            <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Wk Allocation</th>
-                            <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Booked (TEU)</th>
-                            <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-[0.2em] font-sans uppercase text-right border-b border-white/10">Utilisation %</th>
-                          </tr>
-                        </thead>
-                        <tbody className="divide-y divide-white/[0.02]">
-                          {reactiveBranchSnapshot.map((row, i) => (
-                            <tr key={i} className="hover:bg-indigo-500/[0.03] transition-colors group/row">
-                              <td className="px-6 py-4 border-r border-white/5 flex justify-center">
-                                <span className="inline-flex items-center justify-center min-w-[40px] h-7 px-2 rounded-md bg-slate-900/80 text-[11px] font-sans font-medium text-slate-300 antialiased border border-slate-700/50 shadow-inner group-hover/row:border-cyan-500/50 group-hover/row:text-cyan-400 transition-colors tracking-wide">{row.code}</span>
-                              </td>
-                              <td className="px-6 py-4 border-r border-white/5">
-                                <span className="font-sans font-medium text-slate-100 text-[15px] antialiased tracking-wide shadow-sm">{row.branch}</span>
-                              </td>
-                              <td className="px-6 py-4 text-right border-r border-white/5">
-                                <span className="font-display font-medium text-xl text-slate-300 antialiased tracking-wide">{row.alloc}</span>
-                              </td>
-                              <td className="px-6 py-4 text-right border-r border-white/5">
-                                <span className="font-display font-medium text-xl text-indigo-400 antialiased tracking-wide drop-shadow-[0_0_8px_rgba(99,102,241,0.4)] group-hover/row:text-indigo-300 transition-colors">{row.booked.toFixed(1)}</span>
-                              </td>
-                              <td className="px-6 py-4 text-right">
-                                <div className="flex flex-col items-end gap-1.5">
-                                  <span className={`font-display font-medium text-lg antialiased tracking-wide ${row.util > 100 ? 'text-rose-400 drop-shadow-[0_0_10px_rgba(244,63,94,0.3)]' : 'text-slate-200'} ${row.util === 0 ? 'opacity-40' : ''}`}>{row.util.toFixed(0)}%</span>
-                                  <div className="w-16 h-1.5 bg-white/5 rounded-full overflow-hidden shadow-inner">
-                                    <div className={`h-full rounded-full ${row.util > 100 ? 'bg-rose-400 shadow-[0_0_8px_rgba(244,63,94,0.8)]' : 'bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]'}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>
-                          ))}
-                        </tbody>
-                        <tfoot>
-                          <tr className="bg-gradient-to-r from-cyan-900/20 to-cyan-900/40 relative group/foot">
-                            <td colSpan={2} className="px-6 py-5 font-bold text-white tracking-[0.3em] text-xs border-r border-cyan-500/20 uppercase text-center relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-                              Branch Network
-                            </td>
-                            <td className="px-6 py-5 border-r border-cyan-500/20 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-white text-xl text-right drop-shadow-md">{reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0).toFixed(0)}</span>
-                            </td>
-                            <td className="px-6 py-5 border-r border-cyan-500/20 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-cyan-400 text-xl text-right drop-shadow-[0_0_10px_rgba(34,211,238,0.5)]">{reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0).toFixed(1)}</span>
-                            </td>
-                            <td className="px-6 py-5 relative">
-                              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent" />
-                              <span className="block font-mono font-bold text-white text-xl text-right drop-shadow-md">
-                                {(() => {
-                                  const tAlloc = reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0);
-                                  const tBook = reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0);
-                                  return tAlloc > 0 ? ((tBook / tAlloc) * 100).toFixed(0) : 0;
-                                })()}%
-                              </span>
-                            </td>
-                          </tr>
-                        </tfoot>
-                      </table>
-                    </div>
-                  </div>
-
-                  {/* Basic Info Panel */}
-                  <div className="xl:w-[240px] 2xl:w-[280px] shrink-0 bg-[#0b0f19] border border-white/5 rounded-[24px] p-8 shadow-inner flex flex-col justify-center relative overflow-hidden group">
-                    <div className="absolute inset-0 bg-gradient-to-t from-emerald-500/5 to-transparent pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <h4 className="text-indigo-400 font-bold uppercase tracking-[0.2em] text-xs mb-3 flex items-center gap-2">
-                      <span className="w-2 h-2 rounded-full bg-indigo-400 animate-pulse" /> Data Insight
-                    </h4>
-                    <h2 className="text-xl text-slate-200 font-medium mb-3">Branch Network Hubs</h2>
-                    <p className="text-xs text-slate-300 leading-relaxed mb-6">
-                      The Branch table unpacks allocation fulfillment. Current network throughput is {((reactiveBranchSnapshot.reduce((s, r)=>s+r.booked,0)/reactiveBranchSnapshot.reduce((s, r)=>s+r.alloc,0))*100 || 0).toFixed(1)}% across {reactiveBranchSnapshot.length} monitored facilities.
-                    </p>
-                    <div className="flex flex-col gap-3">
-                      <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                        <span className="text-xs text-slate-400 font-mono">Geographic Nodes</span>
-                        <span className="text-xs font-bold text-slate-200">{reactiveBranchSnapshot.length} Facilities</span>
-                      </div>
-                      <div className="flex justify-between items-center border-b border-white/5 pb-2">
-                        <span className="text-xs text-slate-400 font-mono">Primary Bottleneck</span>
-                        <span className="text-xs font-bold text-rose-400">{reactiveBranchSnapshot.length > 0 ? `${Math.min(...reactiveBranchSnapshot.map(b=>b.util)).toFixed(0)}% (${(reactiveBranchSnapshot.sort((a,b)=>a.util-b.util)[0]?.branch || 'N/A')})` : 'N/A'}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-              </div>
             </motion.div>
           )}
 
@@ -1647,211 +1287,9 @@ const ContractDashboard: React.FC = () => {
                 </div>
               </div>
 
-              {/* ─── "Silk Stream" Radial Scatter + Utilisation Bars Chart Section ─── */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-
-                {/* Main Silk Stream Chart: Alloc vs Booked Diverging bars */}
-                <div className="xl:col-span-8 rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8),inset_0_1px_2px_rgba(255,255,255,0.05)] p-8 md:p-10 relative overflow-hidden group">
-                  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[40px]">
-                    <div className="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-violet-400/[0.06] to-transparent w-[300%]" style={{ animation: 'sweep-shine 10s infinite linear' }} />
-                  </div>
-                  <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] bg-[radial-gradient(ellipse_at_center,_rgba(167,139,250,0.06)_0%,_rgba(0,0,0,0)_70%)] pointer-events-none z-0" />
-
-                  <div className="flex justify-between items-start mb-8 relative z-10">
-                    <div>
-                      <h4 className="text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em] flex items-center gap-3 mb-2">
-                        <span className="w-2 h-2 rounded-full bg-violet-500 shadow-[0_0_8px_rgba(167,139,250,0.8)]" /> Carrier Allocation vs Booked TEU
-                      </h4>
-                      {/* Dynamic graph insight text */}
-                      <p className="text-xs text-slate-300 leading-relaxed max-w-lg border-l-2 border-violet-500/40 pl-3">{cuGraphInsight}</p>
-                    </div>
-                    <div className="flex gap-4 shrink-0">
-                      <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-sm bg-violet-500/60" /><span className="text-[9px] text-slate-400 font-bold uppercase">Allocation</span></div>
-                      <div className="flex items-center gap-1.5"><div className="w-3 h-3 rounded-sm bg-emerald-400/80" /><span className="text-[9px] text-slate-400 font-bold uppercase">Booked</span></div>
-                    </div>
-                  </div>
-
-                  {/* Custom Silk Stream Utilisation Chart */}
-                  <div className="h-[480px] w-full relative z-10 overflow-y-auto elegant-scrollbar pr-2">
-                    <div className="flex flex-col gap-3 min-h-full justify-around py-2">
-                      {reactiveContractUtilData.map((row, i) => {
-                        const statusColor = row.util > 100 ? { bar: 'bg-rose-500', glow: 'shadow-[0_0_12px_rgba(239,68,68,0.6)]', text: 'text-rose-400', badge: 'bg-rose-500/20 border-rose-500/40 text-rose-300' }
-                          : row.util >= 85 ? { bar: 'bg-amber-400', glow: 'shadow-[0_0_12px_rgba(251,191,36,0.5)]', text: 'text-amber-400', badge: 'bg-amber-500/20 border-amber-500/40 text-amber-300' }
-                            : row.util >= 70 ? { bar: 'bg-emerald-400', glow: 'shadow-[0_0_12px_rgba(52,211,153,0.5)]', text: 'text-emerald-400', badge: 'bg-emerald-500/20 border-emerald-500/40 text-emerald-300' }
-                              : { bar: 'bg-slate-500', glow: '', text: 'text-slate-400', badge: 'bg-slate-700/40 border-slate-600/40 text-slate-400' };
-                        const allocPct = Math.min((row.alloc / 280) * 100, 100);
-                        const bookedPct = Math.min((row.booked / 280) * 100, 100);
-                        return (
-                          <div key={row.id} className="group/bar flex items-center gap-4 hover:bg-white/[0.02] rounded-2xl px-3 py-2 transition-all">
-                            {/* Label */}
-                            <div className="w-[130px] shrink-0 flex flex-col">
-                              <span className="text-[11px] font-bold text-white font-mono truncate">{row.id}</span>
-                              <span className="text-[9px] text-slate-300 truncate">{row.carrier}</span>
-                            </div>
-                            {/* Stacked bar area */}
-                            <div className="flex-1 flex flex-col gap-1.5 relative">
-                              {/* Alloc track */}
-                              <div className="relative h-3 bg-slate-900/80 rounded-full overflow-visible">
-                                <motion.div
-                                  initial={{ width: 0 }} animate={{ width: `${allocPct}%` }} transition={{ duration: 0.8, delay: i * 0.04, ease: [0.16, 1, 0.3, 1] }}
-                                  className="absolute inset-y-0 left-0 bg-violet-500/50 rounded-full border border-violet-400/30"
-                                />
-                              </div>
-                              {/* Booked track */}
-                              <div className="relative h-3 bg-slate-900/80 rounded-full overflow-visible">
-                                <motion.div
-                                  initial={{ width: 0 }} animate={{ width: `${bookedPct}%` }} transition={{ duration: 1, delay: i * 0.04 + 0.2, ease: [0.16, 1, 0.3, 1] }}
-                                  className={`absolute inset-y-0 left-0 ${statusColor.bar} rounded-full ${statusColor.glow} transition-all`}
-                                />
-                                {/* overflow indicator */}
-                                {row.util > 100 && (
-                                  <div className="absolute right-0 top-1/2 -translate-y-1/2 w-2 h-5 bg-rose-500 rounded-r-full shadow-[0_0_10px_rgba(239,68,68,1)] animate-pulse" />
-                                )}
-                              </div>
-                            </div>
-                            {/* Util % badge */}
-                            <div className="w-[72px] shrink-0 flex flex-col items-end gap-1">
-                              <span className={`text-sm font-display font-bold ${statusColor.text}`}>{row.util.toFixed(1)}%</span>
-                              <span className={`text-[8px] font-bold px-2 py-0.5 rounded border ${statusColor.badge} uppercase tracking-wide`}>{row.status}</span>
-                            </div>
-                            {/* TEU numbers */}
-                            <div className="w-[80px] shrink-0 text-right hidden md:flex flex-col">
-                              <span className="text-[10px] text-slate-300 font-mono">{row.booked}<span className="text-slate-300">/{row.alloc}</span></span>
-                              <span className={`text-[9px] font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>{row.avail < 0 ? `+${Math.abs(row.avail)} OVR` : `${row.avail} avail`}</span>
-                            </div>
-                          </div>
-                        );
-                      })}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Right: Branch Heat Grid + NEW Carrier Breakdown Donut */}
-                <div className="xl:col-span-4 flex flex-col gap-8">
-                  {/* Heat Map Panel */}
-                  <div className="rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
-                    <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent">
-                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
-                      <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
-                    </div>
-                    <div className="flex-1 overflow-y-auto elegant-scrollbar p-4 max-h-[350px]">
-                      {/* Column headers */}
-                      <div className="grid grid-cols-6 gap-1 mb-2 px-1">
-                        <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
-                        {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
-                          <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
-                        ))}
-                      </div>
-                      <div className="flex flex-col gap-1.5">
-                        {reactiveContractUtilData.map((row) => {
-                          const branches = [
-                            { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
-                            { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
-                            { b: row.adl, name: 'ADL' },
-                          ];
-                          return (
-                            <div key={row.id} className="grid grid-cols-6 gap-1 items-center group/heat hover:bg-white/[0.03] rounded-xl px-1 py-0.5 transition-colors">
-                              <span className="text-[9px] text-slate-400 font-mono font-bold truncate col-span-1">{row.id.split('-')[0]}</span>
-                              {branches.map(({ b, name }) => {
-                                const pct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
-                                // Colour rule: ≤80% = risk (red), >80% = healthy (emerald), >100% = overutilised (cyan)
-                                const col = pct <= 0 ? 'bg-slate-800/60' : pct <= 50 ? 'bg-rose-700/80' : pct <= 80 ? 'bg-rose-500/70' : pct <= 100 ? 'bg-emerald-400/60' : 'bg-cyan-400/70';
-                                return (
-                                  <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
-                                    className={`h-6 rounded-md ${col} flex items-center justify-center transition-all group-hover/heat:scale-105`}>
-                                    <span className="text-[8px] font-bold text-white/70">{pct > 0 ? `${pct.toFixed(0)}` : '-'}</span>
-                                  </div>
-                                );
-                              })}
-                            </div>
-                          );
-                        })}
-                      </div>
-                      {/* Legend */}
-                      <div className="mt-4 flex flex-wrap gap-2 px-1 pt-3 border-t border-white/5">
-                        {[['bg-rose-700/80', 'Critical ≤50%'], ['bg-rose-500/70', 'Underperforming ≤80%'], ['bg-emerald-400/60', 'Healthy >80%'], ['bg-cyan-400/70', 'Overutilised >100%']].map(([col, lbl]) => (
-                          <div key={lbl} className="flex items-center gap-1.5">
-                            <div className={`w-3 h-3 rounded-sm ${col}`} />
-                            <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* NEW: Carrier Breakdown Donut Chart */}
-                  <div className="rounded-[40px] bg-[#0b0f19] border border-white/5 shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-8 flex flex-col relative overflow-hidden group">
-                    <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-[60px] pointer-events-none" />
-                    <h4 className="text-white font-bold tracking-[0.2em] uppercase text-[10px] mb-1">Carrier Breakdown</h4>
-                    <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-6 font-bold">% of bookings by TEU · All Branches</p>
-                    
-                    <div className="h-[220px] w-full relative">
-                      <ResponsiveContainer width="100%" height="100%">
-                        <PieChart>
-                          <Pie
-                            data={reactiveContractUtilData.filter(d => d.booked > 0).map(d => ({ name: d.id, value: d.booked, carrier: d.carrier }))}
-                            cx="50%" cy="50%"
-                            innerRadius={65}
-                            outerRadius={85}
-                            paddingAngle={5}
-                            dataKey="value"
-                            stroke="none"
-                            isAnimationActive={true}
-                          >
-                            {reactiveContractUtilData.filter(d => d.booked > 0).map((_entry, index) => {
-                              const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf', '#22d3ee', '#10b981', '#fbbf24', '#f43f5e'];
-                              return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} style={{ filter: 'drop-shadow(0 0 4px rgba(167,139,250,0.3))' }} />;
-                            })}
-                          </Pie>
-                          <Tooltip
-                            content={({ active, payload }) => {
-                              if (active && payload && payload.length) {
-                                const total = reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0);
-                                const percentage = ((payload[0].value as number / total) * 100).toFixed(1);
-                                return (
-                                  <div className="bg-[#050505]/95 border border-white/10 p-3 rounded-xl shadow-2xl backdrop-blur-md">
-                                    <div className="text-[10px] font-bold text-violet-400 uppercase mb-1">{payload[0].payload.carrier}</div>
-                                    <div className="flex justify-between gap-6">
-                                      <span className="text-[10px] text-slate-400">Total Booked</span>
-                                      <span className="text-[10px] font-bold text-white font-mono">{payload[0].value} TEU</span>
-                                    </div>
-                                    <div className="flex justify-between gap-6 border-t border-white/5 mt-1 pt-1">
-                                      <span className="text-[10px] text-slate-400">Network Share</span>
-                                      <span className="text-[10px] font-bold text-emerald-400 font-mono">{percentage}%</span>
-                                    </div>
-                                  </div>
-                                );
-                              }
-                              return null;
-                            }}
-                          />
-                        </PieChart>
-                      </ResponsiveContainer>
-                      {/* Center Label */}
-                      <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                        <span className="text-2xl font-bold text-white tracking-tighter">
-                          {reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0).toFixed(0)}
-                        </span>
-                        <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Total TEU</span>
-                      </div>
-                    </div>
-                    
-                    {/* Compact Legend Grid */}
-                    <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 px-2">
-                      {reactiveContractUtilData.filter(d => d.booked > 0).slice(0, 4).map((d, i) => (
-                        <div key={d.id} className="flex items-center gap-2">
-                          <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf'][i % 4] }} />
-                          <span className="text-[9px] text-slate-400 truncate max-w-[80px]">{d.carrier}</span>
-                          <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r)=>s+r.booked, 0)) * 100).toFixed(0)}%</span>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* ─── Full Data Table ─── */}
-              <div className="bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
+              {/* ─── Contract Utilisation Layout Restructuring (Stakeholder Overhaul) ─── */}
+              {/* 1. Full Contract Matrix Table promoted to top visibility */}
+              <div className="bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative mb-8">
                 <div className="absolute top-0 right-0 w-96 h-96 bg-violet-500/5 rounded-full blur-[100px] pointer-events-none" />
                 <div className="p-6 md:p-8 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
                   <div className="flex flex-col gap-1">
@@ -1883,23 +1321,22 @@ const ContractDashboard: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-white/[0.02]">
                       {reactiveContractUtilData.map((row, i) => {
-                        // ≤80% = red risk, >80% = green healthy, >100% = cyan overutilised
-                        const statusStyle = row.util > 100 ? 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40'
-                          : row.util > 80 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                            : 'bg-rose-500/20 text-rose-300 border-rose-500/40';
-                        const utilColor = getUtilColor(row.util, 'text');
+                        const statusStyle = row.util > 100 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25'
+                          : row.util >= 85 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                          : row.util >= 70 ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+                          : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
                         return (
-                          <tr key={i} className="hover:bg-white/[0.03] transition-colors group/cu">
-                            <td className="px-4 py-4 font-mono text-xs font-bold text-violet-300">{row.id}</td>
-                            <td className="px-4 py-4 text-xs text-slate-300 font-medium truncate">{row.carrier}</td>
-                            <td className="px-4 py-4"><span className="font-mono text-[10px] px-2 py-1 rounded bg-slate-800/60 text-slate-400 border border-slate-700/50">{row.lane}</span></td>
-                            <td className="px-4 py-4 text-right font-mono text-sm text-slate-300">{row.alloc}</td>
-                            <td className="px-4 py-4 text-right font-mono text-sm font-bold text-cyan-400 drop-shadow-[0_0_6px_rgba(34,211,238,0.3)]">{row.booked}</td>
-                            <td className={`px-4 py-4 text-right font-mono text-sm font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
-                            <td className={`px-4 py-4 text-right font-mono text-sm font-bold ${utilColor}`}>
+                          <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
+                            <td className="px-4 py-4 font-mono text-[10px] font-bold text-white tracking-wider">{row.id}</td>
+                            <td className="px-4 py-4 text-xs font-bold text-slate-200">{row.carrier}</td>
+                            <td className="px-4 py-4 text-[10px] font-bold text-slate-400 font-mono tracking-tighter">{row.lane}</td>
+                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-slate-300">{row.alloc}</td>
+                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-emerald-400">{row.booked.toFixed(1)}</td>
+                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-cyan-400">{row.avail}</td>
+                            <td className="px-4 py-4 text-right">
                               <div className="flex flex-col items-end gap-1">
-                                <span>{row.util.toFixed(1)}%</span>
-                                <div className="w-14 h-1 bg-slate-900 rounded-full overflow-hidden">
+                                <span className={`font-mono text-xs font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</span>
+                                <div className="w-16 h-1 bg-slate-900 rounded-full overflow-hidden">
                                   <div className={`h-full rounded-full ${getUtilColor(row.util, 'bar')}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
                                 </div>
                               </div>
@@ -1925,332 +1362,109 @@ const ContractDashboard: React.FC = () => {
                   </table>
                 </div>
               </div>
-            </motion.div>
-          )}
 
-          {/* ────────────────────────────────── BRANCH ALLOCATION VIEW ────────────────────────────────── */}
-          {activeTag === 'Branch Allocation' && (
-            <motion.div
-              initial={{ opacity: 0, filter: 'blur(10px)', y: 20 }} animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-10 w-full"
-            >
-              {/* Header */}
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end pb-8 border-b border-white/[0.05] relative">
-                <div className="absolute -bottom-[1px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-amber-500 to-transparent" />
-                <div className="flex flex-col gap-3">
-                  <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-amber-500/10 border border-amber-500/20 w-max mb-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-amber-400 animate-pulse shadow-[0_0_10px_rgba(245,158,11,1)]" />
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-amber-400 uppercase">Regional Distribution Flux</span>
-                  </div>
-                  <h1 className="text-5xl md:text-6xl text-white font-display font-light tracking-tighter">
-                    Branch <span className="font-bold bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent animate-[glow-pulse_4s_ease-in-out_infinite]">Allocation</span>
-                  </h1>
-                </div>
-
-                <div className="mt-6 lg:mt-0 flex gap-4">
-                  <div className="px-6 py-4 bg-black/40 border border-white/10 rounded-2xl flex flex-col gap-1 backdrop-blur-3xl">
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Global Utilisation</span>
-                    <div className="flex items-end gap-2">
-                      <span className="text-3xl font-display font-bold text-white">57</span>
-                      <span className="text-lg font-bold text-slate-300 mb-1">.1%</span>
+              {/* 2. Secondary analysis row: Branch Heat Map & Carrier Breakdown side-by-side */}
+              <div className="grid grid-cols-1 xl:grid-cols-2 gap-8">
+                {/* Left Column: Heat Map Panel */}
+                <div className="rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
+                  <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent flex justify-between items-center">
+                    <div className="flex flex-col">
+                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
+                      <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
                     </div>
+                    <button
+                      onClick={() => setIsHeatmapModalOpen(true)}
+                      className="w-8 h-8 rounded-xl bg-white/5 hover:bg-violet-500/20 border border-white/10 hover:border-violet-500/50 flex items-center justify-center text-slate-400 hover:text-white transition-all shadow-md group cursor-pointer"
+                      title="Expand Heat Map"
+                    >
+                      <svg className="w-4 h-4 transform group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" />
+                      </svg>
+                    </button>
                   </div>
-                </div>
-              </div>
-
-              {/* ─── Branch Flux Aura Visualization ─── */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-                <div className="xl:col-span-12 rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-10 relative overflow-hidden group">
-                  <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,_rgba(245,158,11,0.05),transparent_70%)]" />
-
-                  <div className="flex justify-between items-start mb-12 relative z-10">
-                    <div>
-                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs mb-2">Branch Performance <span className="text-amber-400">Flux Aggregate</span></h4>
-                      <p className="text-xs text-slate-300 max-w-xl">Multi-branch comparison of theoretical capacity versus actual cargo confirmation across all major tactical hubs.</p>
+                  <div className="flex-1 overflow-y-auto elegant-scrollbar p-4 max-h-[350px]">
+                    {/* Column headers */}
+                    <div className="grid grid-cols-6 gap-1 mb-2 px-1">
+                      <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
+                      {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
+                        <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
+                      ))}
                     </div>
-                  </div>
-
-                  <div className="h-[450px] w-full relative z-10 antialiased">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={reactiveBranchSnapshot} margin={{ top: 20, right: 30, left: 10, bottom: 20 }}>
-                        <defs>
-                          <linearGradient id="allocAura" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#f59e0b" stopOpacity={0.15} />
-                            <stop offset="100%" stopColor="#f59e0b" stopOpacity={0} />
-                          </linearGradient>
-                          <filter id="glow">
-                            <feGaussianBlur stdDeviation="3" result="coloredBlur" />
-                            <feMerge>
-                              <feMergeNode in="coloredBlur" />
-                              <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" vertical={false} opacity={0.03} />
-                        <XAxis
-                          dataKey="branch"
-                          axisLine={false}
-                          tickLine={false}
-                          tick={{ fill: '#94a3b8', fontSize: 11, fontWeight: 800, letterSpacing: '0.1em' }}
-                          dy={20}
-                        />
-                        <YAxis hide domain={[0, 'dataMax + 100']} />
-                        <Tooltip
-                          cursor={{ fill: 'rgba(255,255,255,0.03)' }}
-                          content={({ active, payload }) => {
-                            if (active && payload && payload.length) {
-                              const data = payload[0].payload;
+                    <div className="flex flex-col gap-1.5">
+                      {reactiveContractUtilData.map((row) => {
+                        const branches = [
+                          { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
+                          { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
+                          { b: row.adl, name: 'ADL' },
+                        ];
+                        return (
+                          <div key={row.id} className="grid grid-cols-6 gap-1 items-center group/heat hover:bg-white/[0.03] rounded-xl px-1 py-0.5 transition-colors">
+                            <span className="text-[9px] text-slate-400 font-mono font-bold truncate col-span-1">{row.id.split('-')[0]}</span>
+                            {branches.map(({ b, name }) => {
+                              const pct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
+                              const col = pct <= 0 ? 'bg-slate-800/60' : pct <= 50 ? 'bg-rose-700/80' : pct <= 80 ? 'bg-rose-500/70' : pct <= 100 ? 'bg-emerald-400/60' : 'bg-cyan-400/70';
                               return (
-                                <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="bg-[#050505]/95 backdrop-blur-2xl border border-white/10 p-5 rounded-[24px] shadow-[0_20px_50px_rgba(0,0,0,0.9)]">
-                                  <div className="flex items-center gap-2 mb-4">
-                                    <div className="w-2 h-2 rounded-full" style={{ backgroundColor: data.color }} />
-                                    <p className="text-xs font-bold text-white uppercase tracking-[0.2em]">{data.branch} HUB</p>
-                                  </div>
-                                  <div className="grid grid-cols-2 gap-6">
-                                    <div className="flex flex-col">
-                                      <span className="text-[9px] text-slate-300 font-bold uppercase mb-1">Total Capacity</span>
-                                      <span className="text-xl font-display font-light text-white">{data.alloc} <span className="text-[10px] text-slate-300">TEU</span></span>
-                                    </div>
-                                    <div className="flex flex-col">
-                                      <span className="text-[9px] text-amber-500 font-bold uppercase mb-1">Active Bookings</span>
-                                      <span className="text-xl font-display font-bold text-amber-400">{data.booked} <span className="text-[10px] text-amber-600">TEU</span></span>
-                                    </div>
-                                  </div>
-                                  <div className="mt-4 pt-4 border-t border-white/5 flex items-center justify-between">
-                                    <div className="flex items-center gap-2">
-                                      <div className="w-12 h-1.5 bg-slate-900 rounded-full overflow-hidden">
-                                        <div className="h-full bg-emerald-500" style={{ width: `${data.util}%` }} />
-                                      </div>
-                                      <span className="text-[10px] font-bold text-emerald-400">{data.util}%</span>
-                                    </div>
-                                    <span className="text-[9px] text-slate-400 font-mono font-bold tracking-widest">{data.alloc - data.booked} AVAIL</span>
-                                  </div>
-                                </motion.div>
+                                <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
+                                  className={`h-6 rounded-md ${col} flex items-center justify-center transition-all group-hover/heat:scale-105`}>
+                                  <span className="text-[8px] font-bold text-white/70">{pct > 0 ? `${pct.toFixed(0)}` : '-'}</span>
+                                </div>
                               );
-                            }
-                            return null;
-                          }}
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="alloc"
+                            })}
+                          </div>
+                        );
+                      })}
+                    </div>
+                    {/* Legend */}
+                    <div className="mt-4 flex flex-wrap gap-2 px-1 pt-3 border-t border-white/5">
+                      {[['bg-rose-700/80', 'Critical ≤50%'], ['bg-rose-500/70', 'Underperforming ≤80%'], ['bg-emerald-400/60', 'Healthy >80%'], ['bg-cyan-400/70', 'Overutilised >100%']].map(([col, lbl]) => (
+                        <div key={lbl} className="flex items-center gap-1.5">
+                          <div className={`w-3 h-3 rounded-sm ${col}`} />
+                          <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Right Column: Carrier Breakdown Donut Chart */}
+                <div className="rounded-[40px] bg-[#0b0f19] border border-white/5 shadow-[0_30px_60px_rgba(0,0,0,0.8)] p-8 flex flex-col relative overflow-hidden group">
+                  <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-[60px] pointer-events-none" />
+                  <h4 className="text-white font-bold tracking-[0.2em] uppercase text-[10px] mb-1">Carrier Breakdown</h4>
+                  <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-6 font-bold">% of bookings by TEU · All Branches</p>
+                  
+                  <div className="h-[220px] w-full relative">
+                    <ResponsiveContainer width="100%" height="100%">
+                      <PieChart>
+                        <Pie
+                          data={reactiveContractUtilData.filter(d => d.booked > 0).map(d => ({ name: d.id, value: d.booked, carrier: d.carrier }))}
+                          cx="50%" cy="50%"
+                          innerRadius={65}
+                          outerRadius={85}
+                          paddingAngle={5}
+                          dataKey="value"
                           stroke="none"
-                          fill="url(#allocAura)"
                           isAnimationActive={true}
-                          animationDuration={2500}
-                          animationEasing="ease-in-out"
-                        />
-                        <Bar
-                          dataKey="alloc"
-                          barSize={64}
-                          radius={[20, 20, 0, 0]}
-                          fill="rgba(255,255,255,0.02)"
-                          stroke="rgba(255,255,255,0.05)"
-                          isAnimationActive={true}
-                          animationDuration={2500}
-                          animationEasing="ease-in-out"
-                        />
-                        <Bar
-                          dataKey="booked"
-                          barSize={44}
-                          radius={[12, 12, 4, 4]}
-                          isAnimationActive={true}
-                          animationDuration={2500}
-                          animationEasing="ease-in-out"
                         >
-                          {reactiveBranchSnapshot.map((entry, index) => {
-                            const colors: Record<string, string> = {
-                              'SYD': '#FF4D4D', 'SY1': '#FF4D4D', 'SYDNEY': '#FF4D4D',
-                              'MEL': '#4D96FF', 'ME1': '#4D96FF', 'MELBOURNE': '#4D96FF',
-                              'BNE': '#FFD93D', 'BN1': '#FFD93D', 'BRISBANE': '#FFD93D',
-                              'PER': '#6BCB77', 'PR1': '#6BCB77', 'PERTH': '#6BCB77',
-                              'ADL': '#9B59B6', 'AD1': '#9B59B6', 'ADELAIDE': '#9B59B6'
-                            };
-                            const color = colors[entry.branch] || colors[entry.code] || '#06b6d4';
-                            return <Cell key={`cell-${index}`} fill={color} style={{ filter: `drop-shadow(0 0 15px ${color}44)` }} />;
+                          {reactiveContractUtilData.filter(d => d.booked > 0).map((_entry, index) => {
+                            const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf', '#22d3ee', '#10b981', '#fbbf24', '#f43f5e'];
+                            return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} style={{ filter: 'drop-shadow(0 0 4px rgba(167,139,250,0.3))' }} />;
                           })}
-                        </Bar>
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-
-              {/* ─── Detailed Carrier-Branch Matrix Table ─── */}
-              <div className="bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[40px] overflow-hidden shadow-[0_40px_80px_rgba(0,0,0,0.8)] relative">
-                <div className="p-8 md:p-10 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
-                  <div className="flex flex-col gap-1">
-                    <span className="text-white font-bold text-xl tracking-wide">Branch Allocation Breakdown</span>
-                    <span className="text-[10px] text-slate-300 uppercase tracking-widest font-bold">Comprehensive Regional Utilisation Matrix</span>
-                  </div>
-                  <div className="flex items-center gap-4">
-                    <button
-                      onClick={() => setIsBranchTableModalOpen(true)}
-                      className="px-5 py-2.5 bg-amber-500/20 border border-amber-500/40 rounded-xl text-amber-400 text-[10px] font-bold uppercase tracking-widest hover:bg-amber-500/40 transition-all flex items-center gap-2"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                      Pop-up View
-                    </button>
-                    <span className="text-[10px] font-bold px-4 py-2 bg-slate-800 text-slate-400 rounded-lg border border-white/10 uppercase tracking-widest">MSC Week 12</span>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto elegant-scrollbar relative z-10 p-5">
-                  <table className="w-full text-left border-separate border-spacing-0 min-w-[1600px]">
-                    <thead>
-                      <tr className="bg-slate-900/60 font-bold">
-                        <th rowSpan={2} className="p-6 text-slate-400 text-[10px] tracking-widest uppercase border-b border-r border-white/5 sticky left-0 z-20 bg-slate-900/90 backdrop-blur w-40">Contract ID</th>
-                        <th rowSpan={2} className="p-6 text-slate-400 text-[10px] tracking-widest uppercase border-b border-r border-white/5 sticky left-40 z-20 bg-slate-900/90 backdrop-blur w-48">Carrier</th>
-                        <th rowSpan={2} className="p-6 text-slate-400 text-[10px] tracking-widest uppercase border-b border-r border-white/5 w-32 text-center">Lane</th>
-
-                        <th colSpan={3} className="px-2 py-4 text-center bg-[#FF4D4D]/10 border-b border-r border-[#FF4D4D]/20 text-[#FF4D4D] text-[10px] font-black uppercase tracking-[0.2em] font-display">Sydney</th>
-                        <th colSpan={3} className="px-2 py-4 text-center bg-[#4D96FF]/10 border-b border-r border-[#4D96FF]/20 text-[#4D96FF] text-[10px] font-black uppercase tracking-[0.2em] font-display">Melbourne</th>
-                        <th colSpan={3} className="px-2 py-4 text-center bg-[#FFD93D]/10 border-b border-r border-[#FFD93D]/20 text-[#FFD93D] text-[10px] font-black uppercase tracking-[0.2em] font-display">Brisbane</th>
-                        <th colSpan={3} className="px-2 py-4 text-center bg-[#6BCB77]/10 border-b border-r border-[#6BCB77]/20 text-[#6BCB77] text-[10px] font-black uppercase tracking-[0.2em] font-display">Perth</th>
-                        <th colSpan={3} className="px-2 py-4 text-center bg-[#9B59B6]/10 border-b border-white/10 text-[#9B59B6] text-[10px] font-black uppercase tracking-[0.2em] font-display">Adelaide</th>
-                      </tr>
-                      <tr className="bg-slate-900/30 font-bold text-[9px] text-slate-300 uppercase tracking-widest">
-                        {['Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%', 'Alloc', 'Booked', 'Util%'].map((h, i) => (
-                          <th key={i} className={`px-2 py-3 text-center border-b border-r border-white/[0.05] ${i % 3 === 2 ? 'bg-white/[0.1]' : ''}`}>{h}</th>
-                        ))}
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/[0.03]">
-                      {reactiveContractUtilData.map((row, i) => (
-                        <tr key={i} className="hover:bg-white/[0.02] transition-colors group">
-                          <td className="p-4 font-mono text-xs font-bold text-slate-300 border-r border-white/5 sticky left-0 z-10 bg-[#0b0f19] group-hover:bg-[#111928]">{row.id}</td>
-                          <td className="p-4 text-xs text-white border-r border-white/5 font-medium sticky left-40 z-10 bg-[#0b0f19] group-hover:bg-[#111928]">{row.carrier}</td>
-                          <td className="p-4 text-center border-r border-white/5"><span className="text-[10px] px-2 py-1 bg-slate-800 rounded font-bold text-slate-400 font-mono tracking-tighter">{row.lane}</span></td>
-
-                          {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => {
-                            const util = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
-                            const isCrit = util > 100;
-                            const isLow = util < 50 && util > 0;
-                            return (
-                              <React.Fragment key={bi}>
-                                <td className="px-1 py-4 text-center font-mono text-[11px] text-slate-400">{b.alloc}</td>
-                                <td className={`px-1 py-4 text-center font-mono text-[11px] font-bold ${isCrit ? 'text-rose-400' : isLow ? 'text-amber-400' : 'text-slate-200'}`}>{b.booked.toFixed(1)}</td>
-                                <td className={`px-1 py-4 text-center border-r border-white/5 font-mono text-[11px] font-black ${isCrit ? 'text-rose-400 animate-pulse' : isLow ? 'text-amber-400' : 'text-slate-300'}`}>{util.toFixed(0)}%</td>
-                              </React.Fragment>
-                            );
-                          })}
-                        </tr>
-                      ))}
-                    </tbody>
-                    <tfoot>
-                      <tr className="bg-black/60 font-black border-t-2 border-amber-500/50">
-                        <td colSpan={3} className="p-6 text-amber-400 text-xs tracking-[0.3em] font-display uppercase border-r border-white/10 sticky left-0 z-10 bg-black">Global Branch Totals</td>
-                        {[branchMatrixTotals.syd, branchMatrixTotals.mel, branchMatrixTotals.bne, branchMatrixTotals.per, branchMatrixTotals.adl].map((t, ti) => {
-                          const util = t.alloc > 0 ? (t.booked / t.alloc) * 100 : 0;
-                          return (
-                            <React.Fragment key={ti}>
-                              <td className="px-1 py-6 text-center font-mono text-base text-white">{t.alloc.toFixed(0)}</td>
-                              <td className="px-1 py-6 text-center font-mono text-base text-white">{t.booked.toFixed(1)}</td>
-                              <td className={`px-1 py-6 text-center border-r border-white/10 font-mono text-lg ${util > 90 ? 'text-rose-400' : 'text-emerald-400'}`}>{util.toFixed(0)}%</td>
-                            </React.Fragment>
-                          );
-                        })}
-                      </tr>
-                    </tfoot>
-                  </table>
-                </div>
-              </div>
-            </motion.div>
-          )}
-
-          {/* Week Analysis View */}
-          {activeTag === 'Week Analysis' && (
-            <motion.div
-              initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="flex flex-col gap-10 w-full"
-            >
-              {/* Ultra-Premium Header */}
-              <div className="flex flex-col lg:flex-row justify-between items-start lg:items-end pb-8 border-b border-white/[0.05] relative">
-                <div className="absolute -bottom-[1px] left-0 w-1/3 h-[1px] bg-gradient-to-r from-indigo-500 to-transparent" />
-                <div className="flex flex-col gap-3">
-                  <div className="inline-flex items-center gap-3 px-4 py-1.5 rounded-full bg-indigo-500/10 border border-indigo-500/20 w-max mb-1">
-                    <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 animate-[pulse-ring_2s_infinite] shadow-[0_0_10px_rgba(99,102,241,1)]" />
-                    <span className="text-[10px] font-bold tracking-[0.2em] text-indigo-400 uppercase">Weekly Performance Flux</span>
-                  </div>
-                  <h1 className="text-5xl md:text-6xl text-white font-display font-light tracking-tighter">
-                    Week <span className="font-bold aurora-text animate-[glow-pulse_4s_ease-in-out_infinite] drop-shadow-[0_0_15px_rgba(99,102,241,0.4)]">Analysis</span>
-                  </h1>
-                </div>
-                <div className="mt-6 lg:mt-0 flex items-center gap-4">
-                  <div className="mt-6 lg:mt-0 flex flex-col pt-3 pb-4 px-5 bg-gradient-to-br from-indigo-950/40 to-[#050505]/80 border border-indigo-500/30 rounded-[20px] shadow-[0_10px_30px_rgba(0,0,0,0.5)]">
-                    <div className="text-[10px] font-bold text-white mb-2 flex items-center gap-2">
-                      <svg className="w-3 h-3 text-cyan-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 00-2 2z" /></svg>
-                      Select Week Range:
-                    </div>
-                    <div className="flex bg-[#0b0f19] border border-white/10 rounded-xl overflow-hidden shadow-inner">
-                      <div className="flex flex-col border-r border-white/5">
-                        <div className="px-4 py-1.5 bg-indigo-500/10 text-[9px] font-bold text-indigo-400 uppercase tracking-widest text-center border-b border-white/5">From Week</div>
-                        <div className="px-4 py-2.5 text-center text-white font-bold text-sm bg-white/[0.02]">WK 12</div>
-                      </div>
-                      <div className="flex flex-col">
-                        <div className="px-4 py-1.5 bg-indigo-500/10 text-[9px] font-bold text-indigo-400 uppercase tracking-widest text-center border-b border-white/5">To Week</div>
-                        <div className="px-4 py-2.5 text-center text-white font-bold text-sm bg-white/[0.02]">WK 19</div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              {/* Data Insights Section: Enhanced Graph + Summary Table */}
-              <div className="flex flex-col xl:flex-row gap-8">
-                {/* Enhanced liquid-glow Trend Visual */}
-                <div className="flex-1 rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_20px_50px_rgba(0,0,0,0.8)] p-8 md:p-10 relative overflow-hidden group">
-                  <div className="absolute inset-0 z-0 pointer-events-none opacity-20">
-                    <div className="absolute inset-x-0 top-0 h-40 bg-gradient-to-b from-indigo-500/20 to-transparent" />
-                  </div>
-
-                  <div className="flex justify-between items-center mb-10 relative z-10">
-                    <h4 className="text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
-                      <span className="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
-                      Network Volume Dynamics
-                    </h4>
-                    <div className="flex items-center gap-4">
-                      <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-full bg-white shadow-[0_0_5px_white]" /><span className="text-[9px] text-slate-400 font-bold uppercase">Allocation</span></div>
-                      <div className="flex items-center gap-1.5"><div className="w-2 h-2 rounded-sm bg-indigo-500 shadow-[0_0_5px_rgba(99,102,241,0.5)]" /><span className="text-[9px] text-slate-400 font-bold uppercase">Booked TEU</span></div>
-                    </div>
-                  </div>
-
-                  <div className="h-[400px] w-full relative z-10 antialiased">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: -20 }}>
-                        <defs>
-                          <linearGradient id="areaAllocWeek" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#6366f1" stopOpacity={0.1} />
-                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
-                          </linearGradient>
-                          <linearGradient id="bookBarGlow" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#8b5cf6" stopOpacity={1} />
-                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0.6} />
-                          </linearGradient>
-                        </defs>
-                        <CartesianGrid strokeDasharray="3 3" stroke="#ffffff" vertical={false} opacity={0.03} />
-                        <XAxis dataKey="week" stroke="#64748b" tickLine={false} axisLine={false} dy={15} fontSize={10} fontWeight={700} />
-                        <YAxis stroke="#475569" tickLine={false} axisLine={false} fontSize={10} />
+                        </Pie>
                         <Tooltip
-                          cursor={{ fill: 'rgba(99,102,241,0.05)' }}
                           content={({ active, payload }) => {
                             if (active && payload && payload.length) {
+                              const total = reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0);
+                              const percentage = ((payload[0].value as number / total) * 100).toFixed(1);
                               return (
-                                <div className="bg-[#050505]/95 backdrop-blur-3xl border border-white/10 p-4 rounded-xl shadow-[0_10px_40px_rgba(0,0,0,0.8)]">
-                                  <div className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mb-2 border-b border-white/5 pb-1">{payload[0].payload.week}</div>
-                                  <div className="flex flex-col gap-2 pt-1">
-                                    <div className="flex justify-between items-center gap-8">
-                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-indigo-400"></div><span className="text-[10px] text-slate-400">Allocation</span></div>
-                                      <span className="font-mono text-xs text-white font-bold">{payload[0].payload.alloc} TEU</span>
-                                    </div>
-                                    <div className="flex justify-between items-center gap-8">
-                                      <div className="flex items-center gap-1.5"><div className="w-1.5 h-1.5 rounded-full bg-violet-400"></div><span className="text-[10px] text-slate-400">Booked</span></div>
-                                      <span className="font-mono text-xs text-violet-400 font-bold">{payload[0].payload.booked} TEU</span>
-                                    </div>
-                                    <div className="flex justify-between items-center gap-8 pt-1.5 border-t border-white/5 mt-1">
-                                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">Utilisation</span>
-                                      <span className={`font-mono text-xs font-bold ${getUtilColor(payload[0].payload.util, 'text')}`}>{payload[0].payload.util}%</span>
-                                    </div>
+                                <div className="bg-white/95 dark:bg-[#02040a]/95 border border-slate-200 dark:border-violet-500/30 p-4 rounded-2xl shadow-2xl backdrop-blur-xl">
+                                  <div className="text-[10px] font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-2">{payload[0].payload.carrier}</div>
+                                  <div className="flex justify-between gap-8 mb-1">
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Total Booked</span>
+                                    <span className="text-xs font-black text-slate-800 dark:text-white font-mono">{payload[0].value} TEU</span>
+                                  </div>
+                                  <div className="flex justify-between gap-8 border-t border-slate-100 dark:border-white/5 mt-1.5 pt-1.5">
+                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Network Share</span>
+                                    <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 font-mono">{percentage}%</span>
                                   </div>
                                 </div>
                               );
@@ -2258,439 +1472,31 @@ const ContractDashboard: React.FC = () => {
                             return null;
                           }}
                         />
-                        
-                        {/* Layer 1: Allocation Ceiling */}
-                        {/* Layer 1: Allocation Ceiling */}
-                        <Area 
-                          type="monotone" 
-                          dataKey="alloc" 
-                          name="Capacity Limit" 
-                          fill="url(#areaAllocWeek)" 
-                          stroke="#6366f1" 
-                          strokeWidth={2} 
-                          fillOpacity={0.1}
-                          isAnimationActive={true} 
-                          animationDuration={2000} 
-                        />
-                        
-                        {/* Layer 2: Efficiency Target (80%) */}
-                        <Line 
-                          type="monotone" 
-                          dataKey={(d) => d.alloc * 0.8} 
-                          name="Efficiency Target (80%)" 
-                          stroke="#f59e0b" 
-                          strokeWidth={2} 
-                          strokeDasharray="4 4" 
-                          dot={false} 
-                        />
-
-                        {/* Layer 3: Booked Path */}
-                        <Area
-                          type="monotone"
-                          dataKey="booked"
-                          name="Booked Volume"
-                          fill="url(#bookBarGlow)"
-                          stroke="#34d399"
-                          strokeWidth={4}
-                          fillOpacity={0.4}
-                          isAnimationActive={true}
-                          animationDuration={1500}
-                          dot={{ r: 3, fill: '#34d399' }}
-                        />
-                      </ComposedChart>
+                      </PieChart>
                     </ResponsiveContainer>
-                </div>
-              </div>
-
-                {/* Weekly Pulse Summary Table */}
-                <div className="xl:w-[420px] bg-[#0b0f19]/80 border border-white/5 rounded-[40px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] backdrop-blur-3xl flex flex-col group">
-                  <div className="px-8 py-7 border-b border-white/5 flex items-center justify-between">
-                    <div className="flex items-center gap-3">
-                      <div className="w-8 h-8 rounded-xl bg-cyan-500/10 flex items-center justify-center text-cyan-400">
-                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 17v-2m3 2v-4m3 4v-6m2 10H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+                    {/* Center Label */}
+                    <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                      <span className="text-2xl font-bold text-white tracking-tighter">
+                        {reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0).toFixed(0)}
+                      </span>
+                      <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Total TEU</span>
+                    </div>
+                  </div>
+                  
+                  {/* Compact Legend Grid */}
+                  <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 px-2">
+                    {reactiveContractUtilData.filter(d => d.booked > 0).slice(0, 4).map((d, i) => (
+                      <div key={d.id} className="flex items-center gap-2">
+                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf'][i % 4] }} />
+                        <span className="text-[9px] text-slate-400 truncate max-w-[80px]">{d.carrier}</span>
+                        <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r)=>s+r.booked, 0)) * 100).toFixed(0)}%</span>
                       </div>
-                      <h3 className="text-white font-bold tracking-widest uppercase text-xs">Network Pulse</h3>
-                    </div>
-                    <span className="text-[9px] font-mono text-slate-300">REALTIME SYNC</span>
-                  </div>
-                  <div className="flex-1 p-2">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-black/20">
-                          <th className="px-6 py-3 font-bold text-slate-400 text-[10px] tracking-widest uppercase rounded-tl-2xl">Week</th>
-                          <th className="px-4 py-3 font-bold text-slate-400 text-[10px] tracking-widest uppercase text-center">Alloc</th>
-                          <th className="px-4 py-3 font-bold text-slate-400 text-[10px] tracking-widest uppercase text-center">Booked</th>
-                          <th className="px-6 py-3 font-bold text-slate-400 text-[10px] tracking-widest uppercase text-right rounded-tr-2xl">Util%</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/[0.03] bg-black/10">
-                        {reactiveWeeklyTrendData.map((row) => (
-                          <tr key={row.week} className="hover:bg-white/[0.05] transition-all group/pulse">
-                            <td className="px-6 py-3 font-black text-slate-300 text-[11px] tracking-wider uppercase">{row.week}</td>
-                            <td className="px-4 py-3 text-center font-mono text-[11px] text-slate-400 group-hover/pulse:text-slate-200">{row.alloc}</td>
-                            <td className="px-4 py-3 text-center font-mono text-[11px] text-white font-bold group-hover/pulse:text-cyan-400 transition-colors">{row.booked.toFixed(1)}</td>
-                            <td className={`px-6 py-3 text-right font-mono font-black text-xs ${getUtilColor(row.util, 'text')}`}>
-                              <span className="px-2 py-1 rounded bg-black/40 border border-white/5">{row.util}%</span>
-                            </td>
-                          </tr>
-                        ))}
-                      </tbody>
-                    </table>
+                    ))}
                   </div>
                 </div>
               </div>
-
-              {/* Performance Matrix Header HUD */}
-              <div className="flex items-center justify-between px-8 py-4 bg-[#050505]/40 border-l border-indigo-500/50 border-r border-indigo-500/50 rounded-2xl">
-                <div className="flex items-center gap-6">
-                  <div className="flex flex-col">
-                    <span className="text-[10px] font-bold text-slate-300 uppercase tracking-widest">Global Matrix</span>
-                    <span className="text-xl font-display text-white font-light uppercase tracking-widest">Underperforming <span className="font-bold text-indigo-400">Node Data</span></span>
-                  </div>
-                  <div className="h-10 w-[1px] bg-white/10" />
-                  <div className="flex items-center gap-3">
-                    <span className="flex items-center gap-1.5"><span className="w-1.5 h-1.5 rounded-full bg-rose-500" /><span className="text-[9px] text-slate-300 font-bold uppercase">Underperforming</span></span>
-                  </div>
-                </div>
-                <div className="mt-6 lg:mt-0 px-5 py-3 bg-[#050505]/60 border border-slate-700/80 rounded-2xl flex items-center gap-4 backdrop-blur-3xl shadow-[0_10px_30px_rgba(0,0,0,0.5),inset_0_1px_1px_rgba(255,255,255,0.05)] transform hover:scale-105 transition-transform duration-500 cursor-default">
-                  <div className="flex flex-col items-end">
-                    <span className="text-[10px] font-semibold tracking-widest text-slate-300 uppercase">Mission Operations</span>
-                    <span className="text-sm font-bold tracking-wide text-white">WK 12 <span className="text-indigo-400/80 font-medium">| ACTIVE</span></span>
-                  </div>
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-indigo-500 to-indigo-700 flex items-center justify-center shadow-[0_0_20px_rgba(99,102,241,0.5)] text-white relative overflow-hidden">
-                    <div className="absolute inset-0 bg-white/20 opacity-0 hover:opacity-100 transition-opacity" />
-                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" /></svg>
-                  </div>
-                </div>
-              </div>
-
-              {/* Top Row: Amazing Graph + Quick Summary Table */}
-              <div className="grid grid-cols-1 xl:grid-cols-12 gap-8">
-                {/* Ultra-Amazing Liquid Glow Trend Chart */}
-                <div className="xl:col-span-8 rounded-[40px] bg-[#0b0f19]/80 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8),inset_0_1px_2px_rgba(255,255,255,0.05)] p-10 relative overflow-hidden group">
-                  <div className="absolute inset-0 z-0 pointer-events-none overflow-hidden rounded-[40px]">
-                    <div className="absolute top-0 right-0 bottom-0 left-0 bg-gradient-to-r from-transparent via-indigo-400/[0.08] to-transparent w-[300%]" style={{ animation: 'sweep-shine 8s infinite linear' }} />
-                  </div>
-
-                  <div className="flex flex-col md:flex-row justify-between items-start md:items-center mb-10 relative z-10 gap-4">
-                    <div className="flex flex-col gap-1">
-                      <h4 className="text-[11px] text-slate-300 font-bold uppercase tracking-[0.3em] flex items-center gap-3">
-                        <span className="w-2 h-2 rounded-full bg-indigo-500 shadow-[0_0_12px_rgba(99,102,241,1)]" /> Network Volume Projection
-                      </h4>
-                      <div className="flex items-center gap-2 mt-1">
-                        <button 
-                          onClick={() => setGranularity('region')}
-                          className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border ${granularity === 'region' ? 'bg-indigo-500/20 border-indigo-500 text-white' : 'border-white/10 text-slate-500 hover:text-slate-300'}`}
-                        >
-                          Region
-                        </button>
-                        <svg className="w-2 h-2 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
-                        <button 
-                          onClick={() => setGranularity('country')}
-                          disabled={granularity === 'region'}
-                          className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border ${granularity === 'country' ? 'bg-indigo-500/20 border-indigo-500 text-white' : granularity === 'region' ? 'opacity-30' : 'border-white/10 text-slate-500 hover:text-slate-300'}`}
-                        >
-                          Country
-                        </button>
-                        <svg className="w-2 h-2 text-slate-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" /></svg>
-                        <button 
-                          onClick={() => setGranularity('port')}
-                          disabled={granularity !== 'port'}
-                          className={`text-[9px] font-black uppercase tracking-widest px-2 py-0.5 rounded border ${granularity === 'port' ? 'bg-indigo-500/20 border-indigo-500 text-white' : 'opacity-30 border-white/10 text-slate-500'}`}
-                        >
-                          Port
-                        </button>
-                      </div>
-                    </div>
-                    <div className="px-4 py-2 rounded-xl bg-black/40 border border-white/10 text-[10px] font-mono text-cyan-400 uppercase tracking-widest shadow-inner flex items-center gap-2">
-                      <span className="w-1.5 h-1.5 rounded-full bg-cyan-500 animate-pulse" />
-                      Dynamic {granularity} DRILL-PATH
-                    </div>
-                  </div>
-
-                  <div className="h-[420px] w-full relative z-10 antialiased min-h-[420px]">
-                    <ResponsiveContainer width="100%" height="100%">
-                      <ComposedChart data={reactiveWeeklyTrendData} margin={{ top: 10, right: 10, bottom: 0, left: 0 }}>
-                        <defs>
-                          <linearGradient id="liquidBlue" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#4f46e5" stopOpacity={0.6} />
-                            <stop offset="95%" stopColor="#818cf8" stopOpacity={0} />
-                          </linearGradient>
-                          <linearGradient id="glowArea" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="0%" stopColor="#6366f1" stopOpacity={0.4} />
-                            <stop offset="100%" stopColor="#6366f1" stopOpacity={0} />
-                          </linearGradient>
-                          <filter id="neonBlur" x="-20%" y="-20%" width="140%" height="140%">
-                            <feGaussianBlur in="SourceGraphic" stdDeviation="5" result="blur" />
-                            <feMerge>
-                              <feMergeNode in="blur" />
-                              <feMergeNode in="SourceGraphic" />
-                            </feMerge>
-                          </filter>
-                        </defs>
-                        <CartesianGrid strokeDasharray="10 10" stroke="#ffffff" vertical={false} opacity={0.005} />
-                        <XAxis dataKey="week" stroke="#ffffff" opacity={0.15} tickLine={false} axisLine={false} dy={20} fontSize={9} fontWeight={900} />
-                        <YAxis stroke="#ffffff" opacity={0.15} tickLine={false} axisLine={false} dx={-10} fontSize={9} ticks={[0, 25, 50, 75, 100]} />
-
-                        <Tooltip
-                          cursor={{ stroke: 'rgba(255, 255, 255, 0.05)', strokeWidth: 1 }}
-                          content={({ active, payload, label }) => {
-                            if (active && payload && payload.length) {
-                              const utilVal = payload[0].payload.util;
-                              return (
-                                <div className="bg-[#050515]/80 backdrop-blur-3xl border border-white/5 p-8 rounded-[40px] shadow-[0_50px_100px_rgba(0,0,0,1),inset_0_1px_1px_rgba(255,255,255,0.1)] flex flex-col gap-6 min-w-[240px]">
-                                  <div className="flex flex-col gap-1">
-                                    <div className="text-[9px] uppercase font-bold tracking-[0.5em] text-indigo-500/80 mb-1">Weekly Analysis</div>
-                                    <div className="text-2xl text-white font-display font-light tracking-tighter">{label} Snapshot</div>
-                                  </div>
-
-                                  <div className="flex flex-col gap-4">
-                                    <div className="flex justify-between items-center bg-white/[0.03] p-4 rounded-2xl border border-white/5">
-                                      <div className="flex flex-col">
-                                        <span className="text-slate-300 text-[8px] uppercase font-bold tracking-widest mb-1">Capacity</span>
-                                        <span className="text-xl text-white font-mono font-bold leading-none">{payload[1]?.value || 0}</span>
-                                      </div>
-                                      <div className="flex flex-col items-end">
-                                        <span className="text-slate-300 text-[8px] uppercase font-bold tracking-widest mb-1">Booked</span>
-                                        <span className="text-xl text-emerald-400 font-mono font-bold leading-none">{payload[0]?.value || 0}</span>
-                                      </div>
-                                    </div>
-
-                                    <div className="flex items-center justify-between px-2">
-                                      <div className="text-[10px] font-bold text-slate-400">NETWORK EFFICIENCY</div>
-                                      <div className={`text-xl font-display font-bold ${getUtilColor(utilVal, 'text')}`}>
-                                        {utilVal}%
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              );
-                            }
-                            return null;
-                          }}
-                        />
-
-                        <Area 
-                          type="monotone" 
-                          dataKey="alloc" 
-                          fill="url(#liquidBlue)" 
-                          stroke="#4f46e5" 
-                          strokeWidth={2}
-                          fillOpacity={0.4} 
-                          isAnimationActive={true} 
-                          animationDuration={3000} 
-                        />
-                        <Area
-                          type="monotone"
-                          dataKey="booked"
-                          fill="url(#glowArea)"
-                          stroke="#34d399"
-                          strokeWidth={4}
-                          strokeLinecap="round"
-                          fillOpacity={0.6}
-                          isAnimationActive={true}
-                          animationDuration={2500}
-                          dot={{ r: 4, fill: '#34d399', stroke: '#0b0f19', strokeWidth: 2 }}
-                          activeDot={{ r: 8, fill: '#34d399', stroke: '#fff', strokeWidth: 2 }}
-                        />
-                        <Line
-                          type="monotone"
-                          dataKey="util"
-                          stroke="#f59e0b"
-                          strokeWidth={2}
-                          strokeDasharray="5 5"
-                          dot={false}
-                          yAxisId="right"
-                        />
-                        <YAxis yAxisId="right" orientation="right" hide domain={[0, 150]} />
-                      </ComposedChart>
-                    </ResponsiveContainer>
-                  </div>
-                </div>
-
-                {/* Network Summary Compact Matrix (From Screenshot) */}
-                <div className="xl:col-span-4 rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
-                  <div className="p-8 border-b border-indigo-500/20 bg-gradient-to-r from-indigo-950/20 to-transparent">
-                    <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Weekly <span className="text-indigo-400">Readout Matrix</span></h4>
-                  </div>
-                  <div className="flex-1 overflow-y-auto elegant-scrollbar p-6">
-                    <table className="w-full text-left border-collapse">
-                      <thead>
-                        <tr className="bg-black/30">
-                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase border-b border-white/5">Week</th>
-                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Alloc</th>
-                          <th className="px-5 py-3 font-bold text-slate-300 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Booked</th>
-                          <th className="px-5 py-3 font-bold text-indigo-400 text-[10px] tracking-widest uppercase text-right border-b border-white/5">Util%</th>
-                        </tr>
-                      </thead>
-                      <tbody className="divide-y divide-white/[0.03]">
-                        {reactiveWeeklyTrendData.map((row, i) => {
-                          const isCurrentWk = row.week === selectedWeek;
-                          return (
-                            <tr key={i} className={`transition-colors group ${isCurrentWk ? 'bg-cyan-500/10 border-l-4 border-l-cyan-400' : 'hover:bg-indigo-500/5'}`}>
-                              <td className="px-5 py-3 font-display font-bold text-white text-[13px]">
-                                <div className="flex items-center gap-2">
-                                  {row.week}
-                                  {isCurrentWk && <span className="text-[7px] bg-cyan-500 text-black px-1 rounded">CURRENT</span>}
-                                </div>
-                              </td>
-                              <td className="px-5 py-3 font-mono text-slate-400 text-xs text-right group-hover:text-slate-200">{row.alloc}</td>
-                              <td className="px-5 py-3 font-mono text-cyan-400 text-xs text-right group-hover:text-cyan-300 font-bold">{row.booked.toFixed(1)}</td>
-                              <td className={`px-5 py-3 font-mono text-xs text-right font-bold antialiased ${getUtilColor(row.util, 'text')}`}>
-                                <span className="px-2 py-0.5 rounded bg-black/40 border border-white/5">{row.util.toFixed(1)}%</span>
-                              </td>
-                            </tr>
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                </div>
-              </div>
-
-              {/* Performance Matrix Section (Bottom) */}
-              <motion.div className="flex flex-col gap-6" key={selectedWeek}>
-                {/* Matrix Header with Fullscreen Trigger */}
-                <div className="flex flex-col md:flex-row justify-between items-center gap-6 bg-[#0b0f19] border border-white/5 rounded-[32px] px-10 py-6">
-                  <div className="flex items-center gap-5">
-                    <div className="w-12 h-12 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 flex items-center justify-center text-indigo-400">
-                      <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
-                    </div>
-                    <div>
-                      <h3 className="text-white font-bold tracking-widest uppercase text-sm">Contract-Network Performance Matrix</h3>
-                      <p className="text-[10px] text-slate-300 font-bold uppercase tracking-widest mt-1">Granular Node Utilization Analysis</p>
-                    </div>
-                  </div>
-                  <div className="flex items-center gap-6">
-                    <div className="flex items-center bg-black/40 border border-white/10 rounded-xl p-1 shadow-inner relative z-30">
-                      {(['port', 'country', 'region'] as const).map((g) => (
-                        <button
-                          key={g}
-                          onClick={(e) => { e.stopPropagation(); setGranularity(g); }}
-                          className={`px-4 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest transition-all ${
-                            granularity === g 
-                              ? 'bg-indigo-500 text-white shadow-lg' 
-                              : 'text-slate-400 hover:text-white hover:bg-white/5'
-                          }`}
-                        >
-                          {g}
-                        </button>
-                      ))}
-                    </div>
-                    <button
-                      onClick={() => setIsMatrixPreviewOpen(true)}
-                      className="group flex items-center gap-4 px-6 py-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-indigo-400 font-bold text-[10px] uppercase tracking-[0.2em] hover:bg-indigo-500 transition-all hover:text-white"
-                    >
-                      <svg className="w-4 h-4 transition-transform group-hover:scale-125" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                      Launch Matrix Projection
-                    </button>
-                  </div>
-                </div>
-
-                <div className="bg-[#0b0f19]/90 border border-white/10 rounded-[32px] overflow-hidden shadow-2xl">
-                  <div className="w-full overflow-x-auto elegant-scrollbar pb-4">
-                    <table className="w-full text-left border-collapse table-fixed min-w-[2200px]">
-                      <thead className="sticky top-0 z-30">
-                        <tr className="bg-[#0f172a] border-b border-white/10">
-                          <th className="w-[320px] px-8 py-6 font-bold text-slate-300 text-[11px] tracking-[0.2em] uppercase border-r border-white/5 sticky left-0 bg-[#0f172a] z-40 shadow-[4px_0_15px_rgba(0,0,0,0.6)]">
-                            <div className="flex items-center gap-3">
-                              <div className="w-1.5 h-1.5 rounded-full bg-indigo-500 shadow-[0_0_8px_rgba(99,102,241,0.8)]" />
-                              Carrier / Contract Node
-                            </div>
-                          </th>
-                          {AVAILABLE_WEEKS.slice(-8).map(wk => (
-                            <th key={wk} colSpan={3} className="px-4 py-6 font-black text-white text-[12px] tracking-[0.4em] uppercase border-r border-white/5 bg-indigo-500/10 text-center">
-                              {wk}
-                            </th>
-                          ))}
-                        </tr>
-                        <tr className="bg-[#0b0f19] border-b border-indigo-500/30">
-                          <th className="px-8 py-3 sticky left-0 bg-[#0b0f19] z-40 border-r border-white/5 shadow-[4px_0_15px_rgba(0,0,0,0.4)]" />
-                          {AVAILABLE_WEEKS.slice(-8).map(wk => (
-                            <React.Fragment key={wk}>
-                              <th className="px-2 py-3 text-[9px] font-black text-slate-400 text-center border-r border-white/5 uppercase tracking-widest bg-black/40 w-[80px]">Alloc</th>
-                              <th className="px-2 py-3 text-[9px] font-black text-slate-400 text-center border-r border-white/5 uppercase tracking-widest bg-black/40 w-[80px]">Booked</th>
-                              <th className="px-2 py-3 text-[9px] font-black text-indigo-400 text-center border-r border-white/5 uppercase tracking-widest bg-indigo-500/5 w-[100px]">Util%</th>
-                            </React.Fragment>
-                          ))}
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {CONTRACT_WEEKLY_BREAKDOWN.map((contractRow, idx) => (
-                          <React.Fragment key={idx}>
-                            {contractRow.type === 'TOTAL' ? (
-                              <tr className="bg-indigo-900/10 border-b border-white/5 group/row hover:bg-indigo-900/20 transition-colors">
-                                <td className="px-8 py-6 font-display font-bold text-white text-sm border-r border-indigo-500/20 sticky left-0 bg-[#0b0f19] z-20 shadow-[4px_0_10px_rgba(0,0,0,0.3)]">
-                                  <div className="flex items-center gap-3">
-                                    <span className="truncate">{contractRow.contract}</span>
-                                  </div>
-                                </td>
-                                {AVAILABLE_WEEKS.slice(-8).map(wk => {
-                                  const d = (contractRow.data as any)[wk] || { alloc: 0, booked: 0, util: 0 };
-                                  const utilColor = d.util <= 0 ? 'text-slate-500' : getUtilColor(d.util, 'text');
-                                  return (
-                                    <React.Fragment key={wk}>
-                                      <td className="px-2 py-6 text-center border-r border-white/5 font-mono text-xs text-slate-300">{d.alloc}</td>
-                                      <td className="px-2 py-6 text-center border-r border-white/5 font-mono text-xs text-slate-300 font-bold">{d.booked.toFixed(1)}</td>
-                                      <td className={`px-2 py-6 text-center border-r border-white/5 font-mono font-bold text-sm ${utilColor}`}>{d.util}%</td>
-                                    </React.Fragment>
-                                  );
-                                })}
-                              </tr>
-                            ) : (
-                              (contractRow as any).branches?.map((branch: any, bIdx: number) => (
-                                <tr key={`${idx}-${bIdx}`} className="border-b border-white/5 hover:bg-white/[0.04] transition-colors group/pbranch">
-                                  <td className="px-8 py-5 border-r border-white/5 sticky left-0 bg-[#0b0f19] z-20 shadow-[4px_0_10px_rgba(0,0,0,0.3)]">
-                                    <div className="flex items-center gap-3">
-                                      <span className="text-[10px] font-mono text-indigo-500/60 font-bold">{branch.code}</span>
-                                      <span className="text-xs text-slate-400 group-hover/pbranch:text-slate-200 transition-colors truncate font-sans font-medium">{branch.branch}</span>
-                                    </div>
-                                  </td>
-                                  {AVAILABLE_WEEKS.slice(-8).map(wk => {
-                                    const d = (branch.data as any)[wk] || { alloc: 0, booked: 0, util: 0 };
-                                    const utilColor = d.util <= 0 ? 'text-slate-600' : getUtilColor(d.util, 'text');
-                                    return (
-                                      <React.Fragment key={wk}>
-                                        <td className="px-2 py-5 text-center border-r border-white/5 font-mono text-[10px] text-slate-500 group-hover/pbranch:text-slate-300 transition-colors">{d.alloc}</td>
-                                        <td className="px-2 py-5 text-center border-r border-white/5 font-mono text-[10px] text-slate-500 group-hover/pbranch:text-slate-300 transition-colors">{d.booked.toFixed(1)}</td>
-                                        <td className={`px-2 py-5 text-center border-r border-white/5 font-mono text-xs font-bold ${utilColor} transition-colors opacity-60 group-hover/pbranch:opacity-100`}>{d.util > 0 ? `${d.util}%` : '-'}</td>
-                                      </React.Fragment>
-                                    );
-                                  })}
-                                </tr>
-                              ))
-                            )}
-                          </React.Fragment>
-                        ))}
-                      </tbody>
-                      <tfoot>
-                        <tr className="bg-black/50 border-t border-indigo-500/30 group/grand">
-                          <td className="px-6 py-6 sticky left-0 bg-black z-10 border-r border-white/10">
-                            <div className="flex flex-col">
-                              <span className="text-[10px] font-bold text-cyan-400 tracking-[0.2em] uppercase">GRAND TOTAL</span>
-                              <span className="text-[9px] text-slate-300 font-bold uppercase">All Contracts</span>
-                            </div>
-                          </td>
-                          {reactiveWeeklyTrendData.map((wk, i) => {
-                            const utilColor = getUtilColor(wk.util, 'text');
-                            return (
-                              <React.Fragment key={i}>
-                                <td className="px-1 py-6 text-center border-r border-white/5 font-mono font-bold text-xs text-white uppercase">{wk.alloc}</td>
-                                <td className="px-1 py-6 text-center border-r border-white/5 font-mono font-bold text-xs text-cyan-400">{wk.booked.toFixed(1)}</td>
-                                <td className={`px-1 py-6 text-center border-r border-white/5 font-mono font-bold text-sm ${utilColor} drop-shadow-md`}>{wk.util}%</td>
-                              </React.Fragment>
-                            );
-                          })}
-                        </tr>
-                      </tfoot>
-                    </table>
-                  </div>
-                </div>
-              </motion.div>
             </motion.div>
           )}
-
-          {/* Full Screen Matrix Projection Modal (Moving to Root) */}
 
           {/* Booking Log View */}
           {activeTag === 'Booking Log' && (
@@ -2732,15 +1538,28 @@ const ContractDashboard: React.FC = () => {
                       <ComposedChart data={reactiveLocationAggregatedData.slice(0, 10)} margin={{ top: 10, right: 0, bottom: -10, left: -20 }}>
                         <defs>
                           <linearGradient id="colorTeu" x1="0" y1="0" x2="0" y2="1">
-                            <stop offset="5%" stopColor="#34d399" stopOpacity={0.8} />
-                            <stop offset="95%" stopColor="#34d399" stopOpacity={0} />
+                            <stop offset="5%" stopColor="#34d399" stopOpacity={0.6} />
+                            <stop offset="95%" stopColor="#02040a" stopOpacity={0.0} />
                           </linearGradient>
                         </defs>
-                        <XAxis dataKey="label" stroke="#64748b" tickLine={false} axisLine={false} fontSize={9} fontWeight={700} />
-                        <YAxis stroke="#475569" tickLine={false} axisLine={false} fontSize={10} />
-                        <Tooltip cursor={{ fill: 'rgba(52,211,153,0.05)' }} contentStyle={{ backgroundColor: '#050505', borderColor: '#334155', borderRadius: '12px' }} itemStyle={{ color: '#ecfeff', fontWeight: 700 }} />
+                        <CartesianGrid strokeDasharray="3 3" stroke="rgba(255, 255, 255, 0.02)" vertical={false} />
+                        <XAxis dataKey="label" stroke="#475569" tickLine={false} axisLine={false} fontSize={9} fontWeight={800} />
+                        <YAxis stroke="#475569" tickLine={false} axisLine={false} fontSize={9} />
+                        <Tooltip
+                          cursor={{ fill: 'rgba(52,211,153,0.04)' }}
+                          contentStyle={{
+                            backgroundColor: '#02040a',
+                            border: '1px solid rgba(52, 211, 153, 0.3)',
+                            borderRadius: '20px',
+                            padding: '12px 16px',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.05)',
+                            backdropFilter: 'blur(16px)',
+                          }}
+                          itemStyle={{ fontFamily: 'monospace', fontWeight: '800', color: '#cbd5e1' }}
+                          labelStyle={{ color: '#94a3b8', fontWeight: '800', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
+                        />
                         <Area type="monotone" dataKey="teu" fillOpacity={1} fill="url(#colorTeu)" stroke="none" isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" />
-                        <Line type="monotone" dataKey="teu" stroke="#34d399" strokeWidth={3} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" dot={{ r: 4, fill: '#1e293b', stroke: '#34d399', strokeWidth: 2 }} activeDot={{ r: 6, fill: '#34d399', stroke: '#fff', strokeWidth: 2 }} style={{ filter: 'drop-shadow(0px 0px 8px rgba(52,211,153,0.6))' }} />
+                        <Line type="monotone" dataKey="teu" stroke="#34d399" strokeWidth={3} isAnimationActive={true} animationDuration={2500} animationEasing="ease-in-out" dot={{ r: 5, fill: '#02040a', stroke: '#34d399', strokeWidth: 2.5 }} activeDot={{ r: 7, fill: '#34d399', stroke: '#fff', strokeWidth: 2 }} style={{ filter: 'drop-shadow(0px 0px 8px rgba(52,211,153,0.6))' }} />
                       </ComposedChart>
                     </ResponsiveContainer>
                   </div>
@@ -2763,7 +1582,20 @@ const ContractDashboard: React.FC = () => {
                   <div className="h-64 w-full md:w-1/2 relative z-10 antialiased shrink-0 md:order-first">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
-                        <Tooltip cursor={{ fill: 'rgba(34,211,238,0.05)' }} contentStyle={{ backgroundColor: '#050505', borderColor: '#334155', borderRadius: '12px' }} itemStyle={{ color: '#ecfeff', fontWeight: 700 }} formatter={(v) => [`${v} TEU`, 'Volume']} />
+                        <Tooltip
+                          cursor={{ fill: 'rgba(34,211,238,0.04)' }}
+                          contentStyle={{
+                            backgroundColor: '#02040a',
+                            border: '1px solid rgba(34, 211, 238, 0.3)',
+                            borderRadius: '20px',
+                            padding: '12px 16px',
+                            boxShadow: '0 25px 50px rgba(0,0,0,0.8), inset 0 1px 1px rgba(255,255,255,0.05)',
+                            backdropFilter: 'blur(16px)',
+                          }}
+                          itemStyle={{ fontFamily: 'monospace', fontWeight: '800', color: '#cbd5e1' }}
+                          labelStyle={{ color: '#94a3b8', fontWeight: '800', fontSize: '11px', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '4px' }}
+                          formatter={(v) => [`${v} TEU`, 'Volume']}
+                        />
                         <Pie
                           data={reactiveBookingContractBreakdown}
                           innerRadius={60}
@@ -2789,7 +1621,6 @@ const ContractDashboard: React.FC = () => {
                 <div className="p-6 md:p-8 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
                   <div className="flex items-center gap-4">
                     <span className="text-white font-bold text-lg tracking-wide">Raw Order Trajectory</span>
-                    <span className="text-[10px] font-bold px-3 py-1 bg-emerald-500/10 text-emerald-400 rounded border border-emerald-500/20 uppercase tracking-widest shadow-[inset_0_0_10px_rgba(52,211,153,0.1)]">CW1 Database Synchronized</span>
                   </div>
                   <button
                     onClick={() => setIsBookingTableModalOpen(true)}
@@ -2798,6 +1629,26 @@ const ContractDashboard: React.FC = () => {
                     <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
                     <span className="text-xs font-bold uppercase tracking-widest">Fullscreen Projection</span>
                   </button>
+                </div>
+
+                <div className="px-6 py-3 border-b border-white/5 flex flex-wrap items-center gap-4 bg-slate-900/30">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data Quality Rules:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Zero TEU</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Missing Port Codes</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Missing Equipment</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Suspect Contract</span>
+                  </div>
                 </div>
 
                 <div className="overflow-x-auto elegant-scrollbar relative z-10 p-2 md:p-5">
@@ -3712,6 +2563,102 @@ const ContractDashboard: React.FC = () => {
                       ))}
                     </tbody>
                   </table>
+                </div>
+              </div>
+            </motion.div>
+          </div>
+        )}
+      </AnimatePresence>
+
+      {/* Fullscreen Branch Heat Map Modal */}
+      <AnimatePresence>
+        {isHeatmapModalOpen && (
+          <div className="fixed inset-0 z-[150] flex items-center justify-center p-4 md:p-10">
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setIsHeatmapModalOpen(false)}
+              className="absolute inset-0 bg-slate-950/90 backdrop-blur-2xl"
+            />
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 40 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 40 }}
+              className="relative w-full max-w-5xl h-[85vh] bg-[#0b0e14] border border-white/10 shadow-[0_60px_120px_rgba(0,0,0,1)] rounded-[40px] overflow-hidden z-20 flex flex-col"
+            >
+              {/* Header */}
+              <div className="p-8 md:p-10 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent flex justify-between items-center bg-black/40">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-3">
+                    <span className="w-2.5 h-2.5 rounded-full bg-violet-400 animate-pulse" />
+                    <h3 className="text-3xl md:text-4xl font-display font-light text-white">Branch <span className="font-bold text-violet-400">Heat Map</span></h3>
+                  </div>
+                  <p className="text-xs text-slate-300 uppercase tracking-widest font-black ml-5">Per-branch booked vs alloc capacity across carriers | LIVE</p>
+                </div>
+                <button
+                  onClick={() => setIsHeatmapModalOpen(false)}
+                  className="w-14 h-14 bg-white/5 hover:bg-rose-500/20 border border-white/10 hover:border-rose-500/50 rounded-2xl flex items-center justify-center text-slate-400 hover:text-white transition-all shadow-2xl cursor-pointer"
+                >
+                  <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+              </div>
+
+              {/* Scrollable Content */}
+              <div className="flex-1 overflow-y-auto elegant-scrollbar p-8 md:p-10 bg-[#050505]/40 flex flex-col gap-6">
+                <div className="bg-[#0b0f19] border border-white/5 rounded-[30px] p-6 shadow-2xl">
+                  {/* Column headers */}
+                  <div className="grid grid-cols-6 gap-2 mb-4 px-2">
+                    <div className="text-xs text-slate-400 font-bold uppercase col-span-1 tracking-wider">Contract ID</div>
+                    {['SYDNEY (SYD)', 'MELBOURNE (MEL)', 'BRISBANE (BNE)', 'PERTH (PER)', 'ADELAIDE (ADL)'].map(b => (
+                      <div key={b} className="text-xs text-slate-300 font-bold uppercase text-center tracking-wider">{b}</div>
+                    ))}
+                  </div>
+
+                  {/* Matrix Rows */}
+                  <div className="flex flex-col gap-2.5">
+                    {reactiveContractUtilData.map((row) => {
+                      const branches = [
+                        { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
+                        { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
+                        { b: row.adl, name: 'ADL' },
+                      ];
+                      return (
+                        <div key={row.id} className="grid grid-cols-6 gap-2 items-center group/heat hover:bg-white/[0.03] rounded-2xl px-2 py-1.5 transition-colors border border-white/[0.02] hover:border-white/5">
+                          <span className="text-xs text-slate-300 font-mono font-bold truncate col-span-1">{row.id}</span>
+                          {branches.map(({ b, name }) => {
+                            const pct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
+                            const col = pct <= 0 ? 'bg-slate-800/60' : pct <= 50 ? 'bg-rose-700/80' : pct <= 80 ? 'bg-rose-500/70' : pct <= 100 ? 'bg-emerald-400/60' : 'bg-cyan-400/70';
+                            return (
+                              <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
+                                className={`h-12 rounded-xl ${col} flex flex-col items-center justify-center transition-all group-hover/heat:scale-[1.02] shadow-inner`}>
+                                <span className="text-xs font-black text-white">{pct > 0 ? `${pct.toFixed(0)}%` : '-'}</span>
+                                {pct > 0 && <span className="text-[9px] text-white/50 font-mono font-bold mt-0.5">{b.booked.toFixed(0)}/{b.alloc.toFixed(0)}</span>}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Legend */}
+                <div className="flex flex-wrap gap-4 px-4 py-5 rounded-2xl bg-white/[0.02] border border-white/5 justify-center">
+                  {[
+                    ['bg-slate-800/60', 'Critical ≤0% (Empty State)'],
+                    ['bg-rose-700/80', 'Critical ≤50% (High Risk)'],
+                    ['bg-rose-500/70', 'Underperforming ≤80%'],
+                    ['bg-emerald-400/60', 'Healthy >80% (Optimized)'],
+                    ['bg-cyan-400/70', 'Overutilised >100% (Ceiling Peak)']
+                  ].map(([col, lbl]) => (
+                    <div key={lbl} className="flex items-center gap-2.5">
+                      <div className={`w-4 h-4 rounded-md ${col} shadow-inner`} />
+                      <span className="text-xs text-slate-300 uppercase font-black tracking-wide">{lbl}</span>
+                    </div>
+                  ))}
                 </div>
               </div>
             </motion.div>

@@ -10,16 +10,9 @@ function App() {
   return (
     <Router>
       <div className="min-h-screen relative overflow-x-hidden">
-        {/* Global Aurora Background */}
-        <div className="bg-aurora-blobs pointer-events-none">
-          <div className="blob blob-1" />
-          <div className="blob blob-2" />
-          <div className="blob blob-3" />
-        </div>
-
         <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/contract" element={<ContractDashboard />} />
+          <Route path="/" element={<ContractDashboard />} />
+          <Route path="/contract" element={<Navigate to="/" replace />} />
           <Route path="/contract/explorer" element={<ContractDataExplorer />} />
           <Route path="/procurement" element={<ProcurementDashboard />} />
           <Route path="*" element={<Navigate to="/" replace />} />
