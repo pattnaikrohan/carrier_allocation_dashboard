@@ -11,21 +11,21 @@ import { BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, CONTRACT_UTIL_DAT
 // Underperforming (≤80%) replaces Overbooked; Healthy = >80%
 const AVAILABLE_WEEKS = WEEKLY_TREND_DATA.map(w => w.week);
 const totalAlloc = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.alloc, 0);
-const totalBook  = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0);
-const totalUtl   = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
+const totalBook = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0);
+const totalUtl = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
 // underperforming = ≤80% utilisation (the primary risk metric)
 const underperforming = CONTRACT_UTIL_DATA.filter(c => c.alloc > 0 && (c.booked / c.alloc) <= 0.8).length;
-const lowUtil    = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
-const noNodeNum  = 'node-';
+const lowUtil = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
+const noNodeNum = 'node-';
 
 const KPI_DATA = [
-  { id: 'alloc', label: 'TOTAL ALLOCATION',    value: totalAlloc.toLocaleString(), sub: 'Max Capacity',              accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]',   type: 'bar',      percent: 100,      barColor: 'bg-indigo-500' },
-  { id: 'book',  label: 'TOTAL BOOKED',         value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed',      accentColor: 'text-cyan-400',   shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]',  type: 'bar',      percent: totalUtl, barColor: 'bg-cyan-400'   },
-  { id: 'util',  label: 'OVERALL UTIL %',        value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
+  { id: 'alloc', label: 'TOTAL ALLOCATION', value: totalAlloc.toLocaleString(), sub: 'Max Capacity', accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]', type: 'bar', percent: 100, barColor: 'bg-indigo-500' },
+  { id: 'book', label: 'TOTAL BOOKED', value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed', accentColor: 'text-cyan-400', shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]', type: 'bar', percent: totalUtl, barColor: 'bg-cyan-400' },
+  { id: 'util', label: 'OVERALL UTIL %', value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
   // Colour inversion: underperforming ≤80% is the risk → red
-  { id: 'undr',  label: 'UNDERPERFORMING (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk',       accentColor: 'text-rose-500',   shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]',   type: 'alert',    isPulse: true },
-  { id: 'low',   label: 'LOW UTILISATION',       value: lowUtil.toString(),          sub: 'Below 50%',                accentColor: 'text-amber-400',  shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]',  type: 'text' },
-  { id: 'wk',    label: 'ACTIVE WEEKS',          value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026',            accentColor: 'text-slate-300',  shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
+  { id: 'undr', label: 'UNDERPERFORMING (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
+  { id: 'low', label: 'LOW UTILISATION', value: lowUtil.toString(), sub: 'Below 50%', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
+  { id: 'wk', label: 'ACTIVE WEEKS', value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026', accentColor: 'text-slate-300', shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
 ];
 
 const SIDE_TAGS = ['Branch Summary', 'Contract Utilisation', 'Booking Log'];
@@ -41,17 +41,17 @@ function round(num: number) { return Math.round(num); }
 function getUtilColor(util: number, mode: 'text' | 'bg' | 'bar' | 'badge' = 'text') {
   if (mode === 'text') {
     if (util > 100) return 'text-cyan-400 drop-shadow-[0_0_8px_rgba(34,211,238,0.4)]';
-    if (util > 80)  return 'text-emerald-400';
+    if (util > 80) return 'text-emerald-400';
     return 'text-rose-400 drop-shadow-[0_0_8px_rgba(244,63,94,0.4)]';
   }
   if (mode === 'bar') {
     if (util > 100) return 'bg-cyan-400';
-    if (util > 80)  return 'bg-emerald-500';
+    if (util > 80) return 'bg-emerald-500';
     return 'bg-rose-500';
   }
   if (mode === 'badge') {
     if (util > 100) return 'bg-cyan-500/20 text-cyan-300 border-cyan-500/40';
-    if (util > 80)  return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
+    if (util > 80) return 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40';
     return 'bg-rose-500/20 text-rose-300 border-rose-500/40';
   }
   // bg mode
@@ -103,8 +103,8 @@ const ContractDashboard: React.FC = () => {
 
     try {
       // Use Azure backend in production, localhost in development
-      const API_BASE = window.location.hostname === 'localhost' 
-        ? 'http://localhost:8001' 
+      const API_BASE = window.location.hostname === 'localhost'
+        ? 'http://localhost:8001'
         : 'https://carrier-allocation-dashboard.azurewebsites.net';
       const response = await fetch(`${API_BASE}/api/sync`, {
         method: 'POST',
@@ -187,7 +187,7 @@ const ContractDashboard: React.FC = () => {
           if (month === 'Apr') return wNum >= 13 && wNum <= 16;
           return false;
         }
-        
+
         if (selectedWeek.startsWith('Quarter:')) {
           const quarter = selectedWeek.replace('Quarter: ', '').trim();
           if (quarter === 'Q1') return wNum >= 1 && wNum <= 13;
@@ -258,7 +258,7 @@ const ContractDashboard: React.FC = () => {
 
   const getContractMetrics = () => {
     const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-    
+
     const isAllFiltersClear = selectedContract === 'ALL' &&
       selectedOrigin === 'ALL' &&
       selectedDestination === 'ALL' &&
@@ -273,9 +273,9 @@ const ContractDashboard: React.FC = () => {
     } else {
       // If no specific contract is selected, sum up all relevant ones
       // If no other filters are active, we show the full pool allocation
-      const isGlobalFilter = selectedOrigin === 'ALL' && selectedDestination === 'ALL' && 
-                             selectedBranch === 'ALL';
-      
+      const isGlobalFilter = selectedOrigin === 'ALL' && selectedDestination === 'ALL' &&
+        selectedBranch === 'ALL';
+
       if (isGlobalFilter) {
         // Total pool allocation for the selected week coverage
         allocNode = CONTRACT_UTIL_DATA.reduce((sum, c) => sum + (c.alloc * weekScale), 0);
@@ -391,7 +391,7 @@ const ContractDashboard: React.FC = () => {
         const oPort = PORT_HIERARCHY.find(p => p.code === curr.loadPort || p.name === curr.loadPort);
         let key = curr.branch;
         let label = curr.branch;
-        
+
         if (granularity === 'country') {
           key = oPort?.country || curr.loadPort;
           label = key;
@@ -402,7 +402,7 @@ const ContractDashboard: React.FC = () => {
           key = curr.loadPort;
           label = oPort?.name || key;
         }
-        
+
         if (!acc[key]) acc[key] = { label, data: [] };
         acc[key].data.push(curr);
         return acc;
@@ -433,10 +433,10 @@ const ContractDashboard: React.FC = () => {
     const data = filteredBookings.reduce((acc, curr) => {
       const oPort = PORT_HIERARCHY.find(p => p.code === curr.loadPort || p.name === curr.loadPort);
       const dPort = PORT_HIERARCHY.find(p => p.code === curr.dischargePort || p.name === curr.dischargePort);
-      
+
       let originKey = curr.loadPort;
       let destKey = curr.dischargePort;
-      
+
       if (granularity === 'country') {
         originKey = oPort?.country || curr.loadPort;
         destKey = dPort?.country || curr.dischargePort;
@@ -444,7 +444,7 @@ const ContractDashboard: React.FC = () => {
         originKey = oPort?.region || curr.loadPort;
         destKey = dPort?.region || curr.dischargePort;
       }
-      
+
       const label = `${originKey} to ${destKey}`;
       const existing = acc.find(a => a.label === label);
       if (existing) {
@@ -454,7 +454,7 @@ const ContractDashboard: React.FC = () => {
       }
       return acc;
     }, [] as any[]);
-    
+
     return data.sort((a, b) => b.teu - a.teu);
   }, [filteredBookings, granularity]);
 
@@ -463,13 +463,13 @@ const ContractDashboard: React.FC = () => {
   const locationHierarchy = useMemo(() => {
     const tree: any[] = [{ label: 'ALL' }];
     const regions = Array.from(new Set(PORT_HIERARCHY.map(p => p.region))).sort();
-    
+
     regions.forEach(region => {
       if (!region) return;
       const countriesInRegion = Array.from(new Set(
         PORT_HIERARCHY.filter(p => p.region === region).map(p => p.country)
       )).sort();
-      
+
       tree.push({
         label: region,
         children: countriesInRegion.map(country => {
@@ -492,27 +492,27 @@ const ContractDashboard: React.FC = () => {
     const snapshot = BRANCH_SNAPSHOT.map(b => {
       // If contract or week is selected, we need to show hub performance appropriately
       const scaledAlloc = Math.round(b.alloc * weekScale);
-      
+
       // Auto-merge Fremantle (FR1) into Perth (PR1) if it appears in bookings
       const matchBranches = b.branch === 'PR1' ? ['PR1', 'FR1'] : [b.branch];
       const hubBookings = filteredBookings.filter(row => matchBranches.includes(row.branch));
       const booked = hubBookings.reduce((sum, row) => sum + (row.teu || 0), 0);
       const utilFloat = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
-      
+
       const activeContracts = Array.from(new Set(hubBookings.map(bk => bk.contract))).sort();
-      
+
       let status = 'Critical';
       if (utilFloat > 100) status = 'Overutilised';
       else if (utilFloat > 80) status = 'Healthy';
       else if (utilFloat > 50) status = 'Underperforming';
-      
+
       return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts };
     });
 
     // Check if any bookings are completely unmatched and create OTHER category
     const unmatchedBookings = filteredBookings.filter(b => !knownBranches.has(b.branch) && b.branch !== 'FR1');
     const otherBooked = unmatchedBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-    
+
     if (otherBooked > 0) {
       snapshot.push({
         branch: 'OTH',
@@ -888,8 +888,8 @@ const ContractDashboard: React.FC = () => {
       <main className={`flex-1 w-full max-w-[1820px] mx-auto px-4 md:px-6 pt-[128px] pb-12 grid ${isSidebarCollapsed ? 'grid-cols-1' : 'grid-cols-1 md:grid-cols-[320px_1fr]'} gap-8 relative z-10 items-start transition-all duration-500`}>
 
         {isSidebarCollapsed && (
-          <button 
-            onClick={() => setIsSidebarCollapsed(false)} 
+          <button
+            onClick={() => setIsSidebarCollapsed(false)}
             className="fixed left-6 top-[112px] z-[100] w-10 h-10 rounded-xl flex items-center justify-center transition-all bg-white dark:bg-slate-900 hover:bg-slate-100 dark:hover:bg-slate-800 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 shadow-lg group cursor-pointer"
             title="Expand Sidebar"
           >
@@ -914,8 +914,8 @@ const ContractDashboard: React.FC = () => {
                 </div>
               </div>
 
-              <button 
-                onClick={() => setIsSidebarCollapsed(true)} 
+              <button
+                onClick={() => setIsSidebarCollapsed(true)}
                 className="w-8 h-8 rounded-lg flex items-center justify-center transition-all bg-slate-100 hover:bg-slate-200 dark:bg-white/[0.03] dark:hover:bg-white/[0.08] border border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400 hover:text-cyan-500 dark:hover:text-cyan-400 group cursor-pointer"
                 title="Collapse Sidebar"
               >
@@ -1047,9 +1047,9 @@ const ContractDashboard: React.FC = () => {
                   <div className="flex items-center gap-1.5">
                     <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
                     <span className="text-[10px] items-center flex gap-3 font-semibold text-emerald-400 uppercase tracking-widest">{reactiveBranchSnapshot.length} Hubs
-                        <button onClick={() => setIsBranchSnapshotModalOpen(true)} className="w-6 h-6 flex items-center justify-center bg-white/5 rounded-md border border-white/10 hover:bg-emerald-500/20 hover:text-emerald-400 transition-colors text-slate-400">
-                            <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                        </button>
+                      <button onClick={() => setIsBranchSnapshotModalOpen(true)} className="w-6 h-6 flex items-center justify-center bg-white/5 rounded-md border border-white/10 hover:bg-emerald-500/20 hover:text-emerald-400 transition-colors text-slate-400">
+                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                      </button>
                     </span>
                   </div>
                 </div>
@@ -1068,17 +1068,17 @@ const ContractDashboard: React.FC = () => {
                 <div className="divide-y divide-white/[0.025]">
                   {reactiveBranchSnapshot.map((row, i) => {
                     // NEW colour logic: Red = underutilisation risk, Green = healthy/overutilised
-                    const isHealthy          = row.util > 80;
-                    const isOverutilised     = row.util > 100;
-                    const isUnderperforming  = !isHealthy && row.util > 50;
-                    const isLowUptake        = row.util <= 50;
+                    const isHealthy = row.util > 80;
+                    const isOverutilised = row.util > 100;
+                    const isUnderperforming = !isHealthy && row.util > 50;
+                    const isLowUptake = row.util <= 50;
                     const s = isOverutilised
                       ? { badge: 'bg-emerald-400/10 text-emerald-300 border-emerald-400/25', dot: 'bg-emerald-300', util: 'text-emerald-300', bar: 'bg-emerald-400' }
                       : isHealthy
                         ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-500' }
                         : isUnderperforming
                           ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
-                          : { badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25',  dot: 'bg-orange-500', util: 'text-orange-400', bar: 'bg-orange-600' };
+                          : { badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25', dot: 'bg-orange-500', util: 'text-orange-400', bar: 'bg-orange-600' };
                     return (
                       <div key={i} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-3 items-center hover:bg-white/[0.015] transition-colors">
                         {/* Hub */}
@@ -1220,24 +1220,24 @@ const ContractDashboard: React.FC = () => {
                         </linearGradient>
                       </defs>
 
-                      <Bar 
-                        dataKey="alloc" 
-                        name="Allocation" 
-                        fill="url(#colorAllocArea)" 
-                        radius={[8, 8, 0, 0]} 
-                        maxBarSize={32} 
-                        isAnimationActive={true} 
-                        animationDuration={1500} 
+                      <Bar
+                        dataKey="alloc"
+                        name="Allocation"
+                        fill="url(#colorAllocArea)"
+                        radius={[8, 8, 0, 0]}
+                        maxBarSize={32}
+                        isAnimationActive={true}
+                        animationDuration={1500}
                       />
 
-                      <Bar 
-                        dataKey="booked" 
-                        name="Booked TEU" 
-                        fill="url(#colorBookedBar)" 
-                        radius={[8, 8, 0, 0]} 
-                        maxBarSize={32} 
-                        isAnimationActive={true} 
-                        animationDuration={1500} 
+                      <Bar
+                        dataKey="booked"
+                        name="Booked TEU"
+                        fill="url(#colorBookedBar)"
+                        radius={[8, 8, 0, 0]}
+                        maxBarSize={32}
+                        isAnimationActive={true}
+                        animationDuration={1500}
                       />
 
                     </ComposedChart>
@@ -1323,8 +1323,8 @@ const ContractDashboard: React.FC = () => {
                       {reactiveContractUtilData.map((row, i) => {
                         const statusStyle = row.util > 100 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25'
                           : row.util >= 85 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
-                          : row.util >= 70 ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
-                          : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
+                            : row.util >= 70 ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
+                              : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
                         return (
                           <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
                             <td className="px-4 py-4 font-mono text-[10px] font-bold text-white tracking-wider">{row.id}</td>
@@ -1431,7 +1431,7 @@ const ContractDashboard: React.FC = () => {
                   <div className="absolute top-0 right-0 w-32 h-32 bg-violet-500/10 rounded-full blur-[60px] pointer-events-none" />
                   <h4 className="text-white font-bold tracking-[0.2em] uppercase text-[10px] mb-1">Carrier Breakdown</h4>
                   <p className="text-[10px] text-slate-400 uppercase tracking-widest mb-6 font-bold">% of bookings by TEU · All Branches</p>
-                  
+
                   <div className="h-[220px] w-full relative">
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
@@ -1482,14 +1482,14 @@ const ContractDashboard: React.FC = () => {
                       <span className="text-[8px] font-bold text-slate-500 uppercase tracking-widest">Total TEU</span>
                     </div>
                   </div>
-                  
+
                   {/* Compact Legend Grid */}
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 px-2">
                     {reactiveContractUtilData.filter(d => d.booked > 0).slice(0, 4).map((d, i) => (
                       <div key={d.id} className="flex items-center gap-2">
                         <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf'][i % 4] }} />
                         <span className="text-[9px] text-slate-400 truncate max-w-[80px]">{d.carrier}</span>
-                        <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r)=>s+r.booked, 0)) * 100).toFixed(0)}%</span>
+                        <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r) => s + r.booked, 0)) * 100).toFixed(0)}%</span>
                       </div>
                     ))}
                   </div>
@@ -1514,6 +1514,103 @@ const ContractDashboard: React.FC = () => {
                   <h1 className="text-5xl md:text-6xl text-white font-display font-light tracking-tighter">
                     Booking <span className="font-bold aurora-text animate-[glow-pulse_4s_ease-in-out_infinite] drop-shadow-[0_0_15px_rgba(45,212,191,0.4)]">Log</span>
                   </h1>
+                </div>
+              </div>
+
+              <div className="bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
+                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
+
+                <div className="p-6 md:p-8 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
+                  <div className="flex items-center gap-4">
+                    <span className="text-white font-bold text-lg tracking-wide">Raw Order Trajectory</span>
+                  </div>
+                  <button
+                    onClick={() => setIsBookingTableModalOpen(true)}
+                    className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl transition-colors shadow-[0_0_15px_rgba(16,185,129,0.15)] group"
+                  >
+                    <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
+                    <span className="text-xs font-bold uppercase tracking-widest">Fullscreen Projection</span>
+                  </button>
+                </div>
+
+                <div className="px-6 py-3 border-b border-white/5 flex flex-wrap items-center gap-4 bg-slate-900/30">
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data Quality Rules:</span>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Zero TEU</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Missing Port Codes</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Missing Equipment</span>
+                  </div>
+                  <div className="flex items-center gap-1.5">
+                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
+                    <span className="text-[10px] text-slate-300">Suspect Contract</span>
+                  </div>
+                </div>
+
+                <div className="overflow-x-auto elegant-scrollbar relative z-10 p-2 md:p-5">
+                  <table className="w-full text-left border-collapse table-fixed min-w-[1400px]">
+                    <thead>
+                      <tr className="bg-slate-900/60 rounded-xl">
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 rounded-tl-xl">Contract Key</th>
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Order No.</th>
+                        {/* NEW: Branch column added per stakeholder request */}
+                        <th className="px-6 py-4 font-bold text-sky-400 text-[10px] tracking-widest uppercase border-b border-white/5">Branch</th>
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 truncate">Client / Source</th>
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Transit Vessel</th>
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">ETD</th>
+                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">ETA</th>
+                        <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">Origin → Dest</th>
+                        <th className="px-6 py-4 font-bold text-emerald-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-right rounded-tr-xl">TEU (Net)</th>
+                      </tr>
+                    </thead>
+                    <tbody className="divide-y divide-white/[0.02]">
+                      {filteredBookings.slice(0, 30).map((row, i) => {
+                        const rTeu = row.teu || 0;
+                        // Branch colour for quick visual identification
+                        const branchColorMap: Record<string, string> = {
+                          SY1: 'text-violet-400', ME1: 'text-indigo-400', BN1: 'text-amber-400',
+                          FR1: 'text-fuchsia-400', PR1: 'text-fuchsia-400',
+                          AD1: 'text-rose-400', PIL: 'text-sky-400', PRJ: 'text-emerald-400',
+                          AKL: 'text-cyan-400', OTH: 'text-slate-400',
+                        };
+                        const brCls = branchColorMap[row.branch] || 'text-slate-400';
+                        return (
+                          <tr key={row.order + i} className="hover:bg-white/[0.03] transition-colors group">
+                            <td className="px-6 py-5 font-mono text-xs font-bold text-slate-300">{row.contract}</td>
+                            <td className="px-6 py-5 font-mono text-xs">
+                              <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
+                                {row.order}
+                              </a>
+                            </td>
+                            {/* Branch cell */}
+                            <td className={`px-6 py-5 font-mono text-[10px] font-bold ${brCls}`}>{row.branch}</td>
+                            <td className="px-6 py-5 text-[10px] text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
+                            <td className="px-6 py-5 text-xs text-slate-300">{row.depVessel} {row.depVoyage}</td>
+                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.etd}</td>
+                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.eta}</td>
+                            <td className="px-6 py-5 text-center font-mono text-[10px] bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
+                            <td className="px-6 py-5 font-mono text-sm font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
+                          </tr>
+                        );
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div className="bg-slate-900/30 px-6 py-4 flex justify-between items-center border-t border-white/5 relative z-10">
+                  <div className="flex items-center gap-2 text-[10px] text-slate-300 uppercase tracking-widest font-bold">
+                    <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse" />
+                    Viewing first 30 of {BOOKING_LOG_DATA.length} booking records — Fullscreen for all
+                  </div>
+                  <div className="text-[10px] text-slate-300 font-mono tracking-widest border border-slate-700/50 px-2 py-1 flex items-center bg-slate-800/30 rounded">
+                    Sync Checksum: 0x9F3EA4
+                  </div>
                 </div>
               </div>
 
@@ -1611,103 +1708,6 @@ const ContractDashboard: React.FC = () => {
                         </Pie>
                       </PieChart>
                     </ResponsiveContainer>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-[#0b0f19]/80 backdrop-blur-3xl border border-white/5 rounded-[32px] overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.8)] relative">
-                <div className="absolute top-0 right-0 w-96 h-96 bg-emerald-500/5 rounded-full blur-[100px] pointer-events-none" />
-
-                <div className="p-6 md:p-8 flex justify-between items-center bg-black/40 border-b border-white/5 relative z-10">
-                  <div className="flex items-center gap-4">
-                    <span className="text-white font-bold text-lg tracking-wide">Raw Order Trajectory</span>
-                  </div>
-                  <button
-                    onClick={() => setIsBookingTableModalOpen(true)}
-                    className="flex items-center gap-2 px-4 py-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 rounded-xl transition-colors shadow-[0_0_15px_rgba(16,185,129,0.15)] group"
-                  >
-                    <svg className="w-4 h-4 group-hover:scale-110 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
-                    <span className="text-xs font-bold uppercase tracking-widest">Fullscreen Projection</span>
-                  </button>
-                </div>
-
-                <div className="px-6 py-3 border-b border-white/5 flex flex-wrap items-center gap-4 bg-slate-900/30">
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-widest">Data Quality Rules:</span>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-                    <span className="text-[10px] text-slate-300">Zero TEU</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" />
-                    <span className="text-[10px] text-slate-300">Missing Port Codes</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-                    <span className="text-[10px] text-slate-300">Missing Equipment</span>
-                  </div>
-                  <div className="flex items-center gap-1.5">
-                    <span className="w-2 h-2 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" />
-                    <span className="text-[10px] text-slate-300">Suspect Contract</span>
-                  </div>
-                </div>
-
-                <div className="overflow-x-auto elegant-scrollbar relative z-10 p-2 md:p-5">
-                  <table className="w-full text-left border-collapse table-fixed min-w-[1400px]">
-                    <thead>
-                      <tr className="bg-slate-900/60 rounded-xl">
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 rounded-tl-xl">Contract Key</th>
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Order No.</th>
-                        {/* NEW: Branch column added per stakeholder request */}
-                        <th className="px-6 py-4 font-bold text-sky-400 text-[10px] tracking-widest uppercase border-b border-white/5">Branch</th>
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 truncate">Client / Source</th>
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5">Transit Vessel</th>
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">ETD</th>
-                        <th className="px-6 py-4 font-bold text-slate-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">ETA</th>
-                        <th className="px-6 py-4 font-bold text-indigo-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-center">Origin → Dest</th>
-                        <th className="px-6 py-4 font-bold text-emerald-400 text-[10px] tracking-widest uppercase border-b border-white/5 text-right rounded-tr-xl">TEU (Net)</th>
-                      </tr>
-                    </thead>
-                    <tbody className="divide-y divide-white/[0.02]">
-                      {filteredBookings.map((row, i) => {
-                        const rTeu = row.teu || 0;
-                        // Branch colour for quick visual identification
-                        const branchColorMap: Record<string, string> = {
-                          SY1: 'text-violet-400', ME1: 'text-indigo-400', BN1: 'text-amber-400',
-                          FR1: 'text-fuchsia-400', PR1: 'text-fuchsia-400',
-                          AD1: 'text-rose-400', PIL: 'text-sky-400', PRJ: 'text-emerald-400',
-                          AKL: 'text-cyan-400', OTH: 'text-slate-400',
-                        };
-                        const brCls = branchColorMap[row.branch] || 'text-slate-400';
-                        return (
-                          <tr key={row.order + i} className="hover:bg-white/[0.03] transition-colors group">
-                            <td className="px-6 py-5 font-mono text-xs font-bold text-slate-300">{row.contract}</td>
-                            <td className="px-6 py-5 font-mono text-xs">
-                              <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
-                                {row.order}
-                              </a>
-                            </td>
-                            {/* Branch cell */}
-                            <td className={`px-6 py-5 font-mono text-[10px] font-bold ${brCls}`}>{row.branch}</td>
-                            <td className="px-6 py-5 text-[10px] text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
-                            <td className="px-6 py-5 text-xs text-slate-300">{row.depVessel} {row.depVoyage}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.etd}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.eta}</td>
-                            <td className="px-6 py-5 text-center font-mono text-[10px] bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
-                            <td className="px-6 py-5 font-mono text-sm font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-
-                <div className="bg-slate-900/30 px-6 py-4 flex justify-between items-center border-t border-white/5 relative z-10">
-                  <div className="flex items-center gap-2 text-[10px] text-slate-300 uppercase tracking-widest font-bold">
-                    <div className="w-2 h-2 rounded-full bg-emerald-500/50 animate-pulse" />
-                    Viewing latest {BOOKING_LOG_DATA.length} booking records natively tracked by System
-                  </div>
-                  <div className="text-[10px] text-slate-300 font-mono tracking-widest border border-slate-700/50 px-2 py-1 flex items-center bg-slate-800/30 rounded">
-                    Sync Checksum: 0x9F3EA4
                   </div>
                 </div>
               </div>
@@ -2138,56 +2138,56 @@ const ContractDashboard: React.FC = () => {
                   <div className="overflow-x-auto elegant-scrollbar">
                     <table className="w-full text-left border-collapse table-fixed min-w-[3500px]">
                       <thead>
-                        <tr className="bg-slate-900/60 font-bold border-b-2 border-emerald-500/20">
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase sticky left-0 z-20 bg-slate-900/90 backdrop-blur w-48">Contract Key</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase sticky left-48 z-20 bg-slate-900/90 backdrop-blur w-48">Order No.</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Buyer</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Supplier</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">ETD</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">ETA</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Dep. Vessel</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Dep. Voyage</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Arr. Vessel</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Arr. Voyage</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Origin</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">Load Port</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">Discharge Port</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">Destination</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">House Bill</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase">Master Bill</th>
-                          <th className="px-8 py-5 text-indigo-400 text-xs tracking-widest uppercase text-center">Branch</th>
-                          <th className="px-8 py-5 text-emerald-400 text-xs tracking-widest uppercase text-right">TEU</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-right">Containers</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">MSC Wk No</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-right">Total TEU</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-right">Total FEU</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">MSC Week</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">Country</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">Year</th>
-                          <th className="px-8 py-5 text-slate-400 text-xs tracking-widest uppercase text-center">QTR</th>
-                          <th className="px-8 py-5 text-cyan-400 text-xs tracking-widest uppercase text-center">Region</th>
+                        <tr className="bg-gradient-to-r from-sky-100 to-sky-200 font-bold border-b-2 border-sky-300">
+                          <th className="px-8 py-5 text-sky-800 text-xs tracking-widest uppercase sticky left-0 z-20 bg-sky-100 border-r border-sky-200 w-48">Contract Key</th>
+                          <th className="px-8 py-5 text-sky-800 text-xs tracking-widest uppercase sticky left-48 z-20 bg-gradient-to-r from-sky-100 to-sky-200 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] w-72">Order No.</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Buyer</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Supplier</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">ETD</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">ETA</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Dep. Vessel</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Dep. Voyage</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Arr. Vessel</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Arr. Voyage</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Origin</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Load Port</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Discharge Port</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Destination</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">House Bill</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase">Master Bill</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Branch</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-right">TEU</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-right">Containers</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">MSC Wk No</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-right">Total TEU</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-right">Total FEU</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">MSC Week</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Country</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Year</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">QTR</th>
+                          <th className="px-8 py-5 text-sky-700 text-xs tracking-widest uppercase text-center">Region</th>
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
                         {BOOKING_LOG_DATA.filter(b => (selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek) && (selectedContract === 'ALL' || b.contract === selectedContract)).map((row, i) => (
                           <tr key={noNodeNum + i} className="hover:bg-white/[0.03] transition-colors group">
-                            <td className="px-8 py-6 font-mono text-sm font-bold text-slate-200 sticky left-0 z-10 bg-[#0b0f19] border-r border-white/5 group-hover:bg-[#111928] transition-colors flex items-center gap-4">
-                              <div className="w-2 h-2 rounded-full bg-slate-700 group-hover:bg-emerald-400 transition-colors" />
+                            <td className="px-8 py-6 font-mono text-sm font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
+                              <div className="w-2 h-2 rounded-full bg-sky-400 transition-colors duration-200 group-hover:bg-emerald-500 inline-block mr-3" />
                               {row.contract}
                             </td>
-                            <td className="px-8 py-6 font-mono text-sm font-bold sticky left-48 z-10 bg-[#0b0f19] border-r border-white/5 group-hover:bg-[#111928]">
+                            <td className="px-8 py-6 font-mono text-sm font-bold sticky left-48 z-10 bg-sky-50 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] transition-colors duration-200 hover:bg-sky-100">
                               <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
                                 {row.order}
                               </a>
                             </td>
-                            <td className="px-8 py-6 text-sm text-slate-300 truncate max-w-xs" title={row.buyer}>{row.buyer}</td>
-                            <td className="px-8 py-6 text-sm text-slate-400 truncate max-w-xs" title={row.supplier}>{row.supplier}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-400 whitespace-nowrap">{row.etd}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-400 whitespace-nowrap">{row.eta}</td>
-                            <td className="px-8 py-6 text-sm text-slate-300 whitespace-nowrap">{row.depVessel}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-300 whitespace-nowrap">{row.depVoyage}</td>
-                            <td className="px-8 py-6 text-sm text-slate-300 whitespace-nowrap">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-300 whitespace-nowrap">-</td>
+                            <td className="px-8 py-6 text-xs text-sky-600 break-words border-r border-slate-700/50" title={row.buyer}>{row.buyer}</td>
+                            <td className="px-8 py-6 text-xs text-amber-500/80 break-words" title={row.supplier}>{row.supplier}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-400">{row.etd}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-400">{row.eta}</td>
+                            <td className="px-8 py-6 text-xs text-slate-600">{row.depVessel}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-300">{row.depVoyage}</td>
+                            <td className="px-8 py-6 text-xs text-slate-500">-</td>
+                            <td className="px-8 py-6 font-mono text-xs text-slate-300">-</td>
                             <td className="px-8 py-6 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
@@ -2200,7 +2200,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
                             <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">{(row.teu || 0).toFixed(2)}</td>
                             <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 whitespace-nowrap">WK {row.mscWeek}</td>
+                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300">WK {row.mscWeek}</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">2026</td>
                             <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
@@ -2448,16 +2448,16 @@ const ContractDashboard: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
                       {reactiveBranchSnapshot.map((row, i) => {
-                        const isHealthy          = row.util > 80;
-                        const isOverutilised     = row.util > 100;
-                        const isUnderperforming  = !isHealthy && row.util > 50;
+                        const isHealthy = row.util > 80;
+                        const isOverutilised = row.util > 100;
+                        const isUnderperforming = !isHealthy && row.util > 50;
                         const s = isOverutilised
                           ? { badge: 'bg-emerald-400/10 text-emerald-300 border-emerald-400/25', dot: 'bg-emerald-300', util: 'text-emerald-300', bar: 'bg-emerald-400' }
                           : isHealthy
                             ? { badge: 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25', dot: 'bg-emerald-400', util: 'text-emerald-400', bar: 'bg-emerald-500' }
                             : isUnderperforming
                               ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
-                              : { badge: 'bg-rose-900/40 text-rose-300 border-rose-700/40',  dot: 'bg-rose-700', util: 'text-rose-300', bar: 'bg-rose-700' };
+                              : { badge: 'bg-rose-900/40 text-rose-300 border-rose-700/40', dot: 'bg-rose-700', util: 'text-rose-300', bar: 'bg-rose-700' };
                         return (
                           <tr key={i} className="hover:bg-white/[0.04] transition-all duration-300 group/mod">
                             <td className="p-8">

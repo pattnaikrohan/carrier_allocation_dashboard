@@ -73,7 +73,7 @@ const Navbar: React.FC<NavbarProps> = ({
       document.documentElement.classList.add('dark');
     }
   };
-  
+
 
 
   // Dynamic Week Hierarchy Construction
@@ -95,7 +95,7 @@ const Navbar: React.FC<NavbarProps> = ({
     const quarters: HierarchyNode[] = [];
     // 3. Months
     const months: HierarchyNode[] = [];
-    
+
     // Grouping individual weeks by month
     const janWeeks: HierarchyNode[] = [];
     const febWeeks: HierarchyNode[] = [];
@@ -165,36 +165,36 @@ const Navbar: React.FC<NavbarProps> = ({
   })();
 
   const filters = [
-    { 
-      label: 'Week', 
-      val: selectedWeek, 
-      items: weekHierarchy, 
-      onSelect: onWeekChange, 
-      color: 'emerald', 
-      isHierarchical: true, 
-      columnLabels: ['Category', 'Sub-Group', 'Timeframe'], 
-      placeholder: 'Refine Timeframe...' 
+    {
+      label: 'Week',
+      val: selectedWeek,
+      items: weekHierarchy,
+      onSelect: onWeekChange,
+      color: 'emerald',
+      isHierarchical: true,
+      columnLabels: ['Category', 'Sub-Group', 'Timeframe'],
+      placeholder: 'Refine Timeframe...'
     },
     { label: 'Contract', val: selectedContract, items: availableContracts, onSelect: onContractChange, color: 'cyan', hasSearch: true },
-    { 
-      label: 'Origin', 
-      val: selectedOrigin, 
-      items: availableOrigins, 
-      onSelect: onOriginChange, 
-      color: 'indigo', 
-      isHierarchical: true, 
-      columnLabels: ['Region', 'Country', 'Port'], 
-      placeholder: 'Refine Origin Network...' 
+    {
+      label: 'Origin',
+      val: selectedOrigin,
+      items: availableOrigins,
+      onSelect: onOriginChange,
+      color: 'indigo',
+      isHierarchical: true,
+      columnLabels: ['Region', 'Country', 'Port'],
+      placeholder: 'Refine Origin Network...'
     },
-    { 
-      label: 'Dest.', 
-      val: selectedDestination, 
-      items: availableDestinations, 
-      onSelect: onDestinationChange, 
-      color: 'amber', 
-      isHierarchical: true, 
-      columnLabels: ['Region', 'Country', 'Port'], 
-      placeholder: 'Refine Destination Network...' 
+    {
+      label: 'Dest.',
+      val: selectedDestination,
+      items: availableDestinations,
+      onSelect: onDestinationChange,
+      color: 'amber',
+      isHierarchical: true,
+      columnLabels: ['Region', 'Country', 'Port'],
+      placeholder: 'Refine Destination Network...'
     },
     { label: 'Branch', val: selectedBranch, items: availableBranches, onSelect: onBranchChange, color: 'sky' },
     { label: 'Carrier', val: selectedCarrier, items: availableCarriers, onSelect: onCarrierChange, color: 'violet' },
@@ -208,8 +208,8 @@ const Navbar: React.FC<NavbarProps> = ({
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-[1780px] mx-auto px-4 md:px-6 pointer-events-auto"
       >
-        <div className="flex items-center justify-between bg-white/70 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-slate-200 dark:border-slate-800 shadow-xl px-5 py-2 min-h-[72px] gap-4 w-full relative overflow-visible">
-          
+        <div className="flex items-center justify-between bg-gradient-to-r from-sky-200/90 via-blue-200/85 to-indigo-200/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-sky-300/50 dark:border-slate-800 shadow-xl px-5 py-2 min-h-[72px] gap-4 w-full relative overflow-visible">
+
           {/* Left Segment: Compass Logo */}
           <div className="flex items-center gap-3 shrink-0">
             <img src={compassLogo} alt="Compass" className="h-14 w-auto object-contain dark:brightness-125 dark:invert" />
@@ -245,13 +245,12 @@ const Navbar: React.FC<NavbarProps> = ({
                         initial={{ opacity: 0, y: 8, scale: 0.98 }}
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
-                        className={`absolute bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-[24px] p-2 z-50 shadow-2xl ${
-                          f.isHierarchical
-                            ? f.label === 'Origin' || f.label === 'Week'
-                              ? 'top-[60px] left-0 origin-top-left min-w-[720px]'
-                              : 'top-[60px] right-0 origin-top-right min-w-[720px]'
-                            : 'top-[44px] left-1/2 -translate-x-1/2 origin-top min-w-[220px]'
-                        }`}
+                        className={`absolute bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-[24px] p-2 z-50 shadow-2xl ${f.isHierarchical
+                          ? f.label === 'Origin' || f.label === 'Week'
+                            ? 'top-[60px] left-0 origin-top-left min-w-[720px]'
+                            : 'top-[60px] right-0 origin-top-right min-w-[720px]'
+                          : 'top-[44px] left-1/2 -translate-x-1/2 origin-top min-w-[220px]'
+                          }`}
                       >
                         {f.isHierarchical ? (
                           <HierarchicalSelect
@@ -322,9 +321,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 </motion.div>
               </button>
             </div>
-            
+
             <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0" />
-            
+
             <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain" />
           </div>
 
@@ -421,7 +420,7 @@ const HierarchicalSelect: React.FC<{
               <div className="flex-1 overflow-y-auto elegant-scrollbar px-2 pb-4">
                 {nodes.length === 0 ? (
                   <div className="h-full flex items-center justify-center text-[10px] text-slate-600 font-bold uppercase tracking-widest italic">
-                    Select {labels[level-1]}
+                    Select {labels[level - 1]}
                   </div>
                 ) : (
                   nodes.map((node) => {
@@ -440,11 +439,10 @@ const HierarchicalSelect: React.FC<{
                           }
                         }}
                         onClick={() => onSelect(node.label)}
-                        className={`w-full text-left px-3 py-2 rounded-xl text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between group/item ${
-                          isSelected ? colors.active : 
-                          isActive ? 'bg-white/10 text-white shadow-md' : 
-                          'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
-                        }`}
+                        className={`w-full text-left px-3 py-2 rounded-xl text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between group/item ${isSelected ? colors.active :
+                          isActive ? 'bg-white/10 text-white shadow-md' :
+                            'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
+                          }`}
                       >
                         <span className="truncate">{node.label === 'ALL' ? 'Select All' : node.label}</span>
                         {hasChildren && (
@@ -540,8 +538,8 @@ const FilterSelect: React.FC<{
             key={item + idx}
             onClick={() => onSelect?.(item)}
             className={`w-full text-left px-3 py-2 rounded-lg text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between ${selected === item
-                ? colors.active
-                : 'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
+              ? colors.active
+              : 'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
               }`}
             style={
               selected === item
