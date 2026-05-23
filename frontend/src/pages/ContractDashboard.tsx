@@ -23,14 +23,29 @@ const KPI_DATA = [
   { id: 'book', label: 'TOTAL BOOKED', value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed', accentColor: 'text-cyan-400', shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]', type: 'bar', percent: totalUtl, barColor: 'bg-cyan-400' },
   { id: 'util', label: 'OVERALL UTIL %', value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
   // Colour inversion: underperforming ≤80% is the risk → red
-  { id: 'undr', label: 'UNDERPERFORMING (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
-  { id: 'low', label: 'LOW UTILISATION', value: lowUtil.toString(), sub: 'Below 50%', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
+  { id: 'undr', label: 'UNDERPERFORMING CONTRACT (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
+  { id: 'low', label: 'LOW UTILISATION CONTRACT', value: lowUtil.toString(), sub: 'Below 50%', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
   { id: 'wk', label: 'ACTIVE WEEKS', value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026', accentColor: 'text-slate-300', shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
 ];
 
 const SIDE_TAGS = ['Branch Summary', 'Contract Utilisation', 'Booking Log'];
 
 function round(num: number) { return Math.round(num); }
+
+/** Convert ISO datetime string to DD/MM/YYYY */
+function formatDate(dateStr: string | null | undefined): string {
+  if (!dateStr) return '-';
+  try {
+    const d = new Date(dateStr);
+    if (isNaN(d.getTime())) return String(dateStr);
+    const dd = String(d.getDate()).padStart(2, '0');
+    const mm = String(d.getMonth() + 1).padStart(2, '0');
+    const yyyy = d.getFullYear();
+    return `${dd}/${mm}/${yyyy}`;
+  } catch {
+    return String(dateStr);
+  }
+}
 
 /**
  * Global colour helper — enforces the underutilisation-risk rule:
@@ -318,6 +333,7 @@ const ContractDashboard: React.FC = () => {
         expiry: (c as any).expiry ?? 'N/A',
         alloc: scaledAlloc,
         booked,
+        avail: scaledAlloc - booked,
         util,
         syd: { ...(c.syd ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['SYDNEY', 'SY1']) },
         mel: { ...(c.mel ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['MELBOURNE', 'ME1']) },
@@ -499,14 +515,29 @@ const ContractDashboard: React.FC = () => {
       const booked = hubBookings.reduce((sum, row) => sum + (row.teu || 0), 0);
       const utilFloat = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
 
+      const branchKeyMap: Record<string, string> = {
+        'SY1': 'syd', 'ME1': 'mel', 'BN1': 'bne', 'FR1': 'fre', 'PR1': 'fre', 'AD1': 'adl', 'PIL': 'pil', 'PRJ': 'prj', 'AKL': 'akl', 'OTH': 'oth'
+      };
+      const bKey = branchKeyMap[b.branch];
+
       const activeContracts = Array.from(new Set(hubBookings.map(bk => bk.contract))).sort();
+      const activeContractsData = activeContracts.map(contractId => {
+        const contractBookings = hubBookings.filter(bk => bk.contract === contractId);
+        const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
+        const contractObj = CONTRACT_UTIL_DATA.find(c => c.id === contractId);
+        const rawAlloc = contractObj && bKey && (contractObj as any)[bKey] ? (contractObj as any)[bKey].alloc : 0;
+        const cAlloc = Math.round(rawAlloc * weekScale);
+        const cAvail = cAlloc - cBooked;
+        const cUtil = cAlloc > 0 ? (cBooked / cAlloc) * 100 : 0;
+        return { id: contractId, alloc: cAlloc, booked: cBooked, avail: cAvail, util: cUtil };
+      });
 
       let status = 'Critical';
       if (utilFloat > 100) status = 'Overutilised';
       else if (utilFloat > 80) status = 'Healthy';
       else if (utilFloat > 50) status = 'Underperforming';
 
-      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts };
+      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts, activeContractsData };
     });
 
     // Check if any bookings are completely unmatched and create OTHER category
@@ -514,6 +545,12 @@ const ContractDashboard: React.FC = () => {
     const otherBooked = unmatchedBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
 
     if (otherBooked > 0) {
+      const activeContracts = Array.from(new Set(unmatchedBookings.map(b => b.contract))).sort();
+      const activeContractsData = activeContracts.map(contractId => {
+        const contractBookings = unmatchedBookings.filter(bk => bk.contract === contractId);
+        const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
+        return { id: contractId, alloc: 0, booked: cBooked, avail: -cBooked, util: 0 };
+      });
       snapshot.push({
         branch: 'OTH',
         branchName: 'OTHER PORTS',
@@ -523,8 +560,19 @@ const ContractDashboard: React.FC = () => {
         util: 0,
         utilFloat: 0,
         status: 'Unplanned',
-        activeContracts: Array.from(new Set(unmatchedBookings.map(b => b.contract))).sort()
-      });
+        activeContracts,
+        activeContractsData
+      } as any);
+    }
+
+    if (selectedBranch !== 'ALL') {
+      const branchCodeMap: Record<string, string[]> = {
+        SYD: ['SY1'], MEL: ['ME1'], BNE: ['BN1'],
+        FRE: ['FR1', 'PR1'], ADL: ['AD1'],
+        PIL: ['PIL'], PRJ: ['PRJ'], AKL: ['AKL'], OTH: ['OTH'],
+      };
+      const allowedCodes = branchCodeMap[selectedBranch] || [selectedBranch];
+      return snapshot.filter(r => allowedCodes.includes(r.branch));
     }
 
     return snapshot;
@@ -1055,13 +1103,13 @@ const ContractDashboard: React.FC = () => {
                 </div>
 
                 {/* Column Headers */}
-                <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 bg-white/[0.02] border-b border-white/[0.04] px-6 py-2.5">
-                  <span className="text-[9px] font-bold text-indigo-400 uppercase tracking-[0.18em]">Hub</span>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Alloc (TEU)</span>
-                  <span className="text-[9px] font-bold text-cyan-500 uppercase tracking-[0.18em] text-right">Booked</span>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Available</span>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right pr-2">Utilisation</span>
-                  <span className="text-[9px] font-bold text-slate-500 uppercase tracking-[0.18em] text-center">Status</span>
+                <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 bg-white/[0.02] border-b border-white/[0.04] px-6 py-3">
+                  <span className="text-[11px] font-bold text-indigo-400 uppercase tracking-[0.18em]">Hub</span>
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Alloc (TEU)</span>
+                  <span className="text-[11px] font-bold text-cyan-500 uppercase tracking-[0.18em] text-right">Booked</span>
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right">Available</span>
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.18em] text-right pr-2">Utilisation</span>
+                  <span className="text-[11px] font-bold text-slate-500 uppercase tracking-[0.18em] text-center">Status</span>
                 </div>
 
                 {/* Data Rows */}
@@ -1080,46 +1128,63 @@ const ContractDashboard: React.FC = () => {
                           ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
                           : { badge: 'bg-orange-500/10 text-orange-400 border-orange-500/25', dot: 'bg-orange-500', util: 'text-orange-400', bar: 'bg-orange-600' };
                     return (
-                      <div key={i} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-3 items-center hover:bg-white/[0.015] transition-colors">
-                        {/* Hub */}
-                        <div className="flex flex-col min-w-0 justify-center">
-                          <div className="flex items-center gap-2">
-                            <span className={`w-2 h-2 rounded-full shrink-0 ${s.dot}`} />
-                            <span className="font-mono font-bold text-slate-200 text-[12px] tracking-wide">{row.branch}</span>
-                            {row.branchName && <span className="text-[10px] text-slate-500 truncate hidden md:block">{row.branchName}</span>}
-                          </div>
-                          {(row as any).activeContracts && (row as any).activeContracts.length > 0 && (
-                            <div className="text-[8.5px] text-indigo-400/70 font-mono mt-1 pl-4 truncate pr-2" title={(row as any).activeContracts.join(', ')}>
-                              ↳ {(row as any).activeContracts.join(', ')}
+                      <React.Fragment key={i}>
+                        <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-4 items-center hover:bg-white/[0.015] transition-colors">
+                          {/* Hub */}
+                          <div className="flex flex-col min-w-0 justify-center">
+                            <div className="flex items-center gap-2">
+                              <span className={`w-2.5 h-2.5 rounded-full shrink-0 ${s.dot}`} />
+                              <span className="font-mono font-bold text-slate-200 text-[14px] tracking-wide">{row.branch}</span>
+                              {row.branchName && <span className="text-[12px] text-slate-500 truncate hidden md:block">{row.branchName}</span>}
                             </div>
-                          )}
-                        </div>
-                        {/* Alloc */}
-                        <span className="font-mono text-slate-400 text-[12px] text-right tabular-nums">{row.alloc}</span>
-                        {/* Booked */}
-                        <div className="flex justify-end">
-                          <span className={`font-mono font-bold text-[12px] px-2 py-0.5 rounded-md border tabular-nums ${row.booked > 0 ? 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5' : 'text-slate-600 border-slate-700/30'}`}>
-                            {row.booked.toFixed(1)}
+                          </div>
+                          {/* Alloc */}
+                          <span className="font-mono text-slate-400 text-[14px] text-right tabular-nums">{row.alloc}</span>
+                          {/* Booked */}
+                          <div className="flex justify-end">
+                            <span className={`font-mono font-bold text-[14px] px-2.5 py-0.5 rounded-md border tabular-nums ${row.booked > 0 ? 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5' : 'text-slate-600 border-slate-700/30'}`}>
+                              {row.booked.toFixed(1)}
+                            </span>
+                          </div>
+                          {/* Available */}
+                          <span className={`font-mono text-[14px] text-right tabular-nums ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>
+                            {row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}
                           </span>
-                        </div>
-                        {/* Available */}
-                        <span className={`font-mono text-[12px] text-right tabular-nums ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>
-                          {row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}
-                        </span>
-                        {/* Utilisation + bar */}
-                        <div className="flex flex-col items-end gap-1 pr-2">
-                          <span className={`font-mono font-semibold text-[12px] tabular-nums ${s.util}`}>{row.util.toFixed(1)}%</span>
-                          <div className="w-16 h-[3px] bg-white/5 rounded-full overflow-hidden">
-                            <div className={`h-full rounded-full ${s.bar}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
+                          {/* Utilisation + bar */}
+                          <div className="flex flex-col items-end gap-1.5 pr-2">
+                            <span className={`font-mono font-semibold text-[14px] tabular-nums ${s.util}`}>{row.util.toFixed(1)}%</span>
+                            <div className="w-20 h-[4px] bg-white/5 rounded-full overflow-hidden">
+                              <div className={`h-full rounded-full ${s.bar}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
+                            </div>
+                          </div>
+                          {/* Status */}
+                          <div className="flex justify-center">
+                            <span className={`px-3 py-1.5 text-[10px] font-bold rounded-full border uppercase tracking-wider whitespace-nowrap ${s.badge}`}>
+                              {row.status}
+                            </span>
                           </div>
                         </div>
-                        {/* Status */}
-                        <div className="flex justify-center">
-                          <span className={`px-2.5 py-1 text-[9px] font-bold rounded-full border uppercase tracking-wider whitespace-nowrap ${s.badge}`}>
-                            {row.status}
-                          </span>
-                        </div>
-                      </div>
+                        {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
+                          <div className="bg-sky-400/10 border-t border-b border-sky-400/20 py-2">
+                            {(row as any).activeContractsData.map((c: any, cIdx: number) => (
+                              <div key={cIdx} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-1.5 items-center hover:bg-sky-400/10 transition-colors">
+                                <div className="pl-6 flex items-center min-w-0">
+                                  <span className="text-[12px] text-indigo-300 font-bold font-mono truncate">↳ {c.id}</span>
+                                </div>
+                                <div className="text-[12px] text-slate-300 font-bold font-mono text-right tabular-nums">{c.alloc || '-'}</div>
+                                <div className="flex justify-end">
+                                  <span className="text-[12px] text-blue-500 font-bold font-mono tabular-nums">{c.booked.toFixed(1)}</span>
+                                </div>
+                                <span className="text-[12px] text-slate-300 font-bold font-mono text-right tabular-nums">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</span>
+                                <div className="flex flex-col items-end justify-center pr-2">
+                                  <span className="text-[12px] text-slate-300 font-bold font-mono tabular-nums">{c.util.toFixed(1)}%</span>
+                                </div>
+                                <div></div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </React.Fragment>
                     );
                   })}
                 </div>
@@ -1306,16 +1371,16 @@ const ContractDashboard: React.FC = () => {
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4" /></svg>
                       Expand View
                     </button>
-                    <span className="text-[10px] font-bold px-3 py-1 bg-violet-500/10 text-violet-400 rounded border border-violet-500/20 uppercase tracking-widest">MSC {selectedWeek}</span>
+                    <span className="text-[10px] font-bold px-3 py-1 bg-violet-500/10 text-violet-400 rounded border border-violet-500/20 uppercase tracking-widest">{selectedWeek === 'ALL' ? 'ALL WEEKS' : selectedWeek}</span>
                   </div>
                 </div>
 
-                <div className="overflow-x-auto elegant-scrollbar relative z-10 p-2 md:p-5">
-                  <table className="w-full text-left border-collapse table-fixed min-w-[1600px]">
-                    <thead>
-                      <tr className="bg-slate-900/60">
-                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD A/B', 'MEL A/B', 'BNE A/B', 'PER A/B', 'ADL A/B'].map((h, i) => (
-                          <th key={h} className={`px-4 py-4 font-bold text-[10px] tracking-widest uppercase border-b border-white/5 ${i === 7 ? 'text-center' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-slate-400'}`}>{h}</th>
+                <div className="overflow-auto elegant-scrollbar relative z-10 p-2 md:p-5 max-h-[600px]">
+                  <table className="w-full text-left border-collapse table-fixed min-w-[2000px]">
+                    <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      <tr className="bg-[#0b0f19]">
+                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (Bk/Al)', 'MEL (Bk/Al)', 'BNE (Bk/Al)', 'PER (Bk/Al)', 'ADL (Bk/Al)'].map((h, i) => (
+                          <th key={h} className={`px-4 py-4 font-bold text-xs tracking-widest uppercase border-b-2 border-violet-500/30 bg-[#0b0f19] ${i === 7 ? 'text-center text-amber-400' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -1327,27 +1392,27 @@ const ContractDashboard: React.FC = () => {
                               : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
                         return (
                           <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
-                            <td className="px-4 py-4 font-mono text-[10px] font-bold text-white tracking-wider">{row.id}</td>
-                            <td className="px-4 py-4 text-xs font-bold text-slate-200">{row.carrier}</td>
-                            <td className="px-4 py-4 text-[10px] font-bold text-slate-400 font-mono tracking-tighter">{row.lane}</td>
-                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-slate-300">{row.alloc}</td>
-                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-emerald-400">{row.booked.toFixed(1)}</td>
-                            <td className="px-4 py-4 font-mono text-[10px] text-right font-bold text-cyan-400">{row.avail}</td>
+                            <td className="px-4 py-4 font-mono text-[13px] font-bold text-white tracking-wider">{row.id}</td>
+                            <td className="px-4 py-4 text-[13px] font-bold text-slate-200">{row.carrier}</td>
+                            <td className="px-4 py-4 text-[13px] font-bold text-slate-400 font-mono tracking-tighter">{row.lane}</td>
+                            <td className="px-4 py-4 font-mono text-[13px] text-right font-bold text-slate-300">{row.alloc}</td>
+                            <td className="px-4 py-4 font-mono text-[13px] text-right font-bold text-emerald-400">{row.booked.toFixed(1)}</td>
+                            <td className="px-4 py-4 font-mono text-[13px] text-right font-bold text-cyan-400">{row.avail}</td>
                             <td className="px-4 py-4 text-right">
-                              <div className="flex flex-col items-end gap-1">
-                                <span className={`font-mono text-xs font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</span>
-                                <div className="w-16 h-1 bg-slate-900 rounded-full overflow-hidden">
+                              <div className="flex flex-col items-end gap-1.5">
+                                <span className={`font-mono text-[13px] font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</span>
+                                <div className="w-16 h-1.5 bg-slate-900 rounded-full overflow-hidden">
                                   <div className={`h-full rounded-full ${getUtilColor(row.util, 'bar')}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
                                 </div>
                               </div>
                             </td>
-                            <td className="px-4 py-4 text-center"><span className={`text-[9px] font-bold px-2 py-1 rounded border uppercase tracking-wide ${statusStyle}`}>{row.status}</span></td>
+                            <td className="px-4 py-4 text-center"><span className={`text-[11px] font-bold px-2 py-1 rounded border uppercase tracking-wide ${statusStyle}`}>{row.status}</span></td>
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => {
                               const bPct = b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
                               return (
                                 <td key={bi} className="px-3 py-4 text-center">
                                   <div className="flex flex-col items-center gap-0.5">
-                                    <span className={`font-mono text-[10px] font-bold ${getUtilColor(bPct, 'text')}`}>{b.booked}<span className="text-slate-400">/{b.alloc}</span></span>
+                                    <span className={`font-mono text-[13px] font-bold ${getUtilColor(bPct, 'text')}`}>{b.booked}<span className="text-slate-400">/{b.alloc}</span></span>
                                     <div className="w-10 h-1 bg-slate-900 rounded-full overflow-hidden">
                                       <div className={`h-full rounded-full ${getUtilColor(bPct, 'bar')}`} style={{ width: `${Math.min(bPct, 100)}%` }} />
                                     </div>
@@ -1368,9 +1433,9 @@ const ContractDashboard: React.FC = () => {
                 {/* Left Column: Heat Map Panel */}
                 <div className="rounded-[40px] bg-[#050505]/60 border border-white/5 backdrop-blur-3xl shadow-[0_30px_60px_rgba(0,0,0,0.8)] overflow-hidden flex flex-col">
                   <div className="p-8 border-b border-violet-500/20 bg-gradient-to-r from-violet-950/20 to-transparent flex justify-between items-center">
-                    <div className="flex flex-col">
-                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Heat Map</span></h4>
-                      <p className="text-[10px] text-slate-300 mt-1">Per-branch booked vs alloc across carriers</p>
+                    <div className="flex flex-col gap-1">
+                      <h4 className="text-white font-bold tracking-[0.2em] uppercase text-xs">Branch <span className="text-violet-400">Utilisation Heat Map</span></h4>
+                      <p className="text-[10px] text-slate-300 mt-0.5">Shows <span className="text-white font-bold">% of allocated TEU that has been booked</span> for each contract at each branch</p>
                     </div>
                     <button
                       onClick={() => setIsHeatmapModalOpen(true)}
@@ -1383,11 +1448,35 @@ const ContractDashboard: React.FC = () => {
                     </button>
                   </div>
                   <div className="flex-1 overflow-y-auto elegant-scrollbar p-4 max-h-[350px]">
+                    {/* Legend Bar */}
+                    <div className="flex items-center gap-4 mb-3 px-2 py-2.5">
+                      <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest shrink-0">Legend:</span>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(153, 27, 27, 0.8)' }} />
+                        <span className="text-[11px] text-slate-300 font-semibold">Critical ≤50%</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(244, 63, 94, 0.7)' }} />
+                        <span className="text-[11px] text-slate-300 font-semibold">Low ≤80%</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(52, 211, 153, 0.6)' }} />
+                        <span className="text-[11px] text-slate-300 font-semibold">Healthy &gt;80%</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(34, 211, 238, 0.7)' }} />
+                        <span className="text-[11px] text-slate-300 font-semibold">Over &gt;100%</span>
+                      </div>
+                      <div className="flex items-center gap-1.5">
+                        <div className="w-5 h-4 rounded border border-white/10" style={{ backgroundColor: 'rgba(30, 41, 59, 0.6)' }} />
+                        <span className="text-[11px] text-slate-500 font-semibold">No Alloc</span>
+                      </div>
+                    </div>
                     {/* Column headers */}
-                    <div className="grid grid-cols-6 gap-1 mb-2 px-1">
-                      <div className="text-[8px] text-slate-400 font-bold uppercase col-span-1">ID</div>
+                    <div className="grid grid-cols-6 gap-1 mb-2 px-1 sticky top-0 z-10 bg-[#0b0f19] py-2 rounded-t-xl" style={{ boxShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>
+                      <div className="text-[10px] text-white font-black uppercase">Contract</div>
                       {['SYD', 'MEL', 'BNE', 'PER', 'ADL'].map(b => (
-                        <div key={b} className="text-[9px] text-slate-300 font-bold uppercase text-center">{b}</div>
+                        <div key={b} className="text-[11px] text-white font-black uppercase text-center">{b}</div>
                       ))}
                     </div>
                     <div className="flex flex-col gap-1.5">
@@ -1405,23 +1494,15 @@ const ContractDashboard: React.FC = () => {
                               const col = pct <= 0 ? 'bg-slate-800/60' : pct <= 50 ? 'bg-rose-700/80' : pct <= 80 ? 'bg-rose-500/70' : pct <= 100 ? 'bg-emerald-400/60' : 'bg-cyan-400/70';
                               return (
                                 <div key={name} title={`${name}: ${b.booked}/${b.alloc} TEU (${pct.toFixed(0)}%)`}
-                                  className={`h-6 rounded-md ${col} flex items-center justify-center transition-all group-hover/heat:scale-105`}>
-                                  <span className="text-[8px] font-bold text-white/70">{pct > 0 ? `${pct.toFixed(0)}` : '-'}</span>
+                                  className={`h-7 rounded-md ${col} flex flex-col items-center justify-center transition-all group-hover/heat:scale-105`}>
+                                  <span className="text-[9px] font-black text-white drop-shadow-sm">{pct > 0 ? `${pct.toFixed(0)}%` : '-'}</span>
+                                  {pct > 0 && <span className="text-[7px] text-white/50 font-mono leading-none">{b.booked}/{b.alloc}</span>}
                                 </div>
                               );
                             })}
                           </div>
                         );
                       })}
-                    </div>
-                    {/* Legend */}
-                    <div className="mt-4 flex flex-wrap gap-2 px-1 pt-3 border-t border-white/5">
-                      {[['bg-rose-700/80', 'Critical ≤50%'], ['bg-rose-500/70', 'Underperforming ≤80%'], ['bg-emerald-400/60', 'Healthy >80%'], ['bg-cyan-400/70', 'Overutilised >100%']].map(([col, lbl]) => (
-                        <div key={lbl} className="flex items-center gap-1.5">
-                          <div className={`w-3 h-3 rounded-sm ${col}`} />
-                          <span className="text-[8px] text-slate-300 uppercase font-bold">{lbl}</span>
-                        </div>
-                      ))}
                     </div>
                   </div>
                 </div>
@@ -1436,7 +1517,13 @@ const ContractDashboard: React.FC = () => {
                     <ResponsiveContainer width="100%" height="100%">
                       <PieChart>
                         <Pie
-                          data={reactiveContractUtilData.filter(d => d.booked > 0).map(d => ({ name: d.id, value: d.booked, carrier: d.carrier }))}
+                          data={(() => {
+                            const grouped: Record<string, number> = {};
+                            reactiveContractUtilData.filter(d => d.booked > 0).forEach(d => {
+                              grouped[d.carrier] = (grouped[d.carrier] || 0) + d.booked;
+                            });
+                            return Object.entries(grouped).map(([carrier, value]) => ({ name: carrier, value, carrier }));
+                          })()}
                           cx="50%" cy="50%"
                           innerRadius={65}
                           outerRadius={85}
@@ -1445,10 +1532,17 @@ const ContractDashboard: React.FC = () => {
                           stroke="none"
                           isAnimationActive={true}
                         >
-                          {reactiveContractUtilData.filter(d => d.booked > 0).map((_entry, index) => {
-                            const colors = ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf', '#22d3ee', '#10b981', '#fbbf24', '#f43f5e'];
-                            return <Cell key={`cell-${index}`} fill={colors[index % colors.length]} style={{ filter: 'drop-shadow(0 0 4px rgba(167,139,250,0.3))' }} />;
-                          })}
+                          {(() => {
+                            const grouped: Record<string, number> = {};
+                            reactiveContractUtilData.filter(d => d.booked > 0).forEach(d => {
+                              grouped[d.carrier] = (grouped[d.carrier] || 0) + d.booked;
+                            });
+                            const distinctColors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#fb923c', '#a855f7'];
+                            return Object.keys(grouped).map((carrier, index) => {
+                              const color = distinctColors[index % distinctColors.length];
+                              return <Cell key={`cell-${index}`} fill={color} style={{ filter: `drop-shadow(0 0 6px ${color}40)` }} />;
+                            });
+                          })()}
                         </Pie>
                         <Tooltip
                           content={({ active, payload }) => {
@@ -1456,15 +1550,15 @@ const ContractDashboard: React.FC = () => {
                               const total = reactiveContractUtilData.reduce((sum, r) => sum + r.booked, 0);
                               const percentage = ((payload[0].value as number / total) * 100).toFixed(1);
                               return (
-                                <div className="bg-white/95 dark:bg-[#02040a]/95 border border-slate-200 dark:border-violet-500/30 p-4 rounded-2xl shadow-2xl backdrop-blur-xl">
-                                  <div className="text-[10px] font-bold text-violet-600 dark:text-violet-400 uppercase tracking-widest mb-2">{payload[0].payload.carrier}</div>
-                                  <div className="flex justify-between gap-8 mb-1">
-                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Total Booked</span>
-                                    <span className="text-xs font-black text-slate-800 dark:text-white font-mono">{payload[0].value} TEU</span>
+                                <div style={{ backgroundColor: '#0b0f19', border: '1px solid rgba(139, 92, 246, 0.3)', padding: '16px', borderRadius: '16px', boxShadow: '0 25px 50px rgba(0,0,0,0.5)', opacity: 1, zIndex: 9999 }}>
+                                  <div style={{ fontSize: '10px', fontWeight: 700, color: '#a78bfa', textTransform: 'uppercase', letterSpacing: '0.1em', marginBottom: '8px' }}>{payload[0].payload.carrier}</div>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '32px', marginBottom: '4px' }}>
+                                    <span style={{ fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Total Booked</span>
+                                    <span style={{ fontSize: '12px', fontWeight: 900, color: '#ffffff', fontFamily: 'monospace' }}>{payload[0].value} TEU</span>
                                   </div>
-                                  <div className="flex justify-between gap-8 border-t border-slate-100 dark:border-white/5 mt-1.5 pt-1.5">
-                                    <span className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-wider font-bold">Network Share</span>
-                                    <span className="text-xs font-black text-emerald-600 dark:text-emerald-400 font-mono">{percentage}%</span>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between', gap: '32px', borderTop: '1px solid rgba(255,255,255,0.05)', marginTop: '6px', paddingTop: '6px' }}>
+                                    <span style={{ fontSize: '10px', color: '#94a3b8', textTransform: 'uppercase', letterSpacing: '0.05em', fontWeight: 700 }}>Network Share</span>
+                                    <span style={{ fontSize: '12px', fontWeight: 900, color: '#34d399', fontFamily: 'monospace' }}>{percentage}%</span>
                                   </div>
                                 </div>
                               );
@@ -1483,15 +1577,23 @@ const ContractDashboard: React.FC = () => {
                     </div>
                   </div>
 
-                  {/* Compact Legend Grid */}
+                  {/* Compact Legend Grid - synced with chart colors */}
                   <div className="grid grid-cols-2 gap-x-4 gap-y-2 mt-4 px-2">
-                    {reactiveContractUtilData.filter(d => d.booked > 0).slice(0, 4).map((d, i) => (
-                      <div key={d.id} className="flex items-center gap-2">
-                        <div className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: ['#8b5cf6', '#a78bfa', '#c4b5fd', '#2dd4bf'][i % 4] }} />
-                        <span className="text-[9px] text-slate-400 truncate max-w-[80px]">{d.carrier}</span>
-                        <span className="text-[9px] font-bold text-slate-200 ml-auto">{((d.booked / reactiveContractUtilData.reduce((s, r) => s + r.booked, 0)) * 100).toFixed(0)}%</span>
-                      </div>
-                    ))}
+                    {(() => {
+                      const grouped: Record<string, number> = {};
+                      reactiveContractUtilData.filter(d => d.booked > 0).forEach(d => {
+                        grouped[d.carrier] = (grouped[d.carrier] || 0) + d.booked;
+                      });
+                      const total = Object.values(grouped).reduce((s, v) => s + v, 0);
+                      const distinctColors = ['#f43f5e', '#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#84cc16', '#fb923c', '#a855f7'];
+                      return Object.entries(grouped).map(([carrier, value], i) => (
+                        <div key={carrier} className="flex items-center gap-2">
+                          <div className="w-2.5 h-2.5 rounded-full shrink-0" style={{ backgroundColor: distinctColors[i % distinctColors.length] }} />
+                          <span className="text-[10px] text-slate-300 truncate max-w-[90px] font-bold">{carrier}</span>
+                          <span className="text-[10px] font-black text-white ml-auto font-mono">{((value / total) * 100).toFixed(0)}%</span>
+                        </div>
+                      ));
+                    })()}
                   </div>
                 </div>
               </div>
@@ -1589,13 +1691,13 @@ const ContractDashboard: React.FC = () => {
                               </a>
                             </td>
                             {/* Branch cell */}
-                            <td className={`px-6 py-5 font-mono text-[10px] font-bold ${brCls}`}>{row.branch}</td>
-                            <td className="px-6 py-5 text-[10px] text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
+                            <td className={`px-6 py-5 font-mono text-xs font-bold ${brCls}`}>{row.branch}</td>
+                            <td className="px-6 py-5 text-xs text-slate-400 truncate tracking-tighter" title={row.buyer}>{row.buyer}</td>
                             <td className="px-6 py-5 text-xs text-slate-300">{row.depVessel} {row.depVoyage}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.etd}</td>
-                            <td className="px-6 py-5 font-mono text-[10px] text-center text-slate-300">{row.eta}</td>
-                            <td className="px-6 py-5 text-center font-mono text-[10px] bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
-                            <td className="px-6 py-5 font-mono text-sm font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
+                            <td className="px-6 py-5 font-mono text-xs text-center text-slate-300">{formatDate(row.etd)}</td>
+                            <td className="px-6 py-5 font-mono text-xs text-center text-slate-300">{formatDate(row.eta)}</td>
+                            <td className="px-6 py-5 text-center font-mono text-xs bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
+                            <td className="px-6 py-5 font-mono text-xs font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
                           </tr>
                         );
                       })}
@@ -1843,7 +1945,7 @@ const ContractDashboard: React.FC = () => {
                     )}
 
                     {/* UNDERPERFORMING (≤80%) BREAKDOWN */}
-                    {(activeKpi.label === 'OVERBOOKED' || activeKpi.label === 'UNDERPERFORMING (≤80%)' || activeKpi.label === 'Underperforming (≤80%)') && (
+                    {(activeKpi.label === 'OVERBOOKED' || activeKpi.label === 'UNDERPERFORMING CONTRACT (≤80%)' || activeKpi.label === 'Underperforming (≤80%)') && (
                       <div className="flex flex-col gap-2">
                         {cuLowUptake.length > 0 ? cuLowUptake.map(c => (
                           <div key={c.id} className="flex justify-between items-center p-3 rounded-xl bg-rose-500/10 border border-rose-500/20">
@@ -2133,11 +2235,10 @@ const ContractDashboard: React.FC = () => {
                   <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
-              <div className="flex-1 overflow-auto elegant-scrollbar p-6 md:p-10 bg-slate-950">
-                <div className="bg-[#0b0f19] border border-white/10 rounded-[20px] overflow-hidden shadow-2xl scale-[1.01] origin-top mb-10 pb-4">
-                  <div className="overflow-x-auto elegant-scrollbar">
-                    <table className="w-full text-left border-collapse table-fixed min-w-[3500px]">
-                      <thead>
+              <div className="flex-1 overflow-auto premium-scrollbar p-6 md:p-10 bg-slate-950">
+                <div className="bg-[#0b0f19] border border-white/10 rounded-[20px] shadow-2xl scale-[1.01] origin-top mb-10 pb-4 overflow-auto premium-scrollbar max-h-[calc(90vh-160px)]">
+                  <table className="w-full text-left border-collapse table-fixed min-w-[4000px]">
+                    <thead className="sticky top-0 z-30" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                         <tr className="bg-gradient-to-r from-sky-100 to-sky-200 font-bold border-b-2 border-sky-300">
                           <th className="px-8 py-5 text-sky-800 text-xs tracking-widest uppercase sticky left-0 z-20 bg-sky-100 border-r border-sky-200 w-48">Contract Key</th>
                           <th className="px-8 py-5 text-sky-800 text-xs tracking-widest uppercase sticky left-48 z-20 bg-gradient-to-r from-sky-100 to-sky-200 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] w-72">Order No.</th>
@@ -2171,45 +2272,44 @@ const ContractDashboard: React.FC = () => {
                       <tbody className="divide-y divide-white/5">
                         {BOOKING_LOG_DATA.filter(b => (selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek) && (selectedContract === 'ALL' || b.contract === selectedContract)).map((row, i) => (
                           <tr key={noNodeNum + i} className="hover:bg-white/[0.03] transition-colors group">
-                            <td className="px-8 py-6 font-mono text-sm font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
+                            <td className="px-8 py-5 font-mono text-xs font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
                               <div className="w-2 h-2 rounded-full bg-sky-400 transition-colors duration-200 group-hover:bg-emerald-500 inline-block mr-3" />
                               {row.contract}
                             </td>
-                            <td className="px-8 py-6 font-mono text-sm font-bold sticky left-48 z-10 bg-sky-50 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] transition-colors duration-200 hover:bg-sky-100">
+                            <td className="px-8 py-5 font-mono text-xs font-bold sticky left-48 z-10 bg-sky-50 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] transition-colors duration-200 hover:bg-sky-100">
                               <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
                                 {row.order}
                               </a>
                             </td>
-                            <td className="px-8 py-6 text-xs text-sky-600 break-words border-r border-slate-700/50" title={row.buyer}>{row.buyer}</td>
-                            <td className="px-8 py-6 text-xs text-amber-500/80 break-words" title={row.supplier}>{row.supplier}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-400">{row.etd}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-400">{row.eta}</td>
-                            <td className="px-8 py-6 text-xs text-slate-600">{row.depVessel}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-300">{row.depVoyage}</td>
-                            <td className="px-8 py-6 text-xs text-slate-500">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-slate-300">-</td>
-                            <td className="px-8 py-6 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
-                            <td className="px-8 py-6 text-xs text-indigo-400 font-medium uppercase">{row.destRegion}</td>
-                            <td className="px-8 py-6 font-mono text-[11px] text-slate-300">N/A</td>
-                            <td className="px-8 py-6 font-mono text-[11px] text-slate-300">N/A</td>
-                            <td className="px-8 py-6 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20 font-mono tracking-widest">{row.branch}</div></td>
-                            <td className="px-8 py-6 font-mono text-lg font-bold text-emerald-400 text-right drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{(row.teu || 0).toFixed(2)}</td>
-                            <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">{row.containers || '-'}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
-                            <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">{(row.teu || 0).toFixed(2)}</td>
-                            <td className="px-8 py-6 font-mono text-sm text-slate-400 text-right">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-300">WK {row.mscWeek}</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">2026</td>
-                            <td className="px-8 py-6 font-mono text-xs text-center text-slate-400">-</td>
-                            <td className="px-8 py-6 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 text-cyan-400 text-[10px] font-bold uppercase tracking-widest">{row.destRegion || '-'}</div></td>
+                            <td className="px-8 py-5 text-xs text-sky-600 truncate border-r border-slate-700/50 min-w-[280px]" title={row.buyer}>{row.buyer}</td>
+                            <td className="px-8 py-5 text-xs text-amber-500/80 truncate min-w-[280px]" title={row.supplier}>{row.supplier}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.etd)}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.eta)}</td>
+                            <td className="px-8 py-5 text-xs text-slate-600">{row.depVessel}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-300">{row.depVoyage}</td>
+                            <td className="px-8 py-5 text-xs text-slate-500">-</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-300">-</td>
+                            <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
+                            <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.destRegion}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
+                            <td className="px-8 py-5 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20 font-mono tracking-widest">{row.branch}</div></td>
+                            <td className="px-8 py-5 font-mono text-xs font-bold text-emerald-400 text-right">{(row.teu || 0).toFixed(2)}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">{row.containers || '-'}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">{(row.teu || 0).toFixed(2)}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">-</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">WK {row.mscWeek}</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">2026</td>
+                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
+                            <td className="px-8 py-5 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest">{row.destRegion || '-'}</div></td>
                           </tr>
                         ))}
                       </tbody>
                     </table>
-                  </div>
                 </div>
               </div>
             </motion.div>
@@ -2361,12 +2461,12 @@ const ContractDashboard: React.FC = () => {
               </div>
               <div className="flex-1 overflow-auto elegant-scrollbar p-8">
                 {/* Re-using the table content here */}
-                <div className="bg-[#0b0f19] border border-white/10 rounded-[32px] overflow-hidden overflow-x-auto elegant-scrollbar">
-                  <table className="w-full text-left border-collapse table-fixed min-w-[1600px]">
-                    <thead>
-                      <tr className="bg-slate-900/60 font-bold border-b border-white/10">
-                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD A/B', 'MEL A/B', 'BNE A/B', 'PER A/B', 'ADL A/B'].map((h, i) => (
-                          <th key={h} className={`px-6 py-5 font-bold text-xs tracking-widest uppercase ${i === 7 ? 'text-center' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-slate-400'}`}>{h}</th>
+                <div className="bg-[#0b0f19] border border-white/10 rounded-[32px] overflow-auto elegant-scrollbar max-h-[calc(90vh-200px)]">
+                  <table className="w-full text-left border-collapse table-fixed min-w-[2000px]">
+                    <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      <tr className="bg-[#0b0f19] font-bold border-b-2 border-violet-500/30">
+                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (Bk/Al)', 'MEL (Bk/Al)', 'BNE (Bk/Al)', 'PER (Bk/Al)', 'ADL (Bk/Al)'].map((h, i) => (
+                          <th key={h} className={`px-6 py-5 font-bold text-sm tracking-widest uppercase ${i === 7 ? 'text-center text-amber-400' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -2378,16 +2478,16 @@ const ContractDashboard: React.FC = () => {
                               : 'bg-slate-700/30 text-slate-400 border-slate-600/30';
                         return (
                           <tr key={i} className="hover:bg-white/[0.03] transition-colors group/mod">
-                            <td className="px-6 py-6 font-mono text-sm font-bold text-violet-300">{row.id}</td>
-                            <td className="px-6 py-6 text-sm text-slate-300 font-medium">{row.carrier}</td>
-                            <td className="px-6 py-6 font-mono text-xs text-slate-300">{row.lane}</td>
+                            <td className="px-6 py-6 font-mono text-base font-bold text-violet-300">{row.id}</td>
+                            <td className="px-6 py-6 text-base text-slate-300 font-medium">{row.carrier}</td>
+                            <td className="px-6 py-6 font-mono text-base text-slate-300">{row.lane}</td>
                             <td className="px-6 py-6 text-right font-mono text-base text-slate-300">{row.alloc}</td>
                             <td className="px-6 py-6 text-right font-mono text-base font-bold text-cyan-400">{row.booked}</td>
                             <td className={`px-6 py-6 text-right font-mono text-base font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
                             <td className={`px-6 py-6 text-right font-mono text-base font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</td>
-                            <td className="px-6 py-6 text-center"><span className={`text-[10px] font-bold px-3 py-1 rounded border uppercase tracking-wider ${statusStyle}`}>{row.status}</span></td>
+                            <td className="px-6 py-6 text-center"><span className={`text-xs font-bold px-3 py-1 rounded border uppercase tracking-wider ${statusStyle}`}>{row.status}</span></td>
                             {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => (
-                              <td key={bi} className="px-6 py-6 text-center font-mono text-sm">
+                              <td key={bi} className="px-6 py-6 text-center font-mono text-base">
                                 <span className={b.booked > b.alloc ? 'text-rose-400' : 'text-slate-300'}>{b.booked}</span>
                                 <span className="text-slate-400">/{b.alloc}</span>
                               </td>
@@ -2432,18 +2532,18 @@ const ContractDashboard: React.FC = () => {
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
-              <div className="flex-1 overflow-auto elegant-scrollbar p-10 bg-[#050505]/40">
-                <div className="bg-[#0b0f19] border border-white/10 rounded-[30px] overflow-hidden shadow-2xl">
+              <div className="flex-1 p-10 bg-[#050505]/40 overflow-hidden">
+                <div className="bg-[#0b0f19] border border-white/10 rounded-[30px] shadow-2xl overflow-auto elegant-scrollbar max-h-[calc(90vh-200px)]">
                   {/* Re-using the same table structure for the modal */}
                   <table className="w-full text-left border-separate border-spacing-0">
-                    <thead>
-                      <tr className="bg-slate-900/60 font-bold border-b-2 border-emerald-500/20">
-                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 w-1/3">Hub</th>
-                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Alloc (TEU)</th>
-                        <th className="p-8 text-cyan-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Booked</th>
-                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Available</th>
-                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right">Utilisation</th>
-                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-center">Status</th>
+                    <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
+                      <tr className="bg-[#0b1120] font-bold border-b-2 border-emerald-500/20">
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 w-1/3 bg-[#0b1120]">Hub</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right bg-[#0b1120]">Alloc (TEU)</th>
+                        <th className="p-8 text-cyan-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right bg-[#0b1120]">Booked</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right bg-[#0b1120]">Available</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-right bg-[#0b1120]">Utilisation</th>
+                        <th className="p-8 text-slate-400 text-xs tracking-[0.2em] font-black uppercase border-b border-white/10 text-center bg-[#0b1120]">Status</th>
                       </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
@@ -2459,31 +2559,42 @@ const ContractDashboard: React.FC = () => {
                               ? { badge: 'bg-rose-500/10 text-rose-400 border-rose-500/25', dot: 'bg-rose-400', util: 'text-rose-400', bar: 'bg-rose-400' }
                               : { badge: 'bg-rose-900/40 text-rose-300 border-rose-700/40', dot: 'bg-rose-700', util: 'text-rose-300', bar: 'bg-rose-700' };
                         return (
-                          <tr key={i} className="hover:bg-white/[0.04] transition-all duration-300 group/mod">
-                            <td className="p-8">
-                              <div className="flex flex-col min-w-0">
-                                <div className="flex items-center gap-3">
-                                  <span className={`w-3 h-3 rounded-full shrink-0 ${s.dot}`} />
-                                  <span className="font-mono font-bold text-slate-200 text-lg tracking-wide">{row.branch}</span>
-                                  {row.branchName && <span className="text-xs text-slate-500">{row.branchName}</span>}
-                                </div>
-                                {(row as any).activeContracts && (row as any).activeContracts.length > 0 && (
-                                  <div className="text-xs text-indigo-400/70 font-mono mt-3 pl-6">
-                                    ↳ Contributing: {(row as any).activeContracts.join(', ')}
+                          <React.Fragment key={i}>
+                            <tr className="hover:bg-white/[0.04] transition-all duration-300 group/mod">
+                              <td className="p-8">
+                                <div className="flex flex-col min-w-0">
+                                  <div className="flex items-center gap-3">
+                                    <span className={`w-3 h-3 rounded-full shrink-0 ${s.dot}`} />
+                                    <span className="font-mono font-bold text-slate-200 text-lg tracking-wide">{row.branch}</span>
+                                    {row.branchName && <span className="text-xs text-slate-500">{row.branchName}</span>}
                                   </div>
-                                )}
-                              </div>
-                            </td>
-                            <td className="p-8 text-right font-mono text-xl text-slate-300">{row.alloc}</td>
-                            <td className="p-8 text-right font-mono text-xl text-cyan-400 font-bold">{row.booked.toFixed(1)}</td>
-                            <td className={`p-8 text-right font-mono text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}</td>
-                            <td className={`p-8 text-right font-mono text-xl font-bold ${s.util}`}>{row.util.toFixed(1)}%</td>
-                            <td className="p-8 text-center">
-                              <span className={`px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider ${s.badge}`}>
-                                {row.status}
-                              </span>
-                            </td>
-                          </tr>
+                                </div>
+                              </td>
+                              <td className="p-8 text-right font-mono text-xl text-slate-300">{row.alloc}</td>
+                              <td className="p-8 text-right font-mono text-xl text-cyan-400 font-bold">{row.booked.toFixed(1)}</td>
+                              <td className={`p-8 text-right font-mono text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}</td>
+                              <td className={`p-8 text-right font-mono text-xl font-bold ${s.util}`}>{row.util.toFixed(1)}%</td>
+                              <td className="p-8 text-center">
+                                <span className={`px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider ${s.badge}`}>
+                                  {row.status}
+                                </span>
+                              </td>
+                            </tr>
+                            {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
+                              (row as any).activeContractsData.map((c: any, cIdx: number) => (
+                                <tr key={`nested-${i}-${cIdx}`} className="bg-sky-400/10 hover:bg-sky-400/20 transition-colors border-b border-sky-400/20">
+                                  <td className="pl-16 p-4 border-l-4 border-sky-500/30">
+                                    <span className="text-base text-indigo-300 font-bold font-mono">↳ {c.id}</span>
+                                  </td>
+                                  <td className="p-4 text-right font-mono text-lg text-slate-300 font-bold">{c.alloc || '-'}</td>
+                                  <td className="p-4 text-right font-mono text-lg text-blue-500 font-bold">{c.booked.toFixed(1)}</td>
+                                  <td className="p-4 text-right font-mono text-lg text-slate-300 font-bold">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</td>
+                                  <td className="p-4 text-right font-mono text-lg text-slate-300 font-bold">{c.util.toFixed(1)}%</td>
+                                  <td className="p-4 text-center"></td>
+                                </tr>
+                              ))
+                            )}
+                          </React.Fragment>
                         );
                       })}
                     </tbody>
@@ -2516,11 +2627,11 @@ const ContractDashboard: React.FC = () => {
                   <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" /></svg>
                 </button>
               </div>
-              <div className="flex-1 overflow-auto elegant-scrollbar p-10 bg-[#050505]/40">
-                <div className="bg-[#0b0f19] border border-white/10 rounded-[30px] overflow-hidden shadow-2xl overflow-x-auto elegant-scrollbar">
+              <div className="flex-1 p-10 bg-[#050505]/40 overflow-hidden">
+                <div className="bg-[#0b0f19] border border-white/10 rounded-[30px] shadow-2xl overflow-auto elegant-scrollbar max-h-[calc(90vh-200px)]">
                   {/* Re-using the same table structure for the modal */}
                   <table className="w-full text-left border-collapse table-fixed min-w-[2200px]">
-                    <thead className="sticky top-0 z-30">
+                    <thead className="sticky top-0 z-30" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                       <tr className="bg-[#0f172a] border-b border-white/10">
                         <th rowSpan={2} className="w-[320px] p-8 text-slate-300 text-[11px] tracking-[0.2em] font-black uppercase border-r border-white/10 sticky left-0 z-40 bg-[#0f172a] shadow-[4px_0_15px_rgba(0,0,0,0.6)]">
                           <div className="flex items-center gap-3">
@@ -2608,9 +2719,34 @@ const ContractDashboard: React.FC = () => {
 
               {/* Scrollable Content */}
               <div className="flex-1 overflow-y-auto elegant-scrollbar p-8 md:p-10 bg-[#050505]/40 flex flex-col gap-6">
-                <div className="bg-[#0b0f19] border border-white/5 rounded-[30px] p-6 shadow-2xl">
+                {/* Legend Bar */}
+                <div className="flex items-center gap-6 px-6 py-4 shrink-0">
+                  <span className="text-xs text-slate-400 font-bold uppercase tracking-widest shrink-0">Utilisation Legend:</span>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(153, 27, 27, 0.8)' }} />
+                    <span className="text-sm text-slate-200 font-semibold">Critical ≤50%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(244, 63, 94, 0.7)' }} />
+                    <span className="text-sm text-slate-200 font-semibold">Low ≤80%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(52, 211, 153, 0.6)' }} />
+                    <span className="text-sm text-slate-200 font-semibold">Healthy &gt;80%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(34, 211, 238, 0.7)' }} />
+                    <span className="text-sm text-slate-200 font-semibold">Over &gt;100%</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <div className="w-7 h-5 rounded-md border border-white/10 shadow-md" style={{ backgroundColor: 'rgba(30, 41, 59, 0.6)' }} />
+                    <span className="text-sm text-slate-500 font-semibold">No Allocation</span>
+                  </div>
+                </div>
+
+                <div className="bg-[#0b0f19] border border-white/5 rounded-[30px] p-6 shadow-2xl overflow-auto max-h-[calc(85vh-280px)]">
                   {/* Column headers */}
-                  <div className="grid grid-cols-6 gap-2 mb-4 px-2">
+                  <div className="grid grid-cols-6 gap-2 mb-4 px-2 sticky top-0 z-10 bg-[#0b0f19] py-3 rounded-t-xl" style={{ boxShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>
                     <div className="text-xs text-slate-400 font-bold uppercase col-span-1 tracking-wider">Contract ID</div>
                     {['SYDNEY (SYD)', 'MELBOURNE (MEL)', 'BRISBANE (BNE)', 'PERTH (PER)', 'ADELAIDE (ADL)'].map(b => (
                       <div key={b} className="text-xs text-slate-300 font-bold uppercase text-center tracking-wider">{b}</div>

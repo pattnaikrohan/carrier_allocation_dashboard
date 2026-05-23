@@ -64,20 +64,91 @@ html.dark {
 }
 
 .elegant-scrollbar::-webkit-scrollbar {
-  width: 5px;
-  height: 5px;
+  width: 10px;
+  height: 10px;
 }
 
 .elegant-scrollbar::-webkit-scrollbar-track {
-  background: transparent;
+  background: rgba(15, 23, 42, 0.15);
+  border-radius: 9999px;
 }
 
 .elegant-scrollbar::-webkit-scrollbar-thumb {
-  @apply bg-slate-300 dark:bg-slate-700/50 rounded-xl transition-all;
+  background: rgba(100, 116, 139, 0.5);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.elegant-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.75);
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+html.dark .elegant-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+html.dark .elegant-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.35);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+html.dark .elegant-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.55);
+  border: 2px solid transparent;
+  background-clip: padding-box;
 }
 
 .hover-scrollbar:hover::-webkit-scrollbar-thumb {
   @apply bg-slate-400 dark:bg-slate-600/50;
+}
+
+/* ── Premium Scrollbar for Fullscreen Projection Tables ── */
+.premium-scrollbar::-webkit-scrollbar {
+  width: 14px;
+  height: 14px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-track {
+  background: #e2e8f0;
+  border-radius: 9999px;
+  margin: 4px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, #94a3b8 0%, #64748b 100%);
+  border-radius: 9999px;
+  border: 3px solid #e2e8f0;
+  min-height: 60px;
+}
+
+.premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, #64748b 0%, #475569 100%);
+}
+
+.premium-scrollbar::-webkit-scrollbar-corner {
+  background: #e2e8f0;
+}
+
+html.dark .premium-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+
+html.dark .premium-scrollbar::-webkit-scrollbar-thumb {
+  background: linear-gradient(180deg, rgba(148,163,184,0.5) 0%, rgba(100,116,139,0.5) 100%);
+  border: 3px solid rgba(15, 23, 42, 0.6);
+}
+
+html.dark .premium-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(180deg, rgba(148,163,184,0.7) 0%, rgba(100,116,139,0.7) 100%);
+}
+
+html.dark .premium-scrollbar::-webkit-scrollbar-corner {
+  background: rgba(15, 23, 42, 0.6);
 }
 
 /* ── Theme Variables & Design System ── */
