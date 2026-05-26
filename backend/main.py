@@ -1,26 +1,60 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import List
 import datetime
 import os
 import base64
 import httpx
+import traceback
+
+# Load .env file for local development (Azure Web App uses App Settings instead)
+try:
+    from dotenv import load_dotenv
+    load_dotenv()
+except ImportError:
+    pass
 
 app = FastAPI(title="AAW Dashboards API", version="1.0.0")
 
 # CORS — allow Azure Static Web App + local dev
+ALLOWED_ORIGINS = [
+    "https://orange-wave-035251f00.7.azurestaticapps.net",
+    "http://localhost:5173",
+    "http://localhost:3000",
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://orange-wave-035251f00.7.azurestaticapps.net",
-        "http://localhost:5173",
-        "http://localhost:3000",
-    ],
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+
+# Catch-all exception handler — ensures CORS headers are present even on 500 errors.
+# Without this, the browser blocks the error response entirely (no Access-Control-Allow-Origin).
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    origin = request.headers.get("origin", "")
+    headers = {}
+    if origin in ALLOWED_ORIGINS:
+        headers["Access-Control-Allow-Origin"] = origin
+        headers["Access-Control-Allow-Credentials"] = "true"
+
+    return JSONResponse(
+        status_code=500,
+        content={
+            "status": "error",
+            "message": f"Internal server error: {str(exc)}",
+            "traceback": traceback.format_exc(),
+            "timestamp": datetime.datetime.utcnow().isoformat(),
+        },
+        headers=headers,
+    )
+
 
 # ─── Models ────────────────────────────────────────────────────────────────────
 
