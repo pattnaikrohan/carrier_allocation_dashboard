@@ -537,5 +537,27 @@ def process_data_from_azure_json() -> tuple:
         "CARRIER_BREAKDOWN": carrier_breakdown,
     }
 
+    # Sanitize entire result — replace NaN/Infinity with None (JSON-safe)
+    result = _sanitize_for_json(result)
+
     log(f"Generated JSON data ({len(booking_log)} booking records)")
     return result, log_lines
+
+
+def _sanitize_for_json(obj):
+    """Recursively replace NaN, Infinity, -Infinity with None so JSON serialization doesn't fail."""
+    if isinstance(obj, dict):
+        return {k: _sanitize_for_json(v) for k, v in obj.items()}
+    elif isinstance(obj, list):
+        return [_sanitize_for_json(item) for item in obj]
+    elif isinstance(obj, float):
+        if math.isnan(obj) or math.isinf(obj):
+            return None
+        return obj
+    # Handle numpy types that might sneak through
+    elif hasattr(obj, 'item'):
+        val = obj.item()
+        if isinstance(val, float) and (math.isnan(val) or math.isinf(val)):
+            return None
+        return val
+    return obj
