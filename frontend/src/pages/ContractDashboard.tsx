@@ -2,31 +2,23 @@ import React, { useState, useEffect, useMemo } from 'react';
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion';
 import { ComposedChart, Area, Line, Bar, BarChart, PieChart, Pie, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Legend, Cell } from 'recharts';
 import Navbar from '../components/Navbar';
-import { BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, CONTRACT_UTIL_DATA, ORIGINS, DESTINATIONS, REGIONS, COUNTRIES, PORT_HIERARCHY } from '../BookingData';
+import { useBookingData } from '../data/useBookingData';
 
 
 
 
-// NEW: KPI definitions use updated colour/terminology
-// Underperforming (≤80%) replaces Overbooked; Healthy = >80%
-const AVAILABLE_WEEKS = WEEKLY_TREND_DATA.map(w => w.week);
-const totalAlloc = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.alloc, 0);
-const totalBook = CONTRACT_UTIL_DATA.reduce((sum, item) => sum + item.booked, 0);
-const totalUtl = totalAlloc > 0 ? (totalBook / totalAlloc) * 100 : 0;
-// underperforming = ≤80% utilisation (the primary risk metric)
-const underperforming = CONTRACT_UTIL_DATA.filter(c => c.alloc > 0 && (c.booked / c.alloc) <= 0.8).length;
-const lowUtil = CONTRACT_UTIL_DATA.filter(c => c.util < 50).length;
+// KPI template — actual values are computed reactively inside the component via `reactiveKpis`
 const noNodeNum = 'node-';
 
 const KPI_DATA = [
-  { id: 'alloc', label: 'TOTAL ALLOCATION', value: totalAlloc.toLocaleString(), sub: 'Max Capacity', accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]', type: 'bar', percent: 100, barColor: 'bg-indigo-500' },
-  { id: 'book', label: 'TOTAL BOOKED', value: round(totalBook).toLocaleString(), sub: 'TEUs Confirmed', accentColor: 'text-cyan-400', shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]', type: 'bar', percent: totalUtl, barColor: 'bg-cyan-400' },
-  { id: 'util', label: 'OVERALL UTIL %', value: Math.round(totalUtl).toString(), decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: totalUtl, ringColor: '#34d399' },
-  // Colour inversion: underperforming ≤80% is the risk → red
-  { id: 'undr', label: 'UNDERPERFORMING CONTRACT (≤80%)', value: underperforming.toString(), sub: 'Utilisation at risk', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
-  { id: 'low', label: 'LOW UTILISATION CONTRACT', value: lowUtil.toString(), sub: 'Below 50%', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
-  { id: 'wk', label: 'ACTIVE WEEKS', value: AVAILABLE_WEEKS.length.toString(), sub: 'FY 2026', accentColor: 'text-slate-300', shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
+  { id: 'alloc', label: 'TOTAL ALLOCATION', value: '0', sub: 'Max Capacity', accentColor: 'text-indigo-400', shadow: 'shadow-[0_4px_30px_rgba(99,102,241,0.15)]', type: 'bar', percent: 100, barColor: 'bg-indigo-500' },
+  { id: 'book', label: 'TOTAL BOOKED', value: '0', sub: 'TEUs Confirmed', accentColor: 'text-cyan-400', shadow: 'shadow-[0_4px_30px_rgba(34,211,238,0.15)]', type: 'bar', percent: 0, barColor: 'bg-cyan-400' },
+  { id: 'util', label: 'OVERALL UTIL %', value: '0', decimal: '%', sub: 'Target: >80%', accentColor: 'text-emerald-400', shadow: 'shadow-[0_4px_30px_rgba(52,211,153,0.15)]', type: 'ring', percent: 0, ringColor: '#34d399' },
+  { id: 'undr', label: 'UNDERPERFORMING CONTRACT (≤80%)', value: '0', sub: 'Utilisation at risk', accentColor: 'text-rose-500', shadow: 'shadow-[0_4px_30px_rgba(244,63,94,0.15)]', type: 'alert', isPulse: true },
+  { id: 'low', label: 'LOW UTILISATION CONTRACT', value: '0', sub: 'Below 50%', accentColor: 'text-amber-400', shadow: 'shadow-[0_4px_30px_rgba(251,191,36,0.15)]', type: 'text' },
+  { id: 'wk', label: 'ACTIVE WEEKS', value: '0', sub: 'FY 2026', accentColor: 'text-slate-300', shadow: 'shadow-[0_4px_30px_rgba(148,163,184,0.10)]', type: 'calendar' },
 ];
+
 
 const SIDE_TAGS = ['Branch Summary', 'Contract Utilisation', 'Booking Log'];
 
@@ -78,8 +70,20 @@ function getUtilColor(util: number, mode: 'text' | 'bg' | 'bar' | 'badge' = 'tex
 
 
 const ContractDashboard: React.FC = () => {
+  // Pull live data from context (falls back to static BookingData.ts)
+  const {
+    BOOKING_LOG_DATA, WEEKLY_TREND_DATA, BRANCH_SNAPSHOT, CONTRACT_UTIL_DATA,
+    ORIGINS, DESTINATIONS, REGIONS, COUNTRIES, PORT_HIERARCHY,
+    syncData,
+  } = useBookingData();
+
+  const AVAILABLE_WEEKS = useMemo(() => WEEKLY_TREND_DATA.map(w => w.week), [WEEKLY_TREND_DATA]);
+
   const [activeTag, setActiveTag] = useState('Branch Summary');
-  const [selectedWeek, setSelectedWeek] = useState(AVAILABLE_WEEKS[AVAILABLE_WEEKS.length - 1] || 'WK 12');
+  const [selectedWeek, setSelectedWeek] = useState(() => {
+    const weeks = WEEKLY_TREND_DATA.map(w => w.week);
+    return weeks[weeks.length - 1] || 'WK 12';
+  });
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [activeKpi, setActiveKpi] = useState<any | null>(null);
   const [isMatrixPreviewOpen, setIsMatrixPreviewOpen] = useState(false);
@@ -117,30 +121,20 @@ const ContractDashboard: React.FC = () => {
     setShowSyncSuccess(false);
 
     try {
-      // Use Azure backend in production, localhost in development
-      const API_BASE = window.location.hostname === 'localhost'
-        ? 'http://localhost:8001'
-        : 'https://carrier-allocation-dashboard.azurewebsites.net';
-      const response = await fetch(`${API_BASE}/api/sync`, {
-        method: 'POST',
-      });
-      const data = await response.json();
+      const result = await syncData();
 
-      if (data.status === 'success') {
+      if (result.status === 'success' || result.status === 'partial') {
         setSyncState('LOCKED');
         setTimeout(() => {
           setIsSyncing(false);
           setShowSyncSuccess(true);
-          // Wait for the success animation before reloading
-          setTimeout(() => {
-            window.location.reload();
-          }, 1500);
+          // Data is already updated in-memory via the context — no page reload needed
         }, 1000);
       } else {
-        console.error('Sync failed:', data.message);
+        console.error('Sync failed:', result.message);
         setIsSyncing(false);
         setSyncState('IDLE');
-        alert(`Sync failed: ${data.message}`);
+        alert(`Sync failed: ${result.message}`);
       }
     } catch (err) {
       console.error('API Error:', err);

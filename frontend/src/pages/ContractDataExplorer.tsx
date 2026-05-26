@@ -3,12 +3,13 @@ import { motion } from 'framer-motion';
 import { useNavigate } from 'react-router-dom';
 import Navbar from '../components/Navbar';
 
-import { BOOKING_LOG_DATA, CONTRACT_UTIL_DATA } from '../BookingData';
+import { useBookingData } from '../data/useBookingData';
 
 /* ─── Main Component ─── */
 
 const ContractDataExplorer: React.FC = () => {
   const navigate = useNavigate();
+  const { BOOKING_LOG_DATA, CONTRACT_UTIL_DATA } = useBookingData();
   const [activeTab, setActiveTab] = useState<'booking' | 'utilisation'>('booking');
 
   return (

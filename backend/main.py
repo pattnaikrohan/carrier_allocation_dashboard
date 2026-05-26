@@ -90,30 +90,60 @@ async def push_to_github(content: str) -> dict:
 # ─── Routes ────────────────────────────────────────────────────────────────────
 
 
+@app.get("/api/data")
+async def get_data():
+    """Fetch and process data from Azure Blob, return as JSON for the frontend."""
+    try:
+        from data_processor import process_data_from_azure_json
+
+        data, log_lines = process_data_from_azure_json()
+        return {
+            "status": "success",
+            "data": data,
+            "log": log_lines,
+            "timestamp": datetime.datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        import traceback
+        return {
+            "status": "error",
+            "message": f"Data fetch failed: {str(e)}",
+            "traceback": traceback.format_exc(),
+            "timestamp": datetime.datetime.utcnow().isoformat()
+        }
+
+
 @app.post("/api/sync")
 async def sync_data():
-    """Triggers the data ingestion pipeline: Azure Blob → Process → GitHub → Redeploy."""
+    """Triggers the data ingestion pipeline: Azure Blob → Process → JSON + optional GitHub push."""
     try:
-        from data_processor import process_data_from_azure
+        from data_processor import process_data_from_azure, process_data_from_azure_json
 
-        # Step 1: Process data from Azure Blob Storage
-        ts_content, log_lines = process_data_from_azure()
+        # Step 1: Process data from Azure Blob Storage (JSON for frontend)
+        json_data, log_lines = process_data_from_azure_json()
 
-        # Step 2: Push to GitHub (triggers Static Web App rebuild)
-        github_result = await push_to_github(ts_content)
+        # Step 2: Also generate TS and try pushing to GitHub (optional, for static rebuild)
+        try:
+            ts_content, ts_log = process_data_from_azure()
+            github_result = await push_to_github(ts_content)
+            log_lines.extend(ts_log)
+        except Exception:
+            github_result = {"pushed": False, "reason": "TS generation/push failed"}
 
         if github_result.get("pushed"):
             return {
                 "status": "success",
-                "message": f"Data synchronized and pushed to GitHub. Commit: {github_result.get('commit', 'N/A')}. Frontend will auto-rebuild.",
+                "message": f"Data synchronized and pushed to GitHub. Commit: {github_result.get('commit', 'N/A')}.",
+                "data": json_data,
                 "log": log_lines,
                 "timestamp": datetime.datetime.utcnow().isoformat()
             }
         else:
-            # GitHub push failed but processing succeeded — write locally as fallback
+            # GitHub push failed but data processing succeeded — return data for runtime update
             return {
-                "status": "success",
-                "message": f"Data processed successfully. GitHub push skipped: {github_result.get('reason', 'unknown')}",
+                "status": "partial",
+                "message": f"Data processed successfully. GitHub push skipped: {github_result.get('reason', 'unknown')}. Dashboard updated via live data.",
+                "data": json_data,
                 "log": log_lines,
                 "timestamp": datetime.datetime.utcnow().isoformat()
             }

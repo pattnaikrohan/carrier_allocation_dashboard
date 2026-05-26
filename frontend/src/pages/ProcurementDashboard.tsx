@@ -11,6 +11,7 @@ import {
   QUARTERLY_ALLOC_UTIL, CARRIER_BREAKDOWN,
   BOOKING_LOG_DATA, CONTRACT_UTIL_DATA, WEEKLY_TREND_DATA,
 } from '../BookingData';
+import { useBookingData } from '../data/useBookingData';
 
 // ─── CONSTANTS ───────────────────────────────────────────────────────────────
 
@@ -34,7 +35,7 @@ const BRANCH_COLOR: Record<string, string> = Object.fromEntries(
 const RAW_TO_DISPLAY: Record<string, string> = {};
 BRANCHES.forEach(b => b.rawCodes.forEach(r => { RAW_TO_DISPLAY[r] = b.code; }));
 
-const ALL_WEEKS = WEEKLY_TREND_DATA.map(w => w.week);
+const ALL_WEEKS_STATIC = WEEKLY_TREND_DATA.map(w => w.week);
 
 
 
@@ -129,6 +130,18 @@ const KpiModal: React.FC<{ data: KpiModalData; onClose: () => void }> = ({ data,
 const ProcurementDashboard: React.FC = () => {
   const navigate = useNavigate();
 
+  // Pull live data from context
+  const {
+    BOOKING_LOG_DATA: LIVE_BOOKING_LOG_DATA,
+    CONTRACT_UTIL_DATA: LIVE_CONTRACT_UTIL_DATA,
+    WEEKLY_TREND_DATA: LIVE_WEEKLY_TREND_DATA,
+    QUARTERLY_ALLOC_UTIL: LIVE_QUARTERLY_ALLOC_UTIL,
+    CARRIER_BREAKDOWN: LIVE_CARRIER_BREAKDOWN,
+    syncData,
+  } = useBookingData();
+
+  const ALL_WEEKS = useMemo(() => LIVE_WEEKLY_TREND_DATA.map(w => w.week), [LIVE_WEEKLY_TREND_DATA]);
+
   // ── Filters ──────────────────────────────────────────────────────────────
   const [selectedBranch, setSelectedBranch] = useState('ALL');
   const [selectedWeek,   setSelectedWeek]   = useState('ALL');
@@ -155,7 +168,7 @@ const ProcurementDashboard: React.FC = () => {
 
   // ── Derived: filtered bookings ────────────────────────────────────────────
   const filteredBookings = useMemo(() => {
-    return BOOKING_LOG_DATA.filter(b => {
+    return LIVE_BOOKING_LOG_DATA.filter(b => {
       const weekMatch     = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
       const contractMatch = selectedContract === 'ALL' || b.contract === selectedContract;
       const branchMatch   = selectedBranch === 'ALL' || (() => {
@@ -164,7 +177,7 @@ const ProcurementDashboard: React.FC = () => {
       })();
       return weekMatch && contractMatch && branchMatch;
     });
-  }, [selectedBranch, selectedWeek, selectedContract]);
+  }, [selectedBranch, selectedWeek, selectedContract, LIVE_BOOKING_LOG_DATA]);
 
   // ── Derived: KPI numbers from REAL data ──────────────────────────────────
   const kpiData = useMemo(() => {
@@ -174,8 +187,8 @@ const ProcurementDashboard: React.FC = () => {
     const weekScale       = activeWeekCount / totalWeeks;
 
     const relevantContracts = selectedContract === 'ALL'
-      ? CONTRACT_UTIL_DATA
-      : CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract);
+      ? LIVE_CONTRACT_UTIL_DATA
+      : LIVE_CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract);
 
     // Allocation: scale weekly alloc by week coverage
     const totalAlloc = relevantContracts.reduce((s, c) => s + c.alloc * weekScale, 0);
@@ -186,7 +199,7 @@ const ProcurementDashboard: React.FC = () => {
 
     // Underperforming (contract-level, ≤80%)
     const underCount = relevantContracts.filter(c => {
-      const cBooked = BOOKING_LOG_DATA.filter(b => {
+      const cBooked = LIVE_BOOKING_LOG_DATA.filter(b => {
         const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
         const brm = selectedBranch === 'ALL' || (() => {
           const br = BRANCHES.find(x => x.code === selectedBranch);
@@ -199,7 +212,7 @@ const ProcurementDashboard: React.FC = () => {
     }).length;
 
     const healthyCount = relevantContracts.filter(c => {
-      const cBooked = BOOKING_LOG_DATA.filter(b => {
+      const cBooked = LIVE_BOOKING_LOG_DATA.filter(b => {
         const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
         const brm = selectedBranch === 'ALL' || (() => {
           const br = BRANCHES.find(x => x.code === selectedBranch);
@@ -212,7 +225,7 @@ const ProcurementDashboard: React.FC = () => {
     }).length;
 
     return { totalAlloc, totalBooked, utilPct, underCount, healthyCount, totalContracts: relevantContracts.length };
-  }, [filteredBookings, selectedContract, selectedWeek, selectedBranch]);
+  }, [filteredBookings, selectedContract, selectedWeek, selectedBranch, LIVE_CONTRACT_UTIL_DATA, LIVE_BOOKING_LOG_DATA]);
 
   // ── Derived: contract-level data for the matrix/chart ────────────────────
   const contractMatrixData = useMemo(() => {
@@ -220,11 +233,11 @@ const ProcurementDashboard: React.FC = () => {
     const totalWeeks      = ALL_WEEKS.length || 1;
     const weekScale       = activeWeekCount / totalWeeks;
 
-    return CONTRACT_UTIL_DATA
+    return LIVE_CONTRACT_UTIL_DATA
       .filter(c => matrixContractFilter === 'ALL' || c.id === matrixContractFilter)
       .map(c => {
         // bookings for this contract filtered by week + branch
-        const cBookings = BOOKING_LOG_DATA.filter(b => {
+        const cBookings = LIVE_BOOKING_LOG_DATA.filter(b => {
           const wm  = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
           const brm = (() => {
             const eff = matrixBranchFilter !== 'ALL' ? matrixBranchFilter : selectedBranch;
@@ -261,11 +274,11 @@ const ProcurementDashboard: React.FC = () => {
         };
       })
       .filter(c => !(matrixBranchFilter !== 'ALL' && c.Allocated === 0));
-  }, [selectedWeek, selectedBranch, matrixContractFilter, matrixBranchFilter]);
+  }, [selectedWeek, selectedBranch, matrixContractFilter, matrixBranchFilter, LIVE_CONTRACT_UTIL_DATA, LIVE_BOOKING_LOG_DATA]);
 
   const carrierDonutData = useMemo(() => {
     const bkSource = selectedBranch === 'ALL' && selectedWeek === 'ALL' && selectedContract === 'ALL'
-      ? CARRIER_BREAKDOWN.filter(c => c.carrier !== '0').slice(0, 8).map((c, i) => ({
+      ? (LIVE_CARRIER_BREAKDOWN || []).filter(c => c.carrier !== '0').slice(0, 8).map((c, i) => ({
           name: c.carrier.replace(/_[A-Z]{2}$/, ''),
           value: Math.round(c.teu), pct: c.pct,
           color: ['#a855f7','#06b6d4','#f43f5e','#f59e0b','#10b981','#818cf8','#e879f9','#67e8f9'][i % 8],
@@ -292,7 +305,7 @@ const ProcurementDashboard: React.FC = () => {
   // ── Derived: quarterly data – uses qtr field from bookings ───────────────
   const quarterlyData = useMemo(() => {
     if (selectedBranch === 'ALL' && selectedWeek === 'ALL' && selectedContract === 'ALL') {
-      return QUARTERLY_ALLOC_UTIL;
+      return LIVE_QUARTERLY_ALLOC_UTIL || [];
     }
     // Group filtered bookings by their qtr field
     const qMap: Record<string, { alloc: number; booked: number }> = {};
@@ -304,7 +317,7 @@ const ProcurementDashboard: React.FC = () => {
     // Scale allocation by how many weeks of each quarter are selected
     QUARTERLY_ALLOC_UTIL.forEach(qa => {
       if (!qMap[qa.quarter]) qMap[qa.quarter] = { alloc: 0, booked: qMap[qa.quarter]?.booked || 0 };
-      const relContracts = selectedContract === 'ALL' ? CONTRACT_UTIL_DATA : CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract);
+      const relContracts = selectedContract === 'ALL' ? LIVE_CONTRACT_UTIL_DATA : LIVE_CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract);
       const wksInQ = ALL_WEEKS.filter(w => {
         const wNum = parseInt(w.split(' ')[1]);
         const q = `Q${Math.ceil(wNum / 13) || 1}`;
@@ -348,19 +361,33 @@ const ProcurementDashboard: React.FC = () => {
   }, [filteredBookings]);
 
   // ── Sync handler (scramble effect) ───────────────────────────────────────
-  const triggerSync = useCallback(() => {
+  const triggerSync = useCallback(async () => {
     if (isSyncing) return;
     setIsSyncing(true);
     setSyncState('SYNCING');
     setShowSyncSuccess(false);
-    setTimeout(() => setSyncState('LOCKED'), 1800);
-    setTimeout(() => {
+
+    try {
+      const result = await syncData();
+      if (result.status === 'success' || result.status === 'partial') {
+        setSyncState('LOCKED');
+        setTimeout(() => {
+          setIsSyncing(false);
+          setLastSync(new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+          setShowSyncSuccess(true);
+          setTimeout(() => setShowSyncSuccess(false), 3500);
+        }, 1000);
+      } else {
+        setIsSyncing(false);
+        setSyncState('IDLE');
+        alert(`Sync failed: ${result.message}`);
+      }
+    } catch {
       setIsSyncing(false);
-      setLastSync(new Date().toLocaleTimeString('en-AU', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
-      setShowSyncSuccess(true);
-      setTimeout(() => setShowSyncSuccess(false), 3500);
-    }, 2800);
-  }, [isSyncing]);
+      setSyncState('IDLE');
+      alert('Could not connect to sync service.');
+    }
+  }, [isSyncing, syncData]);
 
   // ── Sub-components ────────────────────────────────────────────────────────
 
@@ -509,8 +536,8 @@ const ProcurementDashboard: React.FC = () => {
 
   // ── Available options for dropdowns ──────────────────────────────────────
   const availableContracts = useMemo(() =>
-    ['ALL', ...Array.from(new Set(BOOKING_LOG_DATA.map(b => b.contract))).sort()],
-    []
+    ['ALL', ...Array.from(new Set(LIVE_BOOKING_LOG_DATA.map(b => b.contract))).sort()],
+    [LIVE_BOOKING_LOG_DATA]
   );
 
   // ── JSX ──────────────────────────────────────────────────────────────────
@@ -740,7 +767,7 @@ const ProcurementDashboard: React.FC = () => {
                 <span className="font-black">Data:</span> CW booking log. Allocated = contracted weekly TEU from contract register. Booked = actual TEU. Red ≤80%, Green &gt;80%.
               </div>
               <div className="flex-1 overflow-y-auto elegant-scrollbar space-y-1.5 max-h-[310px]">
-                {CARRIER_BREAKDOWN
+                {(LIVE_CARRIER_BREAKDOWN || [])
                   .filter(c => c.carrier !== '0')
                   .map(c => ({ ...c, displayName: c.carrier.replace(/_[A-Z]{2}$/, '') }))
                   .sort((a, b) => b.teu - a.teu)
