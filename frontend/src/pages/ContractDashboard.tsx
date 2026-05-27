@@ -192,8 +192,16 @@ const ContractDashboard: React.FC = () => {
           const month = selectedWeek.replace('Month: ', '').trim();
           if (month === 'Jan') return wNum >= 1 && wNum <= 4;
           if (month === 'Feb') return wNum >= 5 && wNum <= 8;
-          if (month === 'Mar') return wNum >= 9 && wNum <= 12;
-          if (month === 'Apr') return wNum >= 13 && wNum <= 16;
+          if (month === 'Mar') return wNum >= 9 && wNum <= 13;
+          if (month === 'Apr') return wNum >= 14 && wNum <= 17;
+          if (month === 'May') return wNum >= 18 && wNum <= 22;
+          if (month === 'Jun') return wNum >= 23 && wNum <= 26;
+          if (month === 'Jul') return wNum >= 27 && wNum <= 30;
+          if (month === 'Aug') return wNum >= 31 && wNum <= 35;
+          if (month === 'Sep') return wNum >= 36 && wNum <= 39;
+          if (month === 'Oct') return wNum >= 40 && wNum <= 43;
+          if (month === 'Nov') return wNum >= 44 && wNum <= 47;
+          if (month === 'Dec') return wNum >= 48 && wNum <= 53;
           return false;
         }
 
@@ -201,6 +209,8 @@ const ContractDashboard: React.FC = () => {
           const quarter = selectedWeek.replace('Quarter: ', '').trim();
           if (quarter === 'Q1') return wNum >= 1 && wNum <= 13;
           if (quarter === 'Q2') return wNum >= 14 && wNum <= 26;
+          if (quarter === 'Q3') return wNum >= 27 && wNum <= 39;
+          if (quarter === 'Q4') return wNum >= 40 && wNum <= 53;
           return false;
         }
 
@@ -919,7 +929,12 @@ const ContractDashboard: React.FC = () => {
           onCarrierChange={setSelectedCarrier}
           isSyncing={isSyncing}
           onSync={handleSyncTrigger}
-          availableWeeks={['Quarter: Q1', 'Month: Jan', 'Month: Feb', 'Month: Mar', ...AVAILABLE_WEEKS]}
+          availableWeeks={[
+            'Quarter: Q1', 'Quarter: Q2', 'Quarter: Q3', 'Quarter: Q4', 
+            'Month: Jan', 'Month: Feb', 'Month: Mar', 'Month: Apr', 'Month: May', 'Month: Jun', 
+            'Month: Jul', 'Month: Aug', 'Month: Sep', 'Month: Oct', 'Month: Nov', 'Month: Dec', 
+            ...AVAILABLE_WEEKS
+          ]}
           availableContracts={['ALL', ...Array.from(new Set(CONTRACT_UTIL_DATA.map(c => c.id)))]}
           availableOrigins={locationHierarchy}
           availableDestinations={locationHierarchy}
