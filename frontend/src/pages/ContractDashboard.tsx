@@ -1668,6 +1668,13 @@ const ContractDashboard: React.FC = () => {
                     <tbody className="divide-y divide-white/[0.02]">
                       {filteredBookings.slice(0, 30).map((row, i) => {
                         const rTeu = row.teu || 0;
+                        
+                        // Data Quality Rules evaluation
+                        const hasZeroTeu = rTeu <= 0;
+                        const hasMissingPorts = !row.loadPort || !row.dischargePort || row.loadPort === '-' || row.dischargePort === '-';
+                        const hasMissingEq = !row.equipment || row.equipment === '-';
+                        const isSuspectContract = !CONTRACT_UTIL_DATA.find(c => c.id === row.contract);
+                        
                         // Branch colour for quick visual identification
                         const branchColorMap: Record<string, string> = {
                           SY1: 'text-violet-400', ME1: 'text-indigo-400', BN1: 'text-amber-400',
@@ -1677,8 +1684,16 @@ const ContractDashboard: React.FC = () => {
                         };
                         const brCls = branchColorMap[row.branch] || 'text-slate-400';
                         return (
-                          <tr key={row.order + i} className="hover:bg-white/[0.03] transition-colors group">
-                            <td className="px-6 py-5 font-mono text-xs font-bold text-slate-300">{row.contract}</td>
+                          <tr key={row.order + i} className="hover:bg-white/[0.03] transition-colors group relative">
+                            <td className="px-6 py-5 font-mono text-xs font-bold text-slate-300 relative">
+                              <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
+                                {hasZeroTeu && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Zero TEU" />}
+                                {hasMissingPorts && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Missing Port Codes" />}
+                                {hasMissingEq && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Missing Equipment" />}
+                                {isSuspectContract && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Suspect Contract" />}
+                              </div>
+                              <span className="pl-2">{row.contract}</span>
+                            </td>
                             <td className="px-6 py-5 font-mono text-xs">
                               <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
                                 {row.order}
@@ -1691,7 +1706,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-5 font-mono text-xs text-center text-slate-300">{formatDate(row.etd)}</td>
                             <td className="px-6 py-5 font-mono text-xs text-center text-slate-300">{formatDate(row.eta)}</td>
                             <td className="px-6 py-5 text-center font-mono text-xs bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
-                            <td className="px-6 py-5 font-mono text-xs font-bold text-emerald-400 text-right">{rTeu.toFixed(1)}</td>
+                            <td className={`px-6 py-5 font-mono text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{rTeu.toFixed(1)}</td>
                           </tr>
                         );
                       })}
@@ -2264,44 +2279,59 @@ const ContractDashboard: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
-                        {BOOKING_LOG_DATA.filter(b => (selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek) && (selectedContract === 'ALL' || b.contract === selectedContract)).map((row, i) => (
-                          <tr key={noNodeNum + i} className="hover:bg-white/[0.03] transition-colors group">
-                            <td className="px-8 py-5 font-mono text-xs font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
-                              <div className="w-2 h-2 rounded-full bg-sky-400 transition-colors duration-200 group-hover:bg-emerald-500 inline-block mr-3" />
-                              {row.contract}
-                            </td>
-                            <td className="px-8 py-5 font-mono text-xs font-bold sticky left-48 z-10 bg-sky-50 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] transition-colors duration-200 hover:bg-sky-100">
-                              <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
-                                {row.order}
-                              </a>
-                            </td>
-                            <td className="px-8 py-5 text-xs text-sky-600 truncate border-r border-slate-700/50 min-w-[280px]" title={row.buyer}>{row.buyer}</td>
-                            <td className="px-8 py-5 text-xs text-amber-500/80 truncate min-w-[280px]" title={row.supplier}>{row.supplier}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.etd)}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.eta)}</td>
-                            <td className="px-8 py-5 text-xs text-slate-600">{row.depVessel}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-300">{row.depVoyage}</td>
-                            <td className="px-8 py-5 text-xs text-slate-500">-</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-300">-</td>
-                            <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
-                            <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.destRegion}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
-                            <td className="px-8 py-5 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20 font-mono tracking-widest">{row.branch}</div></td>
-                            <td className="px-8 py-5 font-mono text-xs font-bold text-emerald-400 text-right">{(row.teu || 0).toFixed(2)}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">{row.containers || '-'}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">{(row.teu || 0).toFixed(2)}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">-</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">WK {row.mscWeek}</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">2026</td>
-                            <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
-                            <td className="px-8 py-5 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest">{row.destRegion || '-'}</div></td>
-                          </tr>
-                        ))}
+                        {BOOKING_LOG_DATA.filter(b => (selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek) && (selectedContract === 'ALL' || b.contract === selectedContract)).map((row, i) => {
+                          const rTeu = row.teu || 0;
+                          
+                          // Data Quality Rules evaluation
+                          const hasZeroTeu = rTeu <= 0;
+                          const hasMissingPorts = !row.loadPort || !row.dischargePort || row.loadPort === '-' || row.dischargePort === '-';
+                          const hasMissingEq = !row.equipment || row.equipment === '-';
+                          const isSuspectContract = !CONTRACT_UTIL_DATA.find(c => c.id === row.contract);
+
+                          return (
+                            <tr key={noNodeNum + i} className="hover:bg-white/[0.03] transition-colors group relative">
+                              <td className="px-8 py-5 font-mono text-xs font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
+                                <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
+                                  {hasZeroTeu && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Zero TEU" />}
+                                  {hasMissingPorts && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Missing Port Codes" />}
+                                  {hasMissingEq && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Missing Equipment" />}
+                                  {isSuspectContract && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Suspect Contract" />}
+                                </div>
+                                <span className="pl-4">{row.contract}</span>
+                              </td>
+                              <td className="px-8 py-5 font-mono text-xs font-bold sticky left-48 z-10 bg-sky-50 border-r border-sky-300 shadow-[6px_0_18px_rgba(0,0,0,0.15)] transition-colors duration-200 hover:bg-sky-100">
+                                <a href={`https://cargowise.placeholder.com/order/${row.order}`} target="_blank" rel="noreferrer" className="text-indigo-400 hover:text-indigo-300 underline underline-offset-4 decoration-indigo-500/30 hover:decoration-indigo-400 transition-all">
+                                  {row.order}
+                                </a>
+                              </td>
+                              <td className="px-8 py-5 text-xs text-sky-600 truncate border-r border-slate-700/50 min-w-[280px]" title={row.buyer}>{row.buyer}</td>
+                              <td className="px-8 py-5 text-xs text-amber-500/80 truncate min-w-[280px]" title={row.supplier}>{row.supplier}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.etd)}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-400">{formatDate(row.eta)}</td>
+                              <td className="px-8 py-5 text-xs text-slate-600">{row.depVessel}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-300">{row.depVoyage}</td>
+                              <td className="px-8 py-5 text-xs text-slate-500">-</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-300">-</td>
+                              <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.originRegion}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.loadPort}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-300 bg-slate-900/20">{row.dischargePort}</td>
+                              <td className="px-8 py-5 text-xs text-indigo-400 font-medium uppercase">{row.destRegion}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-300">N/A</td>
+                              <td className="px-8 py-5 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20 font-mono tracking-widest">{row.branch}</div></td>
+                              <td className={`px-8 py-5 font-mono text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{rTeu.toFixed(2)}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">{row.containers || '-'}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">{row.mscWeek}</td>
+                              <td className={`px-8 py-5 font-mono text-xs text-right ${hasZeroTeu ? 'text-rose-500' : 'text-slate-400'}`}>{rTeu.toFixed(2)}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-slate-400 text-right">-</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-300">WK {row.mscWeek}</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">2026</td>
+                              <td className="px-8 py-5 font-mono text-xs text-center text-slate-400">-</td>
+                              <td className="px-8 py-5 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 text-cyan-400 text-xs font-bold uppercase tracking-widest">{row.destRegion || '-'}</div></td>
+                            </tr>
+                          );
+                        })}
                       </tbody>
                     </table>
                 </div>
