@@ -450,13 +450,13 @@ const HierarchicalSelect: React.FC<{
                         }}
                         onClick={() => onSelect(node.label)}
                         className={`w-full text-left px-3 py-2 rounded-xl text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between group/item ${isSelected ? colors.active :
-                          isActive ? 'bg-white/10 text-white shadow-md' :
-                            'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
+                          isActive ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white shadow-md' :
+                            'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
                           }`}
                       >
                         <span className="truncate">{node.label === 'ALL' ? 'Select All' : node.label}</span>
                         {hasChildren && (
-                          <svg className={`w-3 h-3 transition-transform duration-300 ${isActive ? 'translate-x-0.5 text-white' : 'text-slate-600 group-hover/item:text-slate-600 dark:text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <svg className={`w-3 h-3 transition-transform duration-300 ${isActive ? 'translate-x-0.5 text-slate-900 dark:text-white' : 'text-slate-400 group-hover/item:text-slate-600 dark:text-slate-500 dark:group-hover/item:text-slate-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M9 5l7 7-7 7" />
                           </svg>
                         )}
@@ -549,7 +549,7 @@ const FilterSelect: React.FC<{
             onClick={() => onSelect?.(item)}
             className={`w-full text-left px-3 py-2 rounded-lg text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between ${selected === item
               ? colors.active
-              : 'text-slate-600 dark:text-slate-400 hover:bg-white/5 hover:text-white'
+              : 'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'
               }`}
             style={
               selected === item
