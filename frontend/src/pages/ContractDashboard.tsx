@@ -2294,7 +2294,7 @@ const ContractDashboard: React.FC = () => {
                         </tr>
                       </thead>
                       <tbody className="divide-y divide-white/5">
-                        {BOOKING_LOG_DATA.filter(b => (selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek) && (selectedContract === 'ALL' || b.contract === selectedContract)).map((row, i) => {
+                        {filteredBookings.map((row, i) => {
                           const rTeu = row.teu || 0;
                           
                           // Data Quality Rules evaluation
