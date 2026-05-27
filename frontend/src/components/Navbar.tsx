@@ -97,10 +97,11 @@ const Navbar: React.FC<NavbarProps> = ({
     const months: HierarchyNode[] = [];
 
     // Grouping individual weeks by month
-    const janWeeks: HierarchyNode[] = [];
-    const febWeeks: HierarchyNode[] = [];
-    const marWeeks: HierarchyNode[] = [];
-    const aprWeeks: HierarchyNode[] = [];
+    const monthWeeks: Record<string, HierarchyNode[]> = {
+      JANUARY: [], FEBRUARY: [], MARCH: [], APRIL: [],
+      MAY: [], JUNE: [], JULY: [], AUGUST: [],
+      SEPTEMBER: [], OCTOBER: [], NOVEMBER: [], DECEMBER: []
+    };
     const otherWeeks: HierarchyNode[] = [];
 
     availableWeeks.forEach(w => {
@@ -120,10 +121,18 @@ const Navbar: React.FC<NavbarProps> = ({
         if (match) {
           const wNum = parseInt(match[1], 10);
           const weekNode = { label: w };
-          if (wNum >= 1 && wNum <= 4) janWeeks.push(weekNode);
-          else if (wNum >= 5 && wNum <= 8) febWeeks.push(weekNode);
-          else if (wNum >= 9 && wNum <= 12) marWeeks.push(weekNode);
-          else if (wNum >= 13 && wNum <= 16) aprWeeks.push(weekNode);
+          if (wNum >= 1 && wNum <= 4) monthWeeks.JANUARY.push(weekNode);
+          else if (wNum >= 5 && wNum <= 8) monthWeeks.FEBRUARY.push(weekNode);
+          else if (wNum >= 9 && wNum <= 13) monthWeeks.MARCH.push(weekNode);
+          else if (wNum >= 14 && wNum <= 17) monthWeeks.APRIL.push(weekNode);
+          else if (wNum >= 18 && wNum <= 22) monthWeeks.MAY.push(weekNode);
+          else if (wNum >= 23 && wNum <= 26) monthWeeks.JUNE.push(weekNode);
+          else if (wNum >= 27 && wNum <= 30) monthWeeks.JULY.push(weekNode);
+          else if (wNum >= 31 && wNum <= 35) monthWeeks.AUGUST.push(weekNode);
+          else if (wNum >= 36 && wNum <= 39) monthWeeks.SEPTEMBER.push(weekNode);
+          else if (wNum >= 40 && wNum <= 43) monthWeeks.OCTOBER.push(weekNode);
+          else if (wNum >= 44 && wNum <= 47) monthWeeks.NOVEMBER.push(weekNode);
+          else if (wNum >= 48 && wNum <= 53) monthWeeks.DECEMBER.push(weekNode);
           else otherWeeks.push(weekNode);
         } else {
           otherWeeks.push({ label: w });
@@ -132,10 +141,11 @@ const Navbar: React.FC<NavbarProps> = ({
     });
 
     const weeksChildren: HierarchyNode[] = [];
-    if (janWeeks.length > 0) weeksChildren.push({ label: 'JANUARY WEEKS', children: janWeeks });
-    if (febWeeks.length > 0) weeksChildren.push({ label: 'FEBRUARY WEEKS', children: febWeeks });
-    if (marWeeks.length > 0) weeksChildren.push({ label: 'MARCH WEEKS', children: marWeeks });
-    if (aprWeeks.length > 0) weeksChildren.push({ label: 'APRIL WEEKS', children: aprWeeks });
+    Object.entries(monthWeeks).forEach(([month, weeks]) => {
+      if (weeks.length > 0) {
+        weeksChildren.push({ label: `${month} WEEKS`, children: weeks });
+      }
+    });
     if (otherWeeks.length > 0) weeksChildren.push({ label: 'OTHER WEEKS', children: otherWeeks });
 
     const hierarchy: HierarchyNode[] = [allNode];
