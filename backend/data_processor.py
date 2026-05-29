@@ -144,7 +144,7 @@ def process_data_from_azure() -> str:
         'Discharge Port': 'dischargePort', 'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
-    teu_col = next((c for c in ['TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
+    teu_col = next((c for c in ['TOTAL Teu', 'Total TEU', 'TOTAL TEU', 'Total TEU _x001F_', 'TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
     df['teu'] = df[teu_col] if teu_col else 0
     branch_col = next((c for c in ['Branch', 'Created Branch'] if c in df.columns), None)
     if branch_col:
@@ -374,7 +374,7 @@ def process_data_from_azure_json() -> tuple:
         'Discharge Port': 'dischargePort', 'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
-    teu_col = next((c for c in ['TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
+    teu_col = next((c for c in ['TOTAL Teu', 'Total TEU', 'TOTAL TEU', 'Total TEU _x001F_', 'TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
     df['teu'] = df[teu_col] if teu_col else 0
     branch_col = next((c for c in ['Branch', 'Created Branch'] if c in df.columns), None)
     if branch_col:

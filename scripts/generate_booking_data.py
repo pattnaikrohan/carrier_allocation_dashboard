@@ -162,7 +162,7 @@ def main():
 
     # Resolve numeric TEU column (file has formula strings in 'TEU _x001F_'; numeric in 'TEU')
     teu_col = None
-    for candidate in ['TEU', 'TEU _x001F_', 'TEU Count _x001F_']:
+    for candidate in ['TOTAL Teu', 'Total TEU', 'TOTAL TEU', 'Total TEU _x001F_', 'TEU', 'TEU _x001F_', 'TEU Count _x001F_']:
         if candidate in df_orders.columns:
             sample = df_orders[candidate].dropna().head(10)
             if len(sample) and all(isinstance(v, (int, float)) for v in sample):
