@@ -405,27 +405,45 @@ export const PORT_NAMES = [
 export const PORT_CODES = [];
 export const PORT_HIERARCHY = [
   {
-    "code": "CNYPG",
-    "name": "CNYPG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "FJSUV",
-    "name": "FJSUV",
-    "country": "FJ",
-    "region": "Other"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "Taiwan",
-    "region": "Asia"
+    "code": "AUSYD",
+    "name": "AUSYD",
+    "country": "Australia",
+    "region": "Oceania"
   },
   {
     "code": "CNSNZ",
     "name": "CNSNZ",
     "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "HKHKG",
+    "name": "HKHKG",
+    "country": "Hong Kong",
+    "region": "Asia"
+  },
+  {
+    "code": "NZAKL",
+    "name": "NZAKL",
+    "country": "NZ",
+    "region": "Other"
+  },
+  {
+    "code": "USBCG",
+    "name": "USBCG",
+    "country": "US",
+    "region": "Other"
+  },
+  {
+    "code": "MYPGU",
+    "name": "MYPGU",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "THLCH",
+    "name": "THLCH",
+    "country": "Thailand",
     "region": "Asia"
   },
   {
@@ -435,62 +453,26 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "CNTYN",
-    "name": "CNTYN",
-    "country": "China",
-    "region": "Asia"
+    "code": "BEANR",
+    "name": "BEANR",
+    "country": "Belgium",
+    "region": "Europe"
   },
   {
-    "code": "CNTXG",
-    "name": "CNTXG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "AUADL",
-    "name": "AUADL",
-    "country": "Australia",
-    "region": "Oceania"
-  },
-  {
-    "code": "CNSZP",
-    "name": "CNSZP",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNDAL",
-    "name": "CNDAL",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNNBO",
-    "name": "CNNBO",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "DEHAM",
-    "name": "DEHAM",
-    "country": "DE",
+    "code": "GRPIR",
+    "name": "GRPIR",
+    "country": "GR",
     "region": "Other"
   },
   {
-    "code": "SGSIN",
-    "name": "SGSIN",
-    "country": "SG",
-    "region": "Other"
+    "code": "JPUKB",
+    "name": "JPUKB",
+    "country": "Japan",
+    "region": "Asia"
   },
   {
-    "code": "NZAKL",
-    "name": "NZAKL",
-    "country": "NZ",
-    "region": "Other"
-  },
-  {
-    "code": "CNWHI",
-    "name": "CNWHI",
+    "code": "CNCZX",
+    "name": "CNCZX",
     "country": "China",
     "region": "Asia"
   },
@@ -501,62 +483,8 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "VNSGN",
-    "name": "VNSGN",
-    "country": "Vietnam",
-    "region": "Asia"
-  },
-  {
-    "code": "CNCZX",
-    "name": "CNCZX",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNQIN",
-    "name": "CNQIN",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNTNG",
-    "name": "CNTNG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "US",
-    "region": "Other"
-  },
-  {
-    "code": "NZTRG",
-    "name": "NZTRG",
-    "country": "NZ",
-    "region": "Other"
-  },
-  {
-    "code": "INPAV",
-    "name": "INPAV",
-    "country": "India",
-    "region": "Asia"
-  },
-  {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "AUBNE",
-    "name": "AUBNE",
-    "country": "Australia",
-    "region": "Oceania"
-  },
-  {
-    "code": "CNSHK",
-    "name": "CNSHK",
+    "code": "CNWHG",
+    "name": "CNWHG",
     "country": "China",
     "region": "Asia"
   },
@@ -567,50 +495,38 @@ export const PORT_HIERARCHY = [
     "region": "Other"
   },
   {
-    "code": "AUSYD",
-    "name": "AUSYD",
-    "country": "Australia",
-    "region": "Oceania"
-  },
-  {
-    "code": "BEANR",
-    "name": "BEANR",
-    "country": "Belgium",
-    "region": "Europe"
-  },
-  {
-    "code": "MYPEN",
-    "name": "MYPEN",
-    "country": "Malaysia",
+    "code": "VNSGN",
+    "name": "VNSGN",
+    "country": "Vietnam",
     "region": "Asia"
   },
   {
-    "code": "MYTPP",
-    "name": "MYTPP",
-    "country": "Malaysia",
+    "code": "KRPUS",
+    "name": "KRPUS",
+    "country": "KR",
+    "region": "Other"
+  },
+  {
+    "code": "TWKEL",
+    "name": "TWKEL",
+    "country": "Taiwan",
     "region": "Asia"
   },
   {
-    "code": "CNSHG",
-    "name": "CNSHG",
+    "code": "TWKHH",
+    "name": "TWKHH",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "CNDAL",
+    "name": "CNDAL",
     "country": "China",
     "region": "Asia"
   },
   {
-    "code": "ESVLC",
-    "name": "ESVLC",
-    "country": "ES",
-    "region": "Other"
-  },
-  {
-    "code": "AUFRE",
-    "name": "AUFRE",
-    "country": "Australia",
-    "region": "Oceania"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
+    "code": "CNYPG",
+    "name": "CNYPG",
     "country": "China",
     "region": "Asia"
   },
@@ -621,15 +537,57 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
+    "code": "CNXMG",
+    "name": "CNXMG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "TRIZT",
+    "name": "TRIZT",
+    "country": "TR",
+    "region": "Other"
+  },
+  {
     "code": "USCHS",
     "name": "USCHS",
     "country": "US",
     "region": "Other"
   },
   {
-    "code": "USORF",
-    "name": "USORF",
-    "country": "US",
+    "code": "VNDAD",
+    "name": "VNDAD",
+    "country": "Vietnam",
+    "region": "Asia"
+  },
+  {
+    "code": "TWTXG",
+    "name": "TWTXG",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "CNTAO",
+    "name": "CNTAO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNGGZ",
+    "name": "CNGGZ",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "FJSUV",
+    "name": "FJSUV",
+    "country": "FJ",
+    "region": "Other"
+  },
+  {
+    "code": "TRIZM",
+    "name": "TRIZM",
+    "country": "TR",
     "region": "Other"
   },
   {
@@ -639,44 +597,8 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "ITSPE",
-    "name": "ITSPE",
-    "country": "IT",
-    "region": "Other"
-  },
-  {
-    "code": "CNXMN",
-    "name": "CNXMN",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "JPUKB",
-    "name": "JPUKB",
-    "country": "Japan",
-    "region": "Asia"
-  },
-  {
-    "code": "HKHKG",
-    "name": "HKHKG",
-    "country": "Hong Kong",
-    "region": "Asia"
-  },
-  {
-    "code": "CNXMG",
-    "name": "CNXMG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "AUMEL",
-    "name": "AUMEL",
-    "country": "Australia",
-    "region": "Oceania"
-  },
-  {
-    "code": "CNWHG",
-    "name": "CNWHG",
+    "code": "CNTXG",
+    "name": "CNTXG",
     "country": "China",
     "region": "Asia"
   },
@@ -687,75 +609,27 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "THLCH",
-    "name": "THLCH",
-    "country": "Thailand",
-    "region": "Asia"
+    "code": "AUFRE",
+    "name": "AUFRE",
+    "country": "Australia",
+    "region": "Oceania"
   },
   {
-    "code": "TWKEL",
-    "name": "TWKEL",
-    "country": "Taiwan",
-    "region": "Asia"
-  },
-  {
-    "code": "TWTXG",
-    "name": "TWTXG",
-    "country": "Taiwan",
-    "region": "Asia"
-  },
-  {
-    "code": "CNXAM",
-    "name": "CNXAM",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNTAO",
-    "name": "CNTAO",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "MYPGU",
-    "name": "MYPGU",
-    "country": "Malaysia",
-    "region": "Asia"
-  },
-  {
-    "code": "VNDAD",
-    "name": "VNDAD",
-    "country": "Vietnam",
-    "region": "Asia"
-  },
-  {
-    "code": "ARBUE",
-    "name": "ARBUE",
-    "country": "AR",
+    "code": "ITSPE",
+    "name": "ITSPE",
+    "country": "IT",
     "region": "Other"
   },
   {
-    "code": "CNQDG",
-    "name": "CNQDG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "GRPIR",
-    "name": "GRPIR",
-    "country": "GR",
+    "code": "USORF",
+    "name": "USORF",
+    "country": "US",
     "region": "Other"
   },
   {
-    "code": "KRPUS",
-    "name": "KRPUS",
-    "country": "KR",
-    "region": "Other"
-  },
-  {
-    "code": "MYPKG",
-    "name": "MYPKG",
-    "country": "Malaysia",
+    "code": "INMAA",
+    "name": "INMAA",
+    "country": "India",
     "region": "Asia"
   },
   {
@@ -765,16 +639,100 @@ export const PORT_HIERARCHY = [
     "region": "Europe"
   },
   {
+    "code": "AUMEL",
+    "name": "AUMEL",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "GBFXT",
+    "name": "GBFXT",
+    "country": "UK",
+    "region": "Europe"
+  },
+  {
+    "code": "CNSZP",
+    "name": "CNSZP",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNQIN",
+    "name": "CNQIN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNWHI",
+    "name": "CNWHI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "ESVLC",
+    "name": "ESVLC",
+    "country": "ES",
+    "region": "Other"
+  },
+  {
+    "code": "SGSIN",
+    "name": "SGSIN",
+    "country": "SG",
+    "region": "Other"
+  },
+  {
+    "code": "USSAV",
+    "name": "USSAV",
+    "country": "US",
+    "region": "Other"
+  },
+  {
+    "code": "CNXAM",
+    "name": "CNXAM",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "DEHAM",
+    "name": "DEHAM",
+    "country": "DE",
+    "region": "Other"
+  },
+  {
+    "code": "CNSHA",
+    "name": "CNSHA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MYPKG",
+    "name": "MYPKG",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNBO",
+    "name": "CNNBO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNQDG",
+    "name": "CNQDG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
     "code": "ZADUR",
     "name": "ZADUR",
     "country": "ZA",
     "region": "Other"
-  },
-  {
-    "code": "TWKHH",
-    "name": "TWKHH",
-    "country": "Taiwan",
-    "region": "Asia"
   },
   {
     "code": "VNHPH",
@@ -783,39 +741,51 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "INMAA",
-    "name": "INMAA",
-    "country": "India",
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "Taiwan",
     "region": "Asia"
   },
   {
-    "code": "TRIZT",
-    "name": "TRIZT",
-    "country": "TR",
-    "region": "Other"
-  },
-  {
-    "code": "USHOU",
-    "name": "USHOU",
-    "country": "US",
-    "region": "Other"
-  },
-  {
-    "code": "TRIZM",
-    "name": "TRIZM",
-    "country": "TR",
-    "region": "Other"
-  },
-  {
-    "code": "INMUN",
-    "name": "INMUN",
-    "country": "India",
-    "region": "Asia"
-  },
-  {
-    "code": "CNYTN",
-    "name": "CNYTN",
+    "code": "CNTNG",
+    "name": "CNTNG",
     "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MXAPD",
+    "name": "MXAPD",
+    "country": "MX",
+    "region": "Other"
+  },
+  {
+    "code": "ARBUE",
+    "name": "ARBUE",
+    "country": "AR",
+    "region": "Other"
+  },
+  {
+    "code": "AUADL",
+    "name": "AUADL",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "AUBNE",
+    "name": "AUBNE",
+    "country": "Australia",
+    "region": "Oceania"
+  },
+  {
+    "code": "MYPEN",
+    "name": "MYPEN",
+    "country": "Malaysia",
     "region": "Asia"
   },
   {
@@ -825,28 +795,40 @@ export const PORT_HIERARCHY = [
     "region": "Other"
   },
   {
-    "code": "GBFXT",
-    "name": "GBFXT",
-    "country": "UK",
-    "region": "Europe"
+    "code": "INMUN",
+    "name": "INMUN",
+    "country": "India",
+    "region": "Asia"
   },
   {
-    "code": "MXAPD",
-    "name": "MXAPD",
-    "country": "MX",
+    "code": "CNSHG",
+    "name": "CNSHG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNXMN",
+    "name": "CNXMN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "MYTPP",
+    "name": "MYTPP",
+    "country": "Malaysia",
+    "region": "Asia"
+  },
+  {
+    "code": "CNTYN",
+    "name": "CNTYN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "USHOU",
+    "name": "USHOU",
+    "country": "US",
     "region": "Other"
-  },
-  {
-    "code": "CNXGA",
-    "name": "CNXGA",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNSHA",
-    "name": "CNSHA",
-    "country": "China",
-    "region": "Asia"
   },
   {
     "code": "CNNBG",
@@ -855,10 +837,28 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "USSAV",
-    "name": "USSAV",
-    "country": "US",
+    "code": "INPAV",
+    "name": "INPAV",
+    "country": "India",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSHK",
+    "name": "CNSHK",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "NZTRG",
+    "name": "NZTRG",
+    "country": "NZ",
     "region": "Other"
+  },
+  {
+    "code": "CNYTN",
+    "name": "CNYTN",
+    "country": "China",
+    "region": "Asia"
   }
 ];
 
