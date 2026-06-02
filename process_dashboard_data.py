@@ -125,6 +125,12 @@ def process_data():
         carrier = str(row.get('Carrier', 'Unknown'))
         priority = str(row.get('Priority', 'Normal'))
         lane = f"{str(row.get('Origin','')).strip()} to {str(row.get('Destination','')).strip()}"
+        contract_type = str(row.get('Contract Type', '')).strip() if pd.notna(row.get('Contract Type')) else ''
+        contract_name = str(row.get('Contract Name', '')).strip() if pd.notna(row.get('Contract Name')) else ''
+        expiry = str(row.get('Expiry Date', '')).strip() if pd.notna(row.get('Expiry Date')) else 'N/A'
+        # Convert datetime to string if needed
+        if hasattr(row.get('Expiry Date'), 'strftime'):
+            expiry = row['Expiry Date'].strftime('%Y-%m-%d')
 
         if cid not in master_dict:
             master_dict[cid] = {
@@ -132,7 +138,10 @@ def process_data():
                 'allocTotal': alloc_total,
                 'officeAlloc': office_alloc,
                 'priority': priority,
-                'lane': lane
+                'lane': lane,
+                'contractType': contract_type,
+                'contractName': contract_name,
+                'expiry': expiry
             }
         else:
             # Accumulate if duplicate CID found in master rows
@@ -215,6 +224,8 @@ def process_data():
 
         contract_util_data.append({
             "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "contractType": minfo.get('contractType', ''), "contractName": minfo.get('contractName', ''),
+            "expiry": minfo.get('expiry', 'N/A'),
             "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
             "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
@@ -275,32 +286,52 @@ def process_data():
     # BOOKING_LOG
     booking_log = df.replace({pd.NA: None, float('nan'): None}).to_dict('records')
 
-    # PORT_HIERARCHY generation
-    COUNTRY_DATA = {
-        'AU': ('Australia', 'Oceania'),
-        'BE': ('Belgium', 'Europe'),
-        'CN': ('China', 'Asia'),
-        'GB': ('UK', 'Europe'),
-        'HK': ('Hong Kong', 'Asia'),
-        'ID': ('Indonesia', 'Asia'),
-        'IN': ('India', 'Asia'),
-        'JP': ('Japan', 'Asia'),
-        'MY': ('Malaysia', 'Asia'),
-        'TH': ('Thailand', 'Asia'),
-        'TW': ('Taiwan', 'Asia'),
-        'VN': ('Vietnam', 'Asia')
+    # PORT_HIERARCHY generation — use CONTRACT_PORT_CODE_LISTING.xlsx for accurate mapping
+    port_listing_source = get_static_file('CONTRACT_PORT_CODE_LISTING.xlsx', os.path.join(ROOT_DIR, 'CONTRACT_PORT_CODE_LISTING.xlsx'))
+    print(f"Reading Port Code Listing from: {port_listing_source if isinstance(port_listing_source, str) else 'Azure Memory Stream'}")
+    df_ports = pd.read_excel(port_listing_source)
+    # Build lookup from port code → (name, country, region)
+    port_lookup = {}
+    for _, prow in df_ports.iterrows():
+        pcode = str(prow.get('PORT CODE', '')).strip().upper()
+        pname = str(prow.get('PORT NAME', pcode)).strip()
+        pcountry = str(prow.get('COUNTRY ', prow.get('COUNTRY', ''))).strip()
+        pregion = str(prow.get('REGION', 'Other')).strip()
+        if pcode:
+            port_lookup[pcode] = (pname, pcountry, pregion)
+    print(f"  Loaded {len(port_lookup)} port codes from listing.")
+
+    # Fallback for codes not in listing
+    COUNTRY_FALLBACK = {
+        'AU': ('Australia', 'Oceania'), 'NZ': ('New Zealand', 'Oceania'),
+        'BE': ('Belgium', 'Europe'), 'CN': ('China', 'Asia'),
+        'GB': ('UK', 'Europe'), 'HK': ('Hong Kong', 'Asia'),
+        'ID': ('Indonesia', 'Asia'), 'IN': ('India', 'Asia'),
+        'JP': ('Japan', 'Asia'), 'MY': ('Malaysia', 'Asia'),
+        'TH': ('Thailand', 'Asia'), 'TW': ('Taiwan', 'Asia'),
+        'VN': ('Vietnam', 'Asia'), 'US': ('USA', 'Americas'),
+        'DE': ('Germany', 'Europe'), 'NL': ('Netherlands', 'Europe'),
+        'ES': ('Spain', 'Europe'), 'IE': ('Ireland', 'Europe'),
+        'FJ': ('Fiji', 'Oceania'), 'AR': ('Argentina', 'Americas'),
+        'KR': ('South Korea', 'Asia'), 'SG': ('Singapore', 'Asia'),
+        'PH': ('Philippines', 'Asia'),
     }
     
     port_hierarchy = []
     all_ports = set(origins + destinations)
     for p in all_ports:
-        cc = str(p)[:2].upper()
-        cname, rname = COUNTRY_DATA.get(cc, (cc, 'Other'))
+        p_upper = str(p).strip().upper()
+        if p_upper in port_lookup:
+            pname, pcountry, pregion = port_lookup[p_upper]
+        else:
+            cc = p_upper[:2]
+            cname, rname = COUNTRY_FALLBACK.get(cc, (cc, 'Other'))
+            pname, pcountry, pregion = p, cname, rname
         port_hierarchy.append({
             "code": p,
-            "name": p,
-            "country": cname,
-            "region": rname
+            "name": pname,
+            "country": pcountry,
+            "region": pregion
         })
 
     # Construct TS
@@ -329,6 +360,7 @@ export const COUNTRIES = {json.dumps(sorted(list(set([h['country'] for h in port
 export const PORT_NAMES = {json.dumps(clean_list(origins + destinations), indent=2, cls=CustomEncoder)};
 export const PORT_CODES = [];
 export const PORT_HIERARCHY = {json.dumps(port_hierarchy, indent=2, cls=CustomEncoder)};
+export const ALL_CARRIERS = {json.dumps(sorted(list(set([m.get('carrier', 'Various') for m in master_dict.values()]))), indent=2, cls=CustomEncoder)};
 
 export const BOOKING_LOG_DATA = {json.dumps(booking_log, indent=2, cls=CustomEncoder)};
 export const BRANCH_SNAPSHOT = {json.dumps(branch_snapshot, indent=2, cls=CustomEncoder)};

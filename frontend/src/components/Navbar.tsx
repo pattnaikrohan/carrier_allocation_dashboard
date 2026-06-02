@@ -23,6 +23,7 @@ interface NavbarProps {
   onBranchChange?: (val: string) => void;
   selectedCarrier?: string;
   onCarrierChange?: (val: string) => void;
+  formatContractLabel?: (val: string) => string;
   availableCarriers?: string[];
   isSyncing?: boolean;
   availableWeeks?: string[];
@@ -57,23 +58,12 @@ const Navbar: React.FC<NavbarProps> = ({
   availableOrigins = [],
   availableDestinations = [],
   availableBranches = ALL_BRANCHES,
-  availableCarriers = ['ALL', 'Maersk', 'MSC', 'OOCL', 'PIL', 'MGF']
+  availableCarriers = ['ALL', 'Maersk', 'MSC', 'OOCL', 'PIL', 'MGF'],
+  formatContractLabel,
 }) => {
   const navigate = useNavigate();
   // Individual Menu States
   const [openMenu, setOpenMenu] = useState<string | null>(null);
-  const [isLightMode, setIsLightMode] = useState(true);
-
-  const toggleTheme = () => {
-    const nextMode = !isLightMode;
-    setIsLightMode(nextMode);
-    if (nextMode) {
-      document.documentElement.classList.remove('dark');
-    } else {
-      document.documentElement.classList.add('dark');
-    }
-  };
-
 
 
   // Dynamic Week Hierarchy Construction
@@ -185,7 +175,7 @@ const Navbar: React.FC<NavbarProps> = ({
       columnLabels: ['Category', 'Sub-Group', 'Timeframe'],
       placeholder: 'Refine Timeframe...'
     },
-    { label: 'Contract', val: selectedContract, items: availableContracts, onSelect: onContractChange, color: 'cyan', hasSearch: true },
+    { label: 'Contract', val: selectedContract, items: availableContracts, onSelect: onContractChange, color: 'cyan', hasSearch: true, formatLabel: formatContractLabel },
     {
       label: 'Origin',
       val: selectedOrigin,
@@ -222,7 +212,7 @@ const Navbar: React.FC<NavbarProps> = ({
 
           {/* Left Segment: Compass Logo */}
           <div className="flex items-center gap-3 shrink-0">
-            <img src={compassLogo} alt="Compass" className="h-14 w-auto object-contain dark:brightness-125 dark:invert" />
+            <img src={compassLogo} alt="Compass" className="h-28 w-auto object-contain dark:brightness-125 dark:invert" />
           </div>
 
           {/* Center Segment: Interactive Filter Pill */}
@@ -283,6 +273,7 @@ const Navbar: React.FC<NavbarProps> = ({
                             accentColor={f.color}
                             hasSearch={f.hasSearch}
                             height="350px"
+                            formatLabel={(f as any).formatLabel}
                           />
                         )}
                       </motion.div>
@@ -296,45 +287,39 @@ const Navbar: React.FC<NavbarProps> = ({
           {/* Right Segment: Actions & AAW Group Logo */}
           <div className="flex items-center gap-4 shrink-0 overflow-visible">
             {/* Commands Segment */}
-            <div className="flex items-center gap-1.5 shrink-0">
+            <div className="flex items-center bg-slate-100 dark:bg-[#0b0f19] p-0.5 rounded-lg border border-slate-200 dark:border-white/10 shrink-0 shadow-inner">
               <button
                 onClick={() => {
                   onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL');
                   onBranchChange?.('ALL'); onCarrierChange?.('ALL');
                 }}
-                className="w-9 h-9 rounded-xl flex items-center justify-center transition-all bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-white hover:border-rose-500/50 hover:bg-rose-500/10 group/reset"
-                title="Reset All"
+                className="flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-all text-[10px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400 hover:bg-rose-500/20 hover:text-rose-400 group/reset"
+                title="Reset All Filters"
               >
-                <svg className="w-3.5 h-3.5 transition-transform group-hover/reset:-rotate-180 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" /></svg>
+                <svg className="w-3 h-3 transition-transform group-hover/reset:-rotate-90 duration-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M3 10h10a8 8 0 018 8v2M3 10l6 6m-6-6l6-6" /></svg>
+                Reset
               </button>
-
-              <button
-                onClick={toggleTheme}
-                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all border ${isLightMode ? 'bg-amber-500/10 border-amber-500/20 text-amber-500' : 'bg-slate-100 dark:bg-white/[0.03] border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-amber-400 hover:border-amber-500/50 hover:bg-amber-500/10'}`}
-                title="Toggle Theme"
-              >
-                {isLightMode ? (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
-                ) : (
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
-                )}
-              </button>
-
-              <button
-                onClick={onSync}
-                disabled={isSyncing}
-                className={`w-9 h-9 rounded-xl flex items-center justify-center transition-all group/sync relative overflow-hidden ${isSyncing ? 'bg-cyan-500/20 border border-cyan-500/40 text-cyan-400' : 'bg-slate-100 dark:bg-white/[0.03] border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:text-white hover:border-cyan-500/50 hover:bg-cyan-500/10'
-                  }`}
-              >
-                <motion.div animate={isSyncing ? { rotate: 360 } : { rotate: 0 }} transition={{ duration: 2, repeat: isSyncing ? Infinity : 0, ease: "linear" }}>
-                  <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
-                </motion.div>
-              </button>
+              {onSync && (
+                <>
+                  <div className="w-[1px] h-3.5 bg-slate-300 dark:bg-slate-700/50 mx-0.5" />
+                  <button
+                    onClick={onSync}
+                    disabled={isSyncing}
+                    className={`flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-all text-[10px] font-bold uppercase tracking-widest ${isSyncing
+                        ? 'bg-blue-500/20 text-blue-400 cursor-wait'
+                        : 'text-slate-500 dark:text-slate-400 hover:text-white hover:bg-blue-500/20 hover:text-blue-400'
+                      }`}
+                    title="Force Live Data Sync"
+                  >
+                    <svg className={`w-3 h-3 ${isSyncing ? 'animate-spin' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" /></svg>
+                    Sync
+                  </button>
+                </>
+              )}
             </div>
 
             <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0" />
-
-            <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain" />
+            <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain mr-4" />
           </div>
 
         </div>
@@ -484,7 +469,8 @@ const FilterSelect: React.FC<{
   accentColor: string;
   hasSearch?: boolean;
   height?: string;
-}> = ({ items, selected, onSelect, accentColor, hasSearch, height = "auto" }) => {
+  formatLabel?: (val: string) => string;
+}> = ({ items, selected, onSelect, accentColor, hasSearch, height = "auto", formatLabel }) => {
   const [search, setSearch] = useState('');
   const filteredItems = items.filter(i => i.toLowerCase().includes(search.toLowerCase()));
 
@@ -558,7 +544,7 @@ const FilterSelect: React.FC<{
             }
           >
             <span className="truncate">
-              {item === 'ALL' ? 'Please Select' : item}
+              {selected === item ? 'Clear' : (item === 'ALL' ? 'Please Select' : (formatLabel ? formatLabel(item) : item))}
             </span>
             {selected === item && (
               <div className={`w-1 h-1 rounded-full ${colors.dot} shadow-[0_0_8px_currentColor]`} />

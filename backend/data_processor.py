@@ -110,7 +110,7 @@ def process_data_from_azure() -> str:
         order_frames.append(pd.read_excel(stream))
     df = pd.concat(order_frames, ignore_index=True)
     df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
-    log(f"Merged {len(all_orders)} Orders file(s) → {len(df)} unique rows")
+    log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
@@ -127,9 +127,11 @@ def process_data_from_azure() -> str:
         alloc_total = sum(office_alloc.values())
         carrier = str(row.get('Carrier', 'Unknown'))
         priority = str(row.get('Priority', 'Normal'))
+        contract_type = str(row.get('Contract Type', 'FAK'))
+        contract_name = str(row.get('Contract Name', ''))
         lane = f"{str(row.get('Origin', '')).strip()} to {str(row.get('Destination', '')).strip()}"
         if cid not in master_dict:
-            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane}
+            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane, 'contractType': contract_type, 'contractName': contract_name}
         else:
             master_dict[cid]['allocTotal'] += alloc_total
             for hub, val in office_alloc.items():
@@ -159,6 +161,40 @@ def process_data_from_azure() -> str:
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
     df['year'] = pd.to_datetime(df['etd'], errors='coerce').dt.year.fillna(2026).astype(int)
     df['mscWeek'] = df['week_num'].astype(str) + '-' + df['year'].astype(str)
+
+    # 3. Fetch Port Listing
+    port_map = {}
+    try:
+        port_stream = _get_blob_file(container, port_file)
+        log(f"Reading Port Codes from Azure: {port_file}")
+        df_ports = pd.read_excel(port_stream)
+        df_ports.columns = df_ports.columns.str.strip()
+        for _, row in df_ports.iterrows():
+            code = str(row.get('PORT CODE', '')).strip().upper()
+            if code and code != 'NAN':
+                port_map[code] = {
+                    'name': str(row.get('PORT NAME', code)).strip().title(),
+                    'country': str(row.get('COUNTRY', 'Unknown')).strip().title(),
+                    'region': str(row.get('REGION', 'Other')).strip().title()
+                }
+    except Exception as e:
+        log(f"Warning: Could not read port listing blob '{port_file}': {e}")
+
+    orig_codes = sorted(df['loadPort'].dropna().unique().tolist())
+    dest_codes = sorted(df['dischargePort'].dropna().unique().tolist())
+
+    port_hierarchy = []
+    for p in set(orig_codes + dest_codes):
+        info = port_map.get(p, {})
+        if not info:
+            cc = str(p)[:2].upper()
+            cname = {'AU': 'Australia', 'CN': 'China', 'HK': 'Hong Kong', 'NZ': 'New Zealand', 'SG': 'Singapore'}.get(cc, cc)
+            rname = 'Oceania' if cc in ('AU','NZ') else ('Asia' if cc in ('CN','HK','SG') else 'Other')
+            info = {'name': p, 'country': cname, 'region': rname}
+        port_hierarchy.append({"code": info['name'], "name": info['name'], "country": info['country'], "region": info['region']})
+
+    df['loadPort'] = df['loadPort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
+    df['dischargePort'] = df['dischargePort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
 
     origins = sorted(df['loadPort'].dropna().unique().tolist())
     destinations = sorted(df['dischargePort'].dropna().unique().tolist())
@@ -266,18 +302,7 @@ def process_data_from_azure() -> str:
     # BOOKING_LOG
     booking_log = df.replace({pd.NA: None, float('nan'): None}).to_dict('records')
 
-    # PORT_HIERARCHY
-    COUNTRY_DATA = {
-        'AU': ('Australia', 'Oceania'), 'BE': ('Belgium', 'Europe'), 'CN': ('China', 'Asia'),
-        'GB': ('UK', 'Europe'), 'HK': ('Hong Kong', 'Asia'), 'ID': ('Indonesia', 'Asia'),
-        'IN': ('India', 'Asia'), 'JP': ('Japan', 'Asia'), 'MY': ('Malaysia', 'Asia'),
-        'TH': ('Thailand', 'Asia'), 'TW': ('Taiwan', 'Asia'), 'VN': ('Vietnam', 'Asia')
-    }
-    port_hierarchy = []
-    for p in set(origins + destinations):
-        cc = str(p)[:2].upper()
-        cname, rname = COUNTRY_DATA.get(cc, (cc, 'Other'))
-        port_hierarchy.append({"code": p, "name": p, "country": cname, "region": rname})
+    # PORT_HIERARCHY (Already built above)
 
     # JSON encoder
     class CustomEncoder(json.JSONEncoder):
@@ -326,6 +351,7 @@ def process_data_from_azure_json() -> tuple:
     """
     container = os.getenv('AZURE_CONTAINER_NAME', 'carrier-allocation')
     master_file = os.getenv('MASTER_FILE_NAME', 'Contract_Master_All_Data Update.xlsx')
+    port_file = os.getenv('PORT_CODE_FILE_NAME', 'CONTRACT_PORT_CODE_LISTING.xlsx')
 
     log_lines = []
     def log(msg):
@@ -340,7 +366,7 @@ def process_data_from_azure_json() -> tuple:
         order_frames.append(pd.read_excel(stream))
     df = pd.concat(order_frames, ignore_index=True)
     df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
-    log(f"Merged {len(all_orders)} Orders file(s) → {len(df)} unique rows")
+    log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
@@ -357,9 +383,11 @@ def process_data_from_azure_json() -> tuple:
         alloc_total = sum(office_alloc.values())
         carrier = str(row.get('Carrier', 'Unknown'))
         priority = str(row.get('Priority', 'Normal'))
+        contract_type = str(row.get('Contract Type', 'FAK'))
+        contract_name = str(row.get('Contract Name', ''))
         lane = f"{str(row.get('Origin', '')).strip()} to {str(row.get('Destination', '')).strip()}"
         if cid not in master_dict:
-            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane}
+            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane, 'contractType': contract_type, 'contractName': contract_name}
         else:
             master_dict[cid]['allocTotal'] += alloc_total
             for hub, val in office_alloc.items():
@@ -389,6 +417,40 @@ def process_data_from_azure_json() -> tuple:
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
     df['year'] = pd.to_datetime(df['etd'], errors='coerce').dt.year.fillna(2026).astype(int)
     df['mscWeek'] = df['week_num'].astype(str) + '-' + df['year'].astype(str)
+
+    # 3. Fetch Port Listing
+    port_map = {}
+    try:
+        port_stream = _get_blob_file(container, port_file)
+        log(f"Reading Port Codes from Azure: {port_file}")
+        df_ports = pd.read_excel(port_stream)
+        df_ports.columns = df_ports.columns.str.strip()
+        for _, row in df_ports.iterrows():
+            code = str(row.get('PORT CODE', '')).strip().upper()
+            if code and code != 'NAN':
+                port_map[code] = {
+                    'name': str(row.get('PORT NAME', code)).strip().title(),
+                    'country': str(row.get('COUNTRY', 'Unknown')).strip().title(),
+                    'region': str(row.get('REGION', 'Other')).strip().title()
+                }
+    except Exception as e:
+        log(f"Warning: Could not read port listing blob '{port_file}': {e}")
+
+    orig_codes = sorted(df['loadPort'].dropna().unique().tolist())
+    dest_codes = sorted(df['dischargePort'].dropna().unique().tolist())
+
+    port_hierarchy = []
+    for p in set(orig_codes + dest_codes):
+        info = port_map.get(p, {})
+        if not info:
+            cc = str(p)[:2].upper()
+            cname = {'AU': 'Australia', 'CN': 'China', 'HK': 'Hong Kong', 'NZ': 'New Zealand', 'SG': 'Singapore'}.get(cc, cc)
+            rname = 'Oceania' if cc in ('AU','NZ') else ('Asia' if cc in ('CN','HK','SG') else 'Other')
+            info = {'name': p, 'country': cname, 'region': rname}
+        port_hierarchy.append({"code": info['name'], "name": info['name'], "country": info['country'], "region": info['region']})
+
+    df['loadPort'] = df['loadPort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
+    df['dischargePort'] = df['dischargePort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
 
     origins = sorted(df['loadPort'].dropna().unique().tolist())
     destinations = sorted(df['dischargePort'].dropna().unique().tolist())
@@ -434,6 +496,7 @@ def process_data_from_azure_json() -> tuple:
 
         contract_util_data.append({
             "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "contractType": minfo.get('contractType', 'FAK'), "contractName": minfo.get('contractName', ''),
             "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
             "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
@@ -503,18 +566,7 @@ def process_data_from_azure_json() -> tuple:
             elif hasattr(val, 'item'):
                 record[key] = val.item()
 
-    # PORT_HIERARCHY
-    COUNTRY_DATA = {
-        'AU': ('Australia', 'Oceania'), 'BE': ('Belgium', 'Europe'), 'CN': ('China', 'Asia'),
-        'GB': ('UK', 'Europe'), 'HK': ('Hong Kong', 'Asia'), 'ID': ('Indonesia', 'Asia'),
-        'IN': ('India', 'Asia'), 'JP': ('Japan', 'Asia'), 'MY': ('Malaysia', 'Asia'),
-        'TH': ('Thailand', 'Asia'), 'TW': ('Taiwan', 'Asia'), 'VN': ('Vietnam', 'Asia')
-    }
-    port_hierarchy = []
-    for p in set(origins + destinations):
-        cc = str(p)[:2].upper()
-        cname, rname = COUNTRY_DATA.get(cc, (cc, 'Other'))
-        port_hierarchy.append({"code": p, "name": p, "country": cname, "region": rname})
+    # PORT_HIERARCHY (Already built above)
 
     def clean_list(items):
         if items is None: return []

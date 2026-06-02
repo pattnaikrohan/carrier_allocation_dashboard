@@ -740,3 +740,60 @@ html:not(.dark) .group\:kpi:hover {
   border-color: rgba(99, 102, 241, 0.25) !important;
   box-shadow: 0 20px 40px -10px rgba(99, 102, 241, 0.08) !important;
 }
+
+/* ── Dashboard Table Font Uniformity ── */
+.dashboard-table,
+.dashboard-table th,
+.dashboard-table td {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif !important;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.dashboard-table th {
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.15em !important;
+  text-transform: uppercase !important;
+}
+
+.dashboard-table td {
+  font-size: 13px !important;
+  font-weight: 600 !important;
+}
+
+.dashboard-table .font-mono,
+.dashboard-table td.font-mono {
+  font-family: 'SF Mono', 'Cascadia Code', 'Consolas', ui-monospace, monospace !important;
+}
+
+/* ── Force scrollbar visibility on overflow containers ── */
+.force-scrollbar {
+  overflow: auto !important;
+}
+
+.force-scrollbar::-webkit-scrollbar {
+  width: 12px !important;
+  height: 12px !important;
+  display: block !important;
+}
+
+.force-scrollbar::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.3) !important;
+  border-radius: 6px !important;
+}
+
+.force-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(100, 116, 139, 0.5) !important;
+  border-radius: 6px !important;
+  border: 2px solid transparent !important;
+  background-clip: padding-box !important;
+}
+
+.force-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(100, 116, 139, 0.7) !important;
+}
+
+.force-scrollbar::-webkit-scrollbar-corner {
+  background: rgba(15, 23, 42, 0.3) !important;
+}
