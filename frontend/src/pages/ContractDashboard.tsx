@@ -199,7 +199,7 @@ const ContractDashboard: React.FC = () => {
   const currentWeekTrendRaw = WEEKLY_TREND_DATA.find(i => i.week === selectedWeek) || WEEKLY_TREND_DATA[0];
 
   // Advanced multi-dimensional trend filtering
-  const getFilteredData = () => {
+  const getBaseFilteredBookings = () => {
     const baseFiltered = BOOKING_LOG_DATA.filter(b => {
       const matchWeek = (() => {
         if (selectedWeek === 'ALL') return true;
@@ -275,32 +275,20 @@ const ContractDashboard: React.FC = () => {
 
       return matchWeek && matchContract && matchOrigin && matchDest && matchBranch && matchCarrier;
     });
-
-    // Integrated Filter Mode (Drill-down from KPI cards)
-    if (filterMode === 'UNDERPERFORMING') {
-      const underPerformingIds = new Set(reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80).map(c => c.id));
-      return baseFiltered.filter(b => underPerformingIds.has(b.contract));
-    }
-    if (filterMode === 'LOW_UTIL') {
-      const lowUtilIds = new Set(reactiveContractUtilData.filter(c => c.util < 50).map(c => c.id));
-      return baseFiltered.filter(b => lowUtilIds.has(b.contract));
-    }
-
-    return baseFiltered;
   };
 
-  const filteredBookings = getFilteredData();
+  const baseFilteredBookings = getBaseFilteredBookings();
 
   const activeWeekCount = selectedWeek === 'ALL' ? AVAILABLE_WEEKS.length : 1;
   const weekScale = AVAILABLE_WEEKS.length > 0 ? (activeWeekCount / AVAILABLE_WEEKS.length) : 1;
 
-  // Underperformance logic: ≤80% utilisation
+  // Compute contract metrics based on the BASE filtered bookings
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
     .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
     .filter(c => selectedCarrier === 'ALL' || c.carrier.toLowerCase() === selectedCarrier.toLowerCase())
     .map(c => {
       const scaledAlloc = Math.round(c.alloc * weekScale);
-      const contractBookings = filteredBookings.filter(b => b.contract === c.id);
+      const contractBookings = baseFilteredBookings.filter(b => b.contract === c.id);
       const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
       const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
 
@@ -343,6 +331,21 @@ const ContractDashboard: React.FC = () => {
       // Show if the branch has allocation OR bookings (don't require booked > 0)
       return codes.some(code => (c as any)[code.toLowerCase()]?.alloc > 0) || c.booked > 0;
     });
+
+  // Now apply the KPI filter mode to derive the final filteredBookings
+  const filteredBookings = (() => {
+    if (filterMode === 'UNDERPERFORMING') {
+      const underPerformingIds = new Set(reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80).map(c => c.id));
+      return baseFilteredBookings.filter(b => underPerformingIds.has(b.contract));
+    }
+    if (filterMode === 'LOW_UTIL') {
+      const lowUtilIds = new Set(reactiveContractUtilData.filter(c => c.util < 50).map(c => c.id));
+      return baseFilteredBookings.filter(b => lowUtilIds.has(b.contract));
+    }
+    return baseFilteredBookings;
+  })();
+
+
 
   const contractMetrics = (() => {
     const allocNode = reactiveContractUtilData.reduce((sum, c) => sum + c.alloc, 0);
