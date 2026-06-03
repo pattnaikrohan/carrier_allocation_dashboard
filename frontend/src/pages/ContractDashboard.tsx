@@ -319,16 +319,16 @@ const ContractDashboard: React.FC = () => {
         booked,
         avail: scaledAlloc - booked,
         util,
-        syd: { ...(c.syd ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['SYDNEY', 'SY1']) },
-        mel: { ...(c.mel ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['MELBOURNE', 'ME1']) },
-        bne: { ...(c.bne ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['BRISBANE', 'BN1']) },
-        fre: { ...freBase, booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
-        per: { ...freBase, booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
-        adl: { ...(c.adl ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['ADELAIDE', 'AD1']) },
-        pil: { ...(c.pil ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['PIL']) },
-        prj: { ...(c.prj ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['PRJ']) },
-        akl: { ...(c.akl ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['AKL']) },
-        oth: { ...(c.oth ?? { alloc: 0, booked: 0, util: 0 }), booked: getBranchBooked(['OTH']) },
+        syd: { ...(c.syd ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.syd as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['SYDNEY', 'SY1']) },
+        mel: { ...(c.mel ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.mel as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['MELBOURNE', 'ME1']) },
+        bne: { ...(c.bne ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.bne as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['BRISBANE', 'BN1']) },
+        fre: { ...freBase, alloc: Math.round(((freBase as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
+        per: { ...freBase, alloc: Math.round(((freBase as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['FREMANTLE', 'FR1', 'PR1']) },
+        adl: { ...(c.adl ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.adl as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['ADELAIDE', 'AD1']) },
+        pil: { ...(c.pil ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.pil as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['PIL']) },
+        prj: { ...(c.prj ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.prj as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['PRJ']) },
+        akl: { ...(c.akl ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.akl as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['AKL']) },
+        oth: { ...(c.oth ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.oth as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['OTH']) },
       };
     })
     // Show contracts that have allocation OR bookings in the selected branch
@@ -557,7 +557,7 @@ const ContractDashboard: React.FC = () => {
       }
 
       return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts, activeContractsData };
-    });
+    }).filter(b => b.alloc > 0 || b.booked > 0);
 
     // Check if any bookings are completely unmatched and create OTHER category
     const unmatchedBookings = filteredBookings.filter(b => !knownBranches.has(b.branch) && b.branch !== 'FR1');
