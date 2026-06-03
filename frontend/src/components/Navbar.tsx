@@ -287,10 +287,7 @@ const Navbar: React.FC<NavbarProps> = ({
           {/* Right Segment: Actions & AAW Group Logo */}
           <div className="flex items-center gap-4 shrink-0 overflow-visible">
             {/* Commands Segment */}
-            <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain ml-2 mr-2" />
-            <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0" />
-            
-            <div className="flex items-center bg-slate-100 dark:bg-[#0b0f19] p-0.5 rounded-lg border border-slate-200 dark:border-white/10 shrink-0 shadow-inner">
+            <div className="flex items-center bg-slate-100 dark:bg-[#0b0f19] p-0.5 rounded-lg border border-slate-200 dark:border-white/10 shrink-0 shadow-inner mr-2">
               <button
                 onClick={() => {
                   onContractChange?.('ALL'); onWeekChange?.('ALL'); onOriginChange?.('ALL'); onDestinationChange?.('ALL');
@@ -320,6 +317,9 @@ const Navbar: React.FC<NavbarProps> = ({
                 </>
               )}
             </div>
+
+            <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0 mr-2" />
+            <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain" />
           </div>
 
         </div>
