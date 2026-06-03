@@ -544,7 +544,9 @@ const FilterSelect: React.FC<{
             }
           >
             <span className="truncate">
-              {selected === item ? 'Clear' : (item === 'ALL' ? 'Please Select' : (formatLabel ? formatLabel(item) : item))}
+              {item === 'ALL' 
+                ? (selected !== 'ALL' && selected ? 'CLEAR' : 'PLEASE SELECT') 
+                : (formatLabel ? formatLabel(item) : item)}
             </span>
             {selected === item && (
               <div className={`w-1 h-1 rounded-full ${colors.dot} shadow-[0_0_8px_currentColor]`} />
