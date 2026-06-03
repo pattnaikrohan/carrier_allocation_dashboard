@@ -292,7 +292,7 @@ const ContractDashboard: React.FC = () => {
   const filteredBookings = getFilteredData();
 
   const activeWeekCount = selectedWeek === 'ALL' ? AVAILABLE_WEEKS.length : 1;
-  const weekScale = activeWeekCount / AVAILABLE_WEEKS.length;
+  const weekScale = AVAILABLE_WEEKS.length > 0 ? (activeWeekCount / AVAILABLE_WEEKS.length) : 1;
 
   // Underperformance logic: ≤80% utilisation
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
