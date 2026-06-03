@@ -208,31 +208,31 @@ const Navbar: React.FC<NavbarProps> = ({
         transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
         className="w-full max-w-[1780px] mx-auto px-4 md:px-6 pointer-events-auto"
       >
-        <div className="flex items-center justify-between bg-gradient-to-r from-sky-200/90 via-blue-200/85 to-indigo-200/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-sky-300/50 dark:border-slate-800 shadow-xl px-5 py-2 min-h-[72px] gap-4 w-full relative overflow-visible">
+        <div className="flex items-center justify-between bg-gradient-to-r from-sky-200/90 via-blue-200/85 to-indigo-200/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-sky-300/50 dark:border-slate-800 shadow-xl px-3 md:px-5 py-2 min-h-[72px] gap-2 md:gap-4 w-full relative overflow-hidden md:overflow-visible">
 
           {/* Left Segment: Compass Logo */}
           <div className="flex items-center gap-3 shrink-0">
-            <img src={compassLogo} alt="Compass" className="h-28 w-auto object-contain dark:brightness-125 dark:invert" />
+            <img src={compassLogo} alt="Compass" className="h-16 md:h-24 w-auto object-contain dark:brightness-125 dark:invert" />
           </div>
 
           {/* Center Segment: Interactive Filter Pill */}
-          <div className="flex items-center gap-1.5 p-1 bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/40 rounded-[20px] overflow-visible">
+          <div className="flex items-center gap-1 p-1 bg-slate-100/50 dark:bg-slate-950/40 border border-slate-200/30 dark:border-slate-800/40 rounded-[20px] overflow-visible flex-1 justify-center min-w-0">
             {filters.map((f, i) => (
-              <div key={f.label} className={`${f.isHierarchical ? '' : 'relative'} overflow-visible`} style={{ zIndex: openMenu === f.label ? 40 : 20 - i }}>
+              <div key={f.label} className={`${f.isHierarchical ? '' : 'relative'} overflow-visible flex-1 min-w-0 max-w-[140px]`} style={{ zIndex: openMenu === f.label ? 40 : 20 - i }}>
                 <button
                   onClick={() => setOpenMenu(openMenu === f.label ? null : f.label)}
-                  className={`flex items-center gap-2 px-3 h-[40px] rounded-[14px] border transition-all duration-500 relative group min-w-[105px] ${openMenu === f.label
+                  className={`flex items-center justify-between gap-1 md:gap-2 px-2 md:px-3 h-[40px] rounded-[14px] border transition-all duration-500 relative group w-full ${openMenu === f.label
                     ? `bg-${f.color}-500/10 dark:bg-${f.color}-500/15 border-${f.color}-500/30 dark:border-${f.color}-500/40 text-${f.color}-600 dark:text-${f.color}-300 ring-1 ring-${f.color}-500/10 dark:ring-${f.color}-500/20`
                     : f.val !== 'ALL'
                       ? 'bg-slate-100 dark:bg-white/[0.06] border-slate-200 dark:border-slate-700 text-slate-800 dark:text-white hover:bg-slate-200 dark:hover:bg-white/[0.1] shadow-inner'
                       : 'bg-white dark:bg-slate-900/60 border-slate-200 dark:border-slate-700 text-slate-500 dark:text-slate-400 hover:border-slate-300 dark:hover:border-white/[0.1] hover:bg-slate-50 dark:hover:bg-white/[0.03]'
                     }`}
                 >
-                  <div className="flex flex-col items-start min-w-0 pr-0.5">
-                    <span className={`text-[7.5px] font-black uppercase tracking-[0.15em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-slate-500 dark:text-white/60' : 'text-slate-400 dark:text-slate-500'}`}>{f.label}</span>
-                    <span className="text-[10px] font-bold uppercase tracking-widest truncate w-full text-left antialiased">{f.val === 'ALL' ? 'Select' : f.val}</span>
+                  <div className="flex flex-col items-start min-w-0 pr-0.5 flex-1">
+                    <span className={`text-[7px] md:text-[7.5px] font-black uppercase tracking-[0.1em] md:tracking-[0.15em] mb-0.5 transition-colors ${openMenu === f.label || f.val !== 'ALL' ? 'text-slate-500 dark:text-white/60' : 'text-slate-400 dark:text-slate-500'} truncate w-full text-left`}>{f.label}</span>
+                    <span className="text-[9px] md:text-[10px] font-bold uppercase tracking-wider md:tracking-widest truncate w-full text-left antialiased">{f.val === 'ALL' ? 'Select' : f.val}</span>
                   </div>
-                  <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-colors shrink-0 ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-600 dark:text-${f.color}-300` : 'bg-slate-200/50 dark:bg-white/5 text-slate-500 dark:text-slate-300'}`}>
+                  <div className={`w-3.5 h-3.5 rounded-full flex items-center justify-center transition-colors shrink-0 hidden md:flex ${openMenu === f.label ? `bg-${f.color}-500/20 text-${f.color}-600 dark:text-${f.color}-300` : 'bg-slate-200/50 dark:bg-white/5 text-slate-500 dark:text-slate-300'}`}>
                     <svg className={`w-2 h-2 transition-transform duration-300 ${openMenu === f.label ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 9l-7 7-7-7" /></svg>
                   </div>
                 </button>
@@ -285,7 +285,7 @@ const Navbar: React.FC<NavbarProps> = ({
           </div>
 
           {/* Right Segment: Actions & AAW Group Logo */}
-          <div className="flex items-center gap-4 shrink-0 overflow-visible">
+          <div className="flex items-center gap-2 md:gap-4 shrink-0 overflow-visible">
             {/* Commands Segment */}
             <div className="flex items-center bg-slate-100 dark:bg-[#0b0f19] p-0.5 rounded-lg border border-slate-200 dark:border-white/10 shrink-0 shadow-inner mr-2">
               <button
@@ -318,8 +318,8 @@ const Navbar: React.FC<NavbarProps> = ({
               )}
             </div>
 
-            <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0 mr-2" />
-            <img src={aawLogo} alt="AAW Group" className="h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain" />
+            <div className="w-[1px] h-6 bg-slate-200 dark:bg-slate-800 shrink-0 mr-1 md:mr-2" />
+            <img src={aawLogo} alt="AAW Group" className="h-8 md:h-10 w-auto invert dark:invert-0 dark:opacity-90 dark:brightness-125 shrink-0 object-contain" />
           </div>
 
         </div>
