@@ -275,6 +275,7 @@ const ContractDashboard: React.FC = () => {
 
       return matchWeek && matchContract && matchOrigin && matchDest && matchBranch && matchCarrier;
     });
+    return baseFiltered;
   };
 
   const baseFilteredBookings = getBaseFilteredBookings();
