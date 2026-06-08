@@ -22,6 +22,7 @@ app = FastAPI(title="AAW Dashboards API", version="1.0.0")
 ALLOWED_ORIGINS = [
     "https://orange-wave-035251f00.7.azurestaticapps.net",
     "http://localhost:5173",
+    "http://localhost:5174",
     "http://localhost:3000",
 ]
 
