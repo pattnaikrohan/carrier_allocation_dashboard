@@ -137,25 +137,39 @@ def process_data_from_azure() -> str:
             for hub, val in office_alloc.items():
                 master_dict[cid]['officeAlloc'][hub] = master_dict[cid]['officeAlloc'].get(hub, 0) + val
 
-    # Column mapping
+    # Robust Column Mapping
+    df.columns = df.columns.str.strip()
     col_map = {
-        'Contract': 'contract', 'Branch': 'branch', 'Week No': 'week',
+        'Contract': 'contract', 'Contract #': 'contract',
+        'Branch': 'branch', 'Created Branch': 'branch',
+        'Week No': 'week', 'CW Week No': 'week',
         'Order Number': 'order', 'Est. Departure': 'etd', 'Est. Arrival': 'eta',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'Load Port': 'loadPort',
         'Discharge Port': 'dischargePort', 'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
-    teu_col = next((c for c in ['TOTAL Teu', 'Total TEU', 'TOTAL TEU', 'Total TEU _x001F_', 'TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
+    col_map_lower = {k.lower(): v for k, v in col_map.items()}
+    existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
+    
+    teu_col = next((c for c in df.columns if c.lower() in ['total teu', 'teu', 'teu count _x001f_', 'teu _x001f_']), None)
     df['teu'] = df[teu_col] if teu_col else 0
-    branch_col = next((c for c in ['Branch', 'Created Branch'] if c in df.columns), None)
-    if branch_col:
-        df['branch_clean'] = df[branch_col]
-    existing_cols = {k: v for k, v in col_map.items() if k in df.columns}
+    
     df = df.rename(columns=existing_cols)
-    if 'branch_clean' in df.columns:
-        df['branch'] = df['branch_clean']
     df = df.loc[:, ~df.columns.duplicated()]
+
+    # Fallbacks for critical missing columns
+    if 'contract' not in df.columns:
+        df['contract'] = 'Unassigned'
+    df['contract'] = df['contract'].fillna('Unassigned').astype(str)
+    df['contract'] = df['contract'].replace('nan', 'Unassigned')
+
+    if 'branch' not in df.columns:
+        df['branch'] = 'Unknown'
+    df['branch'] = df['branch'].fillna('Unknown').astype(str)
+    
+    if 'week' not in df.columns:
+        df['week'] = '1'
 
     df = df.dropna(subset=['week'])
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
@@ -393,25 +407,39 @@ def process_data_from_azure_json() -> tuple:
             for hub, val in office_alloc.items():
                 master_dict[cid]['officeAlloc'][hub] = master_dict[cid]['officeAlloc'].get(hub, 0) + val
 
-    # Column mapping
+    # Robust Column Mapping
+    df.columns = df.columns.str.strip()
     col_map = {
-        'Contract': 'contract', 'Branch': 'branch', 'Week No': 'week',
+        'Contract': 'contract', 'Contract #': 'contract',
+        'Branch': 'branch', 'Created Branch': 'branch',
+        'Week No': 'week', 'CW Week No': 'week',
         'Order Number': 'order', 'Est. Departure': 'etd', 'Est. Arrival': 'eta',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'Load Port': 'loadPort',
         'Discharge Port': 'dischargePort', 'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
-    teu_col = next((c for c in ['TOTAL Teu', 'Total TEU', 'TOTAL TEU', 'Total TEU _x001F_', 'TEU', 'TEU _x001F_', 'TEU Count _x001F_'] if c in df.columns), None)
+    col_map_lower = {k.lower(): v for k, v in col_map.items()}
+    existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
+    
+    teu_col = next((c for c in df.columns if c.lower() in ['total teu', 'teu', 'teu count _x001f_', 'teu _x001f_']), None)
     df['teu'] = df[teu_col] if teu_col else 0
-    branch_col = next((c for c in ['Branch', 'Created Branch'] if c in df.columns), None)
-    if branch_col:
-        df['branch_clean'] = df[branch_col]
-    existing_cols = {k: v for k, v in col_map.items() if k in df.columns}
+    
     df = df.rename(columns=existing_cols)
-    if 'branch_clean' in df.columns:
-        df['branch'] = df['branch_clean']
     df = df.loc[:, ~df.columns.duplicated()]
+
+    # Fallbacks for critical missing columns
+    if 'contract' not in df.columns:
+        df['contract'] = 'Unassigned'
+    df['contract'] = df['contract'].fillna('Unassigned').astype(str)
+    df['contract'] = df['contract'].replace('nan', 'Unassigned')
+
+    if 'branch' not in df.columns:
+        df['branch'] = 'Unknown'
+    df['branch'] = df['branch'].fillna('Unknown').astype(str)
+    
+    if 'week' not in df.columns:
+        df['week'] = '1'
 
     df = df.dropna(subset=['week'])
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
