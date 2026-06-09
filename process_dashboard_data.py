@@ -217,8 +217,9 @@ def process_data():
         })
 
     # CONTRACT_UTIL_DATA
-    # Iterate over ALL master contracts to ensure total allocation is correct
-    all_master_cids = sorted(list(master_dict.keys()))
+    # Iterate over ALL master contracts and any new contracts from the orders
+    all_active_cids = set(df['contract'].dropna().unique().tolist())
+    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
     contract_util_data = []
     for cid in all_master_cids:
         minfo = master_dict.get(cid, {})

@@ -237,7 +237,9 @@ def process_data_from_azure() -> str:
         })
 
     # CONTRACT_UTIL_DATA
-    all_master_cids = sorted(list(master_dict.keys()))
+    # Iterate over ALL master contracts and any new contracts from the orders
+    all_active_cids = set(df['contract'].dropna().unique().tolist())
+    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
     contract_util_data = []
     for cid in all_master_cids:
         minfo = master_dict.get(cid, {})
@@ -507,7 +509,9 @@ def process_data_from_azure_json() -> tuple:
         })
 
     # CONTRACT_UTIL_DATA
-    all_master_cids = sorted(list(master_dict.keys()))
+    # Iterate over ALL master contracts and any new contracts from the orders
+    all_active_cids = set(df['contract'].dropna().unique().tolist())
+    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
     contract_util_data = []
     for cid in all_master_cids:
         minfo = master_dict.get(cid, {})

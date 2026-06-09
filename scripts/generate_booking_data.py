@@ -331,7 +331,8 @@ def main():
 
     # ── 6. Contract Utilisation Data ─────────────────────────────────────────
     contract_util_data = []
-    for cid in sorted(contracts):
+    all_cids = sorted(list(set(master_dict.keys()).union(contracts)))
+    for cid in all_cids:
         minfo      = master_dict.get(cid, {})
         c_bookings = [b for b in booking_log_data if b['contract'] == cid]
         booked     = sum(b['teu'] for b in c_bookings)
