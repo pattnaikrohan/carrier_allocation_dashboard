@@ -457,22 +457,10 @@ export const PORT_NAMES = [
 export const PORT_CODES = [];
 export const PORT_HIERARCHY = [
   {
-    "code": "Antwerp",
-    "name": "Antwerp",
-    "country": "Belgium",
-    "region": "Eur"
-  },
-  {
-    "code": "Surabaya",
-    "name": "Surabaya",
-    "country": "Indonesia",
-    "region": "Sea"
-  },
-  {
-    "code": "Penang",
-    "name": "Penang",
-    "country": "Malaysia",
-    "region": "Sea"
+    "code": "Taiyuan",
+    "name": "Taiyuan",
+    "country": "China",
+    "region": "Nea"
   },
   {
     "code": "La Spezia",
@@ -481,172 +469,16 @@ export const PORT_HIERARCHY = [
     "region": "Eur"
   },
   {
-    "code": "Busan",
-    "name": "Busan",
-    "country": "South Korea",
-    "region": "Nea"
-  },
-  {
-    "code": "CNSZP",
-    "name": "CNSZP",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Bangkok Pat",
-    "name": "Bangkok Pat",
-    "country": "Thailand",
-    "region": "Sea"
-  },
-  {
-    "code": "Lyttelton",
-    "name": "Lyttelton",
-    "country": "New Zealand",
-    "region": "Oce"
-  },
-  {
-    "code": "Adelaide",
-    "name": "Adelaide",
-    "country": "Australia",
-    "region": "Oce"
-  },
-  {
-    "code": "ARBUE",
-    "name": "ARBUE",
-    "country": "AR",
-    "region": "Other"
-  },
-  {
-    "code": "Haiphong - Lach Huyen",
-    "name": "Haiphong - Lach Huyen",
-    "country": "Viet Nam",
-    "region": "Sea"
-  },
-  {
-    "code": "MXAPD",
-    "name": "MXAPD",
-    "country": "MX",
-    "region": "Other"
-  },
-  {
-    "code": "ZADUR",
-    "name": "ZADUR",
-    "country": "ZA",
-    "region": "Other"
-  },
-  {
-    "code": "Zhongshan",
-    "name": "Zhongshan",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "US",
-    "region": "Other"
-  },
-  {
-    "code": "Kobe",
-    "name": "Kobe",
-    "country": "Japan",
-    "region": "Nea"
-  },
-  {
-    "code": "CNYTN",
-    "name": "CNYTN",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Da Nang",
-    "name": "Da Nang",
-    "country": "Viet Nam",
-    "region": "Sea"
-  },
-  {
-    "code": "INPAV",
-    "name": "INPAV",
-    "country": "IN",
-    "region": "Other"
-  },
-  {
-    "code": "Singapore",
-    "name": "Singapore",
-    "country": "Singapore",
-    "region": "Sea"
-  },
-  {
     "code": "Ho Chi Minh City",
     "name": "Ho Chi Minh City",
     "country": "Viet Nam",
     "region": "Sea"
   },
   {
-    "code": "USSAV",
-    "name": "USSAV",
-    "country": "US",
-    "region": "Other"
-  },
-  {
-    "code": "CNTAO",
-    "name": "CNTAO",
+    "code": "CNNSA",
+    "name": "CNNSA",
     "country": "China",
     "region": "Asia"
-  },
-  {
-    "code": "Shekou",
-    "name": "Shekou",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "Valencia",
-    "name": "Valencia",
-    "country": "Spain",
-    "region": "Eur"
-  },
-  {
-    "code": "Xiamen",
-    "name": "Xiamen",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "Houston",
-    "name": "Houston",
-    "country": "United States Of America",
-    "region": "Nam"
-  },
-  {
-    "code": "Hamburg",
-    "name": "Hamburg",
-    "country": "Germany",
-    "region": "Eur"
-  },
-  {
-    "code": "Hong Kong",
-    "name": "Hong Kong",
-    "country": "Hong Kong",
-    "region": "Nea"
-  },
-  {
-    "code": "Taiyuan",
-    "name": "Taiyuan",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNWHG",
-    "name": "CNWHG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Dublin",
-    "name": "Dublin",
-    "country": "Ireland",
-    "region": "Eur"
   },
   {
     "code": "INNSA",
@@ -655,45 +487,15 @@ export const PORT_HIERARCHY = [
     "region": "Other"
   },
   {
-    "code": "Melbourne",
-    "name": "Melbourne",
-    "country": "Australia",
-    "region": "Oce"
-  },
-  {
-    "code": "Pasir Gudang",
-    "name": "Pasir Gudang",
+    "code": "Tanjung Pelepas",
+    "name": "Tanjung Pelepas",
     "country": "Malaysia",
     "region": "Sea"
   },
   {
-    "code": "CNWHI",
-    "name": "CNWHI",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Long Beach",
-    "name": "Long Beach",
-    "country": "United States Of America",
-    "region": "Nam"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "TW",
-    "region": "Other"
-  },
-  {
-    "code": "Tauranga",
-    "name": "Tauranga",
-    "country": "New Zealand",
-    "region": "Oce"
-  },
-  {
-    "code": "Laem Chabang",
-    "name": "Laem Chabang",
-    "country": "Thailand",
+    "code": "Singapore",
+    "name": "Singapore",
+    "country": "Singapore",
     "region": "Sea"
   },
   {
@@ -703,142 +505,28 @@ export const PORT_HIERARCHY = [
     "region": "Sea"
   },
   {
-    "code": "Manila",
-    "name": "Manila",
-    "country": "Philippines",
-    "region": "Sea"
-  },
-  {
-    "code": "Shanghai",
-    "name": "Shanghai",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNNSA",
-    "name": "CNNSA",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Kaohsiung",
-    "name": "Kaohsiung",
-    "country": "Taiwan",
-    "region": "Nea"
-  },
-  {
-    "code": "Shunde",
-    "name": "Shunde",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNXMN",
-    "name": "CNXMN",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "INMUN",
-    "name": "INMUN",
-    "country": "IN",
-    "region": "Other"
-  },
-  {
-    "code": "FJSUV",
-    "name": "FJSUV",
-    "country": "FJ",
-    "region": "Other"
-  },
-  {
-    "code": "Qingdao",
-    "name": "Qingdao",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNTNG",
-    "name": "CNTNG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Sydney",
-    "name": "Sydney",
-    "country": "Australia",
-    "region": "Oce"
-  },
-  {
-    "code": "GBFXT",
-    "name": "GBFXT",
-    "country": "GB",
-    "region": "Other"
-  },
-  {
-    "code": "Philadelphia",
-    "name": "Philadelphia",
-    "country": "United States Of America",
-    "region": "Nam"
-  },
-  {
-    "code": "Norfolk",
-    "name": "Norfolk",
-    "country": "United States Of America",
-    "region": "Nam"
-  },
-  {
-    "code": "Changzhou",
-    "name": "Changzhou",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNXGA",
-    "name": "CNXGA",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNSAD",
-    "name": "CNSAD",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNNBO",
-    "name": "CNNBO",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Tanjung Pelepas",
-    "name": "Tanjung Pelepas",
-    "country": "Malaysia",
-    "region": "Sea"
-  },
-  {
-    "code": "Izmit Korfezi",
-    "name": "Izmit Korfezi",
-    "country": "Turkey",
+    "code": "Piraeus",
+    "name": "Piraeus",
+    "country": "Greece",
     "region": "Eur"
   },
   {
-    "code": "USLAX",
-    "name": "USLAX",
-    "country": "US",
+    "code": "Bangkok Pat",
+    "name": "Bangkok Pat",
+    "country": "Thailand",
+    "region": "Sea"
+  },
+  {
+    "code": "Valencia",
+    "name": "Valencia",
+    "country": "Spain",
+    "region": "Eur"
+  },
+  {
+    "code": "MXAPD",
+    "name": "MXAPD",
+    "country": "MX",
     "region": "Other"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Yangpu",
-    "name": "Yangpu",
-    "country": "China",
-    "region": "Nea"
   },
   {
     "code": "CNDGG",
@@ -847,64 +535,40 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
-    "code": "Ningbo",
-    "name": "Ningbo",
-    "country": "China",
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "TW",
+    "region": "Other"
+  },
+  {
+    "code": "Kobe",
+    "name": "Kobe",
+    "country": "Japan",
     "region": "Nea"
   },
   {
-    "code": "Nanchang",
-    "name": "Nanchang",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNSHG",
-    "name": "CNSHG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Fremantle",
-    "name": "Fremantle",
-    "country": "Australia",
-    "region": "Oce"
-  },
-  {
-    "code": "Rotterdam",
-    "name": "Rotterdam",
-    "country": "Netherlands",
+    "code": "Hamburg",
+    "name": "Hamburg",
+    "country": "Germany",
     "region": "Eur"
   },
   {
-    "code": "Xingang",
-    "name": "Xingang",
-    "country": "China",
-    "region": "Nea"
-  },
-  {
-    "code": "CNXAM",
-    "name": "CNXAM",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Keelung",
-    "name": "Keelung",
-    "country": "Taiwan",
-    "region": "Nea"
-  },
-  {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "Southampton",
-    "name": "Southampton",
-    "country": "United Kingdom",
+    "code": "Dublin",
+    "name": "Dublin",
+    "country": "Ireland",
     "region": "Eur"
+  },
+  {
+    "code": "Shatian",
+    "name": "Shatian",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "Pasir Gudang",
+    "name": "Pasir Gudang",
+    "country": "Malaysia",
+    "region": "Sea"
   },
   {
     "code": "CNQDG",
@@ -913,14 +577,146 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
+    "code": "Shanghai",
+    "name": "Shanghai",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "INMAA",
+    "name": "INMAA",
+    "country": "IN",
+    "region": "Other"
+  },
+  {
+    "code": "Changzhou",
+    "name": "Changzhou",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "Tauranga",
+    "name": "Tauranga",
+    "country": "New Zealand",
+    "region": "Oce"
+  },
+  {
+    "code": "Southampton",
+    "name": "Southampton",
+    "country": "United Kingdom",
+    "region": "Eur"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Busan",
+    "name": "Busan",
+    "country": "South Korea",
+    "region": "Nea"
+  },
+  {
+    "code": "Haiphong - Lach Huyen",
+    "name": "Haiphong - Lach Huyen",
+    "country": "Viet Nam",
+    "region": "Sea"
+  },
+  {
+    "code": "ARBUE",
+    "name": "ARBUE",
+    "country": "AR",
+    "region": "Other"
+  },
+  {
     "code": "Taichung",
     "name": "Taichung",
     "country": "Taiwan",
     "region": "Nea"
   },
   {
-    "code": "Shatian",
-    "name": "Shatian",
+    "code": "Philadelphia",
+    "name": "Philadelphia",
+    "country": "United States Of America",
+    "region": "Nam"
+  },
+  {
+    "code": "Zhongshan",
+    "name": "Zhongshan",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "Qingdao",
+    "name": "Qingdao",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "USSAV",
+    "name": "USSAV",
+    "country": "US",
+    "region": "Other"
+  },
+  {
+    "code": "Melbourne",
+    "name": "Melbourne",
+    "country": "Australia",
+    "region": "Oce"
+  },
+  {
+    "code": "Keelung",
+    "name": "Keelung",
+    "country": "Taiwan",
+    "region": "Nea"
+  },
+  {
+    "code": "Da Nang",
+    "name": "Da Nang",
+    "country": "Viet Nam",
+    "region": "Sea"
+  },
+  {
+    "code": "FJSUV",
+    "name": "FJSUV",
+    "country": "FJ",
+    "region": "Other"
+  },
+  {
+    "code": "CNTNG",
+    "name": "CNTNG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSZP",
+    "name": "CNSZP",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Adelaide",
+    "name": "Adelaide",
+    "country": "Australia",
+    "region": "Oce"
+  },
+  {
+    "code": "CNXAM",
+    "name": "CNXAM",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "USBCG",
+    "name": "USBCG",
+    "country": "US",
+    "region": "Other"
+  },
+  {
+    "code": "Xingang",
+    "name": "Xingang",
     "country": "China",
     "region": "Nea"
   },
@@ -931,28 +727,184 @@ export const PORT_HIERARCHY = [
     "region": "Oce"
   },
   {
+    "code": "Fremantle",
+    "name": "Fremantle",
+    "country": "Australia",
+    "region": "Oce"
+  },
+  {
+    "code": "CNTAO",
+    "name": "CNTAO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Izmit Korfezi",
+    "name": "Izmit Korfezi",
+    "country": "Turkey",
+    "region": "Eur"
+  },
+  {
+    "code": "Sydney",
+    "name": "Sydney",
+    "country": "Australia",
+    "region": "Oce"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Manila",
+    "name": "Manila",
+    "country": "Philippines",
+    "region": "Sea"
+  },
+  {
+    "code": "Antwerp",
+    "name": "Antwerp",
+    "country": "Belgium",
+    "region": "Eur"
+  },
+  {
+    "code": "Lyttelton",
+    "name": "Lyttelton",
+    "country": "New Zealand",
+    "region": "Oce"
+  },
+  {
+    "code": "Surabaya",
+    "name": "Surabaya",
+    "country": "Indonesia",
+    "region": "Sea"
+  },
+  {
+    "code": "CNSHG",
+    "name": "CNSHG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNYTN",
+    "name": "CNYTN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Hong Kong",
+    "name": "Hong Kong",
+    "country": "Hong Kong",
+    "region": "Nea"
+  },
+  {
+    "code": "Shekou",
+    "name": "Shekou",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "Laem Chabang",
+    "name": "Laem Chabang",
+    "country": "Thailand",
+    "region": "Sea"
+  },
+  {
+    "code": "Yangpu",
+    "name": "Yangpu",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "INPAV",
+    "name": "INPAV",
+    "country": "IN",
+    "region": "Other"
+  },
+  {
+    "code": "USLAX",
+    "name": "USLAX",
+    "country": "US",
+    "region": "Other"
+  },
+  {
+    "code": "CNXMN",
+    "name": "CNXMN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Kaohsiung",
+    "name": "Kaohsiung",
+    "country": "Taiwan",
+    "region": "Nea"
+  },
+  {
+    "code": "CNSAD",
+    "name": "CNSAD",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Norfolk",
+    "name": "Norfolk",
+    "country": "United States Of America",
+    "region": "Nam"
+  },
+  {
+    "code": "CNDAL",
+    "name": "CNDAL",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Xiamen",
+    "name": "Xiamen",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "CNWHG",
+    "name": "CNWHG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNNBO",
+    "name": "CNNBO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNWHI",
+    "name": "CNWHI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "ZADUR",
+    "name": "ZADUR",
+    "country": "ZA",
+    "region": "Other"
+  },
+  {
+    "code": "Rotterdam",
+    "name": "Rotterdam",
+    "country": "Netherlands",
+    "region": "Eur"
+  },
+  {
     "code": "Brisbane",
     "name": "Brisbane",
     "country": "Australia",
     "region": "Oce"
   },
   {
-    "code": "Piraeus",
-    "name": "Piraeus",
-    "country": "Greece",
-    "region": "Eur"
-  },
-  {
-    "code": "Izmir",
-    "name": "Izmir",
-    "country": "Turkey",
-    "region": "Eur"
-  },
-  {
-    "code": "Jakarta",
-    "name": "Jakarta",
-    "country": "Indonesia",
-    "region": "Sea"
+    "code": "Shunde",
+    "name": "Shunde",
+    "country": "China",
+    "region": "Nea"
   },
   {
     "code": "Charleston",
@@ -961,22 +913,70 @@ export const PORT_HIERARCHY = [
     "region": "Nam"
   },
   {
+    "code": "Penang",
+    "name": "Penang",
+    "country": "Malaysia",
+    "region": "Sea"
+  },
+  {
+    "code": "Long Beach",
+    "name": "Long Beach",
+    "country": "United States Of America",
+    "region": "Nam"
+  },
+  {
+    "code": "Ningbo",
+    "name": "Ningbo",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "CNGGZ",
+    "name": "CNGGZ",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "Houston",
+    "name": "Houston",
+    "country": "United States Of America",
+    "region": "Nam"
+  },
+  {
+    "code": "Nanchang",
+    "name": "Nanchang",
+    "country": "China",
+    "region": "Nea"
+  },
+  {
+    "code": "INMUN",
+    "name": "INMUN",
+    "country": "IN",
+    "region": "Other"
+  },
+  {
+    "code": "Izmir",
+    "name": "Izmir",
+    "country": "Turkey",
+    "region": "Eur"
+  },
+  {
+    "code": "GBFXT",
+    "name": "GBFXT",
+    "country": "GB",
+    "region": "Other"
+  },
+  {
     "code": "CNSNZ",
     "name": "CNSNZ",
     "country": "China",
     "region": "Asia"
   },
   {
-    "code": "INMAA",
-    "name": "INMAA",
-    "country": "IN",
-    "region": "Other"
-  },
-  {
-    "code": "CNDAL",
-    "name": "CNDAL",
-    "country": "China",
-    "region": "Asia"
+    "code": "Jakarta",
+    "name": "Jakarta",
+    "country": "Indonesia",
+    "region": "Sea"
   }
 ];
 
