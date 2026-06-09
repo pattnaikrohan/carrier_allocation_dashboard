@@ -2602,8 +2602,8 @@ const ContractDashboard: React.FC = () => {
                   <table className="w-full text-left border-collapse table-auto min-w-[2000px]">
                     <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                       <tr className="bg-[#0b0f19] font-bold border-b-2 border-violet-500/30">
-                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'PER (BK/AV)', 'ADL (BK/AV)'].map((h, i) => (
-                          <th key={h} className={`px-6 py-5 font-bold text-sm tracking-widest uppercase ${i === 7 ? 'text-center text-amber-400' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-white'}`}>{h}</th>
+                        {['Contract ID', 'Type', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'PER (BK/AV)', 'ADL (BK/AV)'].map((h, i) => (
+                          <th key={h} className={`px-6 py-5 font-bold text-sm tracking-widest uppercase ${i === 8 ? 'text-center text-amber-400' : i >= 9 ? 'text-center text-violet-400' : i >= 5 ? 'text-right text-cyan-400' : i === 1 ? 'text-center text-amber-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
                     </thead>
@@ -2615,7 +2615,17 @@ const ContractDashboard: React.FC = () => {
                               : 'bg-slate-700/30 text-slate-400 border-slate-600/30';
                         return (
                           <tr key={i} className="hover:bg-white/[0.03] transition-colors group/mod">
-                            <td className="px-6 py-6  text-base font-bold text-violet-300">{row.id}</td>
+                            <td className="px-6 py-6  text-base font-bold text-violet-300">
+                              {row.id}
+                              {(row as any).contractType && (
+                                <span className={`ml-3 text-[10px] px-2 py-0.5 rounded border font-bold uppercase tracking-wider ${
+                                  (row as any).contractType === 'NAC' ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30' :
+                                  (row as any).contractType === 'BUNDLE' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
+                                  'bg-slate-500/15 text-slate-400 border-slate-500/30'
+                                }`}>{(row as any).contractType}</span>
+                              )}
+                            </td>
+                            <td className="px-6 py-6 text-sm font-bold text-amber-400/80 text-center">{(row as any).contractType || '-'}</td>
                             <td className="px-6 py-6 text-base text-slate-300 font-medium">{row.carrier}</td>
                             <td className="px-6 py-6  text-base text-slate-300">{row.lane}</td>
                             <td className="px-6 py-6 text-right  text-base text-slate-300">{row.alloc}</td>
