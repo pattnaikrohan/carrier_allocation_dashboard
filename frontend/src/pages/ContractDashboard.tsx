@@ -1446,7 +1446,7 @@ const ContractDashboard: React.FC = () => {
                   <table className="w-full text-left border-collapse table-auto min-w-[2000px] dashboard-table">
                     <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                       <tr className="bg-[#0b0f19]">
-                        {['Contract ID', 'Type', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (Bk/Al)', 'MEL (Bk/Al)', 'BNE (Bk/Al)', 'FRE (Bk/Al)', 'ADL (Bk/Al)', 'PIL (Bk/Al)', 'PRJ (Bk/Al)', 'AKL (Bk/Al)', 'OTH (Bk/Al)'].map((h, i) => (
+                        {['Contract ID', 'Type', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'FRE (BK/AV)', 'ADL (BK/AV)', 'PIL (BK/AV)', 'PRJ (BK/AV)', 'AKL (BK/AV)', 'OTH (BK/AV)'].map((h, i) => (
                           <th key={h} className={`px-4 py-4 font-bold text-xs tracking-widest uppercase border-b-2 border-violet-500/30 bg-[#0b0f19] ${i === 8 ? 'text-center text-amber-400' : i >= 9 ? 'text-center text-violet-400' : i >= 5 ? 'text-right text-cyan-400' : i === 1 ? 'text-center text-amber-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
@@ -1488,10 +1488,11 @@ const ContractDashboard: React.FC = () => {
                               const bPct = b && b.alloc > 0 ? (b.booked / b.alloc) * 100 : 0;
                               const alloc = b ? b.alloc : 0;
                               const booked = b ? b.booked : 0;
+                              const avail = alloc - booked;
                               return (
                                 <td key={bi} className="px-3 py-4 text-center">
                                   <div className="flex flex-col items-center gap-0.5">
-                                    <span className={` text-[13px] font-bold ${getUtilColor(bPct, 'text')}`}>{booked}<span className="text-slate-400">/{alloc}</span></span>
+                                    <span className={` text-[13px] font-bold ${getUtilColor(bPct, 'text')}`}>{booked}<span className="text-slate-400">/{avail}</span></span>
                                     <div className="w-10 h-1 bg-slate-900 rounded-full overflow-hidden">
                                       <div className={`h-full rounded-full ${getUtilColor(bPct, 'bar')}`} style={{ width: `${Math.min(bPct, 100)}%` }} />
                                     </div>
@@ -2601,7 +2602,7 @@ const ContractDashboard: React.FC = () => {
                   <table className="w-full text-left border-collapse table-auto min-w-[2000px]">
                     <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                       <tr className="bg-[#0b0f19] font-bold border-b-2 border-violet-500/30">
-                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (Bk/Al)', 'MEL (Bk/Al)', 'BNE (Bk/Al)', 'PER (Bk/Al)', 'ADL (Bk/Al)'].map((h, i) => (
+                        {['Contract ID', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'PER (BK/AV)', 'ADL (BK/AV)'].map((h, i) => (
                           <th key={h} className={`px-6 py-5 font-bold text-sm tracking-widest uppercase ${i === 7 ? 'text-center text-amber-400' : i >= 8 ? 'text-center text-violet-400' : i >= 4 ? 'text-right text-cyan-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
@@ -2622,12 +2623,15 @@ const ContractDashboard: React.FC = () => {
                             <td className={`px-6 py-6 text-right  text-base font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
                             <td className={`px-6 py-6 text-right  text-base font-bold ${getUtilColor(row.util, 'text')}`}>{row.util.toFixed(1)}%</td>
                             <td className="px-6 py-6 text-center"><span className={`text-xs font-bold px-3 py-1 rounded border uppercase tracking-wider ${statusStyle}`}>{row.status}</span></td>
-                            {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => (
-                              <td key={bi} className="px-6 py-6 text-center  text-base">
-                                <span className={b.booked > b.alloc ? 'text-rose-400' : 'text-slate-300'}>{b.booked}</span>
-                                <span className="text-slate-400">/{b.alloc}</span>
-                              </td>
-                            ))}
+                            {[row.syd, row.mel, row.bne, row.per, row.adl].map((b, bi) => {
+                              const avail = b ? b.alloc - b.booked : 0;
+                              return (
+                                <td key={bi} className="px-6 py-6 text-center  text-base">
+                                  <span className={b && b.booked > b.alloc ? 'text-rose-400' : 'text-slate-300'}>{b ? b.booked : 0}</span>
+                                  <span className="text-slate-400">/{avail}</span>
+                                </td>
+                              );
+                            })}
                           </tr>
                         );
                       })}
