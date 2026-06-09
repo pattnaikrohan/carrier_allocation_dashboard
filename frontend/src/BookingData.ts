@@ -291,7 +291,8 @@ export const CONTRACTS = [
   "QAAWN0000012",
   "QNAM075087",
   "TBC",
-  "TBNEN00429A"
+  "TBNEN00429A",
+  "Unassigned"
 ];
 export const WEEKS = [
   "WK 2-2026",
@@ -457,6 +458,7 @@ export const PORT_NAMES = [
 export const PORT_CODES = [];
 export const PORT_HIERARCHY = [
   {
+<<<<<<< Updated upstream
     "code": "Pasir Gudang",
     "name": "Pasir Gudang",
     "country": "Malaysia",
@@ -471,12 +473,47 @@ export const PORT_HIERARCHY = [
   {
     "code": "CNTAO",
     "name": "CNTAO",
+=======
+    "code": "NLRTM",
+    "name": "Rotterdam",
+    "country": "NETHERLANDS",
+    "region": "EUR"
+  },
+  {
+    "code": "HKHKG",
+    "name": "Hong Kong",
+    "country": "HONG KONG",
+    "region": "NEA"
+  },
+  {
+    "code": "CNZSN",
+    "name": "Zhongshan",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "CNNBO",
+    "name": "CNNBO",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNCZX",
+    "name": "Changzhou",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "CNDGG",
+    "name": "CNDGG",
+>>>>>>> Stashed changes
     "country": "China",
     "region": "Asia"
   },
   {
     "code": "ARBUE",
     "name": "ARBUE",
+<<<<<<< Updated upstream
     "country": "AR",
     "region": "Other"
   },
@@ -713,6 +750,208 @@ export const PORT_HIERARCHY = [
     "name": "Lyttelton",
     "country": "New Zealand",
     "region": "Oce"
+=======
+    "country": "Argentina",
+    "region": "Americas"
+  },
+  {
+    "code": "AUBNE",
+    "name": "Brisbane",
+    "country": "AUSTRALIA",
+    "region": "OCE"
+  },
+  {
+    "code": "MYPEN",
+    "name": "Penang",
+    "country": "MALAYSIA",
+    "region": "SEA"
+  },
+  {
+    "code": "VNSGN",
+    "name": "Ho Chi Minh City",
+    "country": "VIET NAM",
+    "region": "SEA"
+  },
+  {
+    "code": "BEANR",
+    "name": "Antwerp",
+    "country": "BELGIUM",
+    "region": "EUR"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "THLCH",
+    "name": "Laem Chabang",
+    "country": "THAILAND",
+    "region": "SEA"
+  },
+  {
+    "code": "TWKHH",
+    "name": "Kaohsiung",
+    "country": "TAIWAN",
+    "region": "NEA"
+  },
+  {
+    "code": "INNSA",
+    "name": "INNSA",
+    "country": "India",
+    "region": "Asia"
+  },
+  {
+    "code": "DEHAM",
+    "name": "Hamburg",
+    "country": "GERMANY",
+    "region": "EUR"
+  },
+  {
+    "code": "MXAPD",
+    "name": "MXAPD",
+    "country": "MX",
+    "region": "Other"
+  },
+  {
+    "code": "MYPKG",
+    "name": "Port Klang",
+    "country": "MALAYSIA",
+    "region": "SEA"
+  },
+  {
+    "code": "NZAKL",
+    "name": "Auckland",
+    "country": "NEW ZEALAND",
+    "region": "OCE"
+  },
+  {
+    "code": "USORF",
+    "name": "Norfolk",
+    "country": "UNITED STATES OF AMERICA",
+    "region": "NAM"
+  },
+  {
+    "code": "CNXAM",
+    "name": "CNXAM",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNYTN",
+    "name": "CNYTN",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "THBKK",
+    "name": "Bangkok PAT",
+    "country": "THAILAND",
+    "region": "SEA"
+  },
+  {
+    "code": "TWTXG",
+    "name": "Taichung",
+    "country": "TAIWAN",
+    "region": "NEA"
+  },
+  {
+    "code": "NZLYT",
+    "name": "Lyttelton",
+    "country": "NEW ZEALAND",
+    "region": "OCE"
+  },
+  {
+    "code": "CNSHG",
+    "name": "CNSHG",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "USLAX",
+    "name": "USLAX",
+    "country": "USA",
+    "region": "Americas"
+  },
+  {
+    "code": "CNSAD",
+    "name": "CNSAD",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "CNSUD",
+    "name": "Shunde",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "Taiwan",
+    "region": "Asia"
+  },
+  {
+    "code": "PHMNL",
+    "name": "Manila",
+    "country": "PHILIPPINES",
+    "region": "SEA"
+  },
+  {
+    "code": "TRIZT",
+    "name": "Izmit Korfezi",
+    "country": "TURKEY",
+    "region": "EUR"
+  },
+  {
+    "code": "CNSGH",
+    "name": "Shanghai",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "USPHL",
+    "name": "Philadelphia",
+    "country": "UNITED STATES OF AMERICA",
+    "region": "NAM"
+  },
+  {
+    "code": "AUMEL",
+    "name": "Melbourne",
+    "country": "AUSTRALIA",
+    "region": "OCE"
+  },
+  {
+    "code": "GBFXT",
+    "name": "GBFXT",
+    "country": "UK",
+    "region": "Europe"
+  },
+  {
+    "code": "CNSHK",
+    "name": "Shekou",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "SGSIN",
+    "name": "Singapore",
+    "country": "SINGAPORE",
+    "region": "SEA"
+  },
+  {
+    "code": "AUADL",
+    "name": "Adelaide",
+    "country": "AUSTRALIA",
+    "region": "OCE"
+  },
+  {
+    "code": "AUFRE",
+    "name": "Fremantle",
+    "country": "AUSTRALIA",
+    "region": "OCE"
+>>>>>>> Stashed changes
   },
   {
     "code": "CNNSA",
@@ -721,6 +960,7 @@ export const PORT_HIERARCHY = [
     "region": "Asia"
   },
   {
+<<<<<<< Updated upstream
     "code": "Taiyuan",
     "name": "Taiyuan",
     "country": "China",
@@ -893,6 +1133,18 @@ export const PORT_HIERARCHY = [
     "name": "USLAX",
     "country": "US",
     "region": "Other"
+=======
+    "code": "VNHPH",
+    "name": "Haiphong - Lach Huyen",
+    "country": "VIET NAM",
+    "region": "SEA"
+  },
+  {
+    "code": "AUSYD",
+    "name": "Sydney",
+    "country": "AUSTRALIA",
+    "region": "OCE"
+>>>>>>> Stashed changes
   },
   {
     "code": "Long Beach",
@@ -901,6 +1153,7 @@ export const PORT_HIERARCHY = [
     "region": "Nam"
   },
   {
+<<<<<<< Updated upstream
     "code": "Manila",
     "name": "Manila",
     "country": "Philippines",
@@ -915,10 +1168,57 @@ export const PORT_HIERARCHY = [
   {
     "code": "CNDAL",
     "name": "CNDAL",
+=======
+    "code": "CNQDG",
+    "name": "CNQDG",
     "country": "China",
     "region": "Asia"
   },
   {
+    "code": "CNSNZ",
+    "name": "CNSNZ",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "IDJKT",
+    "name": "Jakarta",
+    "country": "INDONESIA",
+    "region": "SEA"
+  },
+  {
+    "code": "CNTXG",
+    "name": "Xingang",
+    "country": "CHINA",
+    "region": "NEA"
+  },
+  {
+    "code": "ITSPE",
+    "name": "La Spezia",
+    "country": "ITALY",
+    "region": "EUR"
+  },
+  {
+    "code": "USSAV",
+    "name": "USSAV",
+    "country": "USA",
+    "region": "Americas"
+  },
+  {
+    "code": "VNDAD",
+    "name": "Da Nang",
+    "country": "VIET NAM",
+    "region": "SEA"
+  },
+  {
+    "code": "CNGGZ",
+    "name": "CNGGZ",
+>>>>>>> Stashed changes
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+<<<<<<< Updated upstream
     "code": "CNXMN",
     "name": "CNXMN",
     "country": "China",
@@ -977,6 +1277,72 @@ export const PORT_HIERARCHY = [
     "name": "Surabaya",
     "country": "Indonesia",
     "region": "Sea"
+=======
+    "code": "USCHS",
+    "name": "Charleston",
+    "country": "UNITED STATES OF AMERICA",
+    "region": "NAM"
+  },
+  {
+    "code": "INMUN",
+    "name": "INMUN",
+    "country": "India",
+    "region": "Asia"
+  },
+  {
+    "code": "JPUKB",
+    "name": "Kobe",
+    "country": "JAPAN",
+    "region": "NEA"
+  },
+  {
+    "code": "NZTRG",
+    "name": "Tauranga",
+    "country": "NEW ZEALAND",
+    "region": "OCE"
+  },
+  {
+    "code": "USLGB",
+    "name": "Long Beach",
+    "country": "UNITED STATES OF AMERICA",
+    "region": "NAM"
+  },
+  {
+    "code": "MYTPP",
+    "name": "Tanjung Pelepas",
+    "country": "MALAYSIA",
+    "region": "SEA"
+  },
+  {
+    "code": "KRPUS",
+    "name": "Busan",
+    "country": "SOUTH KOREA",
+    "region": "NEA"
+  },
+  {
+    "code": "USHOU",
+    "name": "Houston",
+    "country": "UNITED STATES OF AMERICA",
+    "region": "NAM"
+  },
+  {
+    "code": "CNWHI",
+    "name": "CNWHI",
+    "country": "China",
+    "region": "Asia"
+  },
+  {
+    "code": "IEDUB",
+    "name": "Dublin",
+    "country": "IRELAND",
+    "region": "EUR"
+  },
+  {
+    "code": "CNQIN",
+    "name": "Qingdao",
+    "country": "CHINA",
+    "region": "NEA"
+>>>>>>> Stashed changes
   }
 ];
 
@@ -116227,6 +116593,63 @@ export const CONTRACT_UTIL_DATA = [
     "oth": {
       "alloc": 0,
       "booked": 0.0,
+      "util": 0
+    }
+  },
+  {
+    "id": "Unassigned",
+    "carrier": "Various",
+    "lane": "Unknown",
+    "contractType": "",
+    "contractName": "",
+    "expiry": "N/A",
+    "alloc": 0,
+    "booked": 0,
+    "util": 0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
       "util": 0
     }
   }
