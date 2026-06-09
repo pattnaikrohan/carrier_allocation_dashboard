@@ -286,322 +286,1824 @@ export const PORT_NAMES = [
 export const PORT_CODES = [];
 export const PORT_HIERARCHY = [
   {
-    "code": "TRIZT",
-    "name": "Izmit Korfezi",
-    "country": "TURKEY",
-    "region": "EUR"
-  },
-  {
-    "code": "THBKK",
-    "name": "Bangkok PAT",
-    "country": "THAILAND",
-    "region": "SEA"
-  },
-  {
-    "code": "THLCH",
-    "name": "Laem Chabang",
-    "country": "THAILAND",
-    "region": "SEA"
-  },
-  {
-    "code": "MYPKG",
-    "name": "Port Klang",
-    "country": "MALAYSIA",
-    "region": "SEA"
-  },
-  {
-    "code": "USCHS",
-    "name": "Charleston",
-    "country": "UNITED STATES OF AMERICA",
-    "region": "NAM"
-  },
-  {
-    "code": "CNSGH",
-    "name": "Shanghai",
-    "country": "CHINA",
-    "region": "NEA"
-  },
-  {
-    "code": "MXAPD",
-    "name": "MXAPD",
-    "country": "MX",
-    "region": "Other"
-  },
-  {
-    "code": "CNQDG",
-    "name": "CNQDG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNYTN",
-    "name": "CNYTN",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNNBO",
-    "name": "CNNBO",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "AUFRE",
-    "name": "Fremantle",
-    "country": "AUSTRALIA",
-    "region": "OCE"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "SGSIN",
-    "name": "Singapore",
-    "country": "SINGAPORE",
-    "region": "SEA"
-  },
-  {
-    "code": "DEHAM",
-    "name": "Hamburg",
-    "country": "GERMANY",
-    "region": "EUR"
-  },
-  {
     "code": "AUMEL",
     "name": "Melbourne",
-    "country": "AUSTRALIA",
-    "region": "OCE"
-  },
-  {
-    "code": "MYTPP",
-    "name": "Tanjung Pelepas",
-    "country": "MALAYSIA",
-    "region": "SEA"
-  },
-  {
-    "code": "USSAV",
-    "name": "USSAV",
-    "country": "USA",
-    "region": "Americas"
-  },
-  {
-    "code": "AUADL",
-    "name": "Adelaide",
-    "country": "AUSTRALIA",
-    "region": "OCE"
-  },
-  {
-    "code": "CNWHI",
-    "name": "CNWHI",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNTXG",
-    "name": "Xingang",
-    "country": "CHINA",
-    "region": "NEA"
-  },
-  {
-    "code": "ITSPE",
-    "name": "La Spezia",
-    "country": "ITALY",
-    "region": "EUR"
-  },
-  {
-    "code": "NZAKL",
-    "name": "Auckland",
-    "country": "NEW ZEALAND",
-    "region": "OCE"
-  },
-  {
-    "code": "CNSNZ",
-    "name": "CNSNZ",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "NLRTM",
-    "name": "Rotterdam",
-    "country": "NETHERLANDS",
-    "region": "EUR"
-  },
-  {
-    "code": "ARBUE",
-    "name": "ARBUE",
-    "country": "Argentina",
-    "region": "Americas"
-  },
-  {
-    "code": "INMUN",
-    "name": "INMUN",
-    "country": "India",
-    "region": "Asia"
-  },
-  {
-    "code": "TWKHH",
-    "name": "Kaohsiung",
-    "country": "TAIWAN",
-    "region": "NEA"
-  },
-  {
-    "code": "CNSHK",
-    "name": "Shekou",
-    "country": "CHINA",
-    "region": "NEA"
-  },
-  {
-    "code": "CNYPG",
-    "name": "Yangpu",
-    "country": "CHINA",
-    "region": "NEA"
-  },
-  {
-    "code": "TRIZM",
-    "name": "Izmir",
-    "country": "TURKEY",
-    "region": "EUR"
-  },
-  {
-    "code": "CNXAM",
-    "name": "CNXAM",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "KRPUS",
-    "name": "Busan",
-    "country": "SOUTH KOREA",
-    "region": "NEA"
-  },
-  {
-    "code": "CNQIN",
-    "name": "Qingdao",
-    "country": "CHINA",
-    "region": "NEA"
-  },
-  {
-    "code": "ESVLC",
-    "name": "Valencia",
-    "country": "SPAIN",
-    "region": "EUR"
-  },
-  {
-    "code": "VNSGN",
-    "name": "Ho Chi Minh City",
-    "country": "VIET NAM",
-    "region": "SEA"
-  },
-  {
-    "code": "TWTXG",
-    "name": "Taichung",
-    "country": "TAIWAN",
-    "region": "NEA"
-  },
-  {
-    "code": "IEDUB",
-    "name": "Dublin",
-    "country": "IRELAND",
-    "region": "EUR"
-  },
-  {
-    "code": "VNDAD",
-    "name": "Da Nang",
-    "country": "VIET NAM",
-    "region": "SEA"
-  },
-  {
-    "code": "MYPEN",
-    "name": "Penang",
-    "country": "MALAYSIA",
-    "region": "SEA"
-  },
-  {
-    "code": "NZTRG",
-    "name": "Tauranga",
-    "country": "NEW ZEALAND",
-    "region": "OCE"
-  },
-  {
-    "code": "USORF",
-    "name": "Norfolk",
-    "country": "UNITED STATES OF AMERICA",
-    "region": "NAM"
-  },
-  {
-    "code": "BEANR",
-    "name": "Antwerp",
-    "country": "BELGIUM",
-    "region": "EUR"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "USA",
-    "region": "Americas"
-  },
-  {
-    "code": "AUBNE",
-    "name": "Brisbane",
-    "country": "AUSTRALIA",
-    "region": "OCE"
-  },
-  {
-    "code": "CNSHG",
-    "name": "CNSHG",
-    "country": "China",
-    "region": "Asia"
-  },
-  {
-    "code": "GBFXT",
-    "name": "GBFXT",
-    "country": "UK",
-    "region": "Europe"
-  },
-  {
-    "code": "JPUKB",
-    "name": "Kobe",
-    "country": "JAPAN",
-    "region": "NEA"
-  },
-  {
-    "code": "USHOU",
-    "name": "Houston",
-    "country": "UNITED STATES OF AMERICA",
-    "region": "NAM"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "Taiwan",
-    "region": "Asia"
-  },
-  {
-    "code": "HKHKG",
-    "name": "Hong Kong",
-    "country": "HONG KONG",
-    "region": "NEA"
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia East Coast"
   },
   {
     "code": "AUSYD",
     "name": "Sydney",
-    "country": "AUSTRALIA",
-    "region": "OCE"
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia East Coast"
+  },
+  {
+    "code": "AUHOB",
+    "name": "Hobart",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia East Coast"
+  },
+  {
+    "code": "AUBNE",
+    "name": "Brisbane",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia East Coast"
+  },
+  {
+    "code": "AUFRE",
+    "name": "Fremantle",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia West Coast"
+  },
+  {
+    "code": "AUADL",
+    "name": "Adelaide",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia West Coast"
+  },
+  {
+    "code": "AUDAW",
+    "name": "Darwin",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "Australia West Coast"
+  },
+  {
+    "code": "PABLB",
+    "name": "Balboa",
+    "country": "Panama",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "PAMIT",
+    "name": "Col\u00f3n (Manzanillo International Terminal)",
+    "country": "Panama",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "PAONX",
+    "name": "Col\u00f3n (Manzanillo International Terminal)",
+    "country": "Panama",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "PAONX",
+    "name": "Crist\u00f3bal",
+    "country": "Panama",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "COCTG",
+    "name": "Cartagena",
+    "country": "Colombia",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "COBAQ",
+    "name": "Barranquilla",
+    "country": "Colombia",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "DOSDQ",
+    "name": "Santo Domingo",
+    "country": "Dominican Republic",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "JMKIN",
+    "name": "Kingston Container Terminal",
+    "country": "Jamaica",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "TTPOS",
+    "name": "Port of Spain",
+    "country": "Trinidad and Tobago",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "CUHAV",
+    "name": "Havana",
+    "country": "Cuba",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "GTSTC",
+    "name": "Santo Tom\u00e1s de Castilla",
+    "country": "Guatemala",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "CRLIM",
+    "name": "Lim\u00f3n",
+    "country": "Costa Rica",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "HNPCR",
+    "name": "Puerto Cort\u00e9s",
+    "country": "Honduras",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "SVACJ",
+    "name": "Acajutla",
+    "country": "El Salvador",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "BSFPO",
+    "name": "Freeport Container Port",
+    "country": "Bahamas",
+    "region": "Americas",
+    "lane": "Central America"
+  },
+  {
+    "code": "DJJIB",
+    "name": "Djibouti (Doraleh)",
+    "country": "Djibouti",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "DJDOR",
+    "name": "Djibouti (Doraleh)",
+    "country": "Djibouti",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "KEMBA",
+    "name": "Mombasa",
+    "country": "Kenya",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "TZDAR",
+    "name": "Dar es Salaam",
+    "country": "Tanzania",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "MZMPM",
+    "name": "Maputo",
+    "country": "Mozambique",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "SOBBO",
+    "name": "Berbera (via Somaliland)",
+    "country": "Ethiopia",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "MUPLU",
+    "name": "Port Louis",
+    "country": "Mauritius",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "MGTLE",
+    "name": "Toamasina",
+    "country": "Madagascar",
+    "region": "Middle East & Africa",
+    "lane": "East Africa"
+  },
+  {
+    "code": "ESALG",
+    "name": "Algeciras",
+    "country": "Spain",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ESVLC",
+    "name": "Valencia",
+    "country": "Spain",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ESBCN",
+    "name": "Barcelona",
+    "country": "Spain",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ESBIO",
+    "name": "Bilbao",
+    "country": "Spain",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "FRMRS",
+    "name": "Marseille",
+    "country": "France",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITGIT",
+    "name": "Gioia Tauro",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITGOA",
+    "name": "Genoa",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITSPZ",
+    "name": "La Spezia",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITLIV",
+    "name": "Livorno",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITTRS",
+    "name": "Trieste",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ITTAR",
+    "name": "Taranto",
+    "country": "Italy",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "GRPIR",
+    "name": "Piraeus",
+    "country": "Greece",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "GRTHE",
+    "name": "Thessaloniki",
+    "country": "Greece",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "MTMFP",
+    "name": "Marsaxlokk (Malta Freeport)",
+    "country": "Malta",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "PTSIN",
+    "name": "Sines",
+    "country": "Portugal",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "PTLIS",
+    "name": "Lisbon",
+    "country": "Portugal",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "RUNVS",
+    "name": "Novorossiysk",
+    "country": "Russia",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "UAODS",
+    "name": "Odessa",
+    "country": "Ukraine",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "ROCND",
+    "name": "Constan\u021ba",
+    "country": "Romania",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "TRIST",
+    "name": "Istanbul (Ambarl\u0131)",
+    "country": "Turkey",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "TRAMB",
+    "name": "Istanbul (Ambarl\u0131)",
+    "country": "Turkey",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "TRMER",
+    "name": "Mersin",
+    "country": "Turkey",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "TRIZM",
+    "name": "\u0130zmir",
+    "country": "Turkey",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "TRGEM",
+    "name": "Gemlik",
+    "country": "Turkey",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "HRRI2",
+    "name": "Rijeka",
+    "country": "Croatia",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "SIKOP",
+    "name": "Koper",
+    "country": "Slovenia",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "CYLMS",
+    "name": "Limassol",
+    "country": "Cyprus",
+    "region": "Europe",
+    "lane": "Mediterranean"
+  },
+  {
+    "code": "AEJEA",
+    "name": "Jebel Ali Port",
+    "country": "UAE",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "AEAUH",
+    "name": "Abu Dhabi (Khalifa Port)",
+    "country": "UAE",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "AEKHL",
+    "name": "Abu Dhabi (Khalifa Port)",
+    "country": "UAE",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "AESHJ",
+    "name": "Sharjah",
+    "country": "UAE",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "SAJED",
+    "name": "Jeddah",
+    "country": "Saudi Arabia",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "SADMM",
+    "name": "Dammam (King Abdul Aziz)",
+    "country": "Saudi Arabia",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "SAJUB",
+    "name": "Jubail",
+    "country": "Saudi Arabia",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "OMSLL",
+    "name": "Salalah",
+    "country": "Oman",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "OMSOH",
+    "name": "Sohar",
+    "country": "Oman",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "OMMCT",
+    "name": "Muscat",
+    "country": "Oman",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "QAHMD",
+    "name": "Hamad",
+    "country": "Qatar",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "KWKWI",
+    "name": "Shuwaikh",
+    "country": "Kuwait",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "BHKBS",
+    "name": "Khalifa bin Salman",
+    "country": "Bahrain",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "IQUQR",
+    "name": "Umm Qasr",
+    "country": "Iraq",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "JOAQJ",
+    "name": "Aqaba",
+    "country": "Jordan",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "ILHFA",
+    "name": "Haifa",
+    "country": "Israel",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "ILASH",
+    "name": "Ashdod",
+    "country": "Israel",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "EGALX",
+    "name": "Alexandria",
+    "country": "Egypt",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "EGPSD",
+    "name": "Port Said",
+    "country": "Egypt",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "EGPOS",
+    "name": "Port Said",
+    "country": "Egypt",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "EGDAM",
+    "name": "Damietta",
+    "country": "Egypt",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "MATNG",
+    "name": "Tanger Med",
+    "country": "Morocco",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "MACAS",
+    "name": "Casablanca",
+    "country": "Morocco",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "DZALG",
+    "name": "Algiers",
+    "country": "Algeria",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "TNTUNIS",
+    "name": "Tunis (La Goulette)",
+    "country": "Tunisia",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "LYTIP",
+    "name": "Tripoli",
+    "country": "Libya",
+    "region": "Middle East & Africa",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "BDCGP",
+    "name": "Chittagong",
+    "country": "Bangladesh",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "LKCMB",
+    "name": "Colombo",
+    "country": "Sri Lanka",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INNSA",
+    "name": "Jawaharlal Nehru Port (Mumbai)",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INMUN",
+    "name": "Mundra",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
   },
   {
     "code": "INMAA",
-    "name": "INMAA",
+    "name": "Chennai",
     "country": "India",
-    "region": "Asia"
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INVTZ",
+    "name": "Visakhapatnam",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INCCU",
+    "name": "Kolkata",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INCOK",
+    "name": "Kochi",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INPAV",
+    "name": "Pipavav",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "INHAZ",
+    "name": "Adani Hazira",
+    "country": "India",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "PKKHI",
+    "name": "Karachi",
+    "country": "Pakistan",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "PKPQM",
+    "name": "Port Qasim",
+    "country": "Pakistan",
+    "region": "Asia",
+    "lane": "Middle East & India"
+  },
+  {
+    "code": "NZAKL",
+    "name": "Auckland",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "NZTRG",
+    "name": "Tauranga",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "NZLYT",
+    "name": "Lyttelton",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "NZPOE",
+    "name": "Port Chalmers",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "NZWLG",
+    "name": "Wellington",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "NZNPE",
+    "name": "Napier",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "New Zealand"
+  },
+  {
+    "code": "USNYC",
+    "name": "New York / New Jersey",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USNWK",
+    "name": "New York / New Jersey",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USSAV",
+    "name": "Savannah",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USCHS",
+    "name": "Charleston",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USORV",
+    "name": "Norfolk",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USPVG",
+    "name": "Norfolk",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USBAL",
+    "name": "Baltimore",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USMIA",
+    "name": "Miami",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USJAX",
+    "name": "Jacksonville",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USBOS",
+    "name": "Boston",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "CAMTR",
+    "name": "Montreal",
+    "country": "Canada",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "CAHAL",
+    "name": "Halifax",
+    "country": "Canada",
+    "region": "Americas",
+    "lane": "North America East Coast"
+  },
+  {
+    "code": "USHOU",
+    "name": "Houston",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America Gulf Coast"
+  },
+  {
+    "code": "USMSY",
+    "name": "New Orleans",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America Gulf Coast"
+  },
+  {
+    "code": "MXVER",
+    "name": "Veracruz",
+    "country": "Mexico",
+    "region": "Americas",
+    "lane": "North America Gulf Coast"
+  },
+  {
+    "code": "MXATM",
+    "name": "Altamira",
+    "country": "Mexico",
+    "region": "Americas",
+    "lane": "North America Gulf Coast"
+  },
+  {
+    "code": "USLAX",
+    "name": "Los Angeles",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "USLGB",
+    "name": "Long Beach",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "USSEA",
+    "name": "Seattle",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "USTIW",
+    "name": "Tacoma",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "USOAK",
+    "name": "Oakland",
+    "country": "USA",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "CAVAN",
+    "name": "Vancouver",
+    "country": "Canada",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "CAPRR",
+    "name": "Prince Rupert",
+    "country": "Canada",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "MXZLO",
+    "name": "Manzanillo",
+    "country": "Mexico",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "MXLZC",
+    "name": "L\u00e1zaro C\u00e1rdenas",
+    "country": "Mexico",
+    "region": "Americas",
+    "lane": "North America West Coast"
+  },
+  {
+    "code": "CNSGH",
+    "name": "Shanghai",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNSHG",
+    "name": "Shanghai",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CHSHA",
+    "name": "Shanghai",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNSZX",
+    "name": "Shenzhen",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNYTN",
+    "name": "Yantian",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNSHK",
+    "name": "Shekou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNCHI",
+    "name": "Chiwan",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNNBO",
+    "name": "Ningbo",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNZOS",
+    "name": "Zoshan",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNGZU",
+    "name": "Guangzhou ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNNSA",
+    "name": "Nansha",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNHUG",
+    "name": "Guangzhou ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNTSN",
+    "name": "Tianjin (Xingang)",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNXGG",
+    "name": "Xingang",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNTAO",
+    "name": "Qingdao",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNQDG",
+    "name": "Qingdao",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNQIN",
+    "name": "Qingdao",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNXMN",
+    "name": "Xiamen",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNHAG",
+    "name": "Xiamen",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNDLC",
+    "name": "Dalian",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNLYG",
+    "name": "Lianyungang",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNNKG",
+    "name": "Nanjing",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNSUZ",
+    "name": "Suzhou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNTAG",
+    "name": "Suzhou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNWUH",
+    "name": "Wuhan",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNFOC",
+    "name": "Fuzhou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNFSN",
+    "name": "Fuzhou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNTAG",
+    "name": "Taicang",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNYIK",
+    "name": "Yingkou",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNRZH",
+    "name": "Rizhao",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNTGS",
+    "name": "Tangshan (Caofeidian)",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "CNCFD",
+    "name": "Tangshan (Caofeidian)",
+    "country": "China",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "HKHKG",
+    "name": "Hong Kong",
+    "country": "Hong Kong",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "TWKHH",
+    "name": "Kaohsiung",
+    "country": "Taiwan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "TWTXG",
+    "name": "Taichung",
+    "country": "Taiwan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "TWKEL",
+    "name": "Keelung",
+    "country": "Taiwan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "KRPUS",
+    "name": "Busan",
+    "country": "South Korea",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "KRINC",
+    "name": "Incheon",
+    "country": "South Korea",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "KRKWJ",
+    "name": "Gwangyang",
+    "country": "South Korea",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPTYO",
+    "name": "Tokyo",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPYOK",
+    "name": "Yokohama",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPOSA",
+    "name": "Osaka",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPUKB",
+    "name": "Kobe",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPNGO",
+    "name": "Nagoya",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "JPFUK",
+    "name": "Hakata",
+    "country": "Japan",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "RUVVO",
+    "name": "Vladivostok",
+    "country": "Russia (Far East)",
+    "region": "Asia",
+    "lane": "North Asia"
+  },
+  {
+    "code": "NLRTM",
+    "name": "Rotterdam",
+    "country": "Netherlands",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "DEHAM",
+    "name": "Hamburg",
+    "country": "Germany",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "BEANR",
+    "name": "Antwerp-Bruges",
+    "country": "Belgium",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "BEBRG",
+    "name": "Antwerp-Bruges",
+    "country": "Belgium",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "GBFXT",
+    "name": "Felixstowe",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "GBSOU",
+    "name": "Southampton",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "GBTI2",
+    "name": "London (Tilbury)",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "GBLIV",
+    "name": "Liverpool",
+    "country": "United Kingdom",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "FRLEH",
+    "name": "Le Havre",
+    "country": "France",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "SEGOT",
+    "name": "Gothenburg",
+    "country": "Sweden",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "DKAAR",
+    "name": "Aarhus",
+    "country": "Denmark",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "DKCPH",
+    "name": "Copenhagen",
+    "country": "Denmark",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "FIHEL",
+    "name": "Helsinki",
+    "country": "Finland",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "NOOSL",
+    "name": "Oslo",
+    "country": "Norway",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "PLGDN",
+    "name": "Gda\u0144sk",
+    "country": "Poland",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "PLGDY",
+    "name": "Gdynia",
+    "country": "Poland",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "LTKLJ",
+    "name": "Klaip\u0117da",
+    "country": "Lithuania",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "LVRIX",
+    "name": "Riga",
+    "country": "Latvia",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "EETLL",
+    "name": "Tallinn",
+    "country": "Estonia",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "RULED",
+    "name": "St. Petersburg",
+    "country": "Russia",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "ISREY",
+    "name": "Reykjavik",
+    "country": "Iceland",
+    "region": "Europe",
+    "lane": "North Europe"
+  },
+  {
+    "code": "PGLAE",
+    "name": "Lae",
+    "country": "Papua New Guinea",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "PGPOM",
+    "name": "Port Moresby",
+    "country": "Papua New Guinea",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "FJSUV",
+    "name": "Suva",
+    "country": "Fiji",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "FJLTK",
+    "name": "Lautoka",
+    "country": "Fiji",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "SBHIR",
+    "name": "Honiara",
+    "country": "Solomon Islands",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "VUVLI",
+    "name": "Port Vila",
+    "country": "Vanuatu",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "WSAPW",
+    "name": "Apia",
+    "country": "Samoa",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "TONFU",
+    "name": "Nuku'alofa",
+    "country": "Tonga",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "PFPPT",
+    "name": "Papeete",
+    "country": "French Polynesia",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "NCNOU",
+    "name": "Noum\u00e9a",
+    "country": "New Caledonia",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "GUAPRA",
+    "name": "Apra",
+    "country": "Guam",
+    "region": "Oceania",
+    "lane": "Pacific"
+  },
+  {
+    "code": "ZADUR",
+    "name": "Durban",
+    "country": "South Africa",
+    "region": "Middle East & Africa",
+    "lane": "South Africa"
+  },
+  {
+    "code": "ZACPT",
+    "name": "Cape Town",
+    "country": "South Africa",
+    "region": "Middle East & Africa",
+    "lane": "South Africa"
+  },
+  {
+    "code": "ZAPLZ",
+    "name": "Port Elizabeth (Ngqura)",
+    "country": "South Africa",
+    "region": "Middle East & Africa",
+    "lane": "South Africa"
+  },
+  {
+    "code": "ZANGQ",
+    "name": "Port Elizabeth (Ngqura)",
+    "country": "South Africa",
+    "region": "Middle East & Africa",
+    "lane": "South Africa"
+  },
+  {
+    "code": "BRSSZ",
+    "name": "Santos",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRITJ",
+    "name": "Itaja\u00ed",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRRIO",
+    "name": "Rio de Janeiro",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRPNG",
+    "name": "Paranagu\u00e1",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRIPE",
+    "name": "Suape",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRSSA",
+    "name": "Salvador",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "BRMAO",
+    "name": "Manaus",
+    "country": "Brazil",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "ARBUE",
+    "name": "Buenos Aires",
+    "country": "Argentina",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "ARROS",
+    "name": "Rosario",
+    "country": "Argentina",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "VELGU",
+    "name": "La Guaira",
+    "country": "Venezuela",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "VEPBL",
+    "name": "Puerto Cabello",
+    "country": "Venezuela",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "UYMVD",
+    "name": "Montevideo",
+    "country": "Uruguay",
+    "region": "Americas",
+    "lane": "South America East Coast"
+  },
+  {
+    "code": "COBUN",
+    "name": "Buenaventura",
+    "country": "Colombia",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "CLSAI",
+    "name": "San Antonio",
+    "country": "Chile",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "CLVAP",
+    "name": "Valpara\u00edso",
+    "country": "Chile",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "CLIQQ",
+    "name": "Iquique",
+    "country": "Chile",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "PECLL",
+    "name": "Callao",
+    "country": "Peru",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "ECGYE",
+    "name": "Guayaquil",
+    "country": "Ecuador",
+    "region": "Americas",
+    "lane": "South America West Coast"
+  },
+  {
+    "code": "SGSIN",
+    "name": "Singapore",
+    "country": "Singapore",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYPKG",
+    "name": "Port Kelang",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYNKL",
+    "name": "Port Kelang",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYPTP",
+    "name": "Port Kelang",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYTPP",
+    "name": "Tanjung Pelepas",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYPEN",
+    "name": "Penang",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MYJOH",
+    "name": "Johor",
+    "country": "Malaysia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDJKT",
+    "name": "Tanjung Priok (Jakarta)",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDTPK",
+    "name": "Tanjung Priok (Jakarta)",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDSUB",
+    "name": "Tanjung Perak (Surabaya)",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDTPE",
+    "name": "Tanjung Perak (Surabaya)",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDBLW",
+    "name": "Belawan (Medan)",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "IDUPG",
+    "name": "Makassar",
+    "country": "Indonesia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "THLCH",
+    "name": "Laem Chabang",
+    "country": "Thailand",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "THBKK",
+    "name": "Bangkok",
+    "country": "Thailand",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "VNSGN",
+    "name": "Ho Chi Minh City (Cai Mep)",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "VNCMP",
+    "name": "Ho Chi Minh City (Cai Mep)",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "VNHPH",
+    "name": "Haiphong",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "VNDAD",
+    "name": "Da Nang",
+    "country": "Vietnam",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "PHMNL",
+    "name": "Manila",
+    "country": "Philippines",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "PHMNB",
+    "name": "Manila",
+    "country": "Philippines",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "PHMNS",
+    "name": "Manila",
+    "country": "Philippines",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "PHCEB",
+    "name": "Cebu",
+    "country": "Philippines",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "PHDVO",
+    "name": "Davao",
+    "country": "Philippines",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "MMRGN",
+    "name": "Yangon",
+    "country": "Myanmar",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "KHKOS",
+    "name": "Sihanoukville",
+    "country": "Cambodia",
+    "region": "Asia",
+    "lane": "South East Asia"
+  },
+  {
+    "code": "NGLOS",
+    "name": "Lagos (Apapa)",
+    "country": "Nigeria",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "NGTIN",
+    "name": "Lagos (Apapa)",
+    "country": "Nigeria",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "NGTIN",
+    "name": "Tin Can Island",
+    "country": "Nigeria",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "GHTEM",
+    "name": "Tema",
+    "country": "Ghana",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "CIABJ",
+    "name": "Abidjan",
+    "country": "C\u00f4te d'Ivoire",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "SNDKR",
+    "name": "Dakar",
+    "country": "Senegal",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "TGLFW",
+    "name": "Lom\u00e9",
+    "country": "Togo",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
+  },
+  {
+    "code": "CMDLA",
+    "name": "Douala",
+    "country": "Cameroon",
+    "region": "Middle East & Africa",
+    "lane": "West Africa"
   }
 ];
 export const ALL_CARRIERS = [

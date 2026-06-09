@@ -246,12 +246,18 @@ const ContractDashboard: React.FC = () => {
       // Match Origin/Dest by looking in the split tokens or the booking data
       const matchOrigin = selectedOrigin === 'ALL' ||
         b.loadPort === selectedOrigin ||
+        oPortMeta?.name === selectedOrigin ||
+        oPortMeta?.code === selectedOrigin ||
+        oPortMeta?.lane === selectedOrigin ||
         oPortMeta?.country === selectedOrigin ||
         oPortMeta?.region === selectedOrigin ||
         (master && master.notes && master.notes.toLowerCase().includes(selectedOrigin.toLowerCase()));
 
       const matchDest = selectedDestination === 'ALL' ||
         b.dischargePort === selectedDestination ||
+        dPortMeta?.name === selectedDestination ||
+        dPortMeta?.code === selectedDestination ||
+        dPortMeta?.lane === selectedDestination ||
         dPortMeta?.country === selectedDestination ||
         dPortMeta?.region === selectedDestination;
 
@@ -489,13 +495,31 @@ const ContractDashboard: React.FC = () => {
       tree.push({
         label: region,
         children: countriesInRegion.map(country => {
-          const portsInCountry = PORT_HIERARCHY
-            .filter(p => p.country === country)
-            .map(p => p.name)
-            .sort();
+          const lanesInCountry = Array.from(new Set(
+            PORT_HIERARCHY.filter(p => p.country === country).map(p => p.lane)
+          )).sort();
+          
           return {
             label: country,
-            children: portsInCountry.map(port => ({ label: port }))
+            children: lanesInCountry.map(lane => {
+              const portsInLane = Array.from(new Set(
+                PORT_HIERARCHY.filter(p => p.country === country && p.lane === lane).map(p => p.name)
+              )).sort();
+              
+              return {
+                label: lane || 'N/A',
+                children: portsInLane.map(port => {
+                  const codes = Array.from(new Set(
+                    PORT_HIERARCHY.filter(p => p.country === country && p.lane === lane && p.name === port).map(p => p.code)
+                  )).sort();
+                  
+                  return {
+                    label: port,
+                    children: codes.map(code => ({ label: code }))
+                  };
+                })
+              };
+            })
           };
         })
       });

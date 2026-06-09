@@ -183,7 +183,7 @@ const Navbar: React.FC<NavbarProps> = ({
       onSelect: onOriginChange,
       color: 'indigo',
       isHierarchical: true,
-      columnLabels: ['Region', 'Country', 'Port'],
+      columnLabels: ['Region', 'Country', 'Tradelane', 'Port', 'UN/LOCODE'],
       placeholder: 'Refine Origin Network...'
     },
     {
@@ -193,7 +193,7 @@ const Navbar: React.FC<NavbarProps> = ({
       onSelect: onDestinationChange,
       color: 'amber',
       isHierarchical: true,
-      columnLabels: ['Region', 'Country', 'Port'],
+      columnLabels: ['Region', 'Country', 'Tradelane', 'Port', 'UN/LOCODE'],
       placeholder: 'Refine Destination Network...'
     },
     { label: 'Branch', val: selectedBranch, items: availableBranches, onSelect: onBranchChange, color: 'sky' },
@@ -403,12 +403,12 @@ const HierarchicalSelect: React.FC<{
       </div>
 
       <div className="flex flex-row items-stretch divide-x divide-white/10 h-[400px]">
-        {[0, 1, 2].map((level) => {
+        {columnLabels.map((label, level) => {
           const nodes = getNodesAtLevel(level);
           const labels = columnLabels;
 
           return (
-            <div key={level} className="flex-1 min-w-[230px] flex flex-col h-full overflow-hidden bg-white dark:bg-slate-900">
+            <div key={level} className="flex-1 min-w-[140px] flex flex-col h-full overflow-hidden bg-white dark:bg-slate-900">
               <div className="px-4 py-2 text-[9px] font-black uppercase tracking-[0.2em] text-slate-500 border-b border-slate-700 mb-2">
                 {labels[level]}
               </div>
