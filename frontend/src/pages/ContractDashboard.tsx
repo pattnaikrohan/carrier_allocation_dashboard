@@ -308,7 +308,7 @@ const ContractDashboard: React.FC = () => {
 
       return {
         ...c,
-        type: (c as any).type ?? 'LT',
+        contractType: (c as any).contractType ?? 'LT',
         expiry: (c as any).expiry ?? 'N/A',
         alloc: scaledAlloc,
         booked,

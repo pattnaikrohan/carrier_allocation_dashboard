@@ -7,7 +7,7 @@ import os
 # Paths
 ORDERS_PATH = 'D:/Dashboards/Orders 1Feb2026_30Jun2026.xlsx'
 MASTER_PATH = 'D:/Dashboards/Contract_Master_All_Data Update.xlsx'
-PORT_CODE_PATH = 'D:/Dashboards/CONTRACT_PORT_CODE_LISTING.xlsx'
+PORT_CODE_PATH = 'D:/Dashboards/World_Container_Ports.xlsx'
 CARRIER_PATH = 'D:/Dashboards/Carrier Profiles.xlsx'
 OUTPUT_TS_PATH = 'D:/Dashboards/frontend/src/BookingData.ts'
 
@@ -113,14 +113,15 @@ def main():
     port_hierarchy = []
     port_dict = {}
     for _, row in df_ports.iterrows():
-        code = str(row['PORT CODE']).strip() if pd.notna(row['PORT CODE']) else ''
+        code = str(row.get('UN/LOCODE', '')).strip() if pd.notna(row.get('UN/LOCODE')) else ''
         if not code:
             continue
         entry = {
-            "region":  str(row['REGION']).strip()   if pd.notna(row.get('REGION'))    else 'UNKNOWN',
-            "country": str(row['COUNTRY ']).strip() if pd.notna(row.get('COUNTRY '))  else 'UNKNOWN',
-            "name":    str(row['PORT NAME']).strip() if pd.notna(row.get('PORT NAME')) else code,
+            "region":  str(row.get('Region', '')).strip()   if pd.notna(row.get('Region'))    else 'UNKNOWN',
+            "country": str(row.get('Country', '')).strip()  if pd.notna(row.get('Country'))   else 'UNKNOWN',
+            "name":    str(row.get('Port', '')).strip()     if pd.notna(row.get('Port'))      else code,
             "code":    code,
+            "lane":    str(row.get('Tradelane', '')).strip() if pd.notna(row.get('Tradelane')) else '',
         }
         port_hierarchy.append(entry)
         port_dict[code] = entry
@@ -137,6 +138,7 @@ def main():
         if cid not in master_dict:
             master_dict[cid] = {
                 'carrier':       str(row['Carrier']).strip() if pd.notna(row.get('Carrier')) else 'Unknown Carrier',
+                'contractType':  str(row['Contract Type']).strip() if pd.notna(row.get('Contract Type')) else 'LT',
                 'allocTotalStr': str(row['Allocation Total']).strip() if pd.notna(row.get('Allocation Total')) else '0',
                 'allocTotal':    valid_alloc,
                 'officeAlloc':   valid_office_alloc,
@@ -346,6 +348,7 @@ def main():
         contract_util_data.append({
             "id":       cid,
             "carrier":  minfo.get('carrier', 'Unknown'),
+            "contractType": minfo.get('contractType', 'LT'),
             "lane":     minfo.get('lane',    'Unknown'),
             "notes":    minfo.get('allocTotalStr', ''),
             "priority": minfo.get('priority', 'Normal'),
