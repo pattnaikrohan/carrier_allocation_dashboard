@@ -137,20 +137,30 @@ export const CONTRACTS = [
   "299163347",
   "299424850",
   "299992850",
+  "299992851",
   "4319-1-8888-ST",
   "4319-1-LT",
   "4319-1-ST",
   "50013512",
+  "AAW167312",
   "AGENT",
   "AUT26704",
   "AUT26705",
   "AUT82546",
   "BNEB00159A",
+  "BNEN00159A",
   "CAU2200050",
+  "FL4136-NMS-A-001",
   "GSCIF220008",
   "MELLN250040",
+  "MELLN260010",
+  "MELLN260011",
+  "MELNLN260110",
   "OTH",
+  "QAAWN0000012",
+  "QNAM075087",
   "SPOT",
+  "TBC",
   "TBNEN00429A"
 ];
 export const WEEKS = [
@@ -40972,6 +40982,69 @@ export const CONTRACT_UTIL_DATA = [
     }
   },
   {
+    "id": "299992851",
+    "carrier": "Maersk",
+    "contractType": "BUNDLE",
+    "lane": "AU/ NZ to AMRWC",
+    "notes": "6 TEU per week",
+    "priority": "Normal",
+    "alloc": 160,
+    "booked": 0,
+    "avail": 160,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
     "id": "4319-1-8888-ST",
     "carrier": "MSC",
     "contractType": "BUNDLE",
@@ -41181,6 +41254,69 @@ export const CONTRACT_UTIL_DATA = [
       "alloc": 0,
       "booked": 3.0,
       "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "AAW167312",
+    "carrier": "MGF",
+    "contractType": "BUNDLE",
+    "lane": "NEA to AU",
+    "notes": "10 TEU per week",
+    "priority": "Normal",
+    "alloc": 160,
+    "booked": 0,
+    "avail": 160,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 160,
+      "booked": 0,
+      "util": 0.0
     },
     "bne": {
       "alloc": 0,
@@ -41539,6 +41675,69 @@ export const CONTRACT_UTIL_DATA = [
     }
   },
   {
+    "id": "BNEN00159A",
+    "carrier": "ONE",
+    "contractType": "FAK",
+    "lane": "NEA to AU",
+    "notes": "NIL",
+    "priority": "Normal",
+    "alloc": 0,
+    "booked": 0,
+    "avail": 0,
+    "util": 0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
     "id": "CAU2200050",
     "carrier": "HMM",
     "contractType": "FAK",
@@ -41584,6 +41783,69 @@ export const CONTRACT_UTIL_DATA = [
       "alloc": 0,
       "booked": 0,
       "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "FL4136-NMS-A-001",
+    "carrier": "CMACGM",
+    "contractType": "NAC",
+    "lane": "NORTH EUR to AUDRW",
+    "notes": "0",
+    "priority": "Normal",
+    "alloc": 0,
+    "booked": 0,
+    "avail": 0,
+    "util": 0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 288,
+      "booked": 0,
+      "util": 0.0
     },
     "akl": {
       "alloc": 0,
@@ -41728,6 +41990,195 @@ export const CONTRACT_UTIL_DATA = [
     }
   },
   {
+    "id": "MELLN260010",
+    "carrier": "PIL",
+    "contractType": "NAC",
+    "lane": "Shanghai (CNSGH) to AUEC",
+    "notes": "4 TEU per week",
+    "priority": "Normal",
+    "alloc": 64,
+    "booked": 0,
+    "avail": 64,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "MELLN260011",
+    "carrier": "PIL",
+    "contractType": "NAC",
+    "lane": "Shekou (CNSHK) to AUEC",
+    "notes": "4 TEU per week",
+    "priority": "Normal",
+    "alloc": 64,
+    "booked": 0,
+    "avail": 64,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "MELNLN260110",
+    "carrier": "PIL",
+    "contractType": "NAC",
+    "lane": "Qingdao (CNQIN) to AU",
+    "notes": "20 TEU per week",
+    "priority": "Normal",
+    "alloc": 320,
+    "booked": 0,
+    "avail": 320,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 96,
+      "booked": 0,
+      "util": 0.0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 224,
+      "booked": 0,
+      "util": 0.0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
     "id": "OTH",
     "carrier": "Unknown",
     "contractType": "LT",
@@ -41773,6 +42224,132 @@ export const CONTRACT_UTIL_DATA = [
       "alloc": 0,
       "booked": 0,
       "util": 0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "QAAWN0000012",
+    "carrier": "CMACGM",
+    "contractType": "NAC",
+    "lane": "EUR to AUEC/ NZAKL",
+    "notes": "0",
+    "priority": "Normal",
+    "alloc": 0,
+    "booked": 0,
+    "avail": 0,
+    "util": 0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 288,
+      "booked": 0,
+      "util": 0.0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    }
+  },
+  {
+    "id": "QNAM075087",
+    "carrier": "CMACGM",
+    "contractType": "NAC",
+    "lane": "USSAV to AU",
+    "notes": "0",
+    "priority": "Normal",
+    "alloc": 0,
+    "booked": 0,
+    "avail": 0,
+    "util": 0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 288,
+      "booked": 0,
+      "util": 0.0
     },
     "akl": {
       "alloc": 0,
@@ -41850,6 +42427,69 @@ export const CONTRACT_UTIL_DATA = [
     "per": {
       "alloc": 0,
       "booked": 2.0,
+      "util": 0
+    }
+  },
+  {
+    "id": "TBC",
+    "carrier": "CMACGM",
+    "contractType": "NAC",
+    "lane": "Xiamen (CNXMN) to AUEC",
+    "notes": "18 TEU per week NOR",
+    "priority": "Normal",
+    "alloc": 288,
+    "booked": 0,
+    "avail": 288,
+    "util": 0.0,
+    "status": "Underperforming",
+    "syd": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "mel": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "bne": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "fre": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "adl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "pil": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "prj": {
+      "alloc": 288,
+      "booked": 0,
+      "util": 0.0
+    },
+    "akl": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "oth": {
+      "alloc": 0,
+      "booked": 0,
+      "util": 0
+    },
+    "per": {
+      "alloc": 0,
+      "booked": 0,
       "util": 0
     }
   },
