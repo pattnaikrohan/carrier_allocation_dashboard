@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
 import * as StaticData from '../BookingData';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -121,6 +121,11 @@ export const BookingDataProvider: React.FC<{ children: ReactNode }> = ({ childre
       setIsFetching(false);
     }
   }, [applyData]);
+
+  // Fetch live data on initial load
+  useEffect(() => {
+    refreshData();
+  }, [refreshData]);
 
   return (
     <BookingDataContext.Provider
