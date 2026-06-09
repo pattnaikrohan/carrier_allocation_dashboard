@@ -153,7 +153,7 @@ def main():
     # ── 3. Orders / Booking Log ───────────────────────────────────────────────
     booking_log_data = []
     origins, destinations, lanes = set(), set(), set()
-    allocations_set, priorities, contracts, weeks = set(), set(), set(master_dict.keys()), set()
+    allocations_set, priorities, contracts, weeks = set(), set(), set(), set()
     regions, countries, port_names, port_codes = set(), set(), set(), set()
 
     for entry in port_hierarchy:
