@@ -2602,7 +2602,7 @@ const ContractDashboard: React.FC = () => {
                   <table className="w-full text-left border-collapse table-auto min-w-[2000px]">
                     <thead className="sticky top-0 z-20" style={{ boxShadow: '0 2px 8px rgba(0,0,0,0.5)' }}>
                       <tr className="bg-[#0b0f19] font-bold border-b-2 border-violet-500/30">
-                        {['Contract ID', 'Type', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'PER (BK/AV)', 'ADL (BK/AV)'].map((h, i) => (
+                        {['Contract ID', 'Type', 'Carrier', 'Trade Lane', 'Alloc (TEU)', 'Booked (TEU)', 'Avail (TEU)', 'Util %', 'Status', 'SYD (BK/AV)', 'MEL (BK/AV)', 'BNE (BK/AV)', 'FRE (BK/AV)', 'ADL (BK/AV)'].map((h, i) => (
                           <th key={h} className={`px-6 py-5 font-bold text-sm tracking-widest uppercase ${i === 8 ? 'text-center text-amber-400' : i >= 9 ? 'text-center text-violet-400' : i >= 5 ? 'text-right text-cyan-400' : i === 1 ? 'text-center text-amber-400' : 'text-white'}`}>{h}</th>
                         ))}
                       </tr>
@@ -2898,7 +2898,7 @@ const ContractDashboard: React.FC = () => {
                   {/* Column headers */}
                   <div className="grid grid-cols-6 gap-2 mb-4 px-2 sticky top-0 z-10 bg-[#0b0f19] py-3 rounded-t-xl" style={{ boxShadow: '0 2px 6px rgba(0,0,0,0.4)' }}>
                     <div className="text-xs text-slate-400 font-bold uppercase col-span-1 tracking-wider">Contract ID</div>
-                    {['SYDNEY (SYD)', 'MELBOURNE (MEL)', 'BRISBANE (BNE)', 'PERTH (PER)', 'ADELAIDE (ADL)'].map(b => (
+                    {['SYDNEY (SYD)', 'MELBOURNE (MEL)', 'BRISBANE (BNE)', 'PERTH (FRE)', 'ADELAIDE (ADL)'].map(b => (
                       <div key={b} className="text-xs text-slate-300 font-bold uppercase text-center tracking-wider">{b}</div>
                     ))}
                   </div>
@@ -2908,7 +2908,7 @@ const ContractDashboard: React.FC = () => {
                     {reactiveContractUtilData.map((row) => {
                       const branches = [
                         { b: row.syd, name: 'SYD' }, { b: row.mel, name: 'MEL' },
-                        { b: row.bne, name: 'BNE' }, { b: row.per, name: 'PER' },
+                        { b: row.bne, name: 'BNE' }, { b: row.per, name: 'FRE' },
                         { b: row.adl, name: 'ADL' },
                       ];
                       return (
