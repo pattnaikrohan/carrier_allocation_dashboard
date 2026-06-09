@@ -579,7 +579,7 @@ const ContractDashboard: React.FC = () => {
         if (utilFloat > 100) status = 'Overutilised';
         else if (utilFloat > 80) status = 'Healthy';
         else if (utilFloat > 50) status = 'Underperforming';
-        else status = 'Pending';
+        else status = 'Critical';
       } else if (booked > 0) {
         status = 'Unplanned';
       }
@@ -1533,7 +1533,7 @@ const ContractDashboard: React.FC = () => {
                       <span className="text-[10px] text-slate-400 font-bold uppercase tracking-widest shrink-0">Legend:</span>
                       <div className="flex items-center gap-1.5">
                         <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(153, 27, 27, 0.8)' }} />
-                        <span className="text-[11px] text-slate-300 font-semibold">Pending ≤50%</span>
+                        <span className="text-[11px] text-slate-300 font-semibold">Critical ≤50%</span>
                       </div>
                       <div className="flex items-center gap-1.5">
                         <div className="w-5 h-4 rounded" style={{ backgroundColor: 'rgba(244, 63, 94, 0.7)' }} />
@@ -2874,7 +2874,7 @@ const ContractDashboard: React.FC = () => {
                   <span className="text-xs text-slate-400 font-bold uppercase tracking-widest shrink-0">Utilisation Legend:</span>
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(153, 27, 27, 0.8)' }} />
-                    <span className="text-sm text-slate-200 font-semibold">Pending ≤50%</span>
+                    <span className="text-sm text-slate-200 font-semibold">Critical ≤50%</span>
                   </div>
                   <div className="flex items-center gap-2">
                     <div className="w-7 h-5 rounded-md shadow-md" style={{ backgroundColor: 'rgba(244, 63, 94, 0.7)' }} />
@@ -2934,9 +2934,9 @@ const ContractDashboard: React.FC = () => {
                 {/* Legend */}
                 <div className="flex flex-wrap gap-4 px-4 py-5 rounded-2xl bg-white/[0.02] border border-white/5 justify-center">
                   {[
-                    ['bg-slate-800/60', 'Pending ≤0% (Empty State)'],
-                    ['bg-rose-700/80', 'Pending ≤50% (High Risk)'],
-                    ['bg-rose-500/70', 'Low ≤80%'],
+                    ['bg-slate-800/60', 'Critical ≤0% (Empty State)'],
+                    ['bg-rose-700/80', 'Critical ≤50% (High Risk)'],
+                    ['bg-rose-500/70', 'Underperforming ≤80%'],
                     ['bg-emerald-400/60', 'Healthy >80% (Optimized)'],
                     ['bg-cyan-400/70', 'Overutilised >100% (Ceiling Peak)']
                   ].map(([col, lbl]) => (
