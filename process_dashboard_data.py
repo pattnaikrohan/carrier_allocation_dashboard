@@ -170,6 +170,16 @@ def process_data():
     df = df.rename(columns=existing_cols)
     if 'branch_clean' in df.columns: df['branch'] = df['branch_clean']
     df = df.loc[:, ~df.columns.duplicated()]
+
+    # Ensure missing contracts are labeled to avoid [object Object]
+    if 'contract' not in df.columns:
+        df['contract'] = 'Unassigned'
+    df['contract'] = df['contract'].fillna('Unassigned').astype(str)
+    df['contract'] = df['contract'].replace('nan', 'Unassigned')
+    
+    if 'branch' not in df.columns:
+        df['branch'] = 'Unknown'
+    df['branch'] = df['branch'].fillna('Unknown')
     
     df = df.dropna(subset=['week'])
     df['week_num'] = df['week'].astype(str).str.extract(r'(\d+)').astype(int)
@@ -206,8 +216,9 @@ def process_data():
         })
 
     # CONTRACT_UTIL_DATA
-    # Iterate over ALL master contracts to ensure total allocation is correct
-    all_master_cids = sorted(list(master_dict.keys()))
+    # Iterate over ALL master contracts and any new contracts from the orders
+    all_active_cids = set(df['contract'].dropna().unique().tolist())
+    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
     contract_util_data = []
     for cid in all_master_cids:
         minfo = master_dict.get(cid, {})
