@@ -191,7 +191,6 @@ def process_data_from_azure() -> str:
 
     if df_ports is None:
         try:
-            import os
             repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             local_port_file = os.path.join(repo_root, port_file_name)
             log(f"Reading Port Codes from hardcoded file: {local_port_file}")
@@ -485,7 +484,6 @@ def process_data_from_azure_json() -> tuple:
 
     if df_ports is None:
         try:
-            import os
             repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
             local_port_file = os.path.join(repo_root, port_file_name)
             log(f"Reading Port Codes from hardcoded file: {local_port_file}")
