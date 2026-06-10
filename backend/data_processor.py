@@ -176,36 +176,42 @@ def process_data_from_azure() -> str:
     df['year'] = pd.to_datetime(df['etd'], errors='coerce').dt.year.fillna(2026).astype(int)
     df['mscWeek'] = df['week_num'].astype(str) + '-' + df['year'].astype(str)
 
-    # 3. Fetch Port Listing
+    # 3. Read Hardcoded Port Listing
     port_map = {}
+    port_hierarchy = []
     try:
-        port_stream = _get_blob_file(container, port_file)
-        log(f"Reading Port Codes from Azure: {port_file}")
-        df_ports = pd.read_excel(port_stream)
+        import os
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        local_port_file = os.path.join(repo_root, 'World_Container_Ports.xlsx')
+        log(f"Reading Port Codes from hardcoded file: {local_port_file}")
+        df_ports = pd.read_excel(local_port_file)
         df_ports.columns = df_ports.columns.str.strip()
         for _, row in df_ports.iterrows():
-            code = str(row.get('PORT CODE', '')).strip().upper()
+            code = str(row.get('UN/LOCODE', '')).strip().upper()
             if code and code != 'NAN':
-                port_map[code] = {
-                    'name': str(row.get('PORT NAME', code)).strip().title(),
-                    'country': str(row.get('COUNTRY', 'Unknown')).strip().title(),
-                    'region': str(row.get('REGION', 'Other')).strip().title()
+                info = {
+                    'code': code,
+                    'name': str(row.get('Port', code)).strip().title(),
+                    'country': str(row.get('Country', 'Unknown')).strip().title(),
+                    'region': str(row.get('Region', 'Other')).strip().title(),
+                    'lane': str(row.get('Tradelane', 'General')).strip().title()
                 }
+                port_map[code] = info
+                port_hierarchy.append(info)
     except Exception as e:
-        log(f"Warning: Could not read port listing blob '{port_file}': {e}")
+        log(f"Warning: Could not read hardcoded port listing file: {e}")
 
     orig_codes = sorted(df['loadPort'].dropna().unique().tolist())
     dest_codes = sorted(df['dischargePort'].dropna().unique().tolist())
 
-    port_hierarchy = []
     for p in set(orig_codes + dest_codes):
-        info = port_map.get(p, {})
-        if not info:
+        if p not in port_map:
             cc = str(p)[:2].upper()
             cname = {'AU': 'Australia', 'CN': 'China', 'HK': 'Hong Kong', 'NZ': 'New Zealand', 'SG': 'Singapore'}.get(cc, cc)
             rname = 'Oceania' if cc in ('AU','NZ') else ('Asia' if cc in ('CN','HK','SG') else 'Other')
-            info = {'name': p, 'country': cname, 'region': rname}
-        port_hierarchy.append({"code": info['name'], "name": info['name'], "country": info['country'], "region": info['region']})
+            info = {'code': p, 'name': p, 'country': cname, 'region': rname, 'lane': 'General'}
+            port_map[p] = info
+            port_hierarchy.append(info)
 
     df['loadPort'] = df['loadPort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
     df['dischargePort'] = df['dischargePort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
@@ -448,36 +454,42 @@ def process_data_from_azure_json() -> tuple:
     df['year'] = pd.to_datetime(df['etd'], errors='coerce').dt.year.fillna(2026).astype(int)
     df['mscWeek'] = df['week_num'].astype(str) + '-' + df['year'].astype(str)
 
-    # 3. Fetch Port Listing
+    # 3. Read Hardcoded Port Listing
     port_map = {}
+    port_hierarchy = []
     try:
-        port_stream = _get_blob_file(container, port_file)
-        log(f"Reading Port Codes from Azure: {port_file}")
-        df_ports = pd.read_excel(port_stream)
+        import os
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        local_port_file = os.path.join(repo_root, 'World_Container_Ports.xlsx')
+        log(f"Reading Port Codes from hardcoded file: {local_port_file}")
+        df_ports = pd.read_excel(local_port_file)
         df_ports.columns = df_ports.columns.str.strip()
         for _, row in df_ports.iterrows():
-            code = str(row.get('PORT CODE', '')).strip().upper()
+            code = str(row.get('UN/LOCODE', '')).strip().upper()
             if code and code != 'NAN':
-                port_map[code] = {
-                    'name': str(row.get('PORT NAME', code)).strip().title(),
-                    'country': str(row.get('COUNTRY', 'Unknown')).strip().title(),
-                    'region': str(row.get('REGION', 'Other')).strip().title()
+                info = {
+                    'code': code,
+                    'name': str(row.get('Port', code)).strip().title(),
+                    'country': str(row.get('Country', 'Unknown')).strip().title(),
+                    'region': str(row.get('Region', 'Other')).strip().title(),
+                    'lane': str(row.get('Tradelane', 'General')).strip().title()
                 }
+                port_map[code] = info
+                port_hierarchy.append(info)
     except Exception as e:
-        log(f"Warning: Could not read port listing blob '{port_file}': {e}")
+        log(f"Warning: Could not read hardcoded port listing file: {e}")
 
     orig_codes = sorted(df['loadPort'].dropna().unique().tolist())
     dest_codes = sorted(df['dischargePort'].dropna().unique().tolist())
 
-    port_hierarchy = []
     for p in set(orig_codes + dest_codes):
-        info = port_map.get(p, {})
-        if not info:
+        if p not in port_map:
             cc = str(p)[:2].upper()
             cname = {'AU': 'Australia', 'CN': 'China', 'HK': 'Hong Kong', 'NZ': 'New Zealand', 'SG': 'Singapore'}.get(cc, cc)
             rname = 'Oceania' if cc in ('AU','NZ') else ('Asia' if cc in ('CN','HK','SG') else 'Other')
-            info = {'name': p, 'country': cname, 'region': rname}
-        port_hierarchy.append({"code": info['name'], "name": info['name'], "country": info['country'], "region": info['region']})
+            info = {'code': p, 'name': p, 'country': cname, 'region': rname, 'lane': 'General'}
+            port_map[p] = info
+            port_hierarchy.append(info)
 
     df['loadPort'] = df['loadPort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)
     df['dischargePort'] = df['dischargePort'].apply(lambda x: port_map.get(x, {}).get('name', x) if pd.notna(x) else x)

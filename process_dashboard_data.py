@@ -298,20 +298,31 @@ def process_data():
     # BOOKING_LOG
     booking_log = df.replace({pd.NA: None, float('nan'): None}).to_dict('records')
 
-    # PORT_HIERARCHY generation — use CONTRACT_PORT_CODE_LISTING.xlsx for accurate mapping
-    port_listing_source = get_static_file('CONTRACT_PORT_CODE_LISTING.xlsx', os.path.join(ROOT_DIR, 'CONTRACT_PORT_CODE_LISTING.xlsx'))
-    print(f"Reading Port Code Listing from: {port_listing_source if isinstance(port_listing_source, str) else 'Azure Memory Stream'}")
-    df_ports = pd.read_excel(port_listing_source)
-    # Build lookup from port code → (name, country, region)
+    # PORT_HIERARCHY generation — use World_Container_Ports.xlsx for accurate mapping
+    port_file_path = os.path.join(ROOT_DIR, 'World_Container_Ports.xlsx')
+    
     port_lookup = {}
-    for _, prow in df_ports.iterrows():
-        pcode = str(prow.get('PORT CODE', '')).strip().upper()
-        pname = str(prow.get('PORT NAME', pcode)).strip()
-        pcountry = str(prow.get('COUNTRY ', prow.get('COUNTRY', ''))).strip()
-        pregion = str(prow.get('REGION', 'Other')).strip()
-        if pcode:
-            port_lookup[pcode] = (pname, pcountry, pregion)
-    print(f"  Loaded {len(port_lookup)} port codes from listing.")
+    port_hierarchy = []
+    
+    try:
+        print(f"Reading Port Codes from hardcoded file: {port_file_path}")
+        df_ports = pd.read_excel(port_file_path)
+        df_ports.columns = df_ports.columns.str.strip()
+        for _, row in df_ports.iterrows():
+            locode = str(row.get('UN/LOCODE', '')).strip().upper()
+            if locode and locode != 'NAN':
+                info = {
+                    'code': locode,
+                    'name': str(row.get('Port', locode)).strip().title(),
+                    'country': str(row.get('Country', 'Unknown')).strip().title(),
+                    'region': str(row.get('Region', 'Other')).strip().title(),
+                    'lane': str(row.get('Tradelane', 'General')).strip().title()
+                }
+                port_lookup[locode] = info
+                port_hierarchy.append(info)
+        print(f"  Loaded {len(port_lookup)} port codes from listing.")
+    except Exception as e:
+        print(f"Warning: Could not process port code listing: {e}")
 
     # Fallback for codes not in listing
     COUNTRY_FALLBACK = {
@@ -329,22 +340,21 @@ def process_data():
         'PH': ('Philippines', 'Asia'),
     }
     
-    port_hierarchy = []
     all_ports = set(origins + destinations)
     for p in all_ports:
         p_upper = str(p).strip().upper()
-        if p_upper in port_lookup:
-            pname, pcountry, pregion = port_lookup[p_upper]
-        else:
+        if p_upper not in port_lookup:
             cc = p_upper[:2]
             cname, rname = COUNTRY_FALLBACK.get(cc, (cc, 'Other'))
-            pname, pcountry, pregion = p, cname, rname
-        port_hierarchy.append({
-            "code": p,
-            "name": pname,
-            "country": pcountry,
-            "region": pregion
-        })
+            info = {
+                "code": p,
+                "name": p,
+                "country": cname,
+                "region": rname,
+                "lane": "General"
+            }
+            port_lookup[p_upper] = info
+            port_hierarchy.append(info)
 
     # Construct TS
     class CustomEncoder(json.JSONEncoder):
