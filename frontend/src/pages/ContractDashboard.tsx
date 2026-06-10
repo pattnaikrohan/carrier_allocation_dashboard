@@ -509,13 +509,8 @@ const ContractDashboard: React.FC = () => {
               return {
                 label: lane || 'N/A',
                 children: portsInLane.map(port => {
-                  const codes = Array.from(new Set(
-                    PORT_HIERARCHY.filter(p => p.country === country && p.lane === lane && p.name === port).map(p => p.code)
-                  )).sort();
-                  
                   return {
-                    label: port,
-                    children: codes.map(code => ({ label: code }))
+                    label: port
                   };
                 })
               };

@@ -183,7 +183,7 @@ const Navbar: React.FC<NavbarProps> = ({
       onSelect: onOriginChange,
       color: 'indigo',
       isHierarchical: true,
-      columnLabels: ['Region', 'Country', 'Tradelane', 'Port', 'UN/LOCODE'],
+      columnLabels: ['Region', 'Country', 'Tradelane', 'Port'],
       placeholder: 'Refine Origin Network...'
     },
     {
@@ -193,7 +193,7 @@ const Navbar: React.FC<NavbarProps> = ({
       onSelect: onDestinationChange,
       color: 'amber',
       isHierarchical: true,
-      columnLabels: ['Region', 'Country', 'Tradelane', 'Port', 'UN/LOCODE'],
+      columnLabels: ['Region', 'Country', 'Tradelane', 'Port'],
       placeholder: 'Refine Destination Network...'
     },
     { label: 'Branch', val: selectedBranch, items: availableBranches, onSelect: onBranchChange, color: 'sky' },
