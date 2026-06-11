@@ -2388,13 +2388,6 @@ export const PORT_HIERARCHY = [
     "lane": "West Africa"
   },
   {
-    "code": "CNXMG",
-    "name": "CNXMG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
     "code": "IEDUB",
     "name": "IEDUB",
     "country": "IE",
@@ -2402,31 +2395,17 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNXGA",
-    "name": "CNXGA",
+    "code": "CNTYN",
+    "name": "CNTYN",
     "country": "China",
     "region": "Asia",
     "lane": "General"
   },
   {
-    "code": "CNWHG",
-    "name": "CNWHG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "TW",
+    "code": "USPHL",
+    "name": "USPHL",
+    "country": "US",
     "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
-    "country": "China",
-    "region": "Asia",
     "lane": "General"
   },
   {
@@ -2437,36 +2416,8 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CAYVR",
-    "name": "CAYVR",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNSUD",
-    "name": "CNSUD",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNTXG",
-    "name": "CNTXG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNZSN",
-    "name": "CNZSN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNDGG",
-    "name": "CNDGG",
+    "code": "CNXMG",
+    "name": "CNXMG",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -2479,36 +2430,15 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNTYN",
-    "name": "CNTYN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "MXAPD",
-    "name": "MXAPD",
-    "country": "MX",
+    "code": "USLUI",
+    "name": "USLUI",
+    "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "CNSNZ",
-    "name": "CNSNZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNWHI",
-    "name": "CNWHI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNSZP",
-    "name": "CNSZP",
+    "code": "CNYPG",
+    "name": "CNYPG",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -2521,8 +2451,8 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNSAD",
-    "name": "CNSAD",
+    "code": "CNTXG",
+    "name": "CNTXG",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -2535,73 +2465,24 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
+    "code": "CNWHI",
+    "name": "CNWHI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "MXAPD",
+    "name": "MXAPD",
+    "country": "MX",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
     "code": "CNTNG",
     "name": "CNTNG",
     "country": "China",
     "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNTNJ",
-    "name": "CNTNJ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNNCH",
-    "name": "CNNCH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USORF",
-    "name": "USORF",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFUZ",
-    "name": "CNFUZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNCZX",
-    "name": "CNCZX",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNDAL",
-    "name": "CNDAL",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USLUI",
-    "name": "USLUI",
-    "country": "US",
-    "region": "Other",
     "lane": "General"
   },
   {
@@ -2626,10 +2507,94 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USPHL",
-    "name": "USPHL",
+    "code": "USORF",
+    "name": "USORF",
     "country": "US",
     "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNTNJ",
+    "name": "CNTNJ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CAYVR",
+    "name": "CAYVR",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNGGZ",
+    "name": "CNGGZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNWHG",
+    "name": "CNWHG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNDGG",
+    "name": "CNDGG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNFUZ",
+    "name": "CNFUZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNSUD",
+    "name": "CNSUD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNSNZ",
+    "name": "CNSNZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNDAL",
+    "name": "CNDAL",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNSZP",
+    "name": "CNSZP",
+    "country": "China",
+    "region": "Asia",
     "lane": "General"
   },
   {
@@ -2640,10 +2605,45 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNYPG",
-    "name": "CNYPG",
+    "code": "USBCG",
+    "name": "USBCG",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSAD",
+    "name": "CNSAD",
     "country": "China",
     "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNNCH",
+    "name": "CNNCH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNCZX",
+    "name": "CNCZX",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNZSN",
+    "name": "CNZSN",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "TW",
+    "region": "Other",
     "lane": "General"
   }
 ];
