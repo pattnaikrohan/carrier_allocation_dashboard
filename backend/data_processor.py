@@ -152,8 +152,15 @@ def process_data_from_azure() -> str:
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
     
-    teu_col = next((c for c in df.columns if c.lower() in ['total teu', 'teu', 'teu count _x001f_', 'teu _x001f_']), None)
-    df['teu'] = df[teu_col] if teu_col else 0
+    # TEU Resolution: take the max across all TEU-related columns per row.
+    # Different Order files use different column names ('TEU', 'Total TEU', 'TEU Count'),
+    # and after concat some columns have NaN or 0 while the real value lives in another.
+    teu_candidates = [c for c in df.columns if 'teu' in c.lower()]
+    if teu_candidates:
+        teu_frame = df[teu_candidates].apply(pd.to_numeric, errors='coerce').fillna(0)
+        df['teu'] = teu_frame.max(axis=1)
+    else:
+        df['teu'] = 0
     
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
@@ -445,8 +452,15 @@ def process_data_from_azure_json() -> tuple:
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
     
-    teu_col = next((c for c in df.columns if c.lower() in ['total teu', 'teu', 'teu count _x001f_', 'teu _x001f_']), None)
-    df['teu'] = df[teu_col] if teu_col else 0
+    # TEU Resolution: take the max across all TEU-related columns per row.
+    # Different Order files use different column names ('TEU', 'Total TEU', 'TEU Count'),
+    # and after concat some columns have NaN or 0 while the real value lives in another.
+    teu_candidates = [c for c in df.columns if 'teu' in c.lower()]
+    if teu_candidates:
+        teu_frame = df[teu_candidates].apply(pd.to_numeric, errors='coerce').fillna(0)
+        df['teu'] = teu_frame.max(axis=1)
+    else:
+        df['teu'] = 0
     
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
