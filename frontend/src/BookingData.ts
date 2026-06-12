@@ -2388,59 +2388,10 @@ export const PORT_HIERARCHY = [
     "lane": "West Africa"
   },
   {
-    "code": "CAYVR",
-    "name": "CAYVR",
-    "country": "CA",
+    "code": "MYPGU",
+    "name": "MYPGU",
+    "country": "MY",
     "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFUZ",
-    "name": "CNFUZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNDAL",
-    "name": "CNDAL",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "TRIZT",
-    "name": "TRIZT",
-    "country": "TR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNWHG",
-    "name": "CNWHG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "TW",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNXMG",
-    "name": "CNXMG",
-    "country": "China",
-    "region": "Asia",
     "lane": "General"
   },
   {
@@ -2451,64 +2402,8 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNXAM",
-    "name": "CNXAM",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "NZNSN",
-    "name": "NZNSN",
-    "country": "New Zealand",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "MYPGU",
-    "name": "MYPGU",
-    "country": "MY",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITSPE",
-    "name": "ITSPE",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNWHI",
-    "name": "CNWHI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNTYN",
-    "name": "CNTYN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNYPG",
-    "name": "CNYPG",
+    "code": "CNSZP",
+    "name": "CNSZP",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -2521,38 +2416,24 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNSAD",
-    "name": "CNSAD",
+    "code": "CNFUZ",
+    "name": "CNFUZ",
     "country": "China",
     "region": "Asia",
     "lane": "General"
   },
   {
-    "code": "USPHL",
-    "name": "USPHL",
-    "country": "US",
+    "code": "ITSPE",
+    "name": "ITSPE",
+    "country": "IT",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "CNSUD",
-    "name": "CNSUD",
+    "code": "CNXAM",
+    "name": "CNXAM",
     "country": "China",
     "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNZSN",
-    "name": "CNZSN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "IEDUB",
-    "name": "IEDUB",
-    "country": "IE",
-    "region": "Other",
     "lane": "General"
   },
   {
@@ -2563,22 +2444,15 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USORF",
-    "name": "USORF",
+    "code": "USBCG",
+    "name": "USBCG",
     "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "CNNCH",
-    "name": "CNNCH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNTNJ",
-    "name": "CNTNJ",
+    "code": "CNZSN",
+    "name": "CNZSN",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -2591,6 +2465,13 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
+    "code": "CNSAD",
+    "name": "CNSAD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
     "code": "CNTNG",
     "name": "CNTNG",
     "country": "China",
@@ -2598,17 +2479,45 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USLUI",
-    "name": "USLUI",
+    "code": "CNTXG",
+    "name": "CNTXG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CAYVR",
+    "name": "CAYVR",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNWHG",
+    "name": "CNWHG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USORF",
+    "name": "USORF",
     "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "CNTXG",
-    "name": "CNTXG",
+    "code": "CNWHI",
+    "name": "CNWHI",
     "country": "China",
     "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USPHL",
+    "name": "USPHL",
+    "country": "US",
+    "region": "Other",
     "lane": "General"
   },
   {
@@ -2626,10 +2535,87 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNSZP",
-    "name": "CNSZP",
+    "code": "CNDAL",
+    "name": "CNDAL",
     "country": "China",
     "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USLUI",
+    "name": "USLUI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNYPG",
+    "name": "CNYPG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNTYN",
+    "name": "CNTYN",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNXMG",
+    "name": "CNXMG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "NZNSN",
+    "name": "NZNSN",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "CNTNJ",
+    "name": "CNTNJ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNSUD",
+    "name": "CNSUD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "IEDUB",
+    "name": "IEDUB",
+    "country": "IE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "TW",
+    "region": "Other",
     "lane": "General"
   },
   {
@@ -2640,10 +2626,24 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNXGA",
-    "name": "CNXGA",
+    "code": "CNGGZ",
+    "name": "CNGGZ",
     "country": "China",
     "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNNCH",
+    "name": "CNNCH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "TRIZT",
+    "name": "TRIZT",
+    "country": "TR",
+    "region": "Other",
     "lane": "General"
   }
 ];
@@ -35791,7 +35791,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -35918,7 +35918,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36045,7 +36045,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36172,7 +36172,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36299,7 +36299,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36426,7 +36426,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36553,7 +36553,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -36680,7 +36680,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -36807,7 +36807,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 16,
     "year": 2026,
     "mscWeek": "16-2026"
@@ -36934,7 +36934,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -37061,7 +37061,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -37188,7 +37188,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -37315,7 +37315,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -37442,7 +37442,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -37569,7 +37569,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -37696,7 +37696,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -37823,7 +37823,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -37950,7 +37950,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -38077,7 +38077,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -38204,7 +38204,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -38331,7 +38331,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -38458,7 +38458,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -38585,7 +38585,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -38712,7 +38712,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -38839,7 +38839,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -38966,7 +38966,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -39093,7 +39093,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -39220,7 +39220,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -39347,7 +39347,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -39474,7 +39474,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -39601,7 +39601,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -39728,7 +39728,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 16,
     "year": 2026,
     "mscWeek": "16-2026"
@@ -39855,7 +39855,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -39982,7 +39982,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -40109,7 +40109,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -40236,7 +40236,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -40363,7 +40363,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -40490,7 +40490,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -40617,7 +40617,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -40744,7 +40744,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -40871,7 +40871,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -40998,7 +40998,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -41125,7 +41125,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -41252,7 +41252,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -41379,7 +41379,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -41506,7 +41506,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -41633,7 +41633,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -41760,7 +41760,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -41887,7 +41887,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -42014,7 +42014,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -42141,7 +42141,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -42268,7 +42268,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -42395,7 +42395,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -42522,7 +42522,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -42649,7 +42649,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -42776,7 +42776,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -42903,7 +42903,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -43030,7 +43030,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -43157,7 +43157,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -43284,7 +43284,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -43411,7 +43411,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -43538,7 +43538,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -43665,7 +43665,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -43792,7 +43792,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -43919,7 +43919,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -44046,7 +44046,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -44173,7 +44173,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -44300,7 +44300,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -44427,7 +44427,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -44554,7 +44554,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -44681,7 +44681,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -44808,7 +44808,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -44935,7 +44935,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -45062,7 +45062,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -45189,7 +45189,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -45316,7 +45316,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -45443,7 +45443,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -45570,7 +45570,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -45697,7 +45697,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -45824,7 +45824,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -45951,7 +45951,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -46078,7 +46078,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -46205,7 +46205,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -46332,7 +46332,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -46459,7 +46459,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -46586,7 +46586,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -46713,7 +46713,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 17,
     "year": 2026,
     "mscWeek": "17-2026"
@@ -46840,7 +46840,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -46967,7 +46967,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -47094,7 +47094,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -47221,7 +47221,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -47348,7 +47348,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -47475,7 +47475,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -47602,7 +47602,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -47729,7 +47729,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -47856,7 +47856,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -47983,7 +47983,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -48110,7 +48110,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -48237,7 +48237,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -48364,7 +48364,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -48491,7 +48491,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -48618,7 +48618,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -48745,7 +48745,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -48872,7 +48872,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -48999,7 +48999,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 18,
     "year": 2026,
     "mscWeek": "18-2026"
@@ -49126,7 +49126,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -49253,7 +49253,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -49380,7 +49380,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -49507,7 +49507,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -49634,7 +49634,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -49761,7 +49761,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -49888,7 +49888,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -50015,7 +50015,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -50142,7 +50142,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -50269,7 +50269,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -50396,7 +50396,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -50523,7 +50523,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -50650,7 +50650,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -50777,7 +50777,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 19,
     "year": 2026,
     "mscWeek": "19-2026"
@@ -50904,7 +50904,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -51031,7 +51031,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -51158,7 +51158,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -51285,7 +51285,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -51412,7 +51412,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -51539,7 +51539,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -51666,7 +51666,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -51793,7 +51793,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 20,
     "year": 2026,
     "mscWeek": "20-2026"
@@ -51920,7 +51920,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -52047,7 +52047,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -52174,7 +52174,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -52301,7 +52301,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -52428,7 +52428,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -52555,7 +52555,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -52682,7 +52682,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -52809,7 +52809,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -52936,7 +52936,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53063,7 +53063,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53190,7 +53190,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53317,7 +53317,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53444,7 +53444,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53571,7 +53571,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53698,7 +53698,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53825,7 +53825,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -53952,7 +53952,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54079,7 +54079,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54206,7 +54206,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54333,7 +54333,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54460,7 +54460,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54587,7 +54587,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54714,7 +54714,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54841,7 +54841,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -54968,7 +54968,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55095,7 +55095,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55222,7 +55222,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55349,7 +55349,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55476,7 +55476,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55603,7 +55603,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55730,7 +55730,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55857,7 +55857,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -55984,7 +55984,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56111,7 +56111,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56238,7 +56238,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56365,7 +56365,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56492,7 +56492,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56619,7 +56619,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56746,7 +56746,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -56873,7 +56873,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57000,7 +57000,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57127,7 +57127,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57254,7 +57254,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57381,7 +57381,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57508,7 +57508,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57635,7 +57635,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57762,7 +57762,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -57889,7 +57889,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58016,7 +58016,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58143,7 +58143,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58270,7 +58270,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58397,7 +58397,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58524,7 +58524,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58651,7 +58651,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58778,7 +58778,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -58905,7 +58905,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59032,7 +59032,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59159,7 +59159,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59286,7 +59286,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59413,7 +59413,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59540,7 +59540,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59667,7 +59667,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59794,7 +59794,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -59921,7 +59921,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60048,7 +60048,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60175,7 +60175,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60302,7 +60302,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60429,7 +60429,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": null,
-    "teu": null,
+    "teu": 0.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60556,7 +60556,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60683,7 +60683,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60810,7 +60810,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -60937,7 +60937,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -61064,7 +61064,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -61191,7 +61191,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61318,7 +61318,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61445,7 +61445,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61572,7 +61572,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": null,
-    "teu": null,
+    "teu": 3.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61699,7 +61699,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61826,7 +61826,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -61953,7 +61953,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62080,7 +62080,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62207,7 +62207,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62334,7 +62334,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62461,7 +62461,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62588,7 +62588,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62715,7 +62715,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62842,7 +62842,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -62969,7 +62969,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63096,7 +63096,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63223,7 +63223,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63350,7 +63350,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63477,7 +63477,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63604,7 +63604,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63731,7 +63731,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -63858,7 +63858,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -63985,7 +63985,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64112,7 +64112,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 21,
     "year": 2026,
     "mscWeek": "21-2026"
@@ -64239,7 +64239,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64366,7 +64366,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64493,7 +64493,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64620,7 +64620,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64747,7 +64747,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -64874,7 +64874,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -65001,7 +65001,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65128,7 +65128,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65255,7 +65255,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65382,7 +65382,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65509,7 +65509,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": null,
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65636,7 +65636,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65763,7 +65763,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -65890,7 +65890,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -66017,7 +66017,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -66144,7 +66144,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -66271,7 +66271,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -66398,7 +66398,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -66525,7 +66525,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -66652,7 +66652,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -66779,7 +66779,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -66906,7 +66906,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67033,7 +67033,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67160,7 +67160,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67287,7 +67287,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67414,7 +67414,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -67541,7 +67541,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67668,7 +67668,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -67795,7 +67795,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": null,
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -67922,7 +67922,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -68049,7 +68049,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -68176,7 +68176,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -68303,7 +68303,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -68430,7 +68430,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": null,
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -68557,7 +68557,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -68684,7 +68684,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -68811,7 +68811,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -68938,7 +68938,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -69065,7 +69065,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -69192,7 +69192,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -69319,7 +69319,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -69446,7 +69446,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -69573,7 +69573,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -69700,7 +69700,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -69827,7 +69827,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -69954,7 +69954,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70081,7 +70081,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70208,7 +70208,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70335,7 +70335,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70462,7 +70462,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70589,7 +70589,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70716,7 +70716,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70843,7 +70843,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -70970,7 +70970,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71097,7 +71097,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71224,7 +71224,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71351,7 +71351,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71478,7 +71478,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71605,7 +71605,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71732,7 +71732,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71859,7 +71859,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -71986,7 +71986,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72113,7 +72113,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72240,7 +72240,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72367,7 +72367,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72494,7 +72494,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72621,7 +72621,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72748,7 +72748,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -72875,7 +72875,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73002,7 +73002,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73129,7 +73129,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73256,7 +73256,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73383,7 +73383,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73510,7 +73510,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73637,7 +73637,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73764,7 +73764,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -73891,7 +73891,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74018,7 +74018,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -74145,7 +74145,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74272,7 +74272,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74399,7 +74399,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74526,7 +74526,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74653,7 +74653,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74780,7 +74780,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -74907,7 +74907,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75034,7 +75034,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75161,7 +75161,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75288,7 +75288,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75415,7 +75415,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75542,7 +75542,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75669,7 +75669,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75796,7 +75796,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -75923,7 +75923,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76050,7 +76050,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76177,7 +76177,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76304,7 +76304,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76431,7 +76431,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76558,7 +76558,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76685,7 +76685,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76812,7 +76812,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -76939,7 +76939,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77066,7 +77066,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77193,7 +77193,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77320,7 +77320,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77447,7 +77447,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77574,7 +77574,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77701,7 +77701,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77828,7 +77828,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -77955,7 +77955,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -78082,7 +78082,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -78209,7 +78209,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -78336,7 +78336,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -78463,7 +78463,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -78590,7 +78590,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -78717,7 +78717,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -78844,7 +78844,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 22,
     "year": 2026,
     "mscWeek": "22-2026"
@@ -78971,7 +78971,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -79098,7 +79098,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -79225,7 +79225,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -79352,7 +79352,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -79479,7 +79479,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 23,
     "year": 2026,
     "mscWeek": "23-2026"
@@ -79606,7 +79606,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -79733,7 +79733,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -79860,7 +79860,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -79987,7 +79987,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80114,7 +80114,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80241,7 +80241,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80368,7 +80368,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80495,7 +80495,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80622,7 +80622,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80749,7 +80749,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -80876,7 +80876,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81003,7 +81003,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81130,7 +81130,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81257,7 +81257,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81384,7 +81384,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81511,7 +81511,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81638,7 +81638,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81765,7 +81765,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -81892,7 +81892,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82019,7 +82019,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82146,7 +82146,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82273,7 +82273,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82400,7 +82400,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82527,7 +82527,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82654,7 +82654,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82781,7 +82781,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -82908,7 +82908,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83035,7 +83035,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83162,7 +83162,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83289,7 +83289,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83416,7 +83416,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83543,7 +83543,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83670,7 +83670,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83797,7 +83797,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -83924,7 +83924,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84051,7 +84051,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84178,7 +84178,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84305,7 +84305,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84432,7 +84432,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84559,7 +84559,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84686,7 +84686,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84813,7 +84813,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -84940,7 +84940,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85067,7 +85067,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85194,7 +85194,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85321,7 +85321,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85448,7 +85448,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85575,7 +85575,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85702,7 +85702,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85829,7 +85829,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -85956,7 +85956,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86083,7 +86083,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86210,7 +86210,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86337,7 +86337,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86464,7 +86464,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86591,7 +86591,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86718,7 +86718,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86845,7 +86845,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -86972,7 +86972,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87099,7 +87099,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87226,7 +87226,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87353,7 +87353,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87480,7 +87480,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87607,7 +87607,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87734,7 +87734,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87861,7 +87861,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -87988,7 +87988,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88115,7 +88115,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88242,7 +88242,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88369,7 +88369,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88496,7 +88496,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88623,7 +88623,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88750,7 +88750,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -88877,7 +88877,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89004,7 +89004,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89131,7 +89131,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89258,7 +89258,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89385,7 +89385,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89512,7 +89512,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89639,7 +89639,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89766,7 +89766,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -89893,7 +89893,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90020,7 +90020,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90147,7 +90147,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90274,7 +90274,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90401,7 +90401,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90528,7 +90528,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90655,7 +90655,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90782,7 +90782,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -90909,7 +90909,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91036,7 +91036,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91163,7 +91163,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91290,7 +91290,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91417,7 +91417,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91544,7 +91544,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91671,7 +91671,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91798,7 +91798,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -91925,7 +91925,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92052,7 +92052,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92179,7 +92179,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92306,7 +92306,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92433,7 +92433,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92560,7 +92560,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92687,7 +92687,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92814,7 +92814,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -92941,7 +92941,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93068,7 +93068,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93195,7 +93195,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93322,7 +93322,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93449,7 +93449,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93576,7 +93576,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93703,7 +93703,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93830,7 +93830,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -93957,7 +93957,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94084,7 +94084,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94211,7 +94211,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94338,7 +94338,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94465,7 +94465,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94592,7 +94592,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94719,7 +94719,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94846,7 +94846,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -94973,7 +94973,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95100,7 +95100,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95227,7 +95227,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95354,7 +95354,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95481,7 +95481,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95608,7 +95608,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95735,7 +95735,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95862,7 +95862,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -95989,7 +95989,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -96116,7 +96116,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -96243,7 +96243,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -96370,7 +96370,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -96497,7 +96497,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 24,
     "year": 2026,
     "mscWeek": "24-2026"
@@ -96624,7 +96624,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -96751,7 +96751,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -96878,7 +96878,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97005,7 +97005,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97132,7 +97132,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97259,7 +97259,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97386,7 +97386,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97513,7 +97513,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97640,7 +97640,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97767,7 +97767,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -97894,7 +97894,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98021,7 +98021,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98148,7 +98148,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98275,7 +98275,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98402,7 +98402,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98529,7 +98529,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98656,7 +98656,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98783,7 +98783,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -98910,7 +98910,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99037,7 +99037,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99164,7 +99164,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99291,7 +99291,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99418,7 +99418,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99545,7 +99545,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99672,7 +99672,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99799,7 +99799,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -99926,7 +99926,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100053,7 +100053,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100180,7 +100180,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100307,7 +100307,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100434,7 +100434,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100561,7 +100561,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100688,7 +100688,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100815,7 +100815,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -100942,7 +100942,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101069,7 +101069,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101196,7 +101196,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101323,7 +101323,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101450,7 +101450,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101577,7 +101577,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101704,7 +101704,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101831,7 +101831,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -101958,7 +101958,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102085,7 +102085,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102212,7 +102212,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102339,7 +102339,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102466,7 +102466,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102593,7 +102593,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102720,7 +102720,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102847,7 +102847,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -102974,7 +102974,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103101,7 +103101,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103228,7 +103228,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103355,7 +103355,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103482,7 +103482,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103609,7 +103609,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103736,7 +103736,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103863,7 +103863,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -103990,7 +103990,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104117,7 +104117,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104244,7 +104244,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104371,7 +104371,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104498,7 +104498,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104625,7 +104625,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104752,7 +104752,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -104879,7 +104879,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105006,7 +105006,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105133,7 +105133,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105260,7 +105260,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105387,7 +105387,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105514,7 +105514,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105641,7 +105641,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105768,7 +105768,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -105895,7 +105895,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106022,7 +106022,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106149,7 +106149,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106276,7 +106276,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106403,7 +106403,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106530,7 +106530,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106657,7 +106657,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106784,7 +106784,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -106911,7 +106911,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107038,7 +107038,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107165,7 +107165,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107292,7 +107292,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107419,7 +107419,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107546,7 +107546,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107673,7 +107673,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107800,7 +107800,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -107927,7 +107927,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108054,7 +108054,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108181,7 +108181,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108308,7 +108308,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 5.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 5.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108435,7 +108435,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108562,7 +108562,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108689,7 +108689,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108816,7 +108816,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -108943,7 +108943,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109070,7 +109070,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109197,7 +109197,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109324,7 +109324,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109451,7 +109451,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109578,7 +109578,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109705,7 +109705,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109832,7 +109832,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -109959,7 +109959,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110086,7 +110086,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110213,7 +110213,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110340,7 +110340,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110467,7 +110467,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110594,7 +110594,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110721,7 +110721,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110848,7 +110848,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -110975,7 +110975,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111102,7 +111102,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111229,7 +111229,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111356,7 +111356,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111483,7 +111483,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111610,7 +111610,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111737,7 +111737,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111864,7 +111864,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -111991,7 +111991,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112118,7 +112118,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112245,7 +112245,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112372,7 +112372,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112499,7 +112499,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112626,7 +112626,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112753,7 +112753,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -112880,7 +112880,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113007,7 +113007,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113134,7 +113134,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113261,7 +113261,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113388,7 +113388,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113515,7 +113515,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113642,7 +113642,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113769,7 +113769,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -113896,7 +113896,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114023,7 +114023,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114150,7 +114150,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114277,7 +114277,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114404,7 +114404,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114531,7 +114531,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114658,7 +114658,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114785,7 +114785,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -114912,7 +114912,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115039,7 +115039,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115166,7 +115166,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115293,7 +115293,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115420,7 +115420,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115547,7 +115547,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115674,7 +115674,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115801,7 +115801,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -115928,7 +115928,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -116055,7 +116055,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -116182,7 +116182,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116309,7 +116309,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116436,7 +116436,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116563,7 +116563,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116690,7 +116690,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116817,7 +116817,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -116944,7 +116944,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117071,7 +117071,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117198,7 +117198,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117325,7 +117325,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117452,7 +117452,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117579,7 +117579,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117706,7 +117706,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117833,7 +117833,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -117960,7 +117960,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118087,7 +118087,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118214,7 +118214,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118341,7 +118341,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118468,7 +118468,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118595,7 +118595,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118722,7 +118722,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 10.0,
     "BCN": "Y",
-    "teu": null,
+    "teu": 10.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118849,7 +118849,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -118976,7 +118976,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119103,7 +119103,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119230,7 +119230,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119357,7 +119357,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119484,7 +119484,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119611,7 +119611,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119738,7 +119738,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119865,7 +119865,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -119992,7 +119992,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120119,7 +120119,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120246,7 +120246,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120373,7 +120373,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120500,7 +120500,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120627,7 +120627,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120754,7 +120754,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -120881,7 +120881,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121008,7 +121008,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121135,7 +121135,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121262,7 +121262,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121389,7 +121389,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121516,7 +121516,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121643,7 +121643,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121770,7 +121770,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -121897,7 +121897,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122024,7 +122024,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122151,7 +122151,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122278,7 +122278,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122405,7 +122405,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122532,7 +122532,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122659,7 +122659,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122786,7 +122786,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -122913,7 +122913,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123040,7 +123040,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123167,7 +123167,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123294,7 +123294,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123421,7 +123421,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123548,7 +123548,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123675,7 +123675,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123802,7 +123802,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -123929,7 +123929,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -124056,7 +124056,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -124183,7 +124183,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -124310,7 +124310,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 26,
     "year": 2026,
     "mscWeek": "26-2026"
@@ -124437,7 +124437,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -124564,7 +124564,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -124691,7 +124691,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -124818,7 +124818,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -124945,7 +124945,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125072,7 +125072,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125199,7 +125199,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125326,7 +125326,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125453,7 +125453,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125580,7 +125580,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125707,7 +125707,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125834,7 +125834,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -125961,7 +125961,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126088,7 +126088,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126215,7 +126215,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126342,7 +126342,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126469,7 +126469,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126596,7 +126596,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126723,7 +126723,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126850,7 +126850,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -126977,7 +126977,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127104,7 +127104,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127231,7 +127231,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 8.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 8.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127358,7 +127358,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127485,7 +127485,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127612,7 +127612,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127739,7 +127739,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127866,7 +127866,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -127993,7 +127993,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128120,7 +128120,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 1.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 1.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128247,7 +128247,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128374,7 +128374,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128501,7 +128501,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128628,7 +128628,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128755,7 +128755,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -128882,7 +128882,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129009,7 +129009,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129136,7 +129136,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129263,7 +129263,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129390,7 +129390,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129517,7 +129517,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129644,7 +129644,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129771,7 +129771,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -129898,7 +129898,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -130025,7 +130025,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -130152,7 +130152,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 27,
     "year": 2026,
     "mscWeek": "27-2026"
@@ -130279,7 +130279,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -130406,7 +130406,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -130533,7 +130533,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -130660,7 +130660,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 6.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 6.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -130787,7 +130787,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -130914,7 +130914,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131041,7 +131041,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 3.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 3.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131168,7 +131168,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131295,7 +131295,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131422,7 +131422,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131549,7 +131549,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 0.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 0.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131676,7 +131676,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131803,7 +131803,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 4.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 4.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -131930,7 +131930,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -132057,7 +132057,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -132184,7 +132184,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -132311,7 +132311,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -132438,7 +132438,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 28,
     "year": 2026,
     "mscWeek": "28-2026"
@@ -132565,7 +132565,7 @@ export const BOOKING_LOG_DATA = [
     "Customer Department": null,
     "Total TEU _x001F_": 2.0,
     "BCN": "N",
-    "teu": null,
+    "teu": 2.0,
     "week_num": 25,
     "year": 2026,
     "mscWeek": "25-2026"
@@ -132576,54 +132576,54 @@ export const BRANCH_SNAPSHOT = [
     "branch": "SY1",
     "branchName": "SYDNEY",
     "alloc": 168,
-    "booked": 86.0,
-    "avail": 82.0,
-    "util": 51.2,
+    "booked": 133.0,
+    "avail": 35.0,
+    "util": 79.2,
     "status": "Underperforming"
   },
   {
     "branch": "ME1",
     "branchName": "MELBOURNE",
     "alloc": 672,
-    "booked": 31.5,
-    "avail": 640.5,
-    "util": 4.7,
+    "booked": 110.5,
+    "avail": 561.5,
+    "util": 16.4,
     "status": "Low Uptake"
   },
   {
     "branch": "BN1",
     "branchName": "BRISBANE",
     "alloc": 1960,
-    "booked": 144.0,
-    "avail": 1816.0,
-    "util": 7.3,
+    "booked": 406.0,
+    "avail": 1554.0,
+    "util": 20.7,
     "status": "Low Uptake"
   },
   {
     "branch": "FR1",
     "branchName": "FREMANTLE",
     "alloc": 448,
-    "booked": 61.0,
-    "avail": 387.0,
-    "util": 13.6,
+    "booked": 216.0,
+    "avail": 232.0,
+    "util": 48.2,
     "status": "Low Uptake"
   },
   {
     "branch": "AD1",
     "branchName": "ADELAIDE",
     "alloc": 1960,
-    "booked": 94.0,
-    "avail": 1866.0,
-    "util": 4.8,
+    "booked": 843.0,
+    "avail": 1117.0,
+    "util": 43.0,
     "status": "Low Uptake"
   },
   {
     "branch": "PIL",
     "branchName": "PIL",
     "alloc": 280,
-    "booked": 40.0,
-    "avail": 240.0,
-    "util": 14.3,
+    "booked": 64.0,
+    "avail": 216.0,
+    "util": 22.9,
     "status": "Low Uptake"
   },
   {
@@ -132639,8 +132639,8 @@ export const BRANCH_SNAPSHOT = [
     "branch": "AKL",
     "branchName": "AUCKLAND",
     "alloc": 0,
-    "booked": 0.0,
-    "avail": 0.0,
+    "booked": 1.0,
+    "avail": -1.0,
     "util": 0,
     "status": "Low Uptake"
   },
@@ -132660,32 +132660,32 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "OOCL",
     "lane": "NEA to AU",
     "alloc": 0,
-    "booked": 5.0,
+    "booked": 73.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 2.0,
       "util": 0
     },
     "mel": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 9.0,
       "util": 0
     },
     "bne": {
       "alloc": 0,
-      "booked": 5.0,
+      "booked": 28.0,
       "util": 0
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 5.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 29.0,
       "util": 0
     },
     "pil": {
@@ -132768,37 +132768,37 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Maersk",
     "lane": "NEA to AUEC",
     "alloc": 1176,
-    "booked": 327.5,
-    "util": 27.8,
+    "booked": 568.5,
+    "util": 48.3,
     "status": "Underperforming",
     "syd": {
       "alloc": 168,
-      "booked": 73.0,
-      "util": 43.5
+      "booked": 103.0,
+      "util": 61.3
     },
     "mel": {
       "alloc": 168,
-      "booked": 10.5,
-      "util": 6.2
+      "booked": 16.5,
+      "util": 9.8
     },
     "bne": {
       "alloc": 336,
-      "booked": 93.0,
-      "util": 27.7
+      "booked": 122.0,
+      "util": 36.3
     },
     "fre": {
       "alloc": 224,
-      "booked": 59.0,
-      "util": 26.3
+      "booked": 101.0,
+      "util": 45.1
     },
     "adl": {
       "alloc": 280,
-      "booked": 92.0,
-      "util": 32.9
+      "booked": 222.0,
+      "util": 79.3
     },
     "pil": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 4.0,
       "util": 0
     },
     "prj": {
@@ -132822,7 +132822,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 2.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -132847,7 +132847,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 2.0,
       "util": 0
     },
     "pil": {
@@ -132876,7 +132876,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 2.0,
+    "booked": 4.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -132896,7 +132896,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 2.0,
       "util": 0
     },
     "adl": {
@@ -132984,38 +132984,38 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "MSC",
     "lane": "NEA to AU",
     "alloc": 1148,
-    "booked": 54.0,
-    "util": 4.7,
+    "booked": 118.0,
+    "util": 10.3,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
-      "booked": 9.0,
+      "booked": 18.0,
       "util": 0
     },
     "mel": {
       "alloc": 112,
-      "booked": 14.0,
-      "util": 12.5
+      "booked": 23.0,
+      "util": 20.5
     },
     "bne": {
       "alloc": 504,
-      "booked": 8.0,
-      "util": 1.6
+      "booked": 30.0,
+      "util": 6.0
     },
     "fre": {
       "alloc": 112,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 2.0,
+      "util": 1.8
     },
     "adl": {
       "alloc": 280,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 12.0,
+      "util": 4.3
     },
     "pil": {
       "alloc": 140,
-      "booked": 23.0,
-      "util": 16.4
+      "booked": 33.0,
+      "util": 23.6
     },
     "prj": {
       "alloc": 0,
@@ -133038,38 +133038,38 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "MSC",
     "lane": "Qingdao (CNQIN) to AUEC",
     "alloc": 1148,
-    "booked": 59.0,
-    "util": 5.1,
+    "booked": 180.0,
+    "util": 15.7,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
-      "booked": 2.0,
+      "booked": 8.0,
       "util": 0
     },
     "mel": {
       "alloc": 112,
-      "booked": 3.0,
-      "util": 2.7
+      "booked": 25.0,
+      "util": 22.3
     },
     "bne": {
       "alloc": 504,
-      "booked": 35.0,
-      "util": 6.9
+      "booked": 58.0,
+      "util": 11.5
     },
     "fre": {
       "alloc": 112,
-      "booked": 2.0,
-      "util": 1.8
+      "booked": 16.0,
+      "util": 14.3
     },
     "adl": {
       "alloc": 280,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 46.0,
+      "util": 16.4
     },
     "pil": {
       "alloc": 140,
-      "booked": 17.0,
-      "util": 12.1
+      "booked": 27.0,
+      "util": 19.3
     },
     "prj": {
       "alloc": 0,
@@ -133092,7 +133092,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "MSC",
     "lane": "NEA to AU",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 2.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133107,7 +133107,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "bne": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 2.0,
       "util": 0
     },
     "fre": {
@@ -133254,7 +133254,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 382.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133264,22 +133264,22 @@ export const CONTRACT_UTIL_DATA = [
     },
     "mel": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 28.0,
       "util": 0
     },
     "bne": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 133.0,
       "util": 0
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 1.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 220.0,
       "util": 0
     },
     "pil": {
@@ -133308,8 +133308,8 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "OOCL",
     "lane": "Qingdao (CNQIN) to AU",
     "alloc": 224,
-    "booked": 0.0,
-    "util": 0.0,
+    "booked": 112.0,
+    "util": 50.0,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
@@ -133333,8 +133333,8 @@ export const CONTRACT_UTIL_DATA = [
     },
     "adl": {
       "alloc": 224,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 112.0,
+      "util": 50.0
     },
     "pil": {
       "alloc": 0,
@@ -133362,8 +133362,8 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "OOCL",
     "lane": "Thailand to AU",
     "alloc": 112,
-    "booked": 0.0,
-    "util": 0.0,
+    "booked": 26.0,
+    "util": 23.2,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
@@ -133387,8 +133387,8 @@ export const CONTRACT_UTIL_DATA = [
     },
     "adl": {
       "alloc": 112,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 26.0,
+      "util": 23.2
     },
     "pil": {
       "alloc": 0,
@@ -133416,7 +133416,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "ONE",
     "lane": "NEA to AU",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 89.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133431,17 +133431,17 @@ export const CONTRACT_UTIL_DATA = [
     },
     "bne": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 12.0,
       "util": 0
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 66.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 11.0,
       "util": 0
     },
     "pil": {
@@ -133578,7 +133578,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "PIL",
     "lane": "NEA to AU",
     "alloc": 0,
-    "booked": 5.0,
+    "booked": 25.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133598,12 +133598,12 @@ export const CONTRACT_UTIL_DATA = [
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 2.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 18.0,
       "util": 0
     },
     "pil": {
@@ -133632,8 +133632,8 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "PIL",
     "lane": "Qingdao (CNQIN) to AU",
     "alloc": 560,
-    "booked": 0.0,
-    "util": 0.0,
+    "booked": 36.0,
+    "util": 6.4,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
@@ -133657,8 +133657,8 @@ export const CONTRACT_UTIL_DATA = [
     },
     "adl": {
       "alloc": 392,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 36.0,
+      "util": 9.2
     },
     "pil": {
       "alloc": 0,
@@ -133686,7 +133686,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "PIL",
     "lane": "Shanghai (CNSGH) to AUEC",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 6.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133706,7 +133706,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 6.0,
       "util": 0
     },
     "adl": {
@@ -133848,7 +133848,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 64.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -133858,22 +133858,22 @@ export const CONTRACT_UTIL_DATA = [
     },
     "mel": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 1.0,
       "util": 0
     },
     "bne": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 10.0,
       "util": 0
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 4.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 49.0,
       "util": 0
     },
     "pil": {
@@ -134010,7 +134010,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 74.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -134020,7 +134020,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "mel": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 4.0,
       "util": 0
     },
     "bne": {
@@ -134030,12 +134030,12 @@ export const CONTRACT_UTIL_DATA = [
     },
     "fre": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 11.0,
       "util": 0
     },
     "adl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 58.0,
       "util": 0
     },
     "pil": {
@@ -134050,7 +134050,7 @@ export const CONTRACT_UTIL_DATA = [
     },
     "akl": {
       "alloc": 0,
-      "booked": 0.0,
+      "booked": 1.0,
       "util": 0
     },
     "oth": {
@@ -134118,8 +134118,8 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "ONE",
     "lane": "Qingdao (CNQIN) to AUEC",
     "alloc": 280,
-    "booked": 0.0,
-    "util": 0.0,
+    "booked": 8.0,
+    "util": 2.9,
     "status": "Underperforming",
     "syd": {
       "alloc": 0,
@@ -134133,8 +134133,8 @@ export const CONTRACT_UTIL_DATA = [
     },
     "bne": {
       "alloc": 280,
-      "booked": 0.0,
-      "util": 0.0
+      "booked": 8.0,
+      "util": 2.9
     },
     "fre": {
       "alloc": 0,
@@ -134172,7 +134172,7 @@ export const CONTRACT_UTIL_DATA = [
     "carrier": "Various",
     "lane": "Unknown",
     "alloc": 0,
-    "booked": 0.0,
+    "booked": 11.0,
     "util": 0,
     "status": "Underperforming",
     "syd": {
@@ -134370,14 +134370,14 @@ export const WEEKLY_TREND_DATA = [
   {
     "week": "WK 17-2026",
     "alloc": 268,
-    "booked": 14.0,
-    "util": 5.2
+    "booked": 18.0,
+    "util": 6.7
   },
   {
     "week": "WK 18-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 6.0,
+    "util": 2.2
   },
   {
     "week": "WK 19-2026",
@@ -134388,56 +134388,56 @@ export const WEEKLY_TREND_DATA = [
   {
     "week": "WK 20-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 9.0,
+    "util": 3.4
   },
   {
     "week": "WK 21-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 12.0,
+    "util": 4.5
   },
   {
     "week": "WK 22-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 172.0,
+    "util": 64.2
   },
   {
     "week": "WK 23-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 169.0,
+    "util": 63.1
   },
   {
     "week": "WK 24-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 290.0,
+    "util": 108.2
   },
   {
     "week": "WK 25-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 292.0,
+    "util": 109.0
   },
   {
     "week": "WK 26-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 205.0,
+    "util": 76.5
   },
   {
     "week": "WK 27-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 114.0,
+    "util": 42.5
   },
   {
     "week": "WK 28-2026",
     "alloc": 268,
-    "booked": 0.0,
-    "util": 0.0
+    "booked": 55.0,
+    "util": 20.5
   },
   {
     "week": "WK 31-2026",
@@ -134456,120 +134456,120 @@ export const QUARTERLY_ALLOC_UTIL = [
   {
     "quarter": "Q2 2026",
     "Allocation": 3484,
-    "Utilisation": NaN,
-    "UtilPct": NaN
+    "Utilisation": 1323.5,
+    "UtilPct": 38.0
   },
   {
     "quarter": "Q3 2026",
     "Allocation": 804,
-    "Utilisation": NaN,
-    "UtilPct": NaN
+    "Utilisation": 170.0,
+    "UtilPct": 21.1
   }
 ];
 export const CARRIER_BREAKDOWN = [
   {
-    "carrier": "MEDSHI",
-    "bookings": 155,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "MAERSK",
+    "bookings": 409,
+    "teu": 609.5,
+    "pct": 34.2,
     "allocated": 0
   },
   {
-    "carrier": "MAERSK",
-    "bookings": 409,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "MEDSHI",
+    "bookings": 155,
+    "teu": 325.0,
+    "pct": 18.2,
     "allocated": 0
   },
   {
     "carrier": "OOCAUS",
     "bookings": 189,
-    "teu": NaN,
-    "pct": NaN,
-    "allocated": 0
-  },
-  {
-    "carrier": "nan",
-    "bookings": 29,
-    "teu": NaN,
-    "pct": NaN,
-    "allocated": 0
-  },
-  {
-    "carrier": "PILAUS",
-    "bookings": 44,
-    "teu": NaN,
-    "pct": NaN,
+    "teu": 280.0,
+    "pct": 15.7,
     "allocated": 0
   },
   {
     "carrier": "OCENET",
     "bookings": 81,
-    "teu": NaN,
-    "pct": NaN,
+    "teu": 162.0,
+    "pct": 9.1,
     "allocated": 0
   },
   {
-    "carrier": "CMACGMMEL",
-    "bookings": 1,
-    "teu": NaN,
-    "pct": NaN,
-    "allocated": 0
-  },
-  {
-    "carrier": "VANLOG",
-    "bookings": 1,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "EVESHI",
+    "bookings": 18,
+    "teu": 125.0,
+    "pct": 7.0,
     "allocated": 0
   },
   {
     "carrier": "COSSHI",
     "bookings": 59,
-    "teu": NaN,
-    "pct": NaN,
+    "teu": 111.0,
+    "pct": 6.2,
     "allocated": 0
   },
   {
-    "carrier": "SWISHI",
-    "bookings": 1,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "PILAUS",
+    "bookings": 44,
+    "teu": 67.0,
+    "pct": 3.8,
     "allocated": 0
   },
   {
-    "carrier": "HAPLLO",
-    "bookings": 4,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "nan",
+    "bookings": 29,
+    "teu": 33.0,
+    "pct": 1.8,
+    "allocated": 0
+  },
+  {
+    "carrier": "ANLCON",
+    "bookings": 18,
+    "teu": 30.0,
+    "pct": 1.7,
     "allocated": 0
   },
   {
     "carrier": "CMACGM",
     "bookings": 7,
-    "teu": NaN,
-    "pct": NaN,
+    "teu": 23.0,
+    "pct": 1.3,
     "allocated": 2016
   },
   {
-    "carrier": "ANLCON",
-    "bookings": 18,
-    "teu": NaN,
-    "pct": NaN,
-    "allocated": 0
-  },
-  {
-    "carrier": "ZIMINT",
-    "bookings": 3,
-    "teu": NaN,
-    "pct": NaN,
+    "carrier": "HAPLLO",
+    "bookings": 4,
+    "teu": 6.0,
+    "pct": 0.3,
     "allocated": 0
   },
   {
     "carrier": "YANMIN",
     "bookings": 2,
-    "teu": NaN,
-    "pct": NaN,
+    "teu": 6.0,
+    "pct": 0.3,
+    "allocated": 0
+  },
+  {
+    "carrier": "ZIMINT",
+    "bookings": 3,
+    "teu": 3.0,
+    "pct": 0.2,
+    "allocated": 0
+  },
+  {
+    "carrier": "ANLAGE",
+    "bookings": 1,
+    "teu": 2.0,
+    "pct": 0.1,
+    "allocated": 0
+  },
+  {
+    "carrier": "SWISHI",
+    "bookings": 1,
+    "teu": 1.0,
+    "pct": 0.1,
     "allocated": 0
   }
 ];
