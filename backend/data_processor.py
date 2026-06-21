@@ -107,7 +107,20 @@ def process_data_from_azure() -> str:
     order_frames = []
     for stream, name in all_orders:
         log(f"Reading Orders from Azure: {name}")
-        order_frames.append(pd.read_excel(stream))
+        df_part = pd.read_excel(stream)
+        df_part.columns = df_part.columns.str.strip()
+        # Normalize TEU: ensure every file has a consistent 'Total TEU' column
+        # by taking the row-wise max of all TEU-variant columns in this file.
+        teu_cols = [c for c in df_part.columns if 'teu' in c.lower()]
+        if teu_cols:
+            teu_vals = df_part[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+            df_part['Total TEU'] = teu_vals.max(axis=1)
+            # Drop the original inconsistent TEU columns to avoid confusion after concat
+            df_part = df_part.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
+        else:
+            df_part['Total TEU'] = 0
+        log(f"  -> {len(df_part)} rows, TEU column normalized")
+        order_frames.append(df_part)
     df = pd.concat(order_frames, ignore_index=True)
     df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
     log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
@@ -152,9 +165,8 @@ def process_data_from_azure() -> str:
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
     
-    # TEU Resolution: take the max across all TEU-related columns per row.
-    # Different Order files use different column names ('TEU', 'Total TEU', 'TEU Count'),
-    # and after concat some columns have NaN or 0 while the real value lives in another.
+    # TEU Resolution: 'Total TEU' was already normalized per-file above,
+    # but apply row-wise max as a safety net in case any variant columns survived.
     teu_candidates = [c for c in df.columns if 'teu' in c.lower()]
     if teu_candidates:
         teu_frame = df[teu_candidates].apply(pd.to_numeric, errors='coerce').fillna(0)
@@ -407,7 +419,20 @@ def process_data_from_azure_json() -> tuple:
     order_frames = []
     for stream, name in all_orders:
         log(f"Reading Orders from Azure: {name}")
-        order_frames.append(pd.read_excel(stream))
+        df_part = pd.read_excel(stream)
+        df_part.columns = df_part.columns.str.strip()
+        # Normalize TEU: ensure every file has a consistent 'Total TEU' column
+        # by taking the row-wise max of all TEU-variant columns in this file.
+        teu_cols = [c for c in df_part.columns if 'teu' in c.lower()]
+        if teu_cols:
+            teu_vals = df_part[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+            df_part['Total TEU'] = teu_vals.max(axis=1)
+            # Drop the original inconsistent TEU columns to avoid confusion after concat
+            df_part = df_part.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
+        else:
+            df_part['Total TEU'] = 0
+        log(f"  -> {len(df_part)} rows, TEU column normalized")
+        order_frames.append(df_part)
     df = pd.concat(order_frames, ignore_index=True)
     df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
     log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
@@ -452,9 +477,8 @@ def process_data_from_azure_json() -> tuple:
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
     
-    # TEU Resolution: take the max across all TEU-related columns per row.
-    # Different Order files use different column names ('TEU', 'Total TEU', 'TEU Count'),
-    # and after concat some columns have NaN or 0 while the real value lives in another.
+    # TEU Resolution: 'Total TEU' was already normalized per-file above,
+    # but apply row-wise max as a safety net in case any variant columns survived.
     teu_candidates = [c for c in df.columns if 'teu' in c.lower()]
     if teu_candidates:
         teu_frame = df[teu_candidates].apply(pd.to_numeric, errors='coerce').fillna(0)
