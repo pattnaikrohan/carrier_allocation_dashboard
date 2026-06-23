@@ -2730,8 +2730,14 @@ const ContractDashboard: React.FC = () => {
                           : row.util >= 85 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
                             : row.util >= 70 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
                               : 'bg-slate-700/30 text-slate-400 border-slate-600/30';
+                        const polBreakdown = (row as any).polBreakdown || [];
+                        const hasPOL = polBreakdown.length > 0;
+                        const rowKey = `${row.id}__${row.lane}`;
+                        const isExpanded = expandedPOLRows.has(rowKey);
+
                         return (
-                          <tr key={i} className="hover:bg-white/[0.03] transition-colors group/mod">
+                          <React.Fragment key={rowKey}>
+                          <tr className="hover:bg-white/[0.03] transition-colors group/mod">
                             <td className="px-6 py-6  text-base font-bold text-violet-300">
                               {row.id}
                               {(row as any).contractType && (
@@ -2744,7 +2750,25 @@ const ContractDashboard: React.FC = () => {
                             </td>
                             <td className="px-6 py-6 text-sm font-bold text-amber-400/80 text-center">{(row as any).contractType || '-'}</td>
                             <td className="px-6 py-6 text-base text-slate-300 font-medium">{row.carrier}</td>
-                            <td className="px-6 py-6  text-base text-slate-300">{row.lane}</td>
+                            <td className={`px-6 py-6  text-base tracking-tighter ${hasPOL ? 'text-violet-400 cursor-pointer hover:text-violet-300 select-none' : 'text-slate-300'}`}
+                              onClick={() => {
+                                if (hasPOL) {
+                                  setExpandedPOLRows(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has(rowKey)) next.delete(rowKey);
+                                    else next.add(rowKey);
+                                    return next;
+                                  });
+                                }
+                              }}
+                            >
+                              {row.lane}
+                              {hasPOL && (
+                                <svg className={`inline-block w-4 h-4 ml-2 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                              )}
+                            </td>
                             <td className="px-6 py-6 text-right  text-base text-slate-300">{row.alloc}</td>
                             <td className="px-6 py-6 text-right  text-base font-bold text-cyan-400">{row.booked}</td>
                             <td className={`px-6 py-6 text-right  text-base font-bold ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail}</td>
@@ -2760,6 +2784,28 @@ const ContractDashboard: React.FC = () => {
                               );
                             })}
                           </tr>
+                          {/* Expandable POL Breakdown Row */}
+                          {isExpanded && hasPOL && (
+                            <tr className="bg-violet-950/20 border-l-2 border-violet-500/40">
+                              <td colSpan={14} className="px-6 py-4">
+                                <div className="flex items-start gap-6">
+                                  <span className="text-xs text-violet-400 font-bold uppercase tracking-widest mt-1 shrink-0">POL Breakdown</span>
+                                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 flex-1">
+                                    {polBreakdown.map((pol: any, pi: number) => (
+                                      <div key={pi} className="flex items-center gap-3 bg-black/30 rounded-xl px-4 py-3 border border-violet-500/10">
+                                        <div className="w-2 h-2 rounded-full bg-violet-400 shrink-0" />
+                                        <div className="flex flex-col gap-0.5">
+                                          <span className="text-sm text-white font-bold">{pol.port}</span>
+                                          <span className="text-xs text-slate-400">→ {pol.dest} · <span className="text-violet-400 font-bold">{pol.teuPerWeek} TEU/wk</span></span>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                          </React.Fragment>
                         );
                       })}
                     </tbody>
