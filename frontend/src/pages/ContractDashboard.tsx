@@ -127,6 +127,7 @@ const ContractDashboard: React.FC = () => {
   const [mounted, setMounted] = useState(false);
   const [filterMode, setFilterMode] = useState<'ALL' | 'UNDERPERFORMING' | 'LOW_UTIL'>('ALL');
   const [granularity, setGranularity] = useState<'region' | 'country' | 'port'>('port');
+  const [expandedPOLRows, setExpandedPOLRows] = useState<Set<string>>(new Set());
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -293,6 +294,60 @@ const ContractDashboard: React.FC = () => {
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
     .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
     .filter(c => selectedCarrier === 'ALL' || c.carrier.toLowerCase() === selectedCarrier.toLowerCase())
+    // Filter by origin: match contract's origin region against the selected origin filter
+    .filter(c => {
+      if (selectedOrigin === 'ALL') return true;
+      const originRegion = (c as any).originRegion || '';
+      const origins: string[] = (c as any).origins || [];
+      const lane = c.lane || '';
+      // Direct region match (e.g., selectedOrigin = "South East Asia" and originRegion = "SEA")
+      const regionAliases: Record<string, string[]> = {
+        'NEA': ['North East Asia', 'NEA'],
+        'SEA': ['South East Asia', 'SEA'],
+        'EUR': ['Europe', 'EUR'],
+        'AU': ['Australia', 'Oceania', 'AU'],
+        'NZ': ['New Zealand', 'NZ'],
+        'Americas': ['Americas', 'USA'],
+      };
+      // Check if the selected origin matches this contract's origin region
+      const aliases = regionAliases[originRegion] || [originRegion];
+      if (aliases.some(a => a.toLowerCase() === selectedOrigin.toLowerCase())) return true;
+      // Check if any raw origin matches
+      if (origins.some(o => o.toLowerCase() === selectedOrigin.toLowerCase())) return true;
+      // Check port hierarchy: if the selected origin is a specific port, check if any raw origin contains it
+      const oPortMeta = PORT_HIERARCHY.find(p => p.code === selectedOrigin || p.name === selectedOrigin);
+      if (oPortMeta) {
+        // If filter is a port/country, check if the contract's origin region matches the port's trade lane region
+        const portRegion = oPortMeta.lane || oPortMeta.region || '';
+        const portRegionAliases = Object.entries(regionAliases).find(([_, vals]) =>
+          vals.some(v => v.toLowerCase() === portRegion.toLowerCase())
+        );
+        if (portRegionAliases && portRegionAliases[0] === originRegion) return true;
+        // Or if the raw origins contain the port name
+        if (origins.some(o => o.toLowerCase().includes(selectedOrigin.toLowerCase()))) return true;
+      }
+      // Fallback: check if lane string contains the selected origin
+      if (lane.toLowerCase().includes(selectedOrigin.toLowerCase())) return true;
+      return false;
+    })
+    // Filter by destination
+    .filter(c => {
+      if (selectedDestination === 'ALL') return true;
+      const destRegion = (c as any).destRegion || '';
+      const destinations: string[] = (c as any).destinations || [];
+      const lane = c.lane || '';
+      const destAliases: Record<string, string[]> = {
+        'AU': ['Australia', 'Oceania', 'AU'],
+        'NZ': ['New Zealand', 'NZ'],
+        'AU/NZ': ['AU/NZ', 'AU, NZ', 'AU/ NZ'],
+        'Americas': ['Americas', 'USA'],
+      };
+      const aliases = destAliases[destRegion] || [destRegion];
+      if (aliases.some(a => a.toLowerCase() === selectedDestination.toLowerCase())) return true;
+      if (destinations.some(d => d.toLowerCase() === selectedDestination.toLowerCase())) return true;
+      if (lane.toLowerCase().includes(selectedDestination.toLowerCase())) return true;
+      return false;
+    })
     .map(c => {
       const scaledAlloc = Math.round(c.alloc * weekScale);
       const contractBookings = baseFilteredBookings.filter(b => b.contract === c.id);
@@ -1452,8 +1507,13 @@ const ContractDashboard: React.FC = () => {
                           : row.util >= 85 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
                             : row.util >= 70 ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
                               : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
+                        const polBreakdown = (row as any).polBreakdown || [];
+                        const hasPOL = polBreakdown.length > 0;
+                        const rowKey = `${row.id}__${row.lane}`;
+                        const isExpanded = expandedPOLRows.has(rowKey);
                         return (
-                          <tr key={row.id} className="hover:bg-white/[0.02] transition-colors">
+                          <React.Fragment key={rowKey}>
+                          <tr className="hover:bg-white/[0.02] transition-colors">
                             <td className="px-4 py-4  text-[13px] font-bold text-white tracking-wider whitespace-nowrap" title={formatContract(row)}>
                               {formatContract(row)}
                               {(row as any).contractType && (
@@ -1466,7 +1526,25 @@ const ContractDashboard: React.FC = () => {
                             </td>
                             <td className="px-4 py-4 text-[11px] font-bold text-amber-400/80 text-center">{(row as any).contractType || '-'}</td>
                             <td className="px-4 py-4 text-[13px] font-bold text-slate-200">{row.carrier}</td>
-                            <td className="px-4 py-4 text-[13px] font-bold text-slate-400  tracking-tighter">{row.lane}</td>
+                            <td className={`px-4 py-4 text-[13px] font-bold tracking-tighter ${hasPOL ? 'text-violet-400 cursor-pointer hover:text-violet-300 select-none' : 'text-slate-400'}`}
+                              onClick={() => {
+                                if (hasPOL) {
+                                  setExpandedPOLRows(prev => {
+                                    const next = new Set(prev);
+                                    if (next.has(rowKey)) next.delete(rowKey);
+                                    else next.add(rowKey);
+                                    return next;
+                                  });
+                                }
+                              }}
+                            >
+                              {row.lane}
+                              {hasPOL && (
+                                <svg className={`inline-block w-3.5 h-3.5 ml-1.5 transition-transform ${isExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                </svg>
+                              )}
+                            </td>
                             <td className="px-4 py-4  text-[13px] text-right font-bold text-slate-300">{row.alloc}</td>
                             <td className="px-4 py-4  text-[13px] text-right font-bold text-emerald-400">{row.booked.toFixed(1)}</td>
                             <td className="px-4 py-4  text-[13px] text-right font-bold text-cyan-400">{row.avail}</td>
@@ -1496,6 +1574,28 @@ const ContractDashboard: React.FC = () => {
                               );
                             })}
                           </tr>
+                          {/* Expandable POL Breakdown Row */}
+                          {isExpanded && hasPOL && (
+                            <tr className="bg-violet-950/20 border-l-2 border-violet-500/40">
+                              <td colSpan={18} className="px-6 py-3">
+                                <div className="flex items-start gap-6">
+                                  <span className="text-[9px] text-violet-400 font-bold uppercase tracking-widest mt-1 shrink-0">POL Breakdown</span>
+                                  <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-2 flex-1">
+                                    {polBreakdown.map((pol: any, pi: number) => (
+                                      <div key={pi} className="flex items-center gap-2 bg-black/30 rounded-lg px-3 py-2 border border-violet-500/10">
+                                        <div className="w-1.5 h-1.5 rounded-full bg-violet-400 shrink-0" />
+                                        <div className="flex flex-col">
+                                          <span className="text-[11px] text-white font-bold">{pol.port}</span>
+                                          <span className="text-[9px] text-slate-400">→ {pol.dest} · <span className="text-violet-400 font-bold">{pol.teuPerWeek} TEU/wk</span></span>
+                                        </div>
+                                      </div>
+                                    ))}
+                                  </div>
+                                </div>
+                              </td>
+                            </tr>
+                          )}
+                          </React.Fragment>
                         );
                       })}
                     </tbody>

@@ -88,6 +88,64 @@ def parse_office_alloc(s):
     return branch_map
 
 
+# ── Region Normalization ─────────────────────────────────────────────────────
+_NEA_PORTS = ['qingdao', 'cnqin', 'yantian', 'cnyan', 'ningbo', 'cnnbo', 'cnnbg',
+              'shanghai', 'cnsha', 'cnsgh', 'changzhou', 'cncgb', 'xiamen', 'cnxmn']
+_SEA_PORTS = ['thailand', 'thai', 'vietnam', 'vnhph', 'vndad', 'vnsgn',
+              'indonesia', 'idjkt', 'malaysia', 'mypkg', 'mypen', 'philippines', 'phmnl',
+              'singapore', 'sgsin', 'cambodia', 'myanmar']
+_EUR_PORTS = ['europe', 'hamburg', 'deham', 'rotterdam', 'nlrtm', 'antwerp', 'beanr',
+              'felixstowe', 'gbfxt', 'le havre', 'frleh']
+
+def normalize_region(origin_str):
+    """Map a master-data Origin value to a standard region code."""
+    if origin_str is None:
+        return 'Unknown'
+    s = str(origin_str).strip()
+    if not s or s.lower() == 'nan':
+        return 'Unknown'
+    s_upper = s.upper()
+    if s_upper in ('NEA', 'SEA', 'EUR'):
+        return s_upper
+    if s_upper in ('NORTH EUR',):
+        return 'EUR'
+    if s_upper in ('AU', 'AU/ NZ', 'AU/NZ', 'AU, NZ'):
+        return 'AU'
+    if s_upper == 'NZ':
+        return 'NZ'
+    s_lower = s.lower()
+    for p in _NEA_PORTS:
+        if p in s_lower:
+            return 'NEA'
+    for p in _SEA_PORTS:
+        if p in s_lower:
+            return 'SEA'
+    for p in _EUR_PORTS:
+        if p in s_lower:
+            return 'EUR'
+    if s_upper.startswith('US'):
+        return 'Americas'
+    return s
+
+def normalize_dest(dest_str):
+    """Map a master-data Destination value to a standard destination code."""
+    if dest_str is None:
+        return 'Unknown'
+    s = str(dest_str).strip().upper()
+    if not s or s == 'NAN':
+        return 'Unknown'
+    if s in ('AUEC', 'AUWC', 'AUDRW'):
+        return 'AU'
+    if s in ('AU', 'AU/ NZ', 'AU/NZ', 'AU, NZ'):
+        return 'AU'
+    if s in ('AUEC/ NZAKL',):
+        return 'AU/NZ'
+    if s in ('NZ', 'NZAKL'):
+        return 'NZ'
+    if s in ('AMRWC', 'AMREC'):
+        return 'Americas'
+    return s
+
 def process_data_from_azure() -> str:
     """
     Fetch data from Azure Blob Storage, process it,
@@ -130,8 +188,9 @@ def process_data_from_azure() -> str:
     log(f"Reading Master Data from Azure: {master_file}")
     df_master = pd.read_excel(master_stream)
 
-    # Build master dictionary
+    # Build master dict with compound keys for multi-leg contracts
     master_dict = {}
+    cid_to_keys = {}
     for _, row in df_master.iterrows():
         cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
         if not cid:
@@ -142,13 +201,39 @@ def process_data_from_azure() -> str:
         priority = str(row.get('Priority', 'Normal'))
         contract_type = str(row.get('Contract Type', 'FAK'))
         contract_name = str(row.get('Contract Name', ''))
-        lane = f"{str(row.get('Origin', '')).strip()} to {str(row.get('Destination', '')).strip()}"
-        if cid not in master_dict:
-            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane, 'contractType': contract_type, 'contractName': contract_name}
+        raw_origin = str(row.get('Origin', '')).strip() if pd.notna(row.get('Origin')) else ''
+        raw_dest = str(row.get('Destination', '')).strip() if pd.notna(row.get('Destination')) else ''
+        origin_region = normalize_region(raw_origin)
+        dest_region = normalize_dest(raw_dest)
+        lane = f"{origin_region} to {dest_region}"
+        compound_key = f"{cid}__{origin_region}_{dest_region}"
+
+        if compound_key not in master_dict:
+            master_dict[compound_key] = {
+                'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
+                'officeAlloc': office_alloc, 'priority': priority, 'lane': lane,
+                'originRegion': origin_region, 'destRegion': dest_region,
+                'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
+                'polBreakdown': [],
+                'contractType': contract_type, 'contractName': contract_name,
+            }
         else:
-            master_dict[cid]['allocTotal'] += alloc_total
+            master_dict[compound_key]['allocTotal'] += alloc_total
+            master_dict[compound_key]['rawOrigins'].append(raw_origin)
+            master_dict[compound_key]['rawDests'].append(raw_dest)
             for hub, val in office_alloc.items():
-                master_dict[cid]['officeAlloc'][hub] = master_dict[cid]['officeAlloc'].get(hub, 0) + val
+                master_dict[compound_key]['officeAlloc'][hub] = master_dict[compound_key]['officeAlloc'].get(hub, 0) + val
+
+        if cid not in cid_to_keys:
+            cid_to_keys[cid] = []
+        if compound_key not in cid_to_keys[cid]:
+            cid_to_keys[cid].append(compound_key)
+
+        if raw_origin and raw_origin not in ('NEA', 'SEA', 'EUR', 'AU', 'NZ', 'NORTH EUR') and alloc_total > 0:
+            master_dict[compound_key]['polBreakdown'].append({
+                'port': raw_origin, 'dest': raw_dest, 'teuPerWeek': alloc_total,
+            })
+
 
     # Robust Column Mapping
     df.columns = df.columns.str.strip()
@@ -277,13 +362,35 @@ def process_data_from_azure() -> str:
         })
 
     # CONTRACT_UTIL_DATA
-    # Iterate over ALL master contracts and any new contracts from the orders
+    def get_port_region(port_code):
+        if not port_code or str(port_code) == 'nan':
+            return 'Unknown'
+        p_upper = str(port_code).strip().upper()
+        info = port_map.get(p_upper, {})
+        region = info.get('region', '')
+        region_map = {
+            'North East Asia': 'NEA', 'South East Asia': 'SEA', 'Europe': 'EUR',
+            'Oceania': 'AU', 'Americas': 'Americas', 'Asia': 'NEA',
+        }
+        return region_map.get(region, normalize_region(port_code))
+
     all_active_cids = set(df['contract'].dropna().unique().tolist())
-    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
+    processed_cids = set()
     contract_util_data = []
-    for cid in all_master_cids:
-        minfo = master_dict.get(cid, {})
-        c_bookings = df[df['contract'] == cid]
+
+    for compound_key, minfo in sorted(master_dict.items()):
+        cid = minfo['cid']
+        processed_cids.add(cid)
+        origin_region = minfo.get('originRegion', 'Unknown')
+
+        c_all_bookings = df[df['contract'] == cid]
+        keys_for_cid = cid_to_keys.get(cid, [compound_key])
+        if len(keys_for_cid) > 1:
+            mask = c_all_bookings['loadPort'].apply(lambda lp: get_port_region(lp) == origin_region)
+            c_bookings = c_all_bookings[mask]
+        else:
+            c_bookings = c_all_bookings
+
         booked = round(c_bookings['teu'].sum(), 1)
         alloc_pw = minfo.get('allocTotal', 0)
         total_alloc = alloc_pw * active_week_count
@@ -296,12 +403,37 @@ def process_data_from_azure() -> str:
 
         contract_util_data.append({
             "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "contractType": minfo.get('contractType', ''), "contractName": minfo.get('contractName', ''),
+            "originRegion": minfo.get('originRegion', 'Unknown'),
+            "destRegion": minfo.get('destRegion', 'Unknown'),
+            "origins": list(set(minfo.get('rawOrigins', []))),
+            "destinations": list(set(minfo.get('rawDests', []))),
+            "polBreakdown": minfo.get('polBreakdown', []),
             "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
             "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
+            "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
             "fre": gbr('fre', 'FR1'), "adl": gbr('adl', 'AD1'), "pil": gbr('pil', 'PIL'),
             "prj": gbr('prj', 'PRJ'), "akl": gbr('akl', 'AKL'), "oth": gbr('oth', 'OTH')
         })
+
+    for cid in sorted(all_active_cids - processed_cids):
+        c_bookings = df[df['contract'] == cid]
+        booked = round(c_bookings['teu'].sum(), 1)
+        def gbr_orphan(bnorm, *codes):
+            bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
+            return {"alloc": 0, "booked": round(bk, 1), "util": 0}
+        contract_util_data.append({
+            "id": str(cid), "carrier": 'Various', "lane": 'Unknown',
+            "contractType": '', "contractName": '',
+            "originRegion": 'Unknown', "destRegion": 'Unknown',
+            "origins": [], "destinations": [], "polBreakdown": [],
+            "alloc": 0, "booked": booked, "util": 0, "status": 'Underperforming', "avail": -booked,
+            "syd": gbr_orphan('syd', 'SY1'), "mel": gbr_orphan('mel', 'ME1'), "bne": gbr_orphan('bne', 'BN1'),
+            "fre": gbr_orphan('fre', 'FR1'), "adl": gbr_orphan('adl', 'AD1'), "pil": gbr_orphan('pil', 'PIL'),
+            "prj": gbr_orphan('prj', 'PRJ'), "akl": gbr_orphan('akl', 'AKL'), "oth": gbr_orphan('oth', 'OTH')
+        })
+
 
     # WEEKLY_TREND_DATA
     weekly_trend_data = []
@@ -442,8 +574,9 @@ def process_data_from_azure_json() -> tuple:
     log(f"Reading Master Data from Azure: {master_file}")
     df_master = pd.read_excel(master_stream)
 
-    # Build master dictionary
+    # Build master dict with compound keys for multi-leg contracts
     master_dict = {}
+    cid_to_keys = {}
     for _, row in df_master.iterrows():
         cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
         if not cid:
@@ -454,13 +587,39 @@ def process_data_from_azure_json() -> tuple:
         priority = str(row.get('Priority', 'Normal'))
         contract_type = str(row.get('Contract Type', 'FAK'))
         contract_name = str(row.get('Contract Name', ''))
-        lane = f"{str(row.get('Origin', '')).strip()} to {str(row.get('Destination', '')).strip()}"
-        if cid not in master_dict:
-            master_dict[cid] = {'carrier': carrier, 'allocTotal': alloc_total, 'officeAlloc': office_alloc, 'priority': priority, 'lane': lane, 'contractType': contract_type, 'contractName': contract_name}
+        raw_origin = str(row.get('Origin', '')).strip() if pd.notna(row.get('Origin')) else ''
+        raw_dest = str(row.get('Destination', '')).strip() if pd.notna(row.get('Destination')) else ''
+        origin_region = normalize_region(raw_origin)
+        dest_region = normalize_dest(raw_dest)
+        lane = f"{origin_region} to {dest_region}"
+        compound_key = f"{cid}__{origin_region}_{dest_region}"
+
+        if compound_key not in master_dict:
+            master_dict[compound_key] = {
+                'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
+                'officeAlloc': office_alloc, 'priority': priority, 'lane': lane,
+                'originRegion': origin_region, 'destRegion': dest_region,
+                'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
+                'polBreakdown': [],
+                'contractType': contract_type, 'contractName': contract_name,
+            }
         else:
-            master_dict[cid]['allocTotal'] += alloc_total
+            master_dict[compound_key]['allocTotal'] += alloc_total
+            master_dict[compound_key]['rawOrigins'].append(raw_origin)
+            master_dict[compound_key]['rawDests'].append(raw_dest)
             for hub, val in office_alloc.items():
-                master_dict[cid]['officeAlloc'][hub] = master_dict[cid]['officeAlloc'].get(hub, 0) + val
+                master_dict[compound_key]['officeAlloc'][hub] = master_dict[compound_key]['officeAlloc'].get(hub, 0) + val
+
+        if cid not in cid_to_keys:
+            cid_to_keys[cid] = []
+        if compound_key not in cid_to_keys[cid]:
+            cid_to_keys[cid].append(compound_key)
+
+        if raw_origin and raw_origin not in ('NEA', 'SEA', 'EUR', 'AU', 'NZ', 'NORTH EUR') and alloc_total > 0:
+            master_dict[compound_key]['polBreakdown'].append({
+                'port': raw_origin, 'dest': raw_dest, 'teuPerWeek': alloc_total,
+            })
+
 
     # Robust Column Mapping
     df.columns = df.columns.str.strip()
@@ -589,13 +748,35 @@ def process_data_from_azure_json() -> tuple:
         })
 
     # CONTRACT_UTIL_DATA
-    # Iterate over ALL master contracts and any new contracts from the orders
+    def get_port_region(port_code):
+        if not port_code or str(port_code) == 'nan':
+            return 'Unknown'
+        p_upper = str(port_code).strip().upper()
+        info = port_map.get(p_upper, {})
+        region = info.get('region', '')
+        region_map = {
+            'North East Asia': 'NEA', 'South East Asia': 'SEA', 'Europe': 'EUR',
+            'Oceania': 'AU', 'Americas': 'Americas', 'Asia': 'NEA',
+        }
+        return region_map.get(region, normalize_region(port_code))
+
     all_active_cids = set(df['contract'].dropna().unique().tolist())
-    all_master_cids = sorted(list(set(master_dict.keys()).union(all_active_cids)))
+    processed_cids = set()
     contract_util_data = []
-    for cid in all_master_cids:
-        minfo = master_dict.get(cid, {})
-        c_bookings = df[df['contract'] == cid]
+
+    for compound_key, minfo in sorted(master_dict.items()):
+        cid = minfo['cid']
+        processed_cids.add(cid)
+        origin_region = minfo.get('originRegion', 'Unknown')
+
+        c_all_bookings = df[df['contract'] == cid]
+        keys_for_cid = cid_to_keys.get(cid, [compound_key])
+        if len(keys_for_cid) > 1:
+            mask = c_all_bookings['loadPort'].apply(lambda lp: get_port_region(lp) == origin_region)
+            c_bookings = c_all_bookings[mask]
+        else:
+            c_bookings = c_all_bookings
+
         booked = round(c_bookings['teu'].sum(), 1)
         alloc_pw = minfo.get('allocTotal', 0)
         total_alloc = alloc_pw * active_week_count
@@ -609,11 +790,34 @@ def process_data_from_azure_json() -> tuple:
         contract_util_data.append({
             "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', 'FAK'), "contractName": minfo.get('contractName', ''),
+            "originRegion": minfo.get('originRegion', 'Unknown'),
+            "destRegion": minfo.get('destRegion', 'Unknown'),
+            "origins": list(set(minfo.get('rawOrigins', []))),
+            "destinations": list(set(minfo.get('rawDests', []))),
+            "polBreakdown": minfo.get('polBreakdown', []),
             "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
             "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
+            "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
             "fre": gbr('fre', 'FR1'), "adl": gbr('adl', 'AD1'), "pil": gbr('pil', 'PIL'),
             "prj": gbr('prj', 'PRJ'), "akl": gbr('akl', 'AKL'), "oth": gbr('oth', 'OTH')
+        })
+
+    for cid in sorted(all_active_cids - processed_cids):
+        c_bookings = df[df['contract'] == cid]
+        booked = round(c_bookings['teu'].sum(), 1)
+        def gbr_orphan(bnorm, *codes):
+            bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
+            return {"alloc": 0, "booked": round(bk, 1), "util": 0}
+        contract_util_data.append({
+            "id": str(cid), "carrier": 'Various', "lane": 'Unknown',
+            "contractType": '', "contractName": '',
+            "originRegion": 'Unknown', "destRegion": 'Unknown',
+            "origins": [], "destinations": [], "polBreakdown": [],
+            "alloc": 0, "booked": booked, "util": 0, "status": 'Underperforming', "avail": -booked,
+            "syd": gbr_orphan('syd', 'SY1'), "mel": gbr_orphan('mel', 'ME1'), "bne": gbr_orphan('bne', 'BN1'),
+            "fre": gbr_orphan('fre', 'FR1'), "adl": gbr_orphan('adl', 'AD1'), "pil": gbr_orphan('pil', 'PIL'),
+            "prj": gbr_orphan('prj', 'PRJ'), "akl": gbr_orphan('akl', 'AKL'), "oth": gbr_orphan('oth', 'OTH')
         })
 
     # WEEKLY_TREND_DATA
