@@ -386,6 +386,7 @@ def process_data_from_azure() -> str:
 
     all_active_cids = set(df['contract'].dropna().unique().tolist())
     processed_cids = set()
+    processed_master_cids = set()
     contract_util_data = []
 
     for compound_key, minfo in sorted(master_dict.items()):
@@ -781,6 +782,11 @@ def process_data_from_azure_json() -> tuple:
         if p_upper in port_name_to_region:
             return port_name_to_region[p_upper]
         return normalize_region(port_value)
+
+    all_active_cids = set(df['contract'].dropna().unique().tolist())
+    processed_cids = set()
+    processed_master_cids = set()
+    contract_util_data = []
 
     for compound_key, minfo in sorted(master_dict.items()):
         cid = minfo['cid']
