@@ -252,7 +252,7 @@ const ContractDashboard: React.FC = () => {
         oPortMeta?.lane === selectedOrigin ||
         oPortMeta?.country === selectedOrigin ||
         oPortMeta?.region === selectedOrigin ||
-        (master && master.notes && master.notes.toLowerCase().includes(selectedOrigin.toLowerCase()));
+        (master && master.notes && master.notes?.toLowerCase().includes(selectedOrigin?.toLowerCase() || ''));
 
       const matchDest = selectedDestination === 'ALL' ||
         b.dischargePort === selectedDestination ||
@@ -275,7 +275,7 @@ const ContractDashboard: React.FC = () => {
       // Carrier filter
       const matchCarrier = selectedCarrier === 'ALL' || (() => {
         if (master) {
-          return master.carrier.toLowerCase() === selectedCarrier.toLowerCase();
+          return master.carrier?.toLowerCase() === selectedCarrier?.toLowerCase();
         }
         return false;
       })();
@@ -293,7 +293,7 @@ const ContractDashboard: React.FC = () => {
   // Compute contract metrics based on the BASE filtered bookings
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
     .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
-    .filter(c => selectedCarrier === 'ALL' || c.carrier.toLowerCase() === selectedCarrier.toLowerCase())
+    .filter(c => selectedCarrier === 'ALL' || c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase())
     // Filter by origin: match contract's origin region against the selected origin filter
     .filter(c => {
       if (selectedOrigin === 'ALL') return true;
@@ -311,23 +311,23 @@ const ContractDashboard: React.FC = () => {
       };
       // Check if the selected origin matches this contract's origin region
       const aliases = regionAliases[originRegion] || [originRegion];
-      if (aliases.some(a => a.toLowerCase() === selectedOrigin.toLowerCase())) return true;
+      if (aliases.some(a => a?.toLowerCase() === selectedOrigin?.toLowerCase())) return true;
       // Check if any raw origin matches
-      if (origins.some(o => o.toLowerCase() === selectedOrigin.toLowerCase())) return true;
+      if (origins.some(o => o?.toLowerCase() === selectedOrigin?.toLowerCase())) return true;
       // Check port hierarchy: if the selected origin is a specific port, check if any raw origin contains it
       const oPortMeta = PORT_HIERARCHY.find(p => p.code === selectedOrigin || p.name === selectedOrigin);
       if (oPortMeta) {
         // If filter is a port/country, check if the contract's origin region matches the port's trade lane region
         const portRegion = oPortMeta.lane || oPortMeta.region || '';
         const portRegionAliases = Object.entries(regionAliases).find(([_, vals]) =>
-          vals.some(v => v.toLowerCase() === portRegion.toLowerCase())
+          vals.some(v => v?.toLowerCase() === portRegion?.toLowerCase())
         );
         if (portRegionAliases && portRegionAliases[0] === originRegion) return true;
         // Or if the raw origins contain the port name
-        if (origins.some(o => o.toLowerCase().includes(selectedOrigin.toLowerCase()))) return true;
+        if (origins.some(o => o?.toLowerCase().includes(selectedOrigin?.toLowerCase() || ''))) return true;
       }
       // Fallback: check if lane string contains the selected origin
-      if (lane.toLowerCase().includes(selectedOrigin.toLowerCase())) return true;
+      if (lane?.toLowerCase().includes(selectedOrigin?.toLowerCase() || '')) return true;
       return false;
     })
     // Filter by destination
@@ -343,9 +343,9 @@ const ContractDashboard: React.FC = () => {
         'Americas': ['Americas', 'USA'],
       };
       const aliases = destAliases[destRegion] || [destRegion];
-      if (aliases.some(a => a.toLowerCase() === selectedDestination.toLowerCase())) return true;
-      if (destinations.some(d => d.toLowerCase() === selectedDestination.toLowerCase())) return true;
-      if (lane.toLowerCase().includes(selectedDestination.toLowerCase())) return true;
+      if (aliases.some(a => a?.toLowerCase() === selectedDestination?.toLowerCase())) return true;
+      if (destinations.some(d => d?.toLowerCase() === selectedDestination?.toLowerCase())) return true;
+      if (lane?.toLowerCase().includes(selectedDestination?.toLowerCase() || '')) return true;
       return false;
     })
     .map(c => {
@@ -368,9 +368,8 @@ const ContractDashboard: React.FC = () => {
         const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
         const oRegion = oPortMeta ? (oPortMeta.region || '') : '';
         const aliases = regionAliases[originRegion] || [originRegion];
-        
-        if (aliases.some(a => a.toLowerCase() === oRegion.toLowerCase())) return true;
-        if (origins.some((o: string) => o.toLowerCase() === b.loadPort.toLowerCase() || oPortMeta?.name?.toLowerCase() === o.toLowerCase())) return true;
+        if (aliases.some(a => a?.toLowerCase() === oRegion?.toLowerCase())) return true;
+        if (origins.some((o: string) => o?.toLowerCase() === b.loadPort?.toLowerCase() || oPortMeta?.name?.toLowerCase() === o?.toLowerCase())) return true;
         
         return false;
       });
@@ -414,7 +413,7 @@ const ContractDashboard: React.FC = () => {
       };
       const codes = branchCodeMap[selectedBranch] || [selectedBranch];
       // Show if the branch has allocation OR bookings (don't require booked > 0)
-      return codes.some(code => (c as any)[code.toLowerCase()]?.alloc > 0) || c.booked > 0;
+      return codes.some(code => (c as any)[code?.toLowerCase()]?.alloc > 0) || c.booked > 0;
     });
 
   // Now apply the KPI filter mode to derive the final filteredBookings
@@ -625,7 +624,7 @@ const ContractDashboard: React.FC = () => {
 
       const carrierFilteredContractsForBranch = selectedCarrier === 'ALL'
         ? allContractsForBranch
-        : allContractsForBranch.filter(c => c.carrier.toLowerCase() === selectedCarrier.toLowerCase());
+        : allContractsForBranch.filter(c => c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase());
 
       const activeContracts = Array.from(new Set([
         ...carrierFilteredContractsForBranch.map(c => c.id),
