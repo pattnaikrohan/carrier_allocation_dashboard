@@ -51,9 +51,8 @@ const defaultData: BookingDataState = {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 function getApiBase(): string {
-  return window.location.hostname === 'localhost'
-    ? 'http://localhost:8001'
-    : 'https://carrier-allocation-dashboard.azurewebsites.net';
+  // Always point to the live Azure API for real blob data
+  return 'https://carrier-allocation-dashboard.azurewebsites.net';
 }
 
 // ─── Context ──────────────────────────────────────────────────────────────────
