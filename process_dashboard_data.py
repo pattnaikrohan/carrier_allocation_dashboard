@@ -350,6 +350,9 @@ def process_data():
             port_lookup[p_upper] = info
             port_hierarchy.append(info)
 
+    df['loadPort'] = df['loadPort'].apply(lambda x: port_lookup.get(str(x).strip().upper(), {}).get('name', x) if pd.notna(x) else x)
+    df['dischargePort'] = df['dischargePort'].apply(lambda x: port_lookup.get(str(x).strip().upper(), {}).get('name', x) if pd.notna(x) else x)
+
     # BRANCH_SNAPSHOT
     branch_snapshot = []
     std_branches = [
@@ -406,7 +409,7 @@ def process_data():
 
     for compound_key, minfo in sorted(master_dict.items()):
         cid = minfo['cid']
-        processed_cids.add(cid)
+        processed_cids.add(compound_key)
         origin_region = minfo.get('originRegion', 'Unknown')
         dest_region = minfo.get('destRegion', 'Unknown')
 

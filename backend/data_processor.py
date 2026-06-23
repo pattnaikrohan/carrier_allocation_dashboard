@@ -521,7 +521,7 @@ export const DESTINATIONS = {json.dumps(clean_list(destinations), indent=2, cls=
 export const LANES = {json.dumps(sorted((df['loadPort'].fillna('N/A').astype(str) + " to " + df['dischargePort'].fillna('N/A').astype(str)).unique().tolist()), indent=2, cls=CustomEncoder)};
 export const ALLOCATIONS = ["Regular FAK", "Contractual"];
 export const PRIORITIES = ["High", "Medium", "Low"];
-export const CONTRACTS = {json.dumps(clean_list(list(processed_cids) + list(all_active_cids - processed_cids)), indent=2, cls=CustomEncoder)};
+export const CONTRACTS = {json.dumps(clean_list(list(processed_cids) + list(all_active_cids - processed_master_cids)), indent=2, cls=CustomEncoder)};
 export const WEEKS = {json.dumps(weeks, indent=2, cls=CustomEncoder)};
 export const REGIONS = {json.dumps(sorted(list(set([h['region'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
 export const COUNTRIES = {json.dumps(sorted(list(set([h['country'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
@@ -603,6 +603,8 @@ def process_data_from_azure_json() -> tuple:
         dest_region = normalize_dest(raw_dest)
         lane = f"{origin_region} to {dest_region}"
         compound_key = f"{cid}__{origin_region}_{dest_region}"
+
+        processed_master_cids.add(cid)
 
         if compound_key not in master_dict:
             master_dict[compound_key] = {
@@ -780,15 +782,17 @@ def process_data_from_azure_json() -> tuple:
             return port_name_to_region[p_upper]
         return normalize_region(port_value)
 
-    all_active_cids = set(df['contract'].dropna().unique().tolist())
-    processed_cids = set()
-    contract_util_data = []
-
     for compound_key, minfo in sorted(master_dict.items()):
         cid = minfo['cid']
-        processed_cids.add(cid)
+        
+        if compound_key in processed_cids:
+            continue
+        processed_cids.add(compound_key)
+        processed_master_cids.add(cid)
+        
         origin_region = minfo.get('originRegion', 'Unknown')
-
+        dest_region = minfo.get('destRegion', 'Unknown')
+        
         c_all_bookings = df[df['contract'] == cid]
         keys_for_cid = cid_to_keys.get(cid, [compound_key])
         if len(keys_for_cid) > 1:
@@ -823,7 +827,7 @@ def process_data_from_azure_json() -> tuple:
             "prj": gbr('prj', 'PRJ'), "akl": gbr('akl', 'AKL'), "oth": gbr('oth', 'OTH')
         })
 
-    for cid in sorted(all_active_cids - processed_cids):
+    for cid in sorted(all_active_cids - processed_master_cids):
         c_bookings = df[df['contract'] == cid]
         booked = round(c_bookings['teu'].sum(), 1)
         def gbr_orphan(bnorm, *codes):
@@ -912,7 +916,7 @@ def process_data_from_azure_json() -> tuple:
     result = {
         "ORIGINS": clean_list(origins),
         "DESTINATIONS": clean_list(destinations),
-        "CONTRACTS": clean_list(list(processed_cids) + list(all_active_cids - processed_cids)),
+        "CONTRACTS": clean_list(list(processed_cids) + list(all_active_cids - processed_master_cids)),
         "WEEKS": weeks,
         "REGIONS": sorted(list(set([h['region'] for h in port_hierarchy]))),
         "COUNTRIES": sorted(list(set([h['country'] for h in port_hierarchy]))),
