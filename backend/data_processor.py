@@ -605,8 +605,6 @@ def process_data_from_azure_json() -> tuple:
         lane = f"{origin_region} to {dest_region}"
         compound_key = f"{cid}__{origin_region}_{dest_region}"
 
-        processed_master_cids.add(cid)
-
         if compound_key not in master_dict:
             master_dict[compound_key] = {
                 'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
