@@ -372,21 +372,32 @@ def process_data():
         })
 
     # CONTRACT_UTIL_DATA
-    # Build a port_lookup_local for assigning bookings to the correct contract leg
-    # based on their load port's region
-    def get_port_region(port_code):
-        """Look up a booking's load port code in port_lookup to get its trade lane region."""
-        if not port_code or str(port_code) == 'nan':
+    # Build a reverse lookup: port name → trade lane region code
+    # (port_lookup is keyed by LOCODE, but loadPort has been resolved to names by now)
+    _region_map = {
+        'North East Asia': 'NEA', 'South East Asia': 'SEA', 'Europe': 'EUR',
+        'Oceania': 'AU', 'Americas': 'Americas', 'Asia': 'NEA',
+    }
+    port_name_to_region = {}
+    for code, info in port_lookup.items():
+        name_upper = info.get('name', '').strip().upper()
+        if name_upper:
+            region_raw = info.get('region', '')
+            port_name_to_region[name_upper] = _region_map.get(region_raw, region_raw)
+        # Also keep code-based lookup
+        region_raw = info.get('region', '')
+        port_name_to_region[code] = _region_map.get(region_raw, region_raw)
+
+    def get_port_region(port_value):
+        """Look up a booking's load port (already resolved to a name) to get its trade lane region."""
+        if not port_value or str(port_value) == 'nan':
             return 'Unknown'
-        p_upper = str(port_code).strip().upper()
-        info = port_lookup.get(p_upper, {})
-        region = info.get('region', '')
-        # Map port_hierarchy region names to trade lane codes
-        region_map = {
-            'North East Asia': 'NEA', 'South East Asia': 'SEA', 'Europe': 'EUR',
-            'Oceania': 'AU', 'Americas': 'Americas', 'Asia': 'NEA',
-        }
-        return region_map.get(region, normalize_region(port_code))
+        p_upper = str(port_value).strip().upper()
+        # Try name-based lookup first (since loadPort is already resolved to names)
+        if p_upper in port_name_to_region:
+            return port_name_to_region[p_upper]
+        # Fallback to normalize_region which handles partial name matching
+        return normalize_region(port_value)
 
     # Iterate over ALL compound keys from master + any booking-only contracts
     all_active_cids = set(df['contract'].dropna().unique().tolist())
