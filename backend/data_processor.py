@@ -511,7 +511,7 @@ export const DESTINATIONS = {json.dumps(clean_list(destinations), indent=2, cls=
 export const LANES = {json.dumps(sorted((df['loadPort'].fillna('N/A').astype(str) + " to " + df['dischargePort'].fillna('N/A').astype(str)).unique().tolist()), indent=2, cls=CustomEncoder)};
 export const ALLOCATIONS = ["Regular FAK", "Contractual"];
 export const PRIORITIES = ["High", "Medium", "Low"];
-export const CONTRACTS = {json.dumps(clean_list(all_master_cids), indent=2, cls=CustomEncoder)};
+export const CONTRACTS = {json.dumps(clean_list(list(processed_cids) + list(all_active_cids - processed_cids)), indent=2, cls=CustomEncoder)};
 export const WEEKS = {json.dumps(weeks, indent=2, cls=CustomEncoder)};
 export const REGIONS = {json.dumps(sorted(list(set([h['region'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
 export const COUNTRIES = {json.dumps(sorted(list(set([h['country'] for h in port_hierarchy]))), indent=2, cls=CustomEncoder)};
@@ -892,7 +892,7 @@ def process_data_from_azure_json() -> tuple:
     result = {
         "ORIGINS": clean_list(origins),
         "DESTINATIONS": clean_list(destinations),
-        "CONTRACTS": clean_list(all_master_cids),
+        "CONTRACTS": clean_list(list(processed_cids) + list(all_active_cids - processed_cids)),
         "WEEKS": weeks,
         "REGIONS": sorted(list(set([h['region'] for h in port_hierarchy]))),
         "COUNTRIES": sorted(list(set([h['country'] for h in port_hierarchy]))),
