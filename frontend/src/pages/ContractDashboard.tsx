@@ -350,7 +350,30 @@ const ContractDashboard: React.FC = () => {
     })
     .map(c => {
       const scaledAlloc = Math.round(c.alloc * weekScale);
-      const contractBookings = baseFilteredBookings.filter(b => b.contract === c.id);
+      const contractBookings = baseFilteredBookings.filter(b => {
+        const mainId = c.id.split('__')[0];
+        if (b.contract !== mainId) return false;
+        if (!c.id.includes('__')) return true;
+
+        const originRegion = (c as any).originRegion || '';
+        const origins = (c as any).origins || [];
+        const regionAliases: Record<string, string[]> = {
+          'NEA': ['North East Asia', 'NEA', 'Asia'],
+          'SEA': ['South East Asia', 'SEA', 'Asia'],
+          'EUR': ['Europe', 'EUR'],
+          'AU': ['Australia', 'Oceania', 'AU'],
+          'NZ': ['New Zealand', 'NZ'],
+          'Americas': ['Americas', 'USA'],
+        };
+        const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
+        const oRegion = oPortMeta ? (oPortMeta.region || '') : '';
+        const aliases = regionAliases[originRegion] || [originRegion];
+        
+        if (aliases.some(a => a.toLowerCase() === oRegion.toLowerCase())) return true;
+        if (origins.some((o: string) => o.toLowerCase() === b.loadPort.toLowerCase() || oPortMeta?.name?.toLowerCase() === o.toLowerCase())) return true;
+        
+        return false;
+      });
       const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
       const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
 

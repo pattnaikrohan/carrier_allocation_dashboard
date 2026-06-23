@@ -413,7 +413,7 @@ def process_data_from_azure() -> str:
             return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
 
         contract_util_data.append({
-            "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "id": compound_key, "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', ''), "contractName": minfo.get('contractName', ''),
             "originRegion": minfo.get('originRegion', 'Unknown'),
             "destRegion": minfo.get('destRegion', 'Unknown'),
@@ -816,7 +816,7 @@ def process_data_from_azure_json() -> tuple:
             return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
 
         contract_util_data.append({
-            "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "id": compound_key, "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', 'FAK'), "contractName": minfo.get('contractName', ''),
             "originRegion": minfo.get('originRegion', 'Unknown'),
             "destRegion": minfo.get('destRegion', 'Unknown'),

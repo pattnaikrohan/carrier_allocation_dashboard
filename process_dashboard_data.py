@@ -439,7 +439,7 @@ def process_data():
             return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk/al*100, 1) if al > 0 else 0}
 
         contract_util_data.append({
-            "id": str(cid), "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
+            "id": compound_key, "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', ''), "contractName": minfo.get('contractName', ''),
             "expiry": minfo.get('expiry', 'N/A'),
             "originRegion": origin_region,
