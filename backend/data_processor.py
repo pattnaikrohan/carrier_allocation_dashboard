@@ -10,6 +10,63 @@ import re
 import math
 import io
 from azure.storage.blob import BlobServiceClient
+import snowflake.connector
+from cryptography.hazmat.backends import default_backend
+from cryptography.hazmat.primitives import serialization
+
+def fetch_orders_from_snowflake(log_func):
+    """Fetch orders data from Snowflake using JWT authentication."""
+    log_func("Connecting to Snowflake...")
+    
+    key_content = os.getenv('SF_PRIVATE_KEY_CONTENT')
+    if key_content:
+        # Handle newlines if Azure squashes them
+        key_content = key_content.replace('\\n', '\n')
+        key_bytes = key_content.encode('utf-8')
+    else:
+        key_path = os.getenv('SF_PRIVATE_KEY_PATH', 'scratch/snowflake_key.pem')
+        with open(key_path, "rb") as key:
+            key_bytes = key.read()
+
+    p_key = serialization.load_pem_private_key(
+        key_bytes,
+        password=None,
+        backend=default_backend()
+    )
+
+    pkb = p_key.private_bytes(
+        encoding=serialization.Encoding.DER,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption())
+
+    ctx = snowflake.connector.connect(
+        user=os.getenv('SF_USER', 'TEST_AI_AUTO'),
+        account=os.getenv('SF_ACCOUNT', 'SGLYREN-GG43054'),
+        private_key=pkb,
+        warehouse=os.getenv('SF_WAREHOUSE', 'DEV_COMPUTE_WH'),
+        database=os.getenv('SF_DATABASE', 'DEV'),
+        schema=os.getenv('SF_SCHEMA', 'PUBLIC')
+    )
+
+    cs = ctx.cursor()
+    log_func("Querying Snowflake DEV.RAW.TEST_ORDER...")
+    cs.execute("SELECT * FROM DEV.RAW.TEST_ORDER")
+    df = cs.fetch_pandas_all()
+    ctx.close()
+    
+    log_func(f"Fetched {len(df)} rows from Snowflake.")
+    
+    # Normalize TEU column
+    teu_cols = [c for c in df.columns if 'teu' in c.lower()]
+    if teu_cols:
+        teu_vals = df[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+        df['Total TEU'] = teu_vals.max(axis=1)
+        df = df.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
+    else:
+        df['Total TEU'] = 0
+        
+    df = df.drop_duplicates(subset=['ORDER_NUMBER'], keep='last') if 'ORDER_NUMBER' in df.columns else df
+    return df
 
 
 def _get_blob_service_client():
@@ -160,28 +217,8 @@ def process_data_from_azure() -> str:
         print(msg)
         log_lines.append(msg)
 
-    # 1. Fetch ALL Orders files and merge them
-    all_orders = _get_all_blobs(container, 'Orders*.xlsx')
-    order_frames = []
-    for stream, name in all_orders:
-        log(f"Reading Orders from Azure: {name}")
-        df_part = pd.read_excel(stream)
-        df_part.columns = df_part.columns.str.strip()
-        # Normalize TEU: ensure every file has a consistent 'Total TEU' column
-        # by taking the row-wise max of all TEU-variant columns in this file.
-        teu_cols = [c for c in df_part.columns if 'teu' in c.lower()]
-        if teu_cols:
-            teu_vals = df_part[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
-            df_part['Total TEU'] = teu_vals.max(axis=1)
-            # Drop the original inconsistent TEU columns to avoid confusion after concat
-            df_part = df_part.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
-        else:
-            df_part['Total TEU'] = 0
-        log(f"  -> {len(df_part)} rows, TEU column normalized")
-        order_frames.append(df_part)
-    df = pd.concat(order_frames, ignore_index=True)
-    df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
-    log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
+    # 1. Fetch Orders from Snowflake
+    df = fetch_orders_from_snowflake(log)
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
@@ -238,14 +275,14 @@ def process_data_from_azure() -> str:
     # Robust Column Mapping
     df.columns = df.columns.str.strip()
     col_map = {
-        'Contract': 'contract', 'Contract #': 'contract',
-        'Branch': 'branch', 'Created Branch': 'branch',
-        'Week No': 'week', 'CW Week No': 'week',
-        'Order Number': 'order', 'Est. Departure': 'etd', 'Est. Arrival': 'eta',
-        'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage',
-        'Buyer': 'buyer', 'Supplier': 'supplier', 'Load Port': 'loadPort',
-        'Discharge Port': 'dischargePort', 'Region': 'region',
-        'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
+        'Contract': 'contract', 'Contract #': 'contract', 'CONTRACT': 'contract',
+        'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
+        'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
+        'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
+        'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
+        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
+        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
+        'Planned Carrier': 'plannedCarrier', 'PLANNED CARRIER': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}
@@ -557,28 +594,8 @@ def process_data_from_azure_json() -> tuple:
         print(msg)
         log_lines.append(msg)
 
-    # 1. Fetch ALL Orders files and merge them
-    all_orders = _get_all_blobs(container, 'Orders*.xlsx')
-    order_frames = []
-    for stream, name in all_orders:
-        log(f"Reading Orders from Azure: {name}")
-        df_part = pd.read_excel(stream)
-        df_part.columns = df_part.columns.str.strip()
-        # Normalize TEU: ensure every file has a consistent 'Total TEU' column
-        # by taking the row-wise max of all TEU-variant columns in this file.
-        teu_cols = [c for c in df_part.columns if 'teu' in c.lower()]
-        if teu_cols:
-            teu_vals = df_part[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
-            df_part['Total TEU'] = teu_vals.max(axis=1)
-            # Drop the original inconsistent TEU columns to avoid confusion after concat
-            df_part = df_part.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
-        else:
-            df_part['Total TEU'] = 0
-        log(f"  -> {len(df_part)} rows, TEU column normalized")
-        order_frames.append(df_part)
-    df = pd.concat(order_frames, ignore_index=True)
-    df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
-    log(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
+    # 1. Fetch Orders from Snowflake
+    df = fetch_orders_from_snowflake(log)
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
@@ -635,14 +652,14 @@ def process_data_from_azure_json() -> tuple:
     # Robust Column Mapping
     df.columns = df.columns.str.strip()
     col_map = {
-        'Contract': 'contract', 'Contract #': 'contract',
-        'Branch': 'branch', 'Created Branch': 'branch',
-        'Week No': 'week', 'CW Week No': 'week',
-        'Order Number': 'order', 'Est. Departure': 'etd', 'Est. Arrival': 'eta',
-        'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage',
-        'Buyer': 'buyer', 'Supplier': 'supplier', 'Load Port': 'loadPort',
-        'Discharge Port': 'dischargePort', 'Region': 'region',
-        'Planned Carrier': 'plannedCarrier', 'Carrier Name': 'carrierName'
+        'Contract': 'contract', 'Contract #': 'contract', 'CONTRACT': 'contract',
+        'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
+        'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
+        'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
+        'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
+        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
+        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
+        'Planned Carrier': 'plannedCarrier', 'PLANNED CARRIER': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
     existing_cols = {col: col_map_lower[col.lower()] for col in df.columns if col.lower() in col_map_lower}

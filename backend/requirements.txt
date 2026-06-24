@@ -7,3 +7,5 @@ azure-storage-blob
 pandas
 openpyxl
 httpx
+snowflake-connector-python[pandas]
+cryptography
