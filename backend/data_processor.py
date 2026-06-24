@@ -68,6 +68,31 @@ def fetch_orders_from_snowflake(log_func):
     df = df.drop_duplicates(subset=['ORDER_NUMBER'], keep='last') if 'ORDER_NUMBER' in df.columns else df
     return df
 
+def fetch_orders_from_azure(log_func, container):
+    """Fetch orders data from Azure Blob Storage."""
+    log_func("Fetching Orders from Azure Blob Storage...")
+    all_orders = _get_all_blobs(container, 'Orders*.xlsx')
+    order_frames = []
+    for stream, name in all_orders:
+        log_func(f"Reading Orders from Azure: {name}")
+        df_part = pd.read_excel(stream)
+        df_part.columns = df_part.columns.str.strip()
+        # Normalize TEU
+        teu_cols = [c for c in df_part.columns if 'teu' in c.lower()]
+        if teu_cols:
+            teu_vals = df_part[teu_cols].apply(pd.to_numeric, errors='coerce').fillna(0)
+            df_part['Total TEU'] = teu_vals.max(axis=1)
+            df_part = df_part.drop(columns=[c for c in teu_cols if c != 'Total TEU'])
+        else:
+            df_part['Total TEU'] = 0
+        log_func(f"  -> {len(df_part)} rows, TEU column normalized")
+        order_frames.append(df_part)
+    df = pd.concat(order_frames, ignore_index=True)
+    df = df.drop_duplicates(subset=['Order Number'], keep='last') if 'Order Number' in df.columns else df
+    log_func(f"Merged {len(all_orders)} Orders file(s) -> {len(df)} unique rows")
+    return df
+
+
 
 def _get_blob_service_client():
     """Create a BlobServiceClient using SAS token authentication."""
@@ -217,8 +242,16 @@ def process_data_from_azure() -> str:
         print(msg)
         log_lines.append(msg)
 
-    # 1. Fetch Orders from Snowflake
-    df = fetch_orders_from_snowflake(log)
+    # 1. Fetch Orders based on feature toggle
+    data_source = os.getenv('DATA_SOURCE', 'SNOWFLAKE').upper()
+    if data_source == 'SNOWFLAKE':
+        try:
+            df = fetch_orders_from_snowflake(log)
+        except Exception as e:
+            log(f"Snowflake fetch failed: {e}. Falling back to Azure Blob...")
+            df = fetch_orders_from_azure(log, container)
+    else:
+        df = fetch_orders_from_azure(log, container)
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
@@ -594,8 +627,16 @@ def process_data_from_azure_json() -> tuple:
         print(msg)
         log_lines.append(msg)
 
-    # 1. Fetch Orders from Snowflake
-    df = fetch_orders_from_snowflake(log)
+    # 1. Fetch Orders based on feature toggle
+    data_source = os.getenv('DATA_SOURCE', 'SNOWFLAKE').upper()
+    if data_source == 'SNOWFLAKE':
+        try:
+            df = fetch_orders_from_snowflake(log)
+        except Exception as e:
+            log(f"Snowflake fetch failed: {e}. Falling back to Azure Blob...")
+            df = fetch_orders_from_azure(log, container)
+    else:
+        df = fetch_orders_from_azure(log, container)
 
     # 2. Fetch Master Data
     master_stream = _get_blob_file(container, master_file)
