@@ -21,7 +21,7 @@ interface BookingDataState {
 
 interface BookingDataContextType extends BookingDataState {
   /** Trigger a sync from Azure Blob → backend → update in-memory data */
-  syncData: () => Promise<{ status: string; message: string }>;
+  syncData: (source?: string) => Promise<{ status: string; message: string }>;
   /** Fetch latest processed data from backend (no Azure re-processing) */
   refreshData: () => Promise<void>;
   /** Whether a sync/fetch is currently in progress */
@@ -85,10 +85,11 @@ export const BookingDataProvider: React.FC<{ children: ReactNode }> = ({ childre
   }, []);
 
   /** POST /api/sync — triggers Azure Blob processing, returns fresh data */
-  const syncData = useCallback(async (): Promise<{ status: string; message: string }> => {
+  const syncData = useCallback(async (source?: string): Promise<{ status: string; message: string }> => {
     setIsFetching(true);
     try {
-      const res = await fetch(`${getApiBase()}/api/sync`, { method: 'POST' });
+      const queryParams = source ? `?source=${source}` : '';
+      const res = await fetch(`${getApiBase()}/api/sync${queryParams}`, { method: 'POST' });
       const json = await res.json();
 
       if ((json.status === 'success' || json.status === 'partial') && json.data) {

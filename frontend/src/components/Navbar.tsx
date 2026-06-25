@@ -31,7 +31,7 @@ interface NavbarProps {
   availableOrigins?: (string | HierarchyNode)[];
   availableDestinations?: (string | HierarchyNode)[];
   availableBranches?: string[];
-  onSync?: () => void;
+  onSync?: (source?: string) => void;
 }
 
 // Branch list – FRE replaces PER; PIL, PRJ, AKL, OTH are new
@@ -64,6 +64,7 @@ const Navbar: React.FC<NavbarProps> = ({
   const navigate = useNavigate();
   // Individual Menu States
   const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const [dataSource, setDataSource] = useState<'SNOWFLAKE' | 'AZURE_BLOB'>('SNOWFLAKE');
 
 
   // Dynamic Week Hierarchy Construction
@@ -303,7 +304,18 @@ const Navbar: React.FC<NavbarProps> = ({
                 <>
                   <div className="w-[1px] h-3.5 bg-slate-300 dark:bg-slate-700/50 mx-0.5" />
                   <button
-                    onClick={onSync}
+                    onClick={() => setDataSource(prev => prev === 'SNOWFLAKE' ? 'AZURE_BLOB' : 'SNOWFLAKE')}
+                    className="flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-all text-[9px] font-bold tracking-widest bg-slate-200/50 dark:bg-white/5 text-slate-600 dark:text-slate-300 hover:bg-slate-300 dark:hover:bg-white/10"
+                    title="Toggle Data Source"
+                  >
+                    {dataSource === 'SNOWFLAKE' ? (
+                      <><span className="text-blue-500">❄️</span> SNOWFLAKE</>
+                    ) : (
+                      <><span className="text-sky-500">☁️</span> AZURE BLOB</>
+                    )}
+                  </button>
+                  <button
+                    onClick={() => onSync(dataSource)}
                     disabled={isSyncing}
                     className={`flex items-center gap-1.5 px-2.5 h-7 rounded-md transition-all text-[10px] font-bold uppercase tracking-widest ${isSyncing
                         ? 'bg-blue-500/20 text-blue-400 cursor-wait'

@@ -148,18 +148,20 @@ async def get_data():
         }
 
 
+from typing import Optional
+
 @app.post("/api/sync")
-async def sync_data():
+async def sync_data(source: Optional[str] = None):
     """Triggers the data ingestion pipeline: Azure Blob → Process → JSON + optional GitHub push."""
     try:
         from data_processor import process_data_from_azure, process_data_from_azure_json
 
         # Step 1: Process data from Azure Blob Storage (JSON for frontend)
-        json_data, log_lines = process_data_from_azure_json()
+        json_data, log_lines = process_data_from_azure_json(force_source=source)
 
         # Step 2: Also generate TS and try pushing to GitHub (optional, for static rebuild)
         try:
-            ts_content, ts_log = process_data_from_azure()
+            ts_content, ts_log = process_data_from_azure(force_source=source)
             github_result = await push_to_github(ts_content)
             log_lines.extend(ts_log)
         except Exception:

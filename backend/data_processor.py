@@ -228,7 +228,7 @@ def normalize_dest(dest_str):
         return 'Americas'
     return s
 
-def process_data_from_azure() -> str:
+def process_data_from_azure(force_source: str = None) -> str:
     """
     Fetch data from Azure Blob Storage, process it,
     and return the generated BookingData.ts content as a string.
@@ -243,7 +243,7 @@ def process_data_from_azure() -> str:
         log_lines.append(msg)
 
     # 1. Fetch Orders based on feature toggle
-    data_source = os.getenv('DATA_SOURCE', 'SNOWFLAKE').upper()
+    data_source = (force_source or os.getenv('DATA_SOURCE', 'SNOWFLAKE')).upper()
     if data_source == 'SNOWFLAKE':
         try:
             df = fetch_orders_from_snowflake(log)
@@ -612,7 +612,7 @@ export const CARRIER_BREAKDOWN = {json.dumps(carrier_breakdown, indent=2, cls=Cu
     return ts_content, log_lines
 
 
-def process_data_from_azure_json() -> tuple:
+def process_data_from_azure_json(force_source: str = None) -> tuple:
     """
     Fetch data from Azure Blob Storage, process it,
     and return the result as a JSON-serializable Python dict.
@@ -628,7 +628,7 @@ def process_data_from_azure_json() -> tuple:
         log_lines.append(msg)
 
     # 1. Fetch Orders based on feature toggle
-    data_source = os.getenv('DATA_SOURCE', 'SNOWFLAKE').upper()
+    data_source = (force_source or os.getenv('DATA_SOURCE', 'SNOWFLAKE')).upper()
     if data_source == 'SNOWFLAKE':
         try:
             df = fetch_orders_from_snowflake(log)
