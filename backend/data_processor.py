@@ -633,6 +633,9 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         try:
             df = fetch_orders_from_snowflake(log)
         except Exception as e:
+            if force_source:
+                log(f"Snowflake fetch failed explicitly: {e}")
+                raise e
             log(f"Snowflake fetch failed: {e}. Falling back to Azure Blob...")
             df = fetch_orders_from_azure(log, container)
     else:
