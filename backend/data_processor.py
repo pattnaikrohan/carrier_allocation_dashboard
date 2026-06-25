@@ -466,7 +466,7 @@ def process_data_from_azure(force_source: str = None) -> str:
 
         c_all_bookings = df[df['contract'] == cid]
         keys_for_cid = cid_to_keys.get(cid, [compound_key])
-        if len(keys_for_cid) > 1:
+        if len(keys_for_cid) > 1 and not c_all_bookings.empty:
             mask = c_all_bookings['loadPort'].apply(lambda lp: get_port_region(lp) == origin_region)
             c_bookings = c_all_bookings[mask]
         else:
@@ -857,7 +857,7 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         
         c_all_bookings = df[df['contract'] == cid]
         keys_for_cid = cid_to_keys.get(cid, [compound_key])
-        if len(keys_for_cid) > 1:
+        if len(keys_for_cid) > 1 and not c_all_bookings.empty:
             mask = c_all_bookings['loadPort'].apply(lambda lp: get_port_region(lp) == origin_region)
             c_bookings = c_all_bookings[mask]
         else:
