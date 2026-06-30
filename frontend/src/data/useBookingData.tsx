@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useState, useCallback, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useCallback, useEffect, useRef, ReactNode } from 'react';
 import * as StaticData from '../BookingData';
 
 // ─── Types ────────────────────────────────────────────────────────────────────
@@ -51,7 +51,12 @@ const defaultData: BookingDataState = {
 // ─── API helpers ──────────────────────────────────────────────────────────────
 
 function getApiBase(): string {
-  // Always point to the live Azure API for real blob data
+  if (import.meta.env.VITE_API_BASE_URL) {
+    return import.meta.env.VITE_API_BASE_URL;
+  }
+  if (import.meta.env.DEV) {
+    return ''; // Route through Vite proxy (/api -> http://localhost:8000)
+  }
   return 'https://carrier-allocation-dashboard.azurewebsites.net';
 }
 
@@ -122,10 +127,32 @@ export const BookingDataProvider: React.FC<{ children: ReactNode }> = ({ childre
     }
   }, [applyData]);
 
-  // Fetch live data on initial load
+  // ─── Auto-refresh every 10 seconds (item #11) ────────────────────────────────
+  const isRefreshingRef = useRef(false);
+
+  /** Silent background refresh — does NOT set isFetching to avoid UI spinner */
+  const silentRefresh = useCallback(async () => {
+    if (isRefreshingRef.current) return; // Prevent stacking
+    isRefreshingRef.current = true;
+    try {
+      const res = await fetch(`${getApiBase()}/api/data`);
+      const json = await res.json();
+      if (json.status === 'success' && json.data) {
+        applyData(json.data);
+      }
+    } catch {
+      // Silent — static fallback data remains in place
+    } finally {
+      isRefreshingRef.current = false;
+    }
+  }, [applyData]);
+
+  // Initial fetch + 10-second polling interval
   useEffect(() => {
-    refreshData();
-  }, [refreshData]);
+    refreshData(); // Full initial fetch with spinner
+    const interval = setInterval(silentRefresh, 10_000);
+    return () => clearInterval(interval);
+  }, [refreshData, silentRefresh]);
 
   return (
     <BookingDataContext.Provider

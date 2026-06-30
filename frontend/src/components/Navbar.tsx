@@ -445,7 +445,14 @@ const HierarchicalSelect: React.FC<{
                             setActivePath(activePath.slice(0, level));
                           }
                         }}
-                        onClick={() => onSelect(node.label)}
+                        onClick={() => {
+                          if (hasChildren) {
+                            // Category nodes with children: only expand, don't select
+                            setActivePath([...activePath.slice(0, level), node.label]);
+                          } else {
+                            onSelect(node.label);
+                          }
+                        }}
                         className={`w-full text-left px-3 py-2 rounded-xl text-[10.5px] font-black uppercase tracking-widest transition-all mb-0.5 flex items-center justify-between group/item ${isSelected ? colors.active :
                           isActive ? 'bg-slate-100 dark:bg-white/10 text-slate-900 dark:text-white shadow-md' :
                             'text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-white/5 hover:text-slate-900 dark:hover:text-white'

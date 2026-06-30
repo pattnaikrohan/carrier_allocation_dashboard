@@ -638,11 +638,23 @@ const ContractDashboard: React.FC = () => {
         const rawAlloc = contractObj && branchCodeMatch && (contractObj as any)[branchCodeMatch] ? (contractObj as any)[branchCodeMatch].alloc : 0;
         const cAlloc = Math.round(rawAlloc * weekScale);
         const cAvail = cAlloc - cBooked;
-        const cUtil = cAlloc > 0 ? (cBooked / cAlloc) * 100 : 0;
+        const noCalc = contractObj ? (contractObj as any).noCalc === true : false;
+        const isExcluded = noCalc || contractId.toUpperCase() === 'OTH' || contractId.toUpperCase() === 'SPOT' || contractId.toUpperCase() === 'AGENT' || contractId.toUpperCase() === 'OTHER';
+        let cUtil = 0;
+        let cStatus = 'No Allocation';
+        if (isExcluded) {
+          cUtil = 0;
+          cStatus = 'N/A';
+        } else if (cAlloc > 0) {
+          cUtil = (cBooked / cAlloc) * 100;
+          cStatus = cUtil > 100 ? 'Overutilised' : (cUtil > 80 ? 'Healthy' : 'Underperforming');
+        }
         return { 
           id: contractId, alloc: cAlloc, booked: cBooked, avail: cAvail, util: cUtil,
           contractType: contractObj ? (contractObj as any).contractType : '',
-          carrier: contractObj ? contractObj.carrier : ''
+          carrier: contractObj ? contractObj.carrier : '',
+          noCalc: isExcluded,
+          status: cStatus
         };
       });
 
@@ -1289,10 +1301,10 @@ const ContractDashboard: React.FC = () => {
                               <div className={`h-full rounded-full ${s.bar}`} style={{ width: `${Math.min(row.util, 100)}%` }} />
                             </div>
                           </div>
-                          {/* Status */}
+                          {/* Status — show line count instead of branch-level status badge (item #4) */}
                           <div className="flex justify-center">
-                            <span className={`px-3 py-1.5 text-[10px] font-bold rounded-full border uppercase tracking-wider whitespace-nowrap ${s.badge}`}>
-                              {row.status}
+                            <span className="px-3 py-1.5 text-[10px] font-bold rounded-full border uppercase tracking-wider whitespace-nowrap bg-slate-500/10 text-slate-400 border-slate-500/20">
+                              {(row as any).activeContractsData?.length || 0} LINES
                             </span>
                           </div>
                         </div>
@@ -1316,9 +1328,29 @@ const ContractDashboard: React.FC = () => {
                                 </div>
                                 <span className="text-[12px] text-slate-300 font-bold  text-right tabular-nums">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</span>
                                 <div className="flex flex-col items-end justify-center pr-2">
-                                  <span className="text-[12px] text-slate-300 font-bold  tabular-nums">{c.util.toFixed(1)}%</span>
+                                  <span className={`text-[12px] font-bold tabular-nums ${
+                                    c.noCalc ? 'text-slate-600' :
+                                    c.alloc === 0 ? 'text-slate-600' :
+                                    c.util > 100 ? 'text-emerald-300' :
+                                    c.util > 80 ? 'text-emerald-400' :
+                                    c.util > 50 ? 'text-rose-400' :
+                                    'text-orange-400'
+                                  }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
                                 </div>
-                                <div></div>
+                                {/* Per-line status badge (items #4, #5, #7, #9) */}
+                                <div className="flex justify-center">
+                                  {c.noCalc ? (
+                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
+                                  ) : c.alloc === 0 ? (
+                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
+                                  ) : c.status === 'Overutilised' ? (
+                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
+                                  ) : c.status === 'Healthy' ? (
+                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
+                                  ) : (
+                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
+                                  )}
+                                </div>
                               </div>
                             ))}
                           </div>
@@ -2888,8 +2920,8 @@ const ContractDashboard: React.FC = () => {
                               <td className={`p-8 text-right  text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}</td>
                               <td className={`p-8 text-right  text-xl font-bold ${s.util}`}>{row.util.toFixed(1)}%</td>
                               <td className="p-8 text-center">
-                                <span className={`px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider ${s.badge}`}>
-                                  {row.status}
+                                <span className="px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-400 border-slate-500/20">
+                                  {(row as any).activeContractsData?.length || 0} LINES
                                 </span>
                               </td>
                             </tr>
@@ -2902,8 +2934,28 @@ const ContractDashboard: React.FC = () => {
                                   <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.alloc || '-'}</td>
                                   <td className="p-4 text-right  text-lg text-blue-500 font-bold">{c.booked.toFixed(1)}</td>
                                   <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</td>
-                                  <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.util.toFixed(1)}%</td>
-                                  <td className="p-4 text-center"></td>
+                                  <td className="p-4 text-right  text-lg font-bold">
+                                    <span className={`${
+                                      c.noCalc ? 'text-slate-600' :
+                                      c.alloc === 0 ? 'text-slate-600' :
+                                      c.util > 100 ? 'text-emerald-300' :
+                                      c.util > 80 ? 'text-emerald-400' :
+                                      'text-rose-400'
+                                    }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
+                                  </td>
+                                  <td className="p-4 text-center">
+                                    {c.noCalc ? (
+                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
+                                    ) : c.alloc === 0 ? (
+                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
+                                    ) : c.status === 'Overutilised' ? (
+                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
+                                    ) : c.status === 'Healthy' ? (
+                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
+                                    ) : (
+                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
+                                    )}
+                                  </td>
                                 </tr>
                               ))
                             )}

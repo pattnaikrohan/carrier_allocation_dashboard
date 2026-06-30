@@ -25,6 +25,11 @@ def fetch_orders_from_snowflake(log_func):
         key_bytes = key_content.encode('utf-8')
     else:
         key_path = os.getenv('SF_PRIVATE_KEY_PATH', 'scratch/snowflake_key.pem')
+        if not os.path.exists(key_path):
+            repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+            alt_path = os.path.join(repo_root, key_path)
+            if os.path.exists(alt_path):
+                key_path = alt_path
         with open(key_path, "rb") as key:
             key_bytes = key.read()
 
@@ -254,9 +259,15 @@ def process_data_from_azure(force_source: str = None) -> str:
         df = fetch_orders_from_azure(log, container)
 
     # 2. Fetch Master Data
-    master_stream = _get_blob_file(container, master_file)
-    log(f"Reading Master Data from Azure: {master_file}")
-    df_master = pd.read_excel(master_stream)
+    try:
+        master_stream = _get_blob_file(container, master_file)
+        log(f"Reading Master Data from Azure: {master_file}")
+        df_master = pd.read_excel(master_stream)
+    except Exception as e:
+        log(f"Could not fetch Master Data from Azure ({e}). Falling back to local file.")
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        local_master = os.path.join(repo_root, master_file)
+        df_master = pd.read_excel(local_master)
 
     # Build master dict with compound keys for multi-leg contracts
     master_dict = {}
@@ -312,6 +323,7 @@ def process_data_from_azure(force_source: str = None) -> str:
         'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
         'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
+        'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
         'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
@@ -332,11 +344,26 @@ def process_data_from_azure(force_source: str = None) -> str:
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
 
+    # --- Filter out BCN orders (item #1) ---
+    if 'bcn' in df.columns:
+        df['bcn'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
+        bcn_count = df['bcn'].sum()
+        df = df[~df['bcn']]
+        log(f"Excluded {int(bcn_count)} BCN orders")
+
+    # --- Filter out cancelled orders (item #6) ---
+    if 'cancelled_orders' in df.columns:
+        df['cancelled_orders'] = pd.to_numeric(df['cancelled_orders'], errors='coerce').fillna(0)
+        cancelled_count = (df['cancelled_orders'] == 1).sum()
+        df = df[df['cancelled_orders'] != 1]
+        log(f"Excluded {int(cancelled_count)} cancelled orders")
+
     # Fallbacks for critical missing columns
     if 'contract' not in df.columns:
-        df['contract'] = 'Unassigned'
-    df['contract'] = df['contract'].fillna('Unassigned').astype(str)
-    df['contract'] = df['contract'].replace('nan', 'Unassigned')
+        df['contract'] = 'OTHER'
+    df['contract'] = df['contract'].fillna('OTHER').astype(str)
+    df['contract'] = df['contract'].replace('nan', 'OTHER')
+    df['contract'] = df['contract'].replace('Unassigned', 'OTHER')
 
     if 'branch' not in df.columns:
         df['branch'] = 'Unknown'
@@ -475,7 +502,18 @@ def process_data_from_azure(force_source: str = None) -> str:
         booked = round(c_bookings['teu'].sum(), 1)
         alloc_pw = minfo.get('allocTotal', 0)
         total_alloc = alloc_pw * active_week_count
-        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        # Item #7: No calculation for OTH/SPOT/AGENT
+        no_calc = cid.upper() in ('OTH', 'SPOT', 'AGENT', 'OTHER')
+        # Item #9: No percentage when no allocation
+        if no_calc:
+            util = None
+            status = 'N/A'
+        elif total_alloc > 0:
+            util = round(booked / total_alloc * 100, 1)
+            status = 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming')
+        else:
+            util = None
+            status = 'No Allocation'
 
         def gbr(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
@@ -490,8 +528,9 @@ def process_data_from_azure(force_source: str = None) -> str:
             "origins": list(set(minfo.get('rawOrigins', []))),
             "destinations": list(set(minfo.get('rawDests', []))),
             "polBreakdown": minfo.get('polBreakdown', []),
-            "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
-            "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
+            "alloc": round(total_alloc, 1), "booked": booked, "util": util,
+            "noCalc": no_calc,
+            "status": status,
             "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
             "fre": gbr('fre', 'FR1'), "adl": gbr('adl', 'AD1'), "pil": gbr('pil', 'PIL'),
@@ -501,6 +540,7 @@ def process_data_from_azure(force_source: str = None) -> str:
     for cid in sorted(all_active_cids - processed_cids):
         c_bookings = df[df['contract'] == cid]
         booked = round(c_bookings['teu'].sum(), 1)
+        no_calc = cid.upper() in ('OTH', 'SPOT', 'AGENT', 'OTHER')
         def gbr_orphan(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
             return {"alloc": 0, "booked": round(bk, 1), "util": 0}
@@ -509,7 +549,9 @@ def process_data_from_azure(force_source: str = None) -> str:
             "contractType": '', "contractName": '',
             "originRegion": 'Unknown', "destRegion": 'Unknown',
             "origins": [], "destinations": [], "polBreakdown": [],
-            "alloc": 0, "booked": booked, "util": 0, "status": 'Underperforming', "avail": -booked,
+            "alloc": 0, "booked": booked, "util": None if no_calc else 0,
+            "noCalc": no_calc,
+            "status": 'N/A' if no_calc else 'No Allocation', "avail": -booked,
             "syd": gbr_orphan('syd', 'SY1'), "mel": gbr_orphan('mel', 'ME1'), "bne": gbr_orphan('bne', 'BN1'),
             "fre": gbr_orphan('fre', 'FR1'), "adl": gbr_orphan('adl', 'AD1'), "pil": gbr_orphan('pil', 'PIL'),
             "prj": gbr_orphan('prj', 'PRJ'), "akl": gbr_orphan('akl', 'AKL'), "oth": gbr_orphan('oth', 'OTH')
@@ -642,9 +684,15 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         df = fetch_orders_from_azure(log, container)
 
     # 2. Fetch Master Data
-    master_stream = _get_blob_file(container, master_file)
-    log(f"Reading Master Data from Azure: {master_file}")
-    df_master = pd.read_excel(master_stream)
+    try:
+        master_stream = _get_blob_file(container, master_file)
+        log(f"Reading Master Data from Azure: {master_file}")
+        df_master = pd.read_excel(master_stream)
+    except Exception as e:
+        log(f"Could not fetch Master Data from Azure ({e}). Falling back to local file.")
+        repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+        local_master = os.path.join(repo_root, master_file)
+        df_master = pd.read_excel(local_master)
 
     # Build master dict with compound keys for multi-leg contracts
     master_dict = {}
@@ -700,6 +748,7 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
         'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
+        'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
         'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
@@ -720,11 +769,26 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
 
+    # --- Filter out BCN orders (item #1) ---
+    if 'bcn' in df.columns:
+        df['bcn'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
+        bcn_count = df['bcn'].sum()
+        df = df[~df['bcn']]
+        log(f"Excluded {int(bcn_count)} BCN orders")
+
+    # --- Filter out cancelled orders (item #6) ---
+    if 'cancelled_orders' in df.columns:
+        df['cancelled_orders'] = pd.to_numeric(df['cancelled_orders'], errors='coerce').fillna(0)
+        cancelled_count = (df['cancelled_orders'] == 1).sum()
+        df = df[df['cancelled_orders'] != 1]
+        log(f"Excluded {int(cancelled_count)} cancelled orders")
+
     # Fallbacks for critical missing columns
     if 'contract' not in df.columns:
-        df['contract'] = 'Unassigned'
-    df['contract'] = df['contract'].fillna('Unassigned').astype(str)
-    df['contract'] = df['contract'].replace('nan', 'Unassigned')
+        df['contract'] = 'OTHER'
+    df['contract'] = df['contract'].fillna('OTHER').astype(str)
+    df['contract'] = df['contract'].replace('nan', 'OTHER')
+    df['contract'] = df['contract'].replace('Unassigned', 'OTHER')
 
     if 'branch' not in df.columns:
         df['branch'] = 'Unknown'
@@ -869,7 +933,18 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         booked = round(c_bookings['teu'].sum(), 1)
         alloc_pw = minfo.get('allocTotal', 0)
         total_alloc = alloc_pw * active_week_count
-        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        # Item #7: No calculation for OTH/SPOT/AGENT
+        no_calc = cid.upper() in ('OTH', 'SPOT', 'AGENT', 'OTHER')
+        # Item #9: No percentage when no allocation
+        if no_calc:
+            util = None
+            status = 'N/A'
+        elif total_alloc > 0:
+            util = round(booked / total_alloc * 100, 1)
+            status = 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming')
+        else:
+            util = None
+            status = 'No Allocation'
 
         def gbr(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
@@ -884,8 +959,9 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
             "origins": list(set(minfo.get('rawOrigins', []))),
             "destinations": list(set(minfo.get('rawDests', []))),
             "polBreakdown": minfo.get('polBreakdown', []),
-            "alloc": round(total_alloc, 1), "booked": booked, "util": round(util, 1),
-            "status": 'Overutilised' if util > 100 else ('Healthy' if util > 80 else 'Underperforming'),
+            "alloc": round(total_alloc, 1), "booked": booked, "util": util,
+            "noCalc": no_calc,
+            "status": status,
             "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
             "fre": gbr('fre', 'FR1'), "adl": gbr('adl', 'AD1'), "pil": gbr('pil', 'PIL'),
@@ -895,6 +971,7 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     for cid in sorted(all_active_cids - processed_master_cids):
         c_bookings = df[df['contract'] == cid]
         booked = round(c_bookings['teu'].sum(), 1)
+        no_calc = cid.upper() in ('OTH', 'SPOT', 'AGENT', 'OTHER')
         def gbr_orphan(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
             return {"alloc": 0, "booked": round(bk, 1), "util": 0}
@@ -903,7 +980,9 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
             "contractType": '', "contractName": '',
             "originRegion": 'Unknown', "destRegion": 'Unknown',
             "origins": [], "destinations": [], "polBreakdown": [],
-            "alloc": 0, "booked": booked, "util": 0, "status": 'Underperforming', "avail": -booked,
+            "alloc": 0, "booked": booked, "util": None if no_calc else 0,
+            "noCalc": no_calc,
+            "status": 'N/A' if no_calc else 'No Allocation', "avail": -booked,
             "syd": gbr_orphan('syd', 'SY1'), "mel": gbr_orphan('mel', 'ME1'), "bne": gbr_orphan('bne', 'BN1'),
             "fre": gbr_orphan('fre', 'FR1'), "adl": gbr_orphan('adl', 'AD1'), "pil": gbr_orphan('pil', 'PIL'),
             "prj": gbr_orphan('prj', 'PRJ'), "akl": gbr_orphan('akl', 'AKL'), "oth": gbr_orphan('oth', 'OTH')
