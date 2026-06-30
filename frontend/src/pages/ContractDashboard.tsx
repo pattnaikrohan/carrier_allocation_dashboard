@@ -287,7 +287,44 @@ const ContractDashboard: React.FC = () => {
 
   const baseFilteredBookings = getBaseFilteredBookings();
 
-  const activeWeekCount = selectedWeek === 'ALL' ? AVAILABLE_WEEKS.length : 1;
+  const activeWeekCount = (() => {
+    if (selectedWeek === 'ALL') return AVAILABLE_WEEKS.length;
+    let count = 0;
+    AVAILABLE_WEEKS.forEach(w => {
+      const wkMatch = String(w).match(/^WK\s+(\d+)/i);
+      const wNum = wkMatch ? parseInt(wkMatch[1], 10) : null;
+      if (!wNum) {
+        if (w === selectedWeek) count++;
+        return;
+      }
+      
+      if (selectedWeek.startsWith('Month:')) {
+        const month = selectedWeek.replace('Month: ', '').trim();
+        if (month === 'Jan' && wNum >= 1 && wNum <= 4) count++;
+        else if (month === 'Feb' && wNum >= 5 && wNum <= 8) count++;
+        else if (month === 'Mar' && wNum >= 9 && wNum <= 13) count++;
+        else if (month === 'Apr' && wNum >= 14 && wNum <= 17) count++;
+        else if (month === 'May' && wNum >= 18 && wNum <= 22) count++;
+        else if (month === 'Jun' && wNum >= 23 && wNum <= 26) count++;
+        else if (month === 'Jul' && wNum >= 27 && wNum <= 30) count++;
+        else if (month === 'Aug' && wNum >= 31 && wNum <= 35) count++;
+        else if (month === 'Sep' && wNum >= 36 && wNum <= 39) count++;
+        else if (month === 'Oct' && wNum >= 40 && wNum <= 43) count++;
+        else if (month === 'Nov' && wNum >= 44 && wNum <= 47) count++;
+        else if (month === 'Dec' && wNum >= 48 && wNum <= 53) count++;
+      } else if (selectedWeek.startsWith('Quarter:')) {
+        const quarter = selectedWeek.replace('Quarter: ', '').trim();
+        if (quarter === 'Q1' && wNum >= 1 && wNum <= 13) count++;
+        else if (quarter === 'Q2' && wNum >= 14 && wNum <= 26) count++;
+        else if (quarter === 'Q3' && wNum >= 27 && wNum <= 39) count++;
+        else if (quarter === 'Q4' && wNum >= 40 && wNum <= 53) count++;
+      } else if (w === selectedWeek) {
+        count++;
+      }
+    });
+    return count > 0 ? count : 1;
+  })();
+
   const weekScale = AVAILABLE_WEEKS.length > 0 ? (activeWeekCount / AVAILABLE_WEEKS.length) : 1;
 
   // Compute contract metrics based on the BASE filtered bookings
