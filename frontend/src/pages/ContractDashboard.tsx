@@ -416,14 +416,13 @@ const ContractDashboard: React.FC = () => {
       return codes.some(code => (c as any)[code?.toLowerCase()]?.alloc > 0) || c.booked > 0;
     });
 
-  // Now apply the KPI filter mode to derive the final filteredBookings
   const filteredBookings = (() => {
     if (filterMode === 'UNDERPERFORMING') {
-      const underPerformingIds = new Set(reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80).map(c => c.id));
+      const underPerformingIds = new Set(reactiveContractUtilData.filter(c => !c.noCalc && c.alloc > 0 && c.util <= 80).map(c => c.id));
       return baseFilteredBookings.filter(b => underPerformingIds.has(b.contract));
     }
     if (filterMode === 'LOW_UTIL') {
-      const lowUtilIds = new Set(reactiveContractUtilData.filter(c => c.util < 50).map(c => c.id));
+      const lowUtilIds = new Set(reactiveContractUtilData.filter(c => !c.noCalc && c.util < 50).map(c => c.id));
       return baseFilteredBookings.filter(b => lowUtilIds.has(b.contract));
     }
     return baseFilteredBookings;
@@ -432,14 +431,33 @@ const ContractDashboard: React.FC = () => {
 
 
   const contractMetrics = (() => {
-    const allocNode = reactiveContractUtilData.reduce((sum, c) => sum + c.alloc, 0);
-    const bookedNode = reactiveContractUtilData.reduce((sum, c) => sum + c.booked, 0);
+    const branchCodeMap: Record<string, string> = {
+      SYD: 'syd', MEL: 'mel', BNE: 'bne',
+      FRE: 'fre', ADL: 'adl',
+      PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth'
+    };
+    const bKey = selectedBranch !== 'ALL' ? branchCodeMap[selectedBranch] : null;
+
+    let allocNode = 0;
+    let bookedNode = 0;
+
+    reactiveContractUtilData.forEach(c => {
+      if (c.noCalc) return;
+      if (bKey && (c as any)[bKey]) {
+        allocNode += (c as any)[bKey].alloc || 0;
+        bookedNode += (c as any)[bKey].booked || 0;
+      } else {
+        allocNode += c.alloc || 0;
+        bookedNode += c.booked || 0;
+      }
+    });
+
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
     return { alloc: Math.round(allocNode), booked: bookedNode, util: utilNode };
   })();
 
-  const underperformingList = reactiveContractUtilData.filter(c => c.alloc > 0 && c.util <= 80);
-  const lowUtilList = reactiveContractUtilData.filter(c => c.util < 50);
+  const underperformingList = reactiveContractUtilData.filter(c => !c.noCalc && c.alloc > 0 && c.util <= 80);
+  const lowUtilList = reactiveContractUtilData.filter(c => !c.noCalc && c.util < 50);
 
   const handleKpiClick = (kpi: any) => {
     if (kpi.id === 'undr') {
