@@ -668,30 +668,27 @@ const ContractDashboard: React.FC = () => {
 
       const branchCodeMatch = { SY1: 'syd', ME1: 'mel', BN1: 'bne', FR1: 'fre', PR1: 'fre', AD1: 'adl', PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth' }[b.branch];
       
-      const allContractsForBranch = CONTRACT_UTIL_DATA.filter(c => {
+      // Only show contracts from master data that have allocation in this branch
+      const masterContractsForBranch = reactiveContractUtilData.filter(c => {
         const branchAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
-        const hasBookings = hubBookings.some(bk => bk.contract === c.id);
-        return branchAlloc > 0 || hasBookings;
+        return branchAlloc > 0;
       });
 
       const carrierFilteredContractsForBranch = selectedCarrier === 'ALL'
-        ? allContractsForBranch
-        : allContractsForBranch.filter(c => c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase());
+        ? masterContractsForBranch
+        : masterContractsForBranch.filter(c => c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase());
 
-      const activeContracts = Array.from(new Set([
-        ...carrierFilteredContractsForBranch.map(c => c.id),
-        ...(selectedCarrier === 'ALL' ? hubBookings.map(bk => bk.contract) : [])
-      ])).sort();
-
-      const activeContractsData = activeContracts.map(contractId => {
-        const contractBookings = hubBookings.filter(bk => bk.contract === contractId);
+      // Build contract sub-rows — ONLY master contracts (no blank booking-only lines)
+      const activeContractsData = carrierFilteredContractsForBranch.map(c => {
+        const mainId = c.id.split('__')[0];
+        // Match bookings using base contract ID (strip __leg suffix)
+        const contractBookings = hubBookings.filter(bk => bk.contract === mainId || bk.contract === c.id);
         const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
-        const contractObj = CONTRACT_UTIL_DATA.find(c => c.id === contractId);
-        const rawAlloc = contractObj && branchCodeMatch && (contractObj as any)[branchCodeMatch] ? (contractObj as any)[branchCodeMatch].alloc : 0;
+        const rawAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
         const cAlloc = Math.round(rawAlloc * weekScale);
         const cAvail = cAlloc - cBooked;
-        const noCalc = contractObj ? (contractObj as any).noCalc === true : false;
-        const isExcluded = noCalc || contractId.toUpperCase() === 'OTH' || contractId.toUpperCase() === 'SPOT' || contractId.toUpperCase() === 'AGENT' || contractId.toUpperCase() === 'OTHER';
+        const noCalc = (c as any).noCalc === true;
+        const isExcluded = noCalc || c.id.toUpperCase() === 'OTH' || c.id.toUpperCase() === 'SPOT' || c.id.toUpperCase() === 'AGENT' || c.id.toUpperCase() === 'OTHER';
         let cUtil = 0;
         let cStatus = 'No Allocation';
         if (isExcluded) {
@@ -702,13 +699,15 @@ const ContractDashboard: React.FC = () => {
           cStatus = cUtil > 100 ? 'Overutilised' : (cUtil > 80 ? 'Healthy' : 'Underperforming');
         }
         return { 
-          id: contractId, alloc: cAlloc, booked: cBooked, avail: cAvail, util: cUtil,
-          contractType: contractObj ? (contractObj as any).contractType : '',
-          carrier: contractObj ? contractObj.carrier : '',
+          id: c.id, alloc: cAlloc, booked: cBooked, avail: cAvail, util: cUtil,
+          contractType: (c as any).contractType || '',
+          carrier: c.carrier || '',
           noCalc: isExcluded,
           status: cStatus
         };
       });
+
+      const activeContracts = activeContractsData.map(c => c.id);
 
       let status = 'No Allocation';
       if (scaledAlloc > 0) {
@@ -728,12 +727,6 @@ const ContractDashboard: React.FC = () => {
     const otherBooked = unmatchedBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
 
     if (otherBooked > 0) {
-      const activeContracts = Array.from(new Set(unmatchedBookings.map(b => b.contract))).sort();
-      const activeContractsData = activeContracts.map(contractId => {
-        const contractBookings = unmatchedBookings.filter(bk => bk.contract === contractId);
-        const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
-        return { id: contractId, alloc: 0, booked: cBooked, avail: -cBooked, util: 0 };
-      });
       snapshot.push({
         branch: 'OTH',
         branchName: 'OTHER PORTS',
@@ -743,10 +736,11 @@ const ContractDashboard: React.FC = () => {
         util: 0,
         utilFloat: 0,
         status: 'Unplanned',
-        activeContracts,
-        activeContractsData
+        activeContracts: [],
+        activeContractsData: []
       } as any);
     }
+
 
     if (selectedBranch !== 'ALL') {
       const branchCodeMap: Record<string, string[]> = {

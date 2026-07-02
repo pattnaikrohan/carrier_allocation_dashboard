@@ -325,8 +325,14 @@ def process_data_from_azure(force_source: str = None) -> str:
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
         'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
-        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
-        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
+        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier',
+        'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
+        'JD_RL_NKPORTOFLOADING': 'loadPort', 'JD_RL_NKPortOfLoading': 'loadPort',
+        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort',
+        'JD_RL_NKPORTOFDISCHARGE': 'dischargePort', 'JD_RL_NKPortOfDischarge': 'dischargePort',
+        'Goods Origin': 'goodsOrigin', 'JD_RL_NKGOODSAVAILABLEAT': 'goodsOrigin', 'JD_RL_NKGoodsAvailableAt': 'goodsOrigin',
+        'Goods Destination': 'goodsDest', 'JD_RL_NKGOODSDELIVEREDTO': 'goodsDest', 'JD_RL_NKGoodsDeliveredTo': 'goodsDest',
+        'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'PLANNED CARRIER': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
@@ -801,8 +807,14 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
         'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
-        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier', 'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
-        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort', 'Region': 'region',
+        'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier',
+        'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
+        'JD_RL_NKPORTOFLOADING': 'loadPort', 'JD_RL_NKPortOfLoading': 'loadPort',
+        'Discharge Port': 'dischargePort', 'DISCHARGE PORT': 'dischargePort',
+        'JD_RL_NKPORTOFDISCHARGE': 'dischargePort', 'JD_RL_NKPortOfDischarge': 'dischargePort',
+        'Goods Origin': 'goodsOrigin', 'JD_RL_NKGOODSAVAILABLEAT': 'goodsOrigin', 'JD_RL_NKGoodsAvailableAt': 'goodsOrigin',
+        'Goods Destination': 'goodsDest', 'JD_RL_NKGOODSDELIVEREDTO': 'goodsDest', 'JD_RL_NKGoodsDeliveredTo': 'goodsDest',
+        'Region': 'region',
         'Planned Carrier': 'plannedCarrier', 'PLANNED CARRIER': 'plannedCarrier', 'Carrier Name': 'carrierName'
     }
     col_map_lower = {k.lower(): v for k, v in col_map.items()}
