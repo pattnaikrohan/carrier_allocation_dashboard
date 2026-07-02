@@ -3,6 +3,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
 import compassLogo from '../assets/compass_logo_final.svg';
 import aawLogo from '../assets/aaw.png';
+import { MasterUploadModal } from './MasterUploadModal';
 
 interface HierarchyNode {
   label: string;
@@ -165,6 +166,8 @@ const Navbar: React.FC<NavbarProps> = ({
     return hierarchy;
   })();
 
+  const [showMasterUploadModal, setShowMasterUploadModal] = React.useState(false);
+
   const filters = [
     {
       label: 'Week',
@@ -214,7 +217,13 @@ const Navbar: React.FC<NavbarProps> = ({
 
           {/* Left Segment: Compass Logo */}
           <div className="flex items-center gap-3 shrink-0">
-            <img src={compassLogo} alt="Compass" className="h-16 md:h-24 w-auto object-contain dark:brightness-125 dark:invert" />
+            <button 
+              onClick={() => setShowMasterUploadModal(true)}
+              className="focus:outline-none hover:scale-105 transition-transform"
+              title="Upload Master File"
+            >
+              <img src={compassLogo} alt="Compass" className="h-16 md:h-24 w-auto object-contain dark:brightness-125 dark:invert" />
+            </button>
           </div>
 
           {/* Center Segment: Interactive Filter Pill */}
@@ -338,6 +347,12 @@ const Navbar: React.FC<NavbarProps> = ({
 
         </div>
       </motion.nav>
+
+      <AnimatePresence>
+        {showMasterUploadModal && (
+          <MasterUploadModal onClose={() => setShowMasterUploadModal(false)} />
+        )}
+      </AnimatePresence>
     </header>
   );
 };

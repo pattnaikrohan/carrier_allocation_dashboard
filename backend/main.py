@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Request
+from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
@@ -143,6 +143,34 @@ async def get_data():
         return {
             "status": "error",
             "message": f"Data fetch failed: {str(e)}",
+            "traceback": traceback.format_exc(),
+            "timestamp": datetime.datetime.utcnow().isoformat()
+        }
+
+
+@app.post("/api/upload-master")
+async def upload_master(file: UploadFile = File(...)):
+    """Uploads a new Master Data file to Azure Blob Storage."""
+    try:
+        from data_processor import _upload_blob_file, _get_azure_config
+        container, _ = _get_azure_config()
+        file_bytes = await file.read()
+        
+        # We enforce the exact filename required by the data_processor
+        target_filename = "Contract_Master_All_Data Update.xlsx"
+        
+        _upload_blob_file(container, target_filename, file_bytes)
+        
+        return {
+            "status": "success",
+            "message": f"Successfully uploaded {file.filename} as {target_filename} to Azure.",
+            "timestamp": datetime.datetime.utcnow().isoformat()
+        }
+    except Exception as e:
+        import traceback
+        return {
+            "status": "error",
+            "message": f"Upload failed: {str(e)}",
             "traceback": traceback.format_exc(),
             "timestamp": datetime.datetime.utcnow().isoformat()
         }

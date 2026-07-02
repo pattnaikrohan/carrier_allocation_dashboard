@@ -116,6 +116,14 @@ def _get_blob_file(container_name, filename):
     raise FileNotFoundError(f"Blob '{filename}' not found in container '{container_name}'")
 
 
+def _upload_blob_file(container_name, filename, file_data: bytes):
+    """Upload a specific blob to Azure."""
+    client = _get_blob_service_client()
+    blob_client = client.get_blob_client(container=container_name, blob=filename)
+    blob_client.upload_blob(file_data, overwrite=True)
+    return True
+
+
 def _get_latest_blob(container_name, pattern):
     """Find and download the latest blob matching a glob pattern."""
     client = _get_blob_service_client()
