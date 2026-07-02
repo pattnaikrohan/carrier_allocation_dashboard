@@ -216,10 +216,10 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between bg-gradient-to-r from-sky-200/90 via-blue-200/85 to-indigo-200/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-sky-300/50 dark:border-slate-800 shadow-xl px-3 md:px-5 py-2 min-h-[72px] gap-2 md:gap-4 w-full relative overflow-hidden md:overflow-visible">
 
           {/* Left Segment: Compass Logo */}
-          <div className="flex items-center gap-3 shrink-0">
+          <div className="flex items-center gap-3 shrink-0 relative z-50">
             <button 
               onClick={() => setShowMasterUploadModal(true)}
-              className="focus:outline-none hover:scale-105 transition-transform"
+              className="focus:outline-none hover:scale-105 transition-transform cursor-pointer relative z-50 pointer-events-auto"
               title="Upload Master File"
             >
               <img src={compassLogo} alt="Compass" className="h-16 md:h-24 w-auto object-contain dark:brightness-125 dark:invert" />
