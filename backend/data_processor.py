@@ -364,10 +364,61 @@ def process_data_from_azure(force_source: str = None) -> str:
     df['contract'] = df['contract'].fillna('OTHER').astype(str)
     df['contract'] = df['contract'].replace('nan', 'OTHER')
     df['contract'] = df['contract'].replace('Unassigned', 'OTHER')
+    df['contract'] = df['contract'].replace('', 'OTHER')  # Fix empty string contracts
 
     if 'branch' not in df.columns:
         df['branch'] = 'Unknown'
     df['branch'] = df['branch'].fillna('Unknown').astype(str)
+
+    # --- Normalize branch codes ---
+    branch_code_map = {
+        'BR1': 'BN1',   # Brisbane alternate code
+        'BLL': 'ME1',   # Ballarat → Melbourne hub
+        'CCC': 'OTH',   # Unknown code → Other
+    }
+    df['branch'] = df['branch'].replace(branch_code_map)
+
+    # --- Infer branch from Discharge Port when branch is Unknown ---
+    discharge_port_col = None
+    for col in df.columns:
+        if col.lower().replace(' ', '') in ('dischargeport', 'discharge_port'):
+            discharge_port_col = col
+            break
+
+    if discharge_port_col is not None:
+        discharge_to_branch = {
+            'AUSYD': 'SY1', 'AUMEL': 'ME1', 'AUBNE': 'BN1',
+            'AUFRE': 'FR1', 'AUPER': 'FR1', 'AUADL': 'AD1',
+            'NZAKL': 'AKL', 'NZTRG': 'AKL', 'NZLYT': 'AKL', 'NZCHC': 'AKL',
+            'GBFXT': 'PRJ', 'GBSOU': 'PRJ', 'NLRTM': 'PRJ',
+            'BEANR': 'PRJ', 'DEHAM': 'PRJ',
+            'USNYC': 'PRJ', 'USLAX': 'PRJ', 'USOAK': 'PRJ',
+            'USLGB': 'PRJ', 'USLUI': 'PRJ',
+            'CAYVR': 'PRJ', 'CATOR': 'PRJ',
+        }
+
+        unknown_mask = df['branch'].isin(['Unknown', 'nan', ''])
+        inferred_count = 0
+        remaining_oth = 0
+        if unknown_mask.any() and discharge_port_col in df.columns:
+            dp_upper = df.loc[unknown_mask, discharge_port_col].astype(str).str.strip().str.upper()
+            inferred = dp_upper.map(discharge_to_branch)
+            inferred_count = inferred.notna().sum()
+            df.loc[unknown_mask, 'branch'] = df.loc[unknown_mask, 'branch'].where(
+                inferred.isna(), inferred
+            )
+            # Remaining unknowns -> OTH
+            still_unknown = df['branch'].isin(['Unknown', 'nan', ''])
+            remaining_oth = int(still_unknown.sum())
+            df.loc[still_unknown, 'branch'] = 'OTH'
+
+        log(f"Branch inference: {int(inferred_count)} rows inferred from discharge port, "
+            f"{remaining_oth} remaining as OTH")
+    else:
+        # No discharge port column, just map unknowns to OTH
+        df.loc[df['branch'].isin(['Unknown', 'nan', '']), 'branch'] = 'OTH'
+        log("No discharge port column found for branch inference")
+
     
     if 'week' not in df.columns:
         df['week'] = '1'
@@ -789,10 +840,60 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     df['contract'] = df['contract'].fillna('OTHER').astype(str)
     df['contract'] = df['contract'].replace('nan', 'OTHER')
     df['contract'] = df['contract'].replace('Unassigned', 'OTHER')
+    df['contract'] = df['contract'].replace('', 'OTHER')  # Fix empty string contracts
 
     if 'branch' not in df.columns:
         df['branch'] = 'Unknown'
     df['branch'] = df['branch'].fillna('Unknown').astype(str)
+
+    # --- Normalize branch codes ---
+    branch_code_map = {
+        'BR1': 'BN1',   # Brisbane alternate code
+        'BLL': 'ME1',   # Ballarat -> Melbourne hub
+        'CCC': 'OTH',   # Unknown code -> Other
+    }
+    df['branch'] = df['branch'].replace(branch_code_map)
+
+    # --- Infer branch from Discharge Port when branch is Unknown ---
+    discharge_port_col = None
+    for col in df.columns:
+        if col.lower().replace(' ', '') in ('dischargeport', 'discharge_port'):
+            discharge_port_col = col
+            break
+
+    if discharge_port_col is not None:
+        discharge_to_branch = {
+            'AUSYD': 'SY1', 'AUMEL': 'ME1', 'AUBNE': 'BN1',
+            'AUFRE': 'FR1', 'AUPER': 'FR1', 'AUADL': 'AD1',
+            'NZAKL': 'AKL', 'NZTRG': 'AKL', 'NZLYT': 'AKL', 'NZCHC': 'AKL',
+            'GBFXT': 'PRJ', 'GBSOU': 'PRJ', 'NLRTM': 'PRJ',
+            'BEANR': 'PRJ', 'DEHAM': 'PRJ',
+            'USNYC': 'PRJ', 'USLAX': 'PRJ', 'USOAK': 'PRJ',
+            'USLGB': 'PRJ', 'USLUI': 'PRJ',
+            'CAYVR': 'PRJ', 'CATOR': 'PRJ',
+        }
+
+        unknown_mask = df['branch'].isin(['Unknown', 'nan', ''])
+        inferred_count = 0
+        remaining_oth = 0
+        if unknown_mask.any() and discharge_port_col in df.columns:
+            dp_upper = df.loc[unknown_mask, discharge_port_col].astype(str).str.strip().str.upper()
+            inferred = dp_upper.map(discharge_to_branch)
+            inferred_count = inferred.notna().sum()
+            df.loc[unknown_mask, 'branch'] = df.loc[unknown_mask, 'branch'].where(
+                inferred.isna(), inferred
+            )
+            # Remaining unknowns -> OTH
+            still_unknown = df['branch'].isin(['Unknown', 'nan', ''])
+            remaining_oth = int(still_unknown.sum())
+            df.loc[still_unknown, 'branch'] = 'OTH'
+
+        log(f"Branch inference: {int(inferred_count)} rows inferred from discharge port, "
+            f"{remaining_oth} remaining as OTH")
+    else:
+        # No discharge port column, just map unknowns to OTH
+        df.loc[df['branch'].isin(['Unknown', 'nan', '']), 'branch'] = 'OTH'
+        log("No discharge port column found for branch inference")
     
     if 'week' not in df.columns:
         df['week'] = '1'

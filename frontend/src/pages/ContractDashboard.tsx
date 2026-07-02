@@ -27,7 +27,9 @@ function round(num: number) { return Math.round(num); }
 /** Format Contract display: Contract ID | Carrier | Contract Name */
 function formatContract(c: any): string {
   if (!c) return 'Unknown';
-  const id = c.id || c.contract || c;
+  if (typeof c === 'string') return c || 'Unknown';
+  const id = typeof c.id === 'string' ? c.id : (typeof c.contract === 'string' ? c.contract : String(c.id || c.contract || 'Unknown'));
+  if (!id || id === 'OTHER') return id || 'OTHER';
   const carrier = c.carrier ? ` | ${c.carrier}` : '';
   const name = c.contractName ? ` | ${c.contractName}` : '';
   return `${id}${carrier}${name}`;
