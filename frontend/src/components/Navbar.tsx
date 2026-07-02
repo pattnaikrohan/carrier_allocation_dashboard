@@ -206,7 +206,8 @@ const Navbar: React.FC<NavbarProps> = ({
   ];
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[60] flex justify-center pt-6 pointer-events-none">
+    <>
+      <header className="fixed top-0 left-0 right-0 z-[60] flex justify-center pt-6 pointer-events-none">
       <motion.nav
         initial={{ y: -100, opacity: 0 }}
         animate={{ y: 0, opacity: 1 }}
@@ -347,13 +348,14 @@ const Navbar: React.FC<NavbarProps> = ({
 
         </div>
       </motion.nav>
-
-      <AnimatePresence>
-        {showMasterUploadModal && (
-          <MasterUploadModal onClose={() => setShowMasterUploadModal(false)} />
-        )}
-      </AnimatePresence>
     </header>
+
+    <AnimatePresence>
+      {showMasterUploadModal && (
+        <MasterUploadModal onClose={() => setShowMasterUploadModal(false)} />
+      )}
+    </AnimatePresence>
+    </>
   );
 };
 
