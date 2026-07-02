@@ -473,21 +473,21 @@ const ContractDashboard: React.FC = () => {
     const bKey = selectedBranch !== 'ALL' ? branchCodeMap[selectedBranch] : null;
 
     let allocNode = 0;
-    let bookedNode = 0;
 
     reactiveContractUtilData.forEach(c => {
       if (c.noCalc) return;
       if (bKey && (c as any)[bKey]) {
         allocNode += (c as any)[bKey].alloc || 0;
-        bookedNode += (c as any)[bKey].booked || 0;
       } else {
         allocNode += c.alloc || 0;
-        bookedNode += c.booked || 0;
       }
     });
 
+    // Total Booked = sum of ALL bookings from Snowflake (not just contract-matched)
+    const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
-    return { alloc: Math.round(allocNode), booked: bookedNode, util: utilNode };
+    return { alloc: Math.round(allocNode), booked: Math.round(bookedNode), util: utilNode };
   })();
 
   const underperformingList = reactiveContractUtilData.filter(c => !c.noCalc && c.alloc > 0 && c.util <= 80);
