@@ -173,6 +173,7 @@ const Navbar: React.FC<NavbarProps> = ({
       onSelect: onWeekChange,
       color: 'emerald',
       isHierarchical: true,
+      hasSearch: false,
       columnLabels: ['Category', 'Sub-Group', 'Timeframe'],
       placeholder: 'Refine Timeframe...'
     },
@@ -265,6 +266,7 @@ const Navbar: React.FC<NavbarProps> = ({
                             accentColor={f.color}
                             columnLabels={f.columnLabels}
                             placeholder={f.placeholder}
+                            hasSearch={f.hasSearch}
                           />
                         ) : (
                           <FilterSelect
@@ -347,7 +349,8 @@ const HierarchicalSelect: React.FC<{
   accentColor: string;
   columnLabels?: string[];
   placeholder?: string;
-}> = ({ data, selected, onSelect, accentColor, columnLabels = ['Region', 'Country', 'Port'], placeholder = "Refine..." }) => {
+  hasSearch?: boolean;
+}> = ({ data, selected, onSelect, accentColor, columnLabels = ['Region', 'Country', 'Port'], placeholder = "Refine...", hasSearch = true }) => {
   const [activePath, setActivePath] = useState<string[]>([]);
   const [search, setSearch] = useState('');
 
@@ -403,16 +406,18 @@ const HierarchicalSelect: React.FC<{
   return (
     <div className="flex flex-col gap-3">
       {/* Universal Search */}
-      <div className="px-3 pt-1 pb-2 border-b border-slate-200 dark:border-slate-800">
-        <input
-          type="text"
-          autoFocus
-          placeholder={placeholder}
-          value={search}
-          onChange={e => setSearch(e.target.value)}
-          className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-[10px] font-mono text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/30 transition-all"
-        />
-      </div>
+      {hasSearch && (
+        <div className="px-3 pt-1 pb-2 border-b border-slate-200 dark:border-slate-800">
+          <input
+            type="text"
+            autoFocus
+            placeholder={placeholder}
+            value={search}
+            onChange={e => setSearch(e.target.value)}
+            className="w-full bg-slate-800 border border-slate-700 rounded-xl px-4 py-2.5 text-[10px] font-mono text-white placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/30 transition-all"
+          />
+        </div>
+      )}
 
       <div className="flex flex-row items-stretch divide-x divide-white/10 h-[400px]">
         {columnLabels.map((label, level) => {
