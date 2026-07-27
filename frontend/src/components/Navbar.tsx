@@ -88,13 +88,35 @@ const Navbar: React.FC<NavbarProps> = ({
     // 3. Months
     const months: HierarchyNode[] = [];
 
-    // Grouping individual weeks by month
-    const monthWeeks: Record<string, HierarchyNode[]> = {
-      JANUARY: [], FEBRUARY: [], MARCH: [], APRIL: [],
-      MAY: [], JUNE: [], JULY: [], AUGUST: [],
-      SEPTEMBER: [], OCTOBER: [], NOVEMBER: [], DECEMBER: []
-    };
+    // Grouping individual weeks by year then month
+    const monthNames = [
+      'JANUARY', 'FEBRUARY', 'MARCH', 'APRIL',
+      'MAY', 'JUNE', 'JULY', 'AUGUST',
+      'SEPTEMBER', 'OCTOBER', 'NOVEMBER', 'DECEMBER'
+    ];
+    // yearMonthWeeks: { [year]: { [month]: HierarchyNode[] } }
+    const yearMonthWeeks: Record<string, Record<string, HierarchyNode[]>> = {};
     const otherWeeks: HierarchyNode[] = [];
+
+    // Helper: map week number to month name
+    const weekToMonth = (wNum: number): string => {
+      if (wNum >= 1 && wNum <= 4) return 'JANUARY';
+      if (wNum >= 5 && wNum <= 8) return 'FEBRUARY';
+      if (wNum >= 9 && wNum <= 13) return 'MARCH';
+      if (wNum >= 14 && wNum <= 17) return 'APRIL';
+      if (wNum >= 18 && wNum <= 22) return 'MAY';
+      if (wNum >= 23 && wNum <= 26) return 'JUNE';
+      if (wNum >= 27 && wNum <= 30) return 'JULY';
+      if (wNum >= 31 && wNum <= 35) return 'AUGUST';
+      if (wNum >= 36 && wNum <= 39) return 'SEPTEMBER';
+      if (wNum >= 40 && wNum <= 43) return 'OCTOBER';
+      if (wNum >= 44 && wNum <= 47) return 'NOVEMBER';
+      if (wNum >= 48 && wNum <= 53) return 'DECEMBER';
+      return '';
+    };
+
+    // Derive year from current date as default
+    const currentYear = new Date().getFullYear().toString();
 
     availableWeeks.forEach(w => {
       if (w.startsWith('Quarter:')) {
@@ -113,32 +135,38 @@ const Navbar: React.FC<NavbarProps> = ({
         if (match) {
           const wNum = parseInt(match[1], 10);
           const weekNode = { label: w };
-          if (wNum >= 1 && wNum <= 4) monthWeeks.JANUARY.push(weekNode);
-          else if (wNum >= 5 && wNum <= 8) monthWeeks.FEBRUARY.push(weekNode);
-          else if (wNum >= 9 && wNum <= 13) monthWeeks.MARCH.push(weekNode);
-          else if (wNum >= 14 && wNum <= 17) monthWeeks.APRIL.push(weekNode);
-          else if (wNum >= 18 && wNum <= 22) monthWeeks.MAY.push(weekNode);
-          else if (wNum >= 23 && wNum <= 26) monthWeeks.JUNE.push(weekNode);
-          else if (wNum >= 27 && wNum <= 30) monthWeeks.JULY.push(weekNode);
-          else if (wNum >= 31 && wNum <= 35) monthWeeks.AUGUST.push(weekNode);
-          else if (wNum >= 36 && wNum <= 39) monthWeeks.SEPTEMBER.push(weekNode);
-          else if (wNum >= 40 && wNum <= 43) monthWeeks.OCTOBER.push(weekNode);
-          else if (wNum >= 44 && wNum <= 47) monthWeeks.NOVEMBER.push(weekNode);
-          else if (wNum >= 48 && wNum <= 53) monthWeeks.DECEMBER.push(weekNode);
-          else otherWeeks.push(weekNode);
+          const monthName = weekToMonth(wNum);
+          // Try to extract year from the week label (e.g. "WK 6 2025"), else use current year
+          const yearMatch = w.match(/(\d{4})/);
+          const year = yearMatch ? yearMatch[1] : currentYear;
+          if (monthName) {
+            if (!yearMonthWeeks[year]) yearMonthWeeks[year] = {};
+            if (!yearMonthWeeks[year][monthName]) yearMonthWeeks[year][monthName] = [];
+            yearMonthWeeks[year][monthName].push(weekNode);
+          } else {
+            otherWeeks.push(weekNode);
+          }
         } else {
           otherWeeks.push({ label: w });
         }
       }
     });
 
+    // Build WEEKS children: Year → Month → Individual Weeks
     const weeksChildren: HierarchyNode[] = [];
-    Object.entries(monthWeeks).forEach(([month, weeks]) => {
-      if (weeks.length > 0) {
-        weeksChildren.push({ label: `${month} WEEKS`, children: weeks });
+    Object.keys(yearMonthWeeks).sort().forEach(year => {
+      const monthChildren: HierarchyNode[] = [];
+      monthNames.forEach(month => {
+        const weeks = yearMonthWeeks[year][month];
+        if (weeks && weeks.length > 0) {
+          monthChildren.push({ label: month, children: weeks });
+        }
+      });
+      if (monthChildren.length > 0) {
+        weeksChildren.push({ label: year, children: monthChildren });
       }
     });
-    if (otherWeeks.length > 0) weeksChildren.push({ label: 'OTHER WEEKS', children: otherWeeks });
+    if (otherWeeks.length > 0) weeksChildren.push({ label: 'OTHER', children: otherWeeks });
 
     const hierarchy: HierarchyNode[] = [allNode];
 
@@ -177,7 +205,7 @@ const Navbar: React.FC<NavbarProps> = ({
       color: 'emerald',
       isHierarchical: true,
       hasSearch: false,
-      columnLabels: ['Category', 'Sub-Group', 'Timeframe'],
+      columnLabels: ['Category', 'Year', 'Month', 'Week'],
       placeholder: 'Refine Timeframe...'
     },
     { label: 'Contract', val: selectedContract, items: availableContracts, onSelect: onContractChange, color: 'cyan', hasSearch: true, formatLabel: formatContractLabel },
@@ -217,10 +245,10 @@ const Navbar: React.FC<NavbarProps> = ({
         <div className="flex items-center justify-between bg-gradient-to-r from-sky-200/90 via-blue-200/85 to-indigo-200/85 dark:bg-slate-900/70 backdrop-blur-xl rounded-[24px] border border-sky-300/50 dark:border-slate-800 shadow-xl px-3 md:px-5 py-2 min-h-[72px] gap-2 md:gap-4 w-full relative overflow-hidden md:overflow-visible">
 
           {/* Left Segment: Compass Logo */}
-          <div className="flex items-center gap-3 shrink-0 relative z-50">
+          <div className="flex items-center gap-3 shrink-0 relative z-10">
             <button 
               onClick={() => setShowMasterUploadModal(true)}
-              className="focus:outline-none hover:scale-105 transition-transform cursor-pointer relative z-50 pointer-events-auto"
+              className="focus:outline-none hover:scale-105 transition-transform cursor-pointer relative z-10 pointer-events-auto"
               title="Upload Master File"
             >
               <img src={compassLogo} alt="Compass" className="h-16 md:h-24 w-auto object-contain dark:brightness-125 dark:invert" />
@@ -258,9 +286,11 @@ const Navbar: React.FC<NavbarProps> = ({
                         animate={{ opacity: 1, y: 0, scale: 1 }}
                         exit={{ opacity: 0, y: 8, scale: 0.98 }}
                         className={`absolute bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-[24px] p-2 z-50 shadow-2xl ${f.isHierarchical
-                          ? f.label === 'Origin' || f.label === 'Week'
+                          ? f.label === 'Origin'
                             ? 'top-[60px] left-0 origin-top-left min-w-[720px]'
-                            : 'top-[60px] right-0 origin-top-right min-w-[720px]'
+                            : f.label === 'Week'
+                              ? 'top-[60px] left-0 origin-top-left min-w-[860px]'
+                              : 'top-[60px] right-0 origin-top-right min-w-[720px]'
                           : 'top-[44px] left-1/2 -translate-x-1/2 origin-top min-w-[220px]'
                           }`}
                       >
