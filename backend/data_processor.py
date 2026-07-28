@@ -338,6 +338,9 @@ def build_master_dict(df_master, log_func=None):
         lane = f"{origin_region} to {dest_region}"
         compound_key = f"{cid}__{origin_region}_{dest_region}"
 
+        # Detect if this is a SHARED (pool) allocation
+        is_shared = (alloc_from_branches == 0 and compass_total > 0)
+
         if compound_key not in master_dict:
             master_dict[compound_key] = {
                 'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
@@ -346,6 +349,7 @@ def build_master_dict(df_master, log_func=None):
                 'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
                 'polBreakdown': [],
                 'contractType': contract_type, 'contractName': contract_name,
+                'shared': is_shared,
             }
         else:
             master_dict[compound_key]['allocTotal'] += alloc_total
@@ -647,6 +651,15 @@ def process_data_from_azure(force_source: str = None) -> str:
     active_week_count = max(len(weeks), 1)
 
     # BRANCH_SNAPSHOT
+    # Pre-compute SHARED pool remaining for each contract
+    shared_pool_remaining = {}
+    for ck, minfo in master_dict.items():
+        if minfo.get('shared'):
+            alloc_total_pw = minfo.get('allocTotal', 0)
+            total_alloc_ck = alloc_total_pw * active_week_count
+            total_booked_ck = df[df['contract'] == minfo['cid']]['teu'].sum()
+            shared_pool_remaining[ck] = max(round(total_alloc_ck - total_booked_ck, 1), 0)
+
     branch_snapshot = []
     std_branches = [
         ('SYDNEY', 'SY1', 'syd'), ('MELBOURNE', 'ME1', 'mel'), ('BRISBANE', 'BN1', 'bne'),
@@ -656,13 +669,17 @@ def process_data_from_azure(force_source: str = None) -> str:
     for bname, bcode, bnorm in std_branches:
         b_df = df[df['branch'].isin([bcode, bnorm, bnorm.upper()])]
         booked = round(b_df['teu'].sum(), 1)
-        alloc_pw = sum(m.get('officeAlloc', {}).get(bnorm, 0) for m in master_dict.values())
+        # Branch-specific allocation (non-shared contracts)
+        alloc_pw = sum(m.get('officeAlloc', {}).get(bnorm, 0) for m in master_dict.values() if not m.get('shared'))
         total_alloc = alloc_pw * active_week_count
-        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        # Add SHARED pool remaining (available to any branch)
+        shared_avail = sum(shared_pool_remaining.values())
+        combined_alloc = total_alloc + shared_avail
+        util = (booked / combined_alloc * 100) if combined_alloc > 0 else 0
         status = 'Healthy' if util > 80 else ('Underperforming' if util > 50 else 'Low Uptake')
         branch_snapshot.append({
-            "branch": bcode, "branchName": bname, "alloc": round(total_alloc, 1),
-            "booked": booked, "avail": round(total_alloc - booked, 1), "util": round(util, 1), "status": status
+            "branch": bcode, "branchName": bname, "alloc": round(combined_alloc, 1),
+            "booked": booked, "avail": round(combined_alloc - booked, 1), "util": round(util, 1), "status": status
         })
 
     # CONTRACT_UTIL_DATA
@@ -724,9 +741,17 @@ def process_data_from_azure(force_source: str = None) -> str:
 
         def gbr(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
-            al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
-            return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
+            if minfo.get('shared'):
+                # SHARED pool: every branch sees the full pool as alloc,
+                # avail = pool remaining (total - all bookings from all branches)
+                al = total_alloc
+                pool_avail = max(total_alloc - booked, 0)
+                return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0, "avail": round(pool_avail, 1)}
+            else:
+                al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
+                return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
 
+        is_shared = minfo.get('shared', False)
         contract_util_data.append({
             "id": compound_key, "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', ''), "contractName": minfo.get('contractName', ''),
@@ -736,7 +761,7 @@ def process_data_from_azure(force_source: str = None) -> str:
             "destinations": list(set(minfo.get('rawDests', []))),
             "polBreakdown": minfo.get('polBreakdown', []),
             "alloc": round(total_alloc, 1), "booked": booked, "util": util,
-            "noCalc": no_calc,
+            "noCalc": no_calc, "shared": is_shared,
             "status": status,
             "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
@@ -1085,6 +1110,15 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     active_week_count = max(len(weeks), 1)
 
     # BRANCH_SNAPSHOT
+    # Pre-compute SHARED pool remaining for each contract
+    shared_pool_remaining = {}
+    for ck, minfo in master_dict.items():
+        if minfo.get('shared'):
+            alloc_total_pw = minfo.get('allocTotal', 0)
+            total_alloc_ck = alloc_total_pw * active_week_count
+            total_booked_ck = df[df['contract'] == minfo['cid']]['teu'].sum()
+            shared_pool_remaining[ck] = max(round(total_alloc_ck - total_booked_ck, 1), 0)
+
     branch_snapshot = []
     std_branches = [
         ('SYDNEY', 'SY1', 'syd'), ('MELBOURNE', 'ME1', 'mel'), ('BRISBANE', 'BN1', 'bne'),
@@ -1094,13 +1128,17 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     for bname, bcode, bnorm in std_branches:
         b_df = df[df['branch'].isin([bcode, bnorm, bnorm.upper()])]
         booked = round(b_df['teu'].sum(), 1)
-        alloc_pw = sum(m.get('officeAlloc', {}).get(bnorm, 0) for m in master_dict.values())
+        # Branch-specific allocation (non-shared contracts)
+        alloc_pw = sum(m.get('officeAlloc', {}).get(bnorm, 0) for m in master_dict.values() if not m.get('shared'))
         total_alloc = alloc_pw * active_week_count
-        util = (booked / total_alloc * 100) if total_alloc > 0 else 0
+        # Add SHARED pool remaining (available to any branch)
+        shared_avail = sum(shared_pool_remaining.values())
+        combined_alloc = total_alloc + shared_avail
+        util = (booked / combined_alloc * 100) if combined_alloc > 0 else 0
         status = 'Healthy' if util > 80 else ('Underperforming' if util > 50 else 'Low Uptake')
         branch_snapshot.append({
-            "branch": bcode, "branchName": bname, "alloc": round(total_alloc, 1),
-            "booked": booked, "avail": round(total_alloc - booked, 1), "util": round(util, 1), "status": status
+            "branch": bcode, "branchName": bname, "alloc": round(combined_alloc, 1),
+            "booked": booked, "avail": round(combined_alloc - booked, 1), "util": round(util, 1), "status": status
         })
 
     # CONTRACT_UTIL_DATA
@@ -1168,9 +1206,17 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
 
         def gbr(bnorm, *codes):
             bk = c_bookings[c_bookings['branch'].isin(list(codes) + [bnorm, bnorm.upper()])]['teu'].sum()
-            al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
-            return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
+            if minfo.get('shared'):
+                # SHARED pool: every branch sees the full pool as alloc,
+                # avail = pool remaining (total - all bookings from all branches)
+                al = total_alloc
+                pool_avail = max(total_alloc - booked, 0)
+                return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0, "avail": round(pool_avail, 1)}
+            else:
+                al = minfo.get('officeAlloc', {}).get(bnorm, 0) * active_week_count
+                return {"alloc": round(al, 1), "booked": round(bk, 1), "util": round(bk / al * 100, 1) if al > 0 else 0}
 
+        is_shared = minfo.get('shared', False)
         contract_util_data.append({
             "id": compound_key, "carrier": minfo.get('carrier', 'Various'), "lane": minfo.get('lane', 'Unknown'),
             "contractType": minfo.get('contractType', 'FAK'), "contractName": minfo.get('contractName', ''),
@@ -1180,7 +1226,7 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
             "destinations": list(set(minfo.get('rawDests', []))),
             "polBreakdown": minfo.get('polBreakdown', []),
             "alloc": round(total_alloc, 1), "booked": booked, "util": util,
-            "noCalc": no_calc,
+            "noCalc": no_calc, "shared": is_shared,
             "status": status,
             "avail": round(total_alloc - booked, 1),
             "syd": gbr('syd', 'SY1'), "mel": gbr('mel', 'ME1'), "bne": gbr('bne', 'BN1'),
