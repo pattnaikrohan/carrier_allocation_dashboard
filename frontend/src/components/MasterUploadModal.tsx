@@ -39,7 +39,7 @@ export const MasterUploadModal: React.FC<Props> = ({ onClose }) => {
     const formData = new FormData();
     formData.append('file', file);
 
-    const API_BASE = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+    const API_BASE = import.meta.env.VITE_API_BASE_URL || (import.meta.env.DEV ? '' : 'https://carrier-allocation-dashboard.azurewebsites.net');
 
     try {
       const response = await fetch(`${API_BASE}/api/upload-master`, {
