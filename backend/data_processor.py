@@ -124,6 +124,13 @@ def _upload_blob_file(container_name, filename, file_data: bytes):
     return True
 
 
+def _get_azure_config():
+    """Return container name and master file name from env."""
+    container = os.getenv('AZURE_CONTAINER_NAME', 'carrier-allocation')
+    master_file = os.getenv('MASTER_FILE_NAME', 'Contract_Master_All_Data Update.xlsx')
+    return container, master_file
+
+
 def _get_latest_blob(container_name, pattern):
     """Find and download the latest blob matching a glob pattern."""
     client = _get_blob_service_client()
