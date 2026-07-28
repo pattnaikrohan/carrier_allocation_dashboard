@@ -167,20 +167,205 @@ def _get_all_blobs(container_name, pattern):
 
 
 def parse_office_alloc(s):
+    """Parse office allocation string into branch TEU map.
+    
+    Handles both old format ('SYD 10 MEL 8 BNE 6') and new format:
+      - 'AAW BNE= 18 TEU, AAW ADL = 8 TEU, AAW FRE = 4 TEU'
+      - 'AAW ADL - QINGDAO to AUEC - 20 TEU per week'
+      - 'AAW PRJ EX XIAMEN TO AUEC - 10 TEU NOR'
+      - 'SHARED' (returns all zeros — caller should use Compass Allocation Total)
+    """
     branch_map = {'syd': 0, 'mel': 0, 'bne': 0, 'fre': 0, 'adl': 0, 'pil': 0, 'prj': 0, 'akl': 0, 'oth': 0}
     if s is None or (isinstance(s, float) and math.isnan(s)):
         return branch_map
-    s = str(s).upper()
-    patterns = {
-        'syd': r'SYD[^\d]*(\d+)', 'mel': r'MEL[^\d]*(\d+)', 'bne': r'BNE[^\d]*(\d+)',
-        'fre': r'(?:FRE|PER)[^\d]*(\d+)', 'adl': r'ADL[^\d]*(\d+)', 'pil': r'PIL[^\d]*(\d+)',
-        'prj': r'PRJ[^\d]*(\d+)', 'akl': r'AKL[^\d]*(\d+)', 'oth': r'OTH[^\d]*(\d+)',
+    s_str = str(s).strip().upper()
+    if s_str in ('SHARED', 'NAN', ''):
+        return branch_map
+
+    # New format: "AAW XXX" prefix patterns
+    # Match patterns like:
+    #   "AAW BNE= 18 TEU"  "AAW ADL = 8 TEU"  "AAW FRE = 4 TEU"
+    #   "AAW ADL - QINGDAO to AUEC - 20 TEU per week"
+    #   "AAW PRJ EX XIAMEN TO AUEC - 10 TEU"
+    branch_codes = {
+        'syd': ['SYD', 'NSW'],
+        'mel': ['MEL', 'VIC'],
+        'bne': ['BNE', 'QLD'],
+        'fre': ['FRE', 'PER', 'WAL'],
+        'adl': ['ADL', 'SAL'],
+        'pil': ['PIL'],
+        'prj': ['PRJ'],
+        'akl': ['AKL'],
+        'oth': ['OTH'],
     }
-    for k, pat in patterns.items():
-        m = re.search(pat, s)
-        if m:
-            branch_map[k] = int(m.group(1))
+
+    found_any = False
+    # Aliases that are too short/ambiguous for the old "XXX N" pattern (pat3)
+    # because they appear in common words (e.g. "PER WEEK", "NSW" in addresses)
+    aaw_only_aliases = {'PER', 'WAL', 'NSW', 'VIC', 'QLD', 'SAL'}
+
+    for bnorm, aliases in branch_codes.items():
+        for alias in aliases:
+            # Pattern 1: "AAW XXX = N TEU" or "AAW XXX= N TEU"
+            pat1 = rf'AAW\s+{alias}\s*[=\-]\s*(\d+)\s*TEU'
+            # Pattern 2: "AAW XXX - route - N TEU" (N TEU anywhere after AAW XXX)
+            pat2 = rf'AAW\s+{alias}\b.*?(\d+)\s*TEU'
+
+            patterns_to_try = [pat1, pat2]
+            # Pattern 3: old format "XXX N" (e.g. "SYD 10") — only for unambiguous aliases
+            if alias not in aaw_only_aliases:
+                pat3 = rf'\b{alias}[^\d]*(\d+)'
+                patterns_to_try.append(pat3)
+
+            for pat in patterns_to_try:
+                matches = re.findall(pat, s_str)
+                if matches:
+                    # Sum all TEU values found for this branch (multi-line entries)
+                    total = sum(int(m) for m in matches)
+                    branch_map[bnorm] = max(branch_map[bnorm], total)
+                    found_any = True
+                    break  # Use first matching pattern
+
+    # Also handle FEU → TEU conversion (1 FEU = 2 TEU)
+    if not found_any:
+        for bnorm, aliases in branch_codes.items():
+            for alias in aliases:
+                pat_feu = rf'AAW\s+{alias}\b.*?(\d+(?:\.\d+)?)\s*FEU'
+                matches = re.findall(pat_feu, s_str)
+                if matches:
+                    total = sum(int(float(m) * 2) for m in matches)
+                    branch_map[bnorm] = max(branch_map[bnorm], total)
+
     return branch_map
+
+
+def parse_compass_total(s):
+    """Extract total TEU per week from Compass Allocation Total text.
+    
+    Handles patterns like:
+      - '4 TEU PER WEEK'
+      - 'SHANGHAI to AUEC - 2 TEU per week'
+      - 'EX XIAMEN TO AUEC - 10 TEU NOR\nEX XIAMEN TO AUEC - 4 TEU HQ\n...' (sum all)
+      - 'QINGDAO to AUWC - 5 FEU per week\nQINGDAO to EC - 4 FEU per week' (FEU → TEU)
+    
+    Returns total TEU as integer.
+    """
+    if s is None or (isinstance(s, float) and math.isnan(s)):
+        return 0
+    s_str = str(s).strip().upper()
+    if not s_str or s_str == 'NAN':
+        return 0
+
+    total = 0
+
+    # Find all TEU values
+    teu_matches = re.findall(r'(\d+)\s*TEU', s_str)
+    total += sum(int(m) for m in teu_matches)
+
+    # Find all FEU values (1 FEU = 2 TEU)
+    feu_matches = re.findall(r'(\d+(?:\.\d+)?)\s*FEU', s_str)
+    total += sum(int(float(m) * 2) for m in feu_matches)
+
+    return total
+
+
+def _resolve_master_col(row, *candidates, default=''):
+    """Try multiple column name candidates and return the first non-null value."""
+    for col in candidates:
+        val = row.get(col)
+        if val is not None and not (isinstance(val, float) and math.isnan(val)):
+            return val
+    return default
+
+
+def build_master_dict(df_master, log_func=None):
+    """Build master dict from a master DataFrame, handling both old and new column formats.
+    
+    Old columns: 'Contract #', 'Carrier', 'Office Allocation', 'Contract Name'
+    New columns: 'Contract#', 'Title', 'Compass Office Allocation', 'Compass Allocation Total'
+    
+    Returns (master_dict, cid_to_keys).
+    """
+    if log_func is None:
+        log_func = lambda msg: None
+
+    df_master.columns = df_master.columns.str.strip()
+    cols = list(df_master.columns)
+    log_func(f"Master file columns: {cols}")
+
+    master_dict = {}
+    cid_to_keys = {}
+    for _, row in df_master.iterrows():
+        # Contract ID: try 'Contract#' (new), 'Contract #' (old)
+        cid = str(_resolve_master_col(row, 'Contract#', 'Contract #', default='')).strip()
+        if not cid or cid == 'nan':
+            continue
+
+        # Carrier: try 'Title' (new), 'Carrier' (old)
+        carrier = str(_resolve_master_col(row, 'Title', 'Carrier', default='Unknown'))
+
+        # Office Allocation: try 'Compass Office Allocation' (new), 'Office Allocation' (old)
+        office_alloc_raw = _resolve_master_col(row, 'Compass Office Allocation', 'Office Allocation', default=None)
+        office_alloc = parse_office_alloc(office_alloc_raw)
+        alloc_from_branches = sum(office_alloc.values())
+
+        # Total Allocation: try 'Compass Allocation Total' (new) — only exists in new format
+        compass_total_raw = _resolve_master_col(row, 'Compass Allocation Total', default=None)
+        compass_total = parse_compass_total(compass_total_raw)
+
+        # Determine final alloc_total:
+        #   - If branch-specific allocation parsed successfully (sum > 0), use that
+        #   - If office allocation was 'SHARED' or parsed to 0, use Compass Allocation Total
+        if alloc_from_branches > 0:
+            alloc_total = alloc_from_branches
+        elif compass_total > 0:
+            alloc_total = compass_total
+        else:
+            alloc_total = 0
+
+        priority = str(_resolve_master_col(row, 'Priority', default='Normal'))
+        contract_type = str(_resolve_master_col(row, 'Contract Type', default='FAK'))
+        # Contract Name: try 'Title' (new — same as carrier), 'Contract Name' (old)
+        contract_name = str(_resolve_master_col(row, 'Contract Name', 'Title', default=''))
+        raw_origin = str(_resolve_master_col(row, 'Origin', default='')).strip()
+        raw_dest = str(_resolve_master_col(row, 'Destination', default='')).strip()
+        if raw_origin == 'nan':
+            raw_origin = ''
+        if raw_dest == 'nan':
+            raw_dest = ''
+        origin_region = normalize_region(raw_origin) if raw_origin else 'Unknown'
+        dest_region = normalize_dest(raw_dest) if raw_dest else 'Unknown'
+        lane = f"{origin_region} to {dest_region}"
+        compound_key = f"{cid}__{origin_region}_{dest_region}"
+
+        if compound_key not in master_dict:
+            master_dict[compound_key] = {
+                'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
+                'officeAlloc': office_alloc, 'priority': priority, 'lane': lane,
+                'originRegion': origin_region, 'destRegion': dest_region,
+                'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
+                'polBreakdown': [],
+                'contractType': contract_type, 'contractName': contract_name,
+            }
+        else:
+            master_dict[compound_key]['allocTotal'] += alloc_total
+            master_dict[compound_key]['rawOrigins'].append(raw_origin)
+            master_dict[compound_key]['rawDests'].append(raw_dest)
+            for hub, val in office_alloc.items():
+                master_dict[compound_key]['officeAlloc'][hub] = master_dict[compound_key]['officeAlloc'].get(hub, 0) + val
+
+        if cid not in cid_to_keys:
+            cid_to_keys[cid] = []
+        if compound_key not in cid_to_keys[cid]:
+            cid_to_keys[cid].append(compound_key)
+
+        if raw_origin and raw_origin not in ('NEA', 'SEA', 'EUR', 'AU', 'NZ', 'NORTH EUR') and alloc_total > 0:
+            master_dict[compound_key]['polBreakdown'].append({
+                'port': raw_origin, 'dest': raw_dest, 'teuPerWeek': alloc_total,
+            })
+
+    log_func(f"Master dict built: {len(master_dict)} compound keys from {len(cid_to_keys)} contracts")
+    return master_dict, cid_to_keys
 
 
 # ── Region Normalization ─────────────────────────────────────────────────────
@@ -277,51 +462,8 @@ def process_data_from_azure(force_source: str = None) -> str:
         local_master = os.path.join(repo_root, master_file)
         df_master = pd.read_excel(local_master)
 
-    # Build master dict with compound keys for multi-leg contracts
-    master_dict = {}
-    cid_to_keys = {}
-    for _, row in df_master.iterrows():
-        cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
-        if not cid:
-            continue
-        office_alloc = parse_office_alloc(row.get('Office Allocation'))
-        alloc_total = sum(office_alloc.values())
-        carrier = str(row.get('Carrier', 'Unknown'))
-        priority = str(row.get('Priority', 'Normal'))
-        contract_type = str(row.get('Contract Type', 'FAK'))
-        contract_name = str(row.get('Contract Name', ''))
-        raw_origin = str(row.get('Origin', '')).strip() if pd.notna(row.get('Origin')) else ''
-        raw_dest = str(row.get('Destination', '')).strip() if pd.notna(row.get('Destination')) else ''
-        origin_region = normalize_region(raw_origin)
-        dest_region = normalize_dest(raw_dest)
-        lane = f"{origin_region} to {dest_region}"
-        compound_key = f"{cid}__{origin_region}_{dest_region}"
-
-        if compound_key not in master_dict:
-            master_dict[compound_key] = {
-                'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
-                'officeAlloc': office_alloc, 'priority': priority, 'lane': lane,
-                'originRegion': origin_region, 'destRegion': dest_region,
-                'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
-                'polBreakdown': [],
-                'contractType': contract_type, 'contractName': contract_name,
-            }
-        else:
-            master_dict[compound_key]['allocTotal'] += alloc_total
-            master_dict[compound_key]['rawOrigins'].append(raw_origin)
-            master_dict[compound_key]['rawDests'].append(raw_dest)
-            for hub, val in office_alloc.items():
-                master_dict[compound_key]['officeAlloc'][hub] = master_dict[compound_key]['officeAlloc'].get(hub, 0) + val
-
-        if cid not in cid_to_keys:
-            cid_to_keys[cid] = []
-        if compound_key not in cid_to_keys[cid]:
-            cid_to_keys[cid].append(compound_key)
-
-        if raw_origin and raw_origin not in ('NEA', 'SEA', 'EUR', 'AU', 'NZ', 'NORTH EUR') and alloc_total > 0:
-            master_dict[compound_key]['polBreakdown'].append({
-                'port': raw_origin, 'dest': raw_dest, 'teuPerWeek': alloc_total,
-            })
+    # Build master dict using shared helper (handles both old and new column formats)
+    master_dict, cid_to_keys = build_master_dict(df_master, log)
 
 
     # Robust Column Mapping
@@ -759,51 +901,8 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         local_master = os.path.join(repo_root, master_file)
         df_master = pd.read_excel(local_master)
 
-    # Build master dict with compound keys for multi-leg contracts
-    master_dict = {}
-    cid_to_keys = {}
-    for _, row in df_master.iterrows():
-        cid = str(row['Contract #']).strip() if pd.notna(row.get('Contract #')) else ''
-        if not cid:
-            continue
-        office_alloc = parse_office_alloc(row.get('Office Allocation'))
-        alloc_total = sum(office_alloc.values())
-        carrier = str(row.get('Carrier', 'Unknown'))
-        priority = str(row.get('Priority', 'Normal'))
-        contract_type = str(row.get('Contract Type', 'FAK'))
-        contract_name = str(row.get('Contract Name', ''))
-        raw_origin = str(row.get('Origin', '')).strip() if pd.notna(row.get('Origin')) else ''
-        raw_dest = str(row.get('Destination', '')).strip() if pd.notna(row.get('Destination')) else ''
-        origin_region = normalize_region(raw_origin)
-        dest_region = normalize_dest(raw_dest)
-        lane = f"{origin_region} to {dest_region}"
-        compound_key = f"{cid}__{origin_region}_{dest_region}"
-
-        if compound_key not in master_dict:
-            master_dict[compound_key] = {
-                'cid': cid, 'carrier': carrier, 'allocTotal': alloc_total,
-                'officeAlloc': office_alloc, 'priority': priority, 'lane': lane,
-                'originRegion': origin_region, 'destRegion': dest_region,
-                'rawOrigins': [raw_origin], 'rawDests': [raw_dest],
-                'polBreakdown': [],
-                'contractType': contract_type, 'contractName': contract_name,
-            }
-        else:
-            master_dict[compound_key]['allocTotal'] += alloc_total
-            master_dict[compound_key]['rawOrigins'].append(raw_origin)
-            master_dict[compound_key]['rawDests'].append(raw_dest)
-            for hub, val in office_alloc.items():
-                master_dict[compound_key]['officeAlloc'][hub] = master_dict[compound_key]['officeAlloc'].get(hub, 0) + val
-
-        if cid not in cid_to_keys:
-            cid_to_keys[cid] = []
-        if compound_key not in cid_to_keys[cid]:
-            cid_to_keys[cid].append(compound_key)
-
-        if raw_origin and raw_origin not in ('NEA', 'SEA', 'EUR', 'AU', 'NZ', 'NORTH EUR') and alloc_total > 0:
-            master_dict[compound_key]['polBreakdown'].append({
-                'port': raw_origin, 'dest': raw_dest, 'teuPerWeek': alloc_total,
-            })
+    # Build master dict using shared helper (handles both old and new column formats)
+    master_dict, cid_to_keys = build_master_dict(df_master, log)
 
 
     # Robust Column Mapping
