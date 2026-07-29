@@ -685,7 +685,8 @@ const ContractDashboard: React.FC = () => {
         const contractBookings = hubBookings.filter(bk => bk.contract === mainId || bk.contract === c.id);
         const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
         const rawAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
-        const cAlloc = Math.round(rawAlloc * weekScale);
+        // rawAlloc is already week-scaled from reactiveContractUtilData (lines 428-437)
+        const cAlloc = Math.round(rawAlloc);
         const cAvail = cAlloc - cBooked;
         const noCalc = (c as any).noCalc === true;
         const isExcluded = noCalc || c.id.toUpperCase() === 'OTH' || c.id.toUpperCase() === 'SPOT' || c.id.toUpperCase() === 'AGENT' || c.id.toUpperCase() === 'OTHER';
