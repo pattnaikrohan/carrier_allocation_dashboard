@@ -721,6 +721,22 @@ const ContractDashboard: React.FC = () => {
         };
       });
 
+      const matchedBooked = activeContractsData.reduce((sum, c) => sum + c.booked, 0);
+      const unmatchedBooked = booked - matchedBooked;
+      if (unmatchedBooked > 0) {
+        activeContractsData.push({
+          id: 'OTHER / UNPLANNED',
+          alloc: 0,
+          booked: unmatchedBooked,
+          avail: -unmatchedBooked,
+          util: 0,
+          contractType: 'SPOT',
+          carrier: 'Various',
+          noCalc: true,
+          status: 'Unplanned'
+        });
+      }
+
       const activeContracts = activeContractsData.map(c => c.id);
 
       let status = 'No Allocation';
