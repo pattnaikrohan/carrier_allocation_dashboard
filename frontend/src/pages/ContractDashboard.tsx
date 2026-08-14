@@ -97,8 +97,15 @@ const ContractDashboard: React.FC = () => {
     const startOfYear = new Date(now.getFullYear(), 0, 1);
     const pastDays = (now.getTime() - startOfYear.getTime()) / 86400000;
     const currentWeekNum = Math.ceil((pastDays + startOfYear.getDay() + 1) / 7);
+    const currentYear = now.getFullYear();
+    const expectedWeek = `WK ${currentWeekNum}-${currentYear}`;
+    
     const weeks = WEEKLY_TREND_DATA.map(w => w.week);
-    // Find the closest week to current calendar week
+    if (weeks.includes(expectedWeek)) {
+      return expectedWeek;
+    }
+    
+    // Find the closest week to current calendar week if exact match fails
     const match = weeks.find(w => {
       const m = w.match(/WK\s+(\d+)/);
       return m && parseInt(m[1], 10) === currentWeekNum;

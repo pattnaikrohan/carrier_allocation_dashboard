@@ -654,7 +654,15 @@ def process_data_from_azure(force_source: str = None) -> str:
     destinations = sorted(df['dischargePort'].dropna().unique().tolist())
 
     unique_weeks_df = df[['year', 'week_num', 'mscWeek']].drop_duplicates().sort_values(['year', 'week_num'])
-    weeks = [f"WK {row['mscWeek']}" for _, row in unique_weeks_df.iterrows()]
+    
+    min_year = unique_weeks_df['year'].min() if not unique_weeks_df.empty else 2026
+    max_year = unique_weeks_df['year'].max() if not unique_weeks_df.empty else 2026
+    
+    weeks = []
+    for y in range(min_year, max_year + 1):
+        for w in range(1, 53):
+            weeks.append(f"WK {w}-{y}")
+            
     active_week_count = max(len(weeks), 1)
 
     # BRANCH_SNAPSHOT
@@ -1113,7 +1121,15 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     destinations = sorted(df['dischargePort'].dropna().unique().tolist())
 
     unique_weeks_df = df[['year', 'week_num', 'mscWeek']].drop_duplicates().sort_values(['year', 'week_num'])
-    weeks = [f"WK {row['mscWeek']}" for _, row in unique_weeks_df.iterrows()]
+    
+    min_year = unique_weeks_df['year'].min() if not unique_weeks_df.empty else 2026
+    max_year = unique_weeks_df['year'].max() if not unique_weeks_df.empty else 2026
+    
+    weeks = []
+    for y in range(min_year, max_year + 1):
+        for w in range(1, 53):
+            weeks.append(f"WK {w}-{y}")
+            
     active_week_count = max(len(weeks), 1)
 
     # BRANCH_SNAPSHOT
