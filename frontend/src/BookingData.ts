@@ -1506,20 +1506,164 @@ export const CONTRACTS = [
   "YAAWN0000013"
 ];
 export const WEEKS = [
+  "WK 1-2021",
+  "WK 2-2021",
+  "WK 3-2021",
+  "WK 4-2021",
+  "WK 5-2021",
+  "WK 6-2021",
+  "WK 7-2021",
+  "WK 8-2021",
+  "WK 9-2021",
+  "WK 10-2021",
+  "WK 11-2021",
   "WK 12-2021",
+  "WK 13-2021",
+  "WK 14-2021",
+  "WK 15-2021",
+  "WK 16-2021",
+  "WK 17-2021",
+  "WK 18-2021",
+  "WK 19-2021",
+  "WK 20-2021",
+  "WK 21-2021",
+  "WK 22-2021",
+  "WK 23-2021",
+  "WK 24-2021",
+  "WK 25-2021",
+  "WK 26-2021",
+  "WK 27-2021",
+  "WK 28-2021",
+  "WK 29-2021",
+  "WK 30-2021",
+  "WK 31-2021",
+  "WK 32-2021",
+  "WK 33-2021",
+  "WK 34-2021",
+  "WK 35-2021",
+  "WK 36-2021",
+  "WK 37-2021",
+  "WK 38-2021",
+  "WK 39-2021",
+  "WK 40-2021",
+  "WK 41-2021",
+  "WK 42-2021",
+  "WK 43-2021",
+  "WK 44-2021",
+  "WK 45-2021",
+  "WK 46-2021",
+  "WK 47-2021",
+  "WK 48-2021",
+  "WK 49-2021",
+  "WK 50-2021",
+  "WK 51-2021",
+  "WK 52-2021",
   "WK 1-2022",
+  "WK 2-2022",
+  "WK 3-2022",
+  "WK 4-2022",
+  "WK 5-2022",
+  "WK 6-2022",
+  "WK 7-2022",
+  "WK 8-2022",
+  "WK 9-2022",
+  "WK 10-2022",
+  "WK 11-2022",
+  "WK 12-2022",
+  "WK 13-2022",
+  "WK 14-2022",
+  "WK 15-2022",
+  "WK 16-2022",
+  "WK 17-2022",
+  "WK 18-2022",
+  "WK 19-2022",
+  "WK 20-2022",
+  "WK 21-2022",
+  "WK 22-2022",
+  "WK 23-2022",
+  "WK 24-2022",
+  "WK 25-2022",
+  "WK 26-2022",
+  "WK 27-2022",
+  "WK 28-2022",
+  "WK 29-2022",
+  "WK 30-2022",
+  "WK 31-2022",
+  "WK 32-2022",
+  "WK 33-2022",
+  "WK 34-2022",
+  "WK 35-2022",
+  "WK 36-2022",
+  "WK 37-2022",
+  "WK 38-2022",
+  "WK 39-2022",
+  "WK 40-2022",
+  "WK 41-2022",
+  "WK 42-2022",
+  "WK 43-2022",
+  "WK 44-2022",
+  "WK 45-2022",
   "WK 46-2022",
+  "WK 47-2022",
+  "WK 48-2022",
+  "WK 49-2022",
+  "WK 50-2022",
+  "WK 51-2022",
+  "WK 52-2022",
+  "WK 1-2023",
+  "WK 2-2023",
+  "WK 3-2023",
+  "WK 4-2023",
+  "WK 5-2023",
   "WK 6-2023",
+  "WK 7-2023",
+  "WK 8-2023",
+  "WK 9-2023",
+  "WK 10-2023",
+  "WK 11-2023",
+  "WK 12-2023",
+  "WK 13-2023",
+  "WK 14-2023",
+  "WK 15-2023",
+  "WK 16-2023",
+  "WK 17-2023",
+  "WK 18-2023",
+  "WK 19-2023",
+  "WK 20-2023",
+  "WK 21-2023",
+  "WK 22-2023",
+  "WK 23-2023",
+  "WK 24-2023",
+  "WK 25-2023",
+  "WK 26-2023",
+  "WK 27-2023",
+  "WK 28-2023",
+  "WK 29-2023",
+  "WK 30-2023",
+  "WK 31-2023",
   "WK 32-2023",
+  "WK 33-2023",
   "WK 34-2023",
   "WK 35-2023",
   "WK 36-2023",
   "WK 37-2023",
   "WK 38-2023",
+  "WK 39-2023",
   "WK 40-2023",
+  "WK 41-2023",
+  "WK 42-2023",
+  "WK 43-2023",
+  "WK 44-2023",
+  "WK 45-2023",
+  "WK 46-2023",
+  "WK 47-2023",
+  "WK 48-2023",
+  "WK 49-2023",
+  "WK 50-2023",
   "WK 51-2023",
   "WK 52-2023",
   "WK 1-2024",
+  "WK 2-2024",
   "WK 3-2024",
   "WK 4-2024",
   "WK 5-2024",
@@ -1528,10 +1672,12 @@ export const WEEKS = [
   "WK 8-2024",
   "WK 9-2024",
   "WK 10-2024",
+  "WK 11-2024",
   "WK 12-2024",
   "WK 13-2024",
   "WK 14-2024",
   "WK 15-2024",
+  "WK 16-2024",
   "WK 17-2024",
   "WK 18-2024",
   "WK 19-2024",
@@ -1541,6 +1687,7 @@ export const WEEKS = [
   "WK 23-2024",
   "WK 24-2024",
   "WK 25-2024",
+  "WK 26-2024",
   "WK 27-2024",
   "WK 28-2024",
   "WK 29-2024",
@@ -1559,6 +1706,7 @@ export const WEEKS = [
   "WK 42-2024",
   "WK 43-2024",
   "WK 44-2024",
+  "WK 45-2024",
   "WK 46-2024",
   "WK 47-2024",
   "WK 48-2024",
@@ -1648,7 +1796,28 @@ export const WEEKS = [
   "WK 28-2026",
   "WK 29-2026",
   "WK 30-2026",
-  "WK 34-2026"
+  "WK 31-2026",
+  "WK 32-2026",
+  "WK 33-2026",
+  "WK 34-2026",
+  "WK 35-2026",
+  "WK 36-2026",
+  "WK 37-2026",
+  "WK 38-2026",
+  "WK 39-2026",
+  "WK 40-2026",
+  "WK 41-2026",
+  "WK 42-2026",
+  "WK 43-2026",
+  "WK 44-2026",
+  "WK 45-2026",
+  "WK 46-2026",
+  "WK 47-2026",
+  "WK 48-2026",
+  "WK 49-2026",
+  "WK 50-2026",
+  "WK 51-2026",
+  "WK 52-2026"
 ];
 export const REGIONS = [
   "Americas",
@@ -3997,73 +4166,10 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CHZRH",
-    "name": "CHZRH",
-    "country": "CH",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CAQUE",
-    "name": "CAQUE",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNGZG",
-    "name": "CNGZG",
+    "code": "CNCSH",
+    "name": "CNCSH",
     "country": "China",
     "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ITSPE",
-    "name": "ITSPE",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USHRS",
-    "name": "USHRS",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "JPNRT",
-    "name": "JPNRT",
-    "country": "JP",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CAHAM",
-    "name": "CAHAM",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFZG",
-    "name": "CNFZG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "KRKPO",
-    "name": "KRKPO",
-    "country": "KR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USLBH",
-    "name": "USLBH",
-    "country": "US",
-    "region": "Other",
     "lane": "General"
   },
   {
@@ -4074,736 +4180,15 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
+    "code": "CNHAZ",
+    "name": "CNHAZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
     "code": "CNXMG",
     "name": "CNXMG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ITCVV",
-    "name": "ITCVV",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "NZHLZ",
-    "name": "NZHLZ",
-    "country": "New Zealand",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "MYKLA",
-    "name": "MYKLA",
-    "country": "MY",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNWHG",
-    "name": "CNWHG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEWVN",
-    "name": "DEWVN",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "BEZEE",
-    "name": "BEZEE",
-    "country": "BE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DENUE",
-    "name": "DENUE",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "THNPM",
-    "name": "THNPM",
-    "country": "TH",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "KRICN",
-    "name": "KRICN",
-    "country": "KR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "TWTPE",
-    "name": "TWTPE",
-    "country": "TW",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "SEMMX",
-    "name": "SEMMX",
-    "country": "SE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "TRGEB",
-    "name": "TRGEB",
-    "country": "TR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNNJG",
-    "name": "CNNJG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNZBO",
-    "name": "CNZBO",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNWHI",
-    "name": "CNWHI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNTXG",
-    "name": "CNTXG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USEWR",
-    "name": "USEWR",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CATOR",
-    "name": "CATOR",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNDAL",
-    "name": "CNDAL",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "GBCMG",
-    "name": "GBCMG",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USATL",
-    "name": "USATL",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRDIJ",
-    "name": "FRDIJ",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "NLAMS",
-    "name": "NLAMS",
-    "country": "NL",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USBCK",
-    "name": "USBCK",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBMAN",
-    "name": "GBMAN",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "NZCHC",
-    "name": "NZCHC",
-    "country": "New Zealand",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "CNHGH",
-    "name": "CNHGH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "JPSMZ",
-    "name": "JPSMZ",
-    "country": "JP",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNQZH",
-    "name": "CNQZH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "GBWOV",
-    "name": "GBWOV",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USXLI",
-    "name": "USXLI",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNSHA",
-    "name": "CNSHA",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEMSR",
-    "name": "DEMSR",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "BEANT",
-    "name": "BEANT",
-    "country": "BE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNSAD",
-    "name": "CNSAD",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CZPRG",
-    "name": "CZPRG",
-    "country": "CZ",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USKCK",
-    "name": "USKCK",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNZHE",
-    "name": "CNZHE",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ECVLC",
-    "name": "ECVLC",
-    "country": "EC",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CZCKR",
-    "name": "CZCKR",
-    "country": "CZ",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "INICD",
-    "name": "INICD",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "VNDNA",
-    "name": "VNDNA",
-    "country": "VN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "SESTO",
-    "name": "SESTO",
-    "country": "SE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "BEBRU",
-    "name": "BEBRU",
-    "country": "BE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUBWT",
-    "name": "AUBWT",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "VNCLI",
-    "name": "VNCLI",
-    "country": "VN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNZUH",
-    "name": "CNZUH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ITSAL",
-    "name": "ITSAL",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNGOM",
-    "name": "CNGOM",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "HUSZR",
-    "name": "HUSZR",
-    "country": "HU",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ZAJNB",
-    "name": "ZAJNB",
-    "country": "ZA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USSLC",
-    "name": "USSLC",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "IDSRG",
-    "name": "IDSRG",
-    "country": "ID",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USHNL",
-    "name": "USHNL",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFUO",
-    "name": "CNFUO",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ASPPG",
-    "name": "ASPPG",
-    "country": "AS",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRLYS",
-    "name": "FRLYS",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBLON",
-    "name": "GBLON",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFOS",
-    "name": "CNFOS",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNWEF",
-    "name": "CNWEF",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "VNTOT",
-    "name": "VNTOT",
-    "country": "VN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNSZH",
-    "name": "CNSZH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNMAW",
-    "name": "CNMAW",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNNJI",
-    "name": "CNNJI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DKBLL",
-    "name": "DKBLL",
-    "country": "DK",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNTNG",
-    "name": "CNTNG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "INDEL",
-    "name": "INDEL",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNCZX",
-    "name": "CNCZX",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNGGZ",
-    "name": "CNGGZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USBCG",
-    "name": "USBCG",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "VNVUT",
-    "name": "VNVUT",
-    "country": "VN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITVCE",
-    "name": "ITVCE",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "MYNTL",
-    "name": "MYNTL",
-    "country": "MY",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNCSH",
-    "name": "CNCSH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "MYKUL",
-    "name": "MYKUL",
-    "country": "MY",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUNTL",
-    "name": "AUNTL",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "INKTP",
-    "name": "INKTP",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBTIL",
-    "name": "GBTIL",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "SEARN",
-    "name": "SEARN",
-    "country": "SE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEENN",
-    "name": "DEENN",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRCDG",
-    "name": "FRCDG",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITRAN",
-    "name": "ITRAN",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USPDX",
-    "name": "USPDX",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRMEL",
-    "name": "FRMEL",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USCVG",
-    "name": "USCVG",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CHBSL",
-    "name": "CHBSL",
-    "country": "CH",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNNGB",
-    "name": "CNNGB",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "AUDPO",
-    "name": "AUDPO",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "INBOM",
-    "name": "INBOM",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USEKI",
-    "name": "USEKI",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CZCKB",
-    "name": "CZCKB",
-    "country": "CZ",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITSGE",
-    "name": "ITSGE",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRFOS",
-    "name": "FRFOS",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEBER",
-    "name": "DEBER",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "PTSIE",
-    "name": "PTSIE",
-    "country": "PT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBLHR",
-    "name": "GBLHR",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEKAE",
-    "name": "DEKAE",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ATVDD",
-    "name": "ATVDD",
-    "country": "AT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNDAG",
-    "name": "CNDAG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNSUD",
-    "name": "CNSUD",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "VNCMT",
-    "name": "VNCMT",
-    "country": "VN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNXIA",
-    "name": "CNXIA",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNSZP",
-    "name": "CNSZP",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNSNZ",
-    "name": "CNSNZ",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -4816,107 +4201,65 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNTAC",
-    "name": "CNTAC",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "TRDRC",
-    "name": "TRDRC",
-    "country": "TR",
+    "code": "ITMXP",
+    "name": "ITMXP",
+    "country": "IT",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "USDFW",
-    "name": "USDFW",
+    "code": "PTLEI",
+    "name": "PTLEI",
+    "country": "PT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCFJ",
+    "name": "USCFJ",
     "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "CNHKO",
-    "name": "CNHKO",
+    "code": "CNDCB",
+    "name": "CNDCB",
     "country": "China",
     "region": "Asia",
     "lane": "General"
   },
   {
-    "code": "AUHBA",
-    "name": "AUHBA",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "TRADN",
-    "name": "TRADN",
-    "country": "TR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "FRORY",
-    "name": "FRORY",
-    "country": "FR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USGGE",
-    "name": "USGGE",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNZSN",
-    "name": "CNZSN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USCLT",
-    "name": "USCLT",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "INIXM",
-    "name": "INIXM",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USSA8",
-    "name": "USSA8",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFZH",
-    "name": "CNFZH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ESMAD",
-    "name": "ESMAD",
-    "country": "ES",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBEGD",
-    "name": "GBEGD",
+    "code": "GBLHR",
+    "name": "GBLHR",
     "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "KRICN",
+    "name": "KRICN",
+    "country": "KR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DKFRC",
+    "name": "DKFRC",
+    "country": "DK",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNWXS",
+    "name": "CNWXS",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "INIXE",
+    "name": "INIXE",
+    "country": "IN",
     "region": "Other",
     "lane": "General"
   },
@@ -4935,247 +4278,9 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNJNX",
-    "name": "CNJNX",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "NZNSN",
-    "name": "NZNSN",
-    "country": "New Zealand",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "AUKPK",
-    "name": "AUKPK",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "USKOG",
-    "name": "USKOG",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "JPKIX",
-    "name": "JPKIX",
-    "country": "JP",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBWXH",
-    "name": "GBWXH",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "JPTOY",
-    "name": "JPTOY",
-    "country": "JP",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBFXY",
-    "name": "GBFXY",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "IEDUB",
-    "name": "IEDUB",
-    "country": "IE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNYGP",
-    "name": "CNYGP",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "INAMD",
-    "name": "INAMD",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITROM",
-    "name": "ITROM",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNXAM",
-    "name": "CNXAM",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USBNA",
-    "name": "USBNA",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITNAP",
-    "name": "ITNAP",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USIGX",
-    "name": "USIGX",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITMIL",
-    "name": "ITMIL",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ATVIE",
-    "name": "ATVIE",
-    "country": "AT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUPKL",
-    "name": "AUPKL",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "USPHL",
-    "name": "USPHL",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBELL",
-    "name": "GBELL",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITVLC",
-    "name": "ITVLC",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USIND",
-    "name": "USIND",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBMNC",
-    "name": "GBMNC",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBEDG",
-    "name": "GBEDG",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNDGG",
-    "name": "CNDGG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USLUI",
-    "name": "USLUI",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITRMI",
-    "name": "ITRMI",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNWXS",
-    "name": "CNWXS",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEMUC",
-    "name": "DEMUC",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEUBG",
-    "name": "DEUBG",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEHSG",
-    "name": "DEHSG",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEFDH",
-    "name": "DEFDH",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DESHG",
-    "name": "DESHG",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "ITFCO",
-    "name": "ITFCO",
-    "country": "IT",
+    "code": "DKBLL",
+    "name": "DKBLL",
+    "country": "DK",
     "region": "Other",
     "lane": "General"
   },
@@ -5187,316 +4292,8 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNHUA",
-    "name": "CNHUA",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNCQI",
-    "name": "CNCQI",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEBRV",
-    "name": "DEBRV",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNWEG",
-    "name": "CNWEG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNPVG",
-    "name": "CNPVG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USCXO",
-    "name": "USCXO",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "MYPGU",
-    "name": "MYPGU",
-    "country": "MY",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "INIXE",
-    "name": "INIXE",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "KRMAS",
-    "name": "KRMAS",
-    "country": "KR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "JPHND",
-    "name": "JPHND",
-    "country": "JP",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CAYVR",
-    "name": "CAYVR",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USTXA",
-    "name": "USTXA",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUGOA",
-    "name": "AUGOA",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "TRIZT",
-    "name": "TRIZT",
-    "country": "TR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUTSV",
-    "name": "AUTSV",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "CNSTG",
-    "name": "CNSTG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "NLLWR",
-    "name": "NLLWR",
-    "country": "NL",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNHAZ",
-    "name": "CNHAZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USCFJ",
-    "name": "USCFJ",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNSYD",
-    "name": "CNSYD",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "TWTYN",
-    "name": "TWTYN",
-    "country": "TW",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNGZH",
-    "name": "CNGZH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEHAJ",
-    "name": "DEHAJ",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USPEF",
-    "name": "USPEF",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USRNO",
-    "name": "USRNO",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "DEFRA",
-    "name": "DEFRA",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CAYYZ",
-    "name": "CAYYZ",
-    "country": "CA",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNGUT",
-    "name": "CNGUT",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNNBG",
-    "name": "CNNBG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USFLL",
-    "name": "USFLL",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "THLKR",
-    "name": "THLKR",
-    "country": "TH",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USHIF",
-    "name": "USHIF",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "INTUT",
-    "name": "INTUT",
-    "country": "IN",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USIDI",
-    "name": "USIDI",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USYVR",
-    "name": "USYVR",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "GBLGP",
-    "name": "GBLGP",
-    "country": "GB",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USCRW",
-    "name": "USCRW",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "IDTPP",
-    "name": "IDTPP",
-    "country": "ID",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNTYN",
-    "name": "CNTYN",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNYPG",
-    "name": "CNYPG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "DEDTM",
-    "name": "DEDTM",
-    "country": "DE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USSFO",
-    "name": "USSFO",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNXNG",
-    "name": "CNXNG",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "ITMXP",
-    "name": "ITMXP",
-    "country": "IT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USDET",
-    "name": "USDET",
+    "code": "USDFW",
+    "name": "USDFW",
     "country": "US",
     "region": "Other",
     "lane": "General"
@@ -5509,79 +4306,9 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USBAZ",
-    "name": "USBAZ",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USUAU",
-    "name": "USUAU",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNDCB",
-    "name": "CNDCB",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "USPHX",
-    "name": "USPHX",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNFUZ",
-    "name": "CNFUZ",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "HRRJK",
-    "name": "HRRJK",
-    "country": "HR",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNXGA",
-    "name": "CNXGA",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "AEDXB",
-    "name": "AEDXB",
-    "country": "AE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "USGPT",
-    "name": "USGPT",
-    "country": "US",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "AUDRW",
-    "name": "AUDRW",
-    "country": "Australia",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "DENDQ",
-    "name": "DENDQ",
-    "country": "DE",
+    "code": "NLAMS",
+    "name": "NLAMS",
+    "country": "NL",
     "region": "Other",
     "lane": "General"
   },
@@ -5593,43 +4320,22 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "CNHUI",
-    "name": "CNHUI",
+    "code": "USBCG",
+    "name": "USBCG",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNWHG",
+    "name": "CNWHG",
     "country": "China",
     "region": "Asia",
     "lane": "General"
   },
   {
-    "code": "SESKF",
-    "name": "SESKF",
-    "country": "SE",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "NZDUD",
-    "name": "NZDUD",
-    "country": "New Zealand",
-    "region": "Oceania",
-    "lane": "General"
-  },
-  {
-    "code": "ATLNZ",
-    "name": "ATLNZ",
-    "country": "AT",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNNCH",
-    "name": "CNNCH",
-    "country": "China",
-    "region": "Asia",
-    "lane": "General"
-  },
-  {
-    "code": "CNJMN",
-    "name": "CNJMN",
+    "code": "CNFZH",
+    "name": "CNFZH",
     "country": "China",
     "region": "Asia",
     "lane": "General"
@@ -5642,24 +4348,87 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "SEGVX",
-    "name": "SEGVX",
-    "country": "SE",
-    "region": "Other",
+    "code": "AUPKL",
+    "name": "AUPKL",
+    "country": "Australia",
+    "region": "Oceania",
     "lane": "General"
   },
   {
-    "code": "CZPRO",
-    "name": "CZPRO",
-    "country": "CZ",
-    "region": "Other",
-    "lane": "General"
-  },
-  {
-    "code": "CNPEK",
-    "name": "CNPEK",
+    "code": "CNSZH",
+    "name": "CNSZH",
     "country": "China",
     "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "AUNTL",
+    "name": "AUNTL",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "INTUT",
+    "name": "INTUT",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "AEDXB",
+    "name": "AEDXB",
+    "country": "AE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEKAE",
+    "name": "DEKAE",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBCMG",
+    "name": "GBCMG",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCRW",
+    "name": "USCRW",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CHBSL",
+    "name": "CHBSL",
+    "country": "CH",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNNJG",
+    "name": "CNNJG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNFZG",
+    "name": "CNFZG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "GBFXY",
+    "name": "GBFXY",
+    "country": "GB",
+    "region": "Other",
     "lane": "General"
   },
   {
@@ -5670,9 +4439,9 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "PTLEI",
-    "name": "PTLEI",
-    "country": "PT",
+    "code": "DENUE",
+    "name": "DENUE",
+    "country": "DE",
     "region": "Other",
     "lane": "General"
   },
@@ -5684,23 +4453,58 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USORD",
-    "name": "USORD",
+    "code": "USSLC",
+    "name": "USSLC",
     "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "PLWAW",
-    "name": "PLWAW",
-    "country": "PL",
+    "code": "CATOR",
+    "name": "CATOR",
+    "country": "CA",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "USDAL",
-    "name": "USDAL",
+    "code": "JPHND",
+    "name": "JPHND",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBMAN",
+    "name": "GBMAN",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNTXG",
+    "name": "CNTXG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USGPT",
+    "name": "USGPT",
     "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITSAL",
+    "name": "ITSAL",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "THLKR",
+    "name": "THLKR",
+    "country": "TH",
     "region": "Other",
     "lane": "General"
   },
@@ -5712,23 +4516,65 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "DKFRC",
-    "name": "DKFRC",
-    "country": "DK",
+    "code": "USTXA",
+    "name": "USTXA",
+    "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "JPOSK",
-    "name": "JPOSK",
-    "country": "JP",
+    "code": "USHNL",
+    "name": "USHNL",
+    "country": "US",
     "region": "Other",
     "lane": "General"
   },
   {
-    "code": "MXAPD",
-    "name": "MXAPD",
-    "country": "MX",
+    "code": "HUSZR",
+    "name": "HUSZR",
+    "country": "HU",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNHGH",
+    "name": "CNHGH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "AUDPO",
+    "name": "AUDPO",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "USLUI",
+    "name": "USLUI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "SESKF",
+    "name": "SESKF",
+    "country": "SE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNFOS",
+    "name": "CNFOS",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "ITRAN",
+    "name": "ITRAN",
+    "country": "IT",
     "region": "Other",
     "lane": "General"
   },
@@ -5740,6 +4586,167 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
+    "code": "ZAJNB",
+    "name": "ZAJNB",
+    "country": "ZA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "INIXM",
+    "name": "INIXM",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSNZ",
+    "name": "CNSNZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNHUI",
+    "name": "CNHUI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "DEENN",
+    "name": "DEENN",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEHAJ",
+    "name": "DEHAJ",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "MYPGU",
+    "name": "MYPGU",
+    "country": "MY",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBMNC",
+    "name": "GBMNC",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "AUDRW",
+    "name": "AUDRW",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "CNJNX",
+    "name": "CNJNX",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "FRCDG",
+    "name": "FRCDG",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "AUTSV",
+    "name": "AUTSV",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "CNSHA",
+    "name": "CNSHA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "BEANT",
+    "name": "BEANT",
+    "country": "BE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCXO",
+    "name": "USCXO",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TWTPE",
+    "name": "TWTPE",
+    "country": "TW",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "JPSMZ",
+    "name": "JPSMZ",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNGUT",
+    "name": "CNGUT",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "NZNSN",
+    "name": "NZNSN",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "CNDAG",
+    "name": "CNDAG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "NZCHC",
+    "name": "NZCHC",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "DEMUC",
+    "name": "DEMUC",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "JPTOY",
+    "name": "JPTOY",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
     "code": "AUPER",
     "name": "AUPER",
     "country": "Australia",
@@ -5747,10 +4754,150 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
-    "code": "USCHI",
-    "name": "USCHI",
+    "code": "CNMAW",
+    "name": "CNMAW",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "GBLGP",
+    "name": "GBLGP",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEFDH",
+    "name": "DEFDH",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "INBOM",
+    "name": "INBOM",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "PLWAW",
+    "name": "PLWAW",
+    "country": "PL",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USFLL",
+    "name": "USFLL",
     "country": "US",
     "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNZHE",
+    "name": "CNZHE",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USSA8",
+    "name": "USSA8",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSUD",
+    "name": "CNSUD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "FRLYS",
+    "name": "FRLYS",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "JPKIX",
+    "name": "JPKIX",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "AUKPK",
+    "name": "AUKPK",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "INDEL",
+    "name": "INDEL",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITVCE",
+    "name": "ITVCE",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CZPRG",
+    "name": "CZPRG",
+    "country": "CZ",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNJMN",
+    "name": "CNJMN",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "VNVUT",
+    "name": "VNVUT",
+    "country": "VN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNXIA",
+    "name": "CNXIA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USKOG",
+    "name": "USKOG",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CAYVR",
+    "name": "CAYVR",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "AUGOA",
+    "name": "AUGOA",
+    "country": "Australia",
+    "region": "Oceania",
     "lane": "General"
   },
   {
@@ -5761,10 +4908,1032 @@ export const PORT_HIERARCHY = [
     "lane": "General"
   },
   {
+    "code": "BEZEE",
+    "name": "BEZEE",
+    "country": "BE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "JPNRT",
+    "name": "JPNRT",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNZUH",
+    "name": "CNZUH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "ITNAP",
+    "name": "ITNAP",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "JPOSK",
+    "name": "JPOSK",
+    "country": "JP",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCHI",
+    "name": "USCHI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNXAM",
+    "name": "CNXAM",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNGOM",
+    "name": "CNGOM",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USDAL",
+    "name": "USDAL",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ATVIE",
+    "name": "ATVIE",
+    "country": "AT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNXGA",
+    "name": "CNXGA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "DEDTM",
+    "name": "DEDTM",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CAQUE",
+    "name": "CAQUE",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CAHAM",
+    "name": "CAHAM",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USPHX",
+    "name": "USPHX",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNCZX",
+    "name": "CNCZX",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CZCKB",
+    "name": "CZCKB",
+    "country": "CZ",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITCVV",
+    "name": "ITCVV",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USYVR",
+    "name": "USYVR",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USKCK",
+    "name": "USKCK",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBWOV",
+    "name": "GBWOV",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "MYKLA",
+    "name": "MYKLA",
+    "country": "MY",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEHSG",
+    "name": "DEHSG",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNTYN",
+    "name": "CNTYN",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNSTG",
+    "name": "CNSTG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "GBLON",
+    "name": "GBLON",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USUAU",
+    "name": "USUAU",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNNCH",
+    "name": "CNNCH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "AUBWT",
+    "name": "AUBWT",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "INAMD",
+    "name": "INAMD",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "THNPM",
+    "name": "THNPM",
+    "country": "TH",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ESMAD",
+    "name": "ESMAD",
+    "country": "ES",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNFUO",
+    "name": "CNFUO",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "GBTIL",
+    "name": "GBTIL",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBEDG",
+    "name": "GBEDG",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNCQI",
+    "name": "CNCQI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USBAZ",
+    "name": "USBAZ",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNHKO",
+    "name": "CNHKO",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USPDX",
+    "name": "USPDX",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNWHI",
+    "name": "CNWHI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "TRGEB",
+    "name": "TRGEB",
+    "country": "TR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "IDTPP",
+    "name": "IDTPP",
+    "country": "ID",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNGZH",
+    "name": "CNGZH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USIND",
+    "name": "USIND",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "MYKUL",
+    "name": "MYKUL",
+    "country": "MY",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSZP",
+    "name": "CNSZP",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USEKI",
+    "name": "USEKI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USDET",
+    "name": "USDET",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ECVLC",
+    "name": "ECVLC",
+    "country": "EC",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEBRV",
+    "name": "DEBRV",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "PTSIE",
+    "name": "PTSIE",
+    "country": "PT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITSPE",
+    "name": "ITSPE",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCVG",
+    "name": "USCVG",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNQZH",
+    "name": "CNQZH",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CZCKR",
+    "name": "CZCKR",
+    "country": "CZ",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CHZRH",
+    "name": "CHZRH",
+    "country": "CH",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBWXH",
+    "name": "GBWXH",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "NLLWR",
+    "name": "NLLWR",
+    "country": "NL",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNXNG",
+    "name": "CNXNG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNNBG",
+    "name": "CNNBG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNDAL",
+    "name": "CNDAL",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "KRMAS",
+    "name": "KRMAS",
+    "country": "KR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USXLI",
+    "name": "USXLI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "SEGVX",
+    "name": "SEGVX",
+    "country": "SE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITROM",
+    "name": "ITROM",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNTAC",
+    "name": "CNTAC",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USEWR",
+    "name": "USEWR",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "IDSRG",
+    "name": "IDSRG",
+    "country": "ID",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "GBEGD",
+    "name": "GBEGD",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TWTYN",
+    "name": "TWTYN",
+    "country": "TW",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNPVG",
+    "name": "CNPVG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "AUHBA",
+    "name": "AUHBA",
+    "country": "Australia",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "HRRJK",
+    "name": "HRRJK",
+    "country": "HR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USPEF",
+    "name": "USPEF",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USHIF",
+    "name": "USHIF",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "IEDUB",
+    "name": "IEDUB",
+    "country": "IE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "SEMMX",
+    "name": "SEMMX",
+    "country": "SE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "FRMEL",
+    "name": "FRMEL",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USBCK",
+    "name": "USBCK",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ATLNZ",
+    "name": "ATLNZ",
+    "country": "AT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USIGX",
+    "name": "USIGX",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNNGB",
+    "name": "CNNGB",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "ITRMI",
+    "name": "ITRMI",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ATVDD",
+    "name": "ATVDD",
+    "country": "AT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNGGZ",
+    "name": "CNGGZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "INKTP",
+    "name": "INKTP",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITSGE",
+    "name": "ITSGE",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "SEARN",
+    "name": "SEARN",
+    "country": "SE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USRNO",
+    "name": "USRNO",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "BEBRU",
+    "name": "BEBRU",
+    "country": "BE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "NZDUD",
+    "name": "NZDUD",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "FRORY",
+    "name": "FRORY",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "SESTO",
+    "name": "SESTO",
+    "country": "SE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNZBO",
+    "name": "CNZBO",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "VNCLI",
+    "name": "VNCLI",
+    "country": "VN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNPEK",
+    "name": "CNPEK",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "GBELL",
+    "name": "GBELL",
+    "country": "GB",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USBNA",
+    "name": "USBNA",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSYD",
+    "name": "CNSYD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNDGG",
+    "name": "CNDGG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USHRS",
+    "name": "USHRS",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNFUZ",
+    "name": "CNFUZ",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNGZG",
+    "name": "CNGZG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "DEFRA",
+    "name": "DEFRA",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "INICD",
+    "name": "INICD",
+    "country": "IN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "MXAPD",
+    "name": "MXAPD",
+    "country": "MX",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNYPG",
+    "name": "CNYPG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
     "code": "CZXUY",
     "name": "CZXUY",
     "country": "CZ",
     "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEUBG",
+    "name": "DEUBG",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USATL",
+    "name": "USATL",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "MYNTL",
+    "name": "MYNTL",
+    "country": "MY",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DENDQ",
+    "name": "DENDQ",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "VNCMT",
+    "name": "VNCMT",
+    "country": "VN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITVLC",
+    "name": "ITVLC",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNSAD",
+    "name": "CNSAD",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "DESHG",
+    "name": "DESHG",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEWVN",
+    "name": "DEWVN",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ASPPG",
+    "name": "ASPPG",
+    "country": "AS",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNYGP",
+    "name": "CNYGP",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "USORD",
+    "name": "USORD",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USGGE",
+    "name": "USGGE",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITFCO",
+    "name": "ITFCO",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USPHL",
+    "name": "USPHL",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNHUA",
+    "name": "CNHUA",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "VNDNA",
+    "name": "VNDNA",
+    "country": "VN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "FRDIJ",
+    "name": "FRDIJ",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CAYYZ",
+    "name": "CAYYZ",
+    "country": "CA",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USSFO",
+    "name": "USSFO",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "ITMIL",
+    "name": "ITMIL",
+    "country": "IT",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNZSN",
+    "name": "CNZSN",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNNJI",
+    "name": "CNNJI",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "DEBER",
+    "name": "DEBER",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CZPRO",
+    "name": "CZPRO",
+    "country": "CZ",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USIDI",
+    "name": "USIDI",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "VNTOT",
+    "name": "VNTOT",
+    "country": "VN",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USLBH",
+    "name": "USLBH",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TRIZT",
+    "name": "TRIZT",
+    "country": "TR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "USCLT",
+    "name": "USCLT",
+    "country": "US",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "KRKPO",
+    "name": "KRKPO",
+    "country": "KR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "CNTNG",
+    "name": "CNTNG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "FRFOS",
+    "name": "FRFOS",
+    "country": "FR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TRADN",
+    "name": "TRADN",
+    "country": "TR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "TRDRC",
+    "name": "TRDRC",
+    "country": "TR",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "DEMSR",
+    "name": "DEMSR",
+    "country": "DE",
+    "region": "Other",
+    "lane": "General"
+  },
+  {
+    "code": "NZHLZ",
+    "name": "NZHLZ",
+    "country": "New Zealand",
+    "region": "Oceania",
+    "lane": "General"
+  },
+  {
+    "code": "CNWEG",
+    "name": "CNWEG",
+    "country": "China",
+    "region": "Asia",
+    "lane": "General"
+  },
+  {
+    "code": "CNWEF",
+    "name": "CNWEF",
+    "country": "China",
+    "region": "Asia",
     "lane": "General"
   }
 ];
@@ -383943,83 +384112,83 @@ export const BRANCH_SNAPSHOT = [
   {
     "branch": "SY1",
     "branchName": "SYDNEY",
-    "alloc": 3555.0,
+    "alloc": 7780.0,
     "booked": 5294.0,
-    "avail": -1739.0,
-    "util": 148.9,
-    "status": "Healthy"
+    "avail": 2486.0,
+    "util": 68.0,
+    "status": "Underperforming"
   },
   {
     "branch": "ME1",
     "branchName": "MELBOURNE",
-    "alloc": 3555.0,
+    "alloc": 7780.0,
     "booked": 6055.0,
-    "avail": -2500.0,
-    "util": 170.3,
-    "status": "Healthy"
+    "avail": 1725.0,
+    "util": 77.8,
+    "status": "Underperforming"
   },
   {
     "branch": "BN1",
     "branchName": "BRISBANE",
-    "alloc": 5986.0,
+    "alloc": 13084.0,
     "booked": 6638.0,
-    "avail": -652.0,
-    "util": 110.9,
-    "status": "Healthy"
+    "avail": 6446.0,
+    "util": 50.7,
+    "status": "Underperforming"
   },
   {
     "branch": "FR1",
     "branchName": "FREMANTLE",
-    "alloc": 4413.0,
+    "alloc": 9652.0,
     "booked": 2981.0,
-    "avail": 1432.0,
-    "util": 67.6,
-    "status": "Underperforming"
+    "avail": 6671.0,
+    "util": 30.9,
+    "status": "Low Uptake"
   },
   {
     "branch": "AD1",
     "branchName": "ADELAIDE",
-    "alloc": 9847.0,
+    "alloc": 21508.0,
     "booked": 4384.0,
-    "avail": 5463.0,
-    "util": 44.5,
+    "avail": 17124.0,
+    "util": 20.4,
     "status": "Low Uptake"
   },
   {
     "branch": "PIL",
     "branchName": "PIL",
-    "alloc": 2697.0,
+    "alloc": 5908.0,
     "booked": 0.0,
-    "avail": 2697.0,
+    "avail": 5908.0,
     "util": 0.0,
     "status": "Low Uptake"
   },
   {
     "branch": "PRJ",
     "branchName": "PROJECTS",
-    "alloc": 4127.0,
+    "alloc": 9028.0,
     "booked": 7261.0,
-    "avail": -3134.0,
-    "util": 175.9,
+    "avail": 1767.0,
+    "util": 80.4,
     "status": "Healthy"
   },
   {
     "branch": "AKL",
     "branchName": "AUCKLAND",
-    "alloc": 2697.0,
+    "alloc": 5908.0,
     "booked": 639.0,
-    "avail": 2058.0,
-    "util": 23.7,
+    "avail": 5269.0,
+    "util": 10.8,
     "status": "Low Uptake"
   },
   {
     "branch": "OTH",
     "branchName": "OTHER",
-    "alloc": 2697.0,
+    "alloc": 5908.0,
     "booked": 1778.0,
-    "avail": 919.0,
-    "util": 65.9,
-    "status": "Underperforming"
+    "avail": 4130.0,
+    "util": 30.1,
+    "status": "Low Uptake"
   }
 ];
 export const CONTRACT_UTIL_DATA = [
@@ -384044,66 +384213,66 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 7
       }
     ],
-    "alloc": 1001,
+    "alloc": 2184,
     "booked": 20.0,
-    "util": 2.0,
+    "util": 0.9,
     "noCalc": false,
     "shared": true,
     "status": "Underperforming",
-    "avail": 981.0,
+    "avail": 2164.0,
     "syd": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "mel": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "bne": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "fre": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 12.0,
-      "util": 1.2,
-      "avail": 981.0
+      "util": 0.5,
+      "avail": 2164.0
     },
     "adl": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 8.0,
-      "util": 0.8,
-      "avail": 981.0
+      "util": 0.4,
+      "avail": 2164.0
     },
     "pil": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "prj": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "akl": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     },
     "oth": {
-      "alloc": 1001,
+      "alloc": 2184,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 981.0
+      "avail": 2164.0
     }
   },
   {
@@ -384118,9 +384287,9 @@ export const CONTRACT_UTIL_DATA = [
       "SEA"
     ],
     "destinations": [
-      "AUEC",
       "AUWC",
-      "AU"
+      "AU",
+      "AUEC"
     ],
     "polBreakdown": [],
     "alloc": 0,
@@ -384188,41 +384357,41 @@ export const CONTRACT_UTIL_DATA = [
       "NEA"
     ],
     "destinations": [
-      "AUEC",
-      "AUWC"
+      "AUWC",
+      "AUEC"
     ],
     "polBreakdown": [],
-    "alloc": 8294,
+    "alloc": 18096,
     "booked": 3890.0,
-    "util": 46.9,
+    "util": 21.5,
     "noCalc": false,
     "shared": false,
     "status": "Underperforming",
-    "avail": 4404.0,
+    "avail": 14206.0,
     "syd": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 1825.0,
-      "util": 212.7
+      "util": 97.5
     },
     "mel": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 595.0,
-      "util": 69.3
+      "util": 31.8
     },
     "bne": {
-      "alloc": 2574,
+      "alloc": 5616,
       "booked": 977.0,
-      "util": 38.0
+      "util": 17.4
     },
     "fre": {
-      "alloc": 1716,
+      "alloc": 3744,
       "booked": 226.0,
-      "util": 13.2
+      "util": 6.0
     },
     "adl": {
-      "alloc": 2288,
+      "alloc": 4992,
       "booked": 251.0,
-      "util": 11.0
+      "util": 5.0
     },
     "pil": {
       "alloc": 0,
@@ -384396,66 +384565,66 @@ export const CONTRACT_UTIL_DATA = [
       "AU, NZ"
     ],
     "polBreakdown": [],
-    "alloc": 572,
+    "alloc": 1248,
     "booked": 0.0,
     "util": 0.0,
     "noCalc": false,
     "shared": true,
     "status": "Underperforming",
-    "avail": 572.0,
+    "avail": 1248.0,
     "syd": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "mel": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "bne": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "fre": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "adl": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "pil": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "prj": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "akl": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     },
     "oth": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 572.0
+      "avail": 1248.0
     }
   },
   {
@@ -384547,66 +384716,66 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 6
       }
     ],
-    "alloc": 858,
+    "alloc": 1872,
     "booked": 0.0,
     "util": 0.0,
     "noCalc": false,
     "shared": true,
     "status": "Underperforming",
-    "avail": 858.0,
+    "avail": 1872.0,
     "syd": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "mel": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "bne": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "fre": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "adl": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "pil": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "prj": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "akl": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     },
     "oth": {
-      "alloc": 858,
+      "alloc": 1872,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 858.0
+      "avail": 1872.0
     }
   },
   {
@@ -384686,8 +384855,8 @@ export const CONTRACT_UTIL_DATA = [
     "originRegion": "NEA",
     "destRegion": "AUEC/AUWC",
     "origins": [
-      "NEA",
-      "Qingdao/Shanghai/Ningbo/Xiamen/Yantian/Manila"
+      "Qingdao/Shanghai/Ningbo/Xiamen/Yantian/Manila",
+      "NEA"
     ],
     "destinations": [
       "AUEC/AUWC"
@@ -384903,13 +385072,13 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 10
       }
     ],
-    "alloc": 1430,
+    "alloc": 3120,
     "booked": 2090.0,
-    "util": 146.2,
+    "util": 67.0,
     "noCalc": false,
     "shared": false,
-    "status": "Overutilised",
-    "avail": -660.0,
+    "status": "Underperforming",
+    "avail": 1030.0,
     "syd": {
       "alloc": 0,
       "booked": 96.0,
@@ -384931,9 +385100,9 @@ export const CONTRACT_UTIL_DATA = [
       "util": 0
     },
     "adl": {
-      "alloc": 1430,
+      "alloc": 3120,
       "booked": 1852.0,
-      "util": 129.5
+      "util": 59.4
     },
     "pil": {
       "alloc": 0,
@@ -384977,13 +385146,13 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 4
       }
     ],
-    "alloc": 572,
+    "alloc": 1248,
     "booked": 10.0,
-    "util": 1.7,
+    "util": 0.8,
     "noCalc": false,
     "shared": false,
     "status": "Underperforming",
-    "avail": 562.0,
+    "avail": 1238.0,
     "syd": {
       "alloc": 0,
       "booked": 0.0,
@@ -385005,7 +385174,7 @@ export const CONTRACT_UTIL_DATA = [
       "util": 0
     },
     "adl": {
-      "alloc": 572,
+      "alloc": 1248,
       "booked": 0.0,
       "util": 0.0
     },
@@ -385391,13 +385560,13 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 20
       }
     ],
-    "alloc": 2860,
+    "alloc": 6240,
     "booked": 392.0,
-    "util": 13.7,
+    "util": 6.3,
     "noCalc": false,
     "shared": false,
     "status": "Underperforming",
-    "avail": 2468.0,
+    "avail": 5848.0,
     "syd": {
       "alloc": 0,
       "booked": 116.0,
@@ -385419,7 +385588,7 @@ export const CONTRACT_UTIL_DATA = [
       "util": 0
     },
     "adl": {
-      "alloc": 2860,
+      "alloc": 6240,
       "booked": 0.0,
       "util": 0.0
     },
@@ -385465,66 +385634,66 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 2
       }
     ],
-    "alloc": 286,
+    "alloc": 624,
     "booked": 0.0,
     "util": 0.0,
     "noCalc": false,
     "shared": true,
     "status": "Underperforming",
-    "avail": 286.0,
+    "avail": 624.0,
     "syd": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "mel": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "bne": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "fre": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "adl": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "pil": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "prj": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "akl": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     },
     "oth": {
-      "alloc": 286,
+      "alloc": 624,
       "booked": 0.0,
       "util": 0.0,
-      "avail": 286.0
+      "avail": 624.0
     }
   },
   {
@@ -385752,13 +385921,13 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 5
       }
     ],
-    "alloc": 715,
+    "alloc": 1560,
     "booked": 0.0,
     "util": 0.0,
     "noCalc": false,
     "shared": false,
     "status": "Underperforming",
-    "avail": 715.0,
+    "avail": 1560.0,
     "syd": {
       "alloc": 0,
       "booked": 0.0,
@@ -385770,7 +385939,7 @@ export const CONTRACT_UTIL_DATA = [
       "util": 0
     },
     "bne": {
-      "alloc": 715,
+      "alloc": 1560,
       "booked": 0.0,
       "util": 0.0
     },
@@ -385826,13 +385995,13 @@ export const CONTRACT_UTIL_DATA = [
         "teuPerWeek": 10
       }
     ],
-    "alloc": 1430,
+    "alloc": 3120,
     "booked": 0.0,
     "util": 0.0,
     "noCalc": false,
     "shared": false,
     "status": "Underperforming",
-    "avail": 1430.0,
+    "avail": 3120.0,
     "syd": {
       "alloc": 0,
       "booked": 0.0,
@@ -385864,7 +386033,7 @@ export const CONTRACT_UTIL_DATA = [
       "util": 0
     },
     "prj": {
-      "alloc": 1430,
+      "alloc": 3120,
       "booked": 0.0,
       "util": 0.0
     },
@@ -386890,7 +387059,313 @@ export const CONTRACT_UTIL_DATA = [
 ];
 export const WEEKLY_TREND_DATA = [
   {
+    "week": "WK 1-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 2-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 3-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 4-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 5-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 6-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 7-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 8-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 9-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 10-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 11-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 12-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 13-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 14-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 15-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 16-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 17-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 18-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 19-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 20-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 21-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 22-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 23-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 24-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 25-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 26-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 27-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 28-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 29-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 30-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 31-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 32-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 33-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 34-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 35-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 36-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 37-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 38-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 39-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 40-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 41-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 42-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 43-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 44-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 45-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 46-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 47-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 48-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 49-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 50-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 51-2021",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 52-2021",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -386902,7 +387377,337 @@ export const WEEKLY_TREND_DATA = [
     "util": 0.0
   },
   {
+    "week": "WK 2-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 3-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 4-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 5-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 6-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 7-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 8-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 9-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 10-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 11-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 12-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 13-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 14-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 15-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 16-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 17-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 18-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 19-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 20-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 21-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 22-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 23-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 24-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 25-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 26-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 27-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 28-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 29-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 30-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 31-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 32-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 33-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 34-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 35-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 36-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 37-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 38-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 39-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 40-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 41-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 42-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 43-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 44-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 45-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 46-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 47-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 48-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 49-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 50-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 51-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 52-2022",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 1-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 2-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 3-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 4-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 5-2023",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -386914,7 +387719,163 @@ export const WEEKLY_TREND_DATA = [
     "util": 0.0
   },
   {
+    "week": "WK 7-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 8-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 9-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 10-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 11-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 12-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 13-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 14-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 15-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 16-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 17-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 18-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 19-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 20-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 21-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 22-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 23-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 24-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 25-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 26-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 27-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 28-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 29-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 30-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 31-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 32-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 33-2023",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -386950,7 +387911,73 @@ export const WEEKLY_TREND_DATA = [
     "util": 0.0
   },
   {
+    "week": "WK 39-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 40-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 41-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 42-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 43-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 44-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 45-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 46-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 47-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 48-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 49-2023",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 50-2023",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -386969,6 +387996,12 @@ export const WEEKLY_TREND_DATA = [
   },
   {
     "week": "WK 1-2024",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 2-2024",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -387022,6 +388055,12 @@ export const WEEKLY_TREND_DATA = [
     "util": 0.0
   },
   {
+    "week": "WK 11-2024",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 12-2024",
     "alloc": 126,
     "booked": 0.0,
@@ -387041,6 +388080,12 @@ export const WEEKLY_TREND_DATA = [
   },
   {
     "week": "WK 15-2024",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 16-2024",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -387095,6 +388140,12 @@ export const WEEKLY_TREND_DATA = [
   },
   {
     "week": "WK 25-2024",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 26-2024",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -387203,6 +388254,12 @@ export const WEEKLY_TREND_DATA = [
   },
   {
     "week": "WK 44-2024",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 45-2024",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -387742,7 +388799,133 @@ export const WEEKLY_TREND_DATA = [
     "util": 4.8
   },
   {
+    "week": "WK 31-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 32-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 33-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
     "week": "WK 34-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 35-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 36-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 37-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 38-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 39-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 40-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 41-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 42-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 43-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 44-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 45-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 46-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 47-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 48-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 49-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 50-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 51-2026",
+    "alloc": 126,
+    "booked": 0.0,
+    "util": 0.0
+  },
+  {
+    "week": "WK 52-2026",
     "alloc": 126,
     "booked": 0.0,
     "util": 0.0
@@ -387751,25 +388934,25 @@ export const WEEKLY_TREND_DATA = [
 export const QUARTERLY_ALLOC_UTIL = [
   {
     "quarter": "Q1 2021",
-    "Allocation": 126,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
   {
     "quarter": "Q1 2022",
-    "Allocation": 126,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
   {
     "quarter": "Q1 2023",
-    "Allocation": 126,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
   {
     "quarter": "Q1 2024",
-    "Allocation": 1386,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
@@ -387786,8 +388969,26 @@ export const QUARTERLY_ALLOC_UTIL = [
     "UtilPct": 410.3
   },
   {
+    "quarter": "Q2 2021",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
+  },
+  {
+    "quarter": "Q2 2022",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
+  },
+  {
+    "quarter": "Q2 2023",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
+  },
+  {
     "quarter": "Q2 2024",
-    "Allocation": 1386,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
@@ -387804,8 +389005,20 @@ export const QUARTERLY_ALLOC_UTIL = [
     "UtilPct": 579.5
   },
   {
+    "quarter": "Q3 2021",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
+  },
+  {
+    "quarter": "Q3 2022",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
+  },
+  {
     "quarter": "Q3 2023",
-    "Allocation": 756,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
@@ -387823,25 +389036,31 @@ export const QUARTERLY_ALLOC_UTIL = [
   },
   {
     "quarter": "Q3 2026",
-    "Allocation": 630,
+    "Allocation": 1638,
     "Utilisation": 112.0,
-    "UtilPct": 17.8
+    "UtilPct": 6.8
+  },
+  {
+    "quarter": "Q4 2021",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
   },
   {
     "quarter": "Q4 2022",
-    "Allocation": 126,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
   {
     "quarter": "Q4 2023",
-    "Allocation": 378,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
   {
     "quarter": "Q4 2024",
-    "Allocation": 1512,
+    "Allocation": 1638,
     "Utilisation": 0.0,
     "UtilPct": 0.0
   },
@@ -387850,6 +389069,12 @@ export const QUARTERLY_ALLOC_UTIL = [
     "Allocation": 1638,
     "Utilisation": 5913.0,
     "UtilPct": 361.0
+  },
+  {
+    "quarter": "Q4 2026",
+    "Allocation": 1638,
+    "Utilisation": 0,
+    "UtilPct": 0.0
   }
 ];
 export const CARRIER_BREAKDOWN = [
