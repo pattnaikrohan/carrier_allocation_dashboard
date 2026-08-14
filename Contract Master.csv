@@ -1,0 +1,51 @@
+﻿"Carrier","Contract%23","Origin","Destination","Rate Type","Start Date","Expired Date","Priority","Free Time","Allocation","Contract Owner"
+,,,,,,,,,,
+"Maersk","299992850","EUR","AU, NZ","Quarterly NAC","07/01/2026","09/30/2026","Normal","12 days at POD","EUR to AU/NZ - 2 FEU per week","AAW NSW"
+"Maersk","299992851","AU, NZ","AMR","Quarterly NAC","07/01/2026","09/30/2026","Normal","21 days at POL","AU/NZ to USWC - 2 FEU per week
+AU/NZ to USEC - 1 FEU per week","AAW VIC"
+"Maersk","299952465","AU","NZ","Quarterly NAC","07/01/2026","09/30/2026","Normal","21 days at POL; 12 days at POD",,"AAW NSW"
+"CMA","QNAM075087 ","USSAV","AU","Quarterly NAC (Auto)",,,"Normal","14 days at POD",,"AAW QLD"
+"CMA","QAAWN0000012","EUR","AUEC/ NZAKL","Quarterly NAC (Auto)",,,"Normal","14 days at POD",,"AAW QLD"
+"CMA","YAAWN0000013","Qingdao/ Xiamen","AUEC","Yearly NAC (Timber)","04/08/2026","03/31/2027","Normal","14 days at POD","XMN to EC - 5x40NOR per week
+TAO to EC - 12 TEU per week","AAW QLD"
+"CMA","FL4136-NMS-A-001","EUR","AUDRW","Quarterly NAC (Darwin)","04/01/2026","06/30/2026","Normal","14 days at POD",,"AAW QLD"
+"Maersk","299163347","SEA","AU","SCFI","Weekly Index",,"Normal","8 days at POD",,"AAW NSW"
+"MGF","AAW167312","Qingdao/ Shanghai/ Ningbo/ Xiamen / Shenzhen/ Hong Kong","AU","Yearly Bundle NAC","04/01/2026","03/31/2027","Expired","14 days at POD","10 TEUs per week","AAW QLD"
+"Maersk","299952465","AU","NZ","Quarterly NAC","04/01/2026","06/30/2026","Expired","21 days at POL; 12 days at POD",,"AAW NSW"
+"Maersk","299992851","AU, NZ","AMR","Quarterly NAC","04/01/2026","06/30/2026","Expired","21 days at POL","AU/NZ to USWC - 3 FEU per week
+AU/NZ to USEC - 2 FEU per week","AAW VIC"
+"MSC","4319-1-LT","NEA","AUEC/AUWC","Yearly NAC (Bundle)","04/01/2026","03/31/2027","High","18 days at POD",,"AAW QLD"
+"PIL","MELLN260010","Shanghai","AUEC","Yearly NAC (Shanghai)","04/01/2026","03/31/2027","Normal","14 days at POD","SHA to AUEC - 2 TEU per week","AAW VIC"
+"PIL","MELLN260011","Shekou","AUEC","Yearly NAC (Shekou)","04/01/2026","03/31/2027","Normal","14 days at POD",,"AAW VIC"
+"Maersk","299992850","EUR","AU, NZ","Quarterly NAC","04/01/2026","06/30/2026","Expired","12 days at POD","EUR to AU/NZ - 2 FEU per week","AAW NSW"
+"OOCL","AUT26705","Thailand","AU","Yearly NAC (Packaging)","04/01/2026","03/31/2027","Normal","14 days at POD","TH to AU - 2 FEU per week","AAW QLD"
+"Maersk","299944496","AMR","AU, NZ","Quarterly NAC","01/01/2026","03/31/2026","Expired","14 days at POD",,"AAW VIC"
+"ONE","BNEN00159A ","NEA, SEA","AU, NZ","FAK","04/01/2026","09/30/2026","Normal","14 days at POD",,"AAW QLD"
+"ONE","TBNEN00429A","Qingdao","AUEC","Yearly NAC (Construction)","04/01/2026","03/31/2027","Normal","14 days at POD","TAO to EC - 5 TEU per week","AAW QLD"
+"OOCL","AUT26704 ","Qingdao/ Chongqing","AU","Yearly NAC (Toilet Paper)","04/01/2026","03/31/2027","Normal","14 days at POD","TAO to WC - 5 FEU per week
+TAO to EC - 4 FEU per week","AAW QLD"
+"Maersk","299952465","AU","NZ","Quarterly NAC","01/01/2026","03/31/2026","Expired","18 days at POL; 12 days at POD",,"AAW NSW"
+"PIL","GSCIF220008","NEA, SEA","AU","FAK","Fortnightly",,"Normal","14 days at POD",,"AAW VIC"
+"OOCL","16646","NEA, SEA","AU, NZ","FAK","Fortnightly",,"Normal","14 days at POD",,"AAW QLD"
+"ONE","BNEN00159A ","NEA, SEA","AU, NZ","FAK","03/01/2026","03/31/2026","Expired","8 days at POD",,"AAW QLD"
+"HMM","CAU2200050 ","NEA","AUEC","FAK","Fortnightly",,"Low","14 days at POD",,"AAW QLD"
+"OOCL","AUT82546","NEA","AU","Yearly NAC (Toilet Paper)","04/01/2025","03/31/2026","Expired","14 days at POD",,"AAW QLD"
+"PIL","MELLN250040","Qingdao","AU","Yearly NAC (Toilet)","04/01/2026","03/31/2027","Normal","14 days at POD","TAO to EC - 20 TEU per week","AAW VIC"
+"Maersk","299992850","EUR","AU, NZ","Quarterly NAC","01/01/2026","03/31/2026","Expired","12 days at POD","EUR to AU/NZ - 5 FEU per week","AAW NSW"
+"Maersk","299992851","AU, NZ","AMR","Quarterly NAC","01/01/2026","03/31/2026","Expired","18 days at POL","AU/NZ to USWC - 3 FEU per week
+AU/NZ to USEC - 2 FEU per week","AAW VIC"
+"Maersk","299992851","AU, NZ","AMR","Quarterly NAC","10/01/2025","12/31/2025","Expired","18 days at POL",,"AAW NSW"
+"Maersk","299992851","AMR","AU, NZ","Quarterly NAC","10/01/2025","12/31/2025","Expired","14 days at POD",,"AAW VIC"
+"Maersk","299163347","SEA","AUWC","SCFI","Weekly Index","12/31/2025","Expired","12 days at POD","SEA to WC - 2 FEU per week till end of Dec 2025. No SCFI to WC in Q1 2016.","AAW NSW"
+"Maersk","299163347","SEA","AUEC","SCFI","Weekly Index","12/31/2025","Expired","12 days at POD","SEA to EC - 11 FEU per week till end of Dec 2025. No SCFI to WC in Q1 2016.","AAW NSW"
+"Maersk","299424850","NEA","AUWC","SCFI","Weekly Index",,"High","12 days at POD","NEA to WC - 4 FEU per week ","AAW NSW"
+"Maersk","299424850","NEA","AUEC","SCFI","Weekly Index",,"High","12 days at POD","NEA to EC - 17 FEU per week","AAW NSW"
+"MSC","4319-1-ST","NEA, SEA","AU, NZ","FAK","Fortnightly",,"Low","14 days at POD",,"AAW QLD"
+"MSC","4319-1-8888-ST","NEA, SEA","AU, NZ","Special FAK","Fortnightly",,"High","14 days at POD",,"AAW QLD"
+"MSC","4319-1-LT","Qingdao/Shanghai/Ningbo/Xiamen/Yantian/Manila","AUEC/AUWC","Yearly NAC (Bundle)","04/01/2025","03/31/2026","Expired","18 days at POD","Shanghai to EC - 7 FEU per week
+Shanghai to WC - 6 FEU per week
+Xiamen to EC - 10 FEU per week 
+Ningbo to EC - 3.5 FEU per week 
+Qingdao to EC - 7.5 FEU per week
+Yantian to EC - 2 FEU per week
+Manila to EC - 1 FEU per week","AAW QLD"

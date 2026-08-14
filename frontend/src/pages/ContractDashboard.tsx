@@ -491,7 +491,12 @@ const ContractDashboard: React.FC = () => {
     });
 
     // Total Booked = sum of ALL bookings from Snowflake (not just contract-matched)
-    const bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+    let bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
+    
+    // If selectedWeek is 'ALL', we should display the total bookings across all weeks, not just the first filtered set if they got limited
+    if (selectedWeek === 'ALL' && selectedContract === 'ALL') {
+      bookedNode = BOOKING_LOG_DATA.reduce((sum, b) => sum + (b.teu || 0), 0);
+    }
 
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
     return { alloc: Math.round(allocNode), booked: Math.round(bookedNode), util: utilNode };

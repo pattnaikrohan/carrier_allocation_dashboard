@@ -1,0 +1,715 @@
+{
+  "results": [
+    {
+      "category": "parse_compass_total",
+      "name": "Input: '4 TEU PER WEEK'",
+      "status": "PASS",
+      "detail": "expected=4, got=4"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: '6 TEU PER WEEK'",
+      "status": "PASS",
+      "detail": "expected=6, got=6"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: 'SHANGHAI to AUEC - 2 TEU per week'",
+      "status": "PASS",
+      "detail": "expected=2, got=2"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: 'QINGDAO to EC - 7 TEU per week on A3X'",
+      "status": "PASS",
+      "detail": "expected=7, got=7"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: 'QINGDAO to AUEC - 20 TEU per week'",
+      "status": "PASS",
+      "detail": "expected=20, got=20"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: '5 TEU PER WEEK'",
+      "status": "PASS",
+      "detail": "expected=5, got=5"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: 'EX XIAMEN TO AUEC - 10 TEU NOR \\nEX XIAMEN TO AUE",
+      "status": "PASS",
+      "detail": "expected=18, got=18"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: 'QINGDAO to AUWC - 5 FEU per week\\nQINGDAO to EC -",
+      "status": "PASS",
+      "detail": "expected=21, got=21"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: None",
+      "status": "PASS",
+      "detail": "expected=0, got=0"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: ''",
+      "status": "PASS",
+      "detail": "expected=0, got=0"
+    },
+    {
+      "category": "parse_compass_total",
+      "name": "Input: nan",
+      "status": "PASS",
+      "detail": "expected=0, got=0"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'SHARED'",
+      "status": "PASS",
+      "detail": "expected total=0 branches={}, got total=0 branches={}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW ADL - THAILAND to AU - 4 TEU per week'",
+      "status": "PASS",
+      "detail": "expected total=4 branches={'adl': 4}, got total=4 branches={'adl': 4}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW BNE - 5 TEU PER WEEK'",
+      "status": "PASS",
+      "detail": "expected total=5 branches={'bne': 5}, got total=5 branches={'bne': 5}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW ADL = 8 TEU, AAW FRE = 8 TEU PER WEEK'",
+      "status": "PASS",
+      "detail": "expected total=16 branches={'adl': 8, 'fre': 8}, got total=16 branches={'fre': 8, 'adl': 8}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW BNE= 18 TEU, AAW ADL = 8 TEU, AAW FRE = 4 TEU, AAW",
+      "status": "PASS",
+      "detail": "expected total=42 branches={'bne': 18, 'adl': 8, 'fre': 4, 'mel': 6, 'syd': 6}, got total=42 branches={'syd': 6, 'mel': 6, 'bne': 18, 'fre': 4, 'adl': 8}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW PRJ EX XIAMEN TO AUEC - 10 TEU NOR \\nEX XIAMEN TO ",
+      "status": "PASS",
+      "detail": "expected total=10 branches={'prj': 10}, got total=10 branches={'prj': 10}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: 'AAW ADL - QINGDAO to AUEC - 20 TEU per week'",
+      "status": "PASS",
+      "detail": "expected total=20 branches={'adl': 20}, got total=20 branches={'adl': 20}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: None",
+      "status": "PASS",
+      "detail": "expected total=0 branches={}, got total=0 branches={}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "Input: nan",
+      "status": "PASS",
+      "detail": "expected total=0 branches={}, got total=0 branches={}"
+    },
+    {
+      "category": "parse_office_alloc",
+      "name": "PER WEEK false positive (FRE should be 0)",
+      "status": "PASS",
+      "detail": "fre=0 (should be 0, 'PER' in 'PER WEEK' must not match Fremantle)"
+    },
+    {
+      "category": "_resolve_master_col",
+      "name": "New format Contract# found",
+      "status": "PASS",
+      "detail": "got=ABC123"
+    },
+    {
+      "category": "_resolve_master_col",
+      "name": "Old format Contract # fallback",
+      "status": "PASS",
+      "detail": "got=XYZ456"
+    },
+    {
+      "category": "_resolve_master_col",
+      "name": "New format Title found",
+      "status": "PASS",
+      "detail": "got=Maersk"
+    },
+    {
+      "category": "_resolve_master_col",
+      "name": "Old format Carrier fallback",
+      "status": "PASS",
+      "detail": "got=CMA"
+    },
+    {
+      "category": "_resolve_master_col",
+      "name": "Missing column returns default",
+      "status": "PASS",
+      "detail": "got=DEFAULT"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "Master file loaded",
+      "status": "PASS",
+      "detail": "38 rows"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "Master dict not empty",
+      "status": "PASS",
+      "detail": "26 compound keys"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "Contracts not empty",
+      "status": "PASS",
+      "detail": "25 contracts"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 carrier=Maersk",
+      "status": "PASS",
+      "detail": "got=Maersk"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 alloc=58 TEU/wk",
+      "status": "PASS",
+      "detail": "got=58"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 shared=False",
+      "status": "PASS",
+      "detail": "got=False"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 BNE=18",
+      "status": "PASS",
+      "detail": "got=18"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 ADL=16",
+      "status": "PASS",
+      "detail": "got=16"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299424850 SYD=6",
+      "status": "PASS",
+      "detail": "got=6"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299992850 shared=True",
+      "status": "PASS",
+      "detail": "got=True"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299992850 alloc=4 TEU/wk",
+      "status": "PASS",
+      "detail": "got=4"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "299992850 officeAlloc all zero (SHARED)",
+      "status": "PASS",
+      "detail": "got sum=0"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "Total allocation > 0",
+      "status": "PASS",
+      "detail": "126 TEU/week"
+    },
+    {
+      "category": "build_master_dict",
+      "name": "Shared contracts detected",
+      "status": "PASS",
+      "detail": "4 shared, 22 branch-specific"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Pipeline executed successfully",
+      "status": "PASS",
+      "detail": "in 15.0s"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'BOOKING_LOG_DATA' present",
+      "status": "PASS",
+      "detail": "len=13530"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'WEEKLY_TREND_DATA' present",
+      "status": "PASS",
+      "detail": "len=144"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'BRANCH_SNAPSHOT' present",
+      "status": "PASS",
+      "detail": "len=9"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'CONTRACT_UTIL_DATA' present",
+      "status": "PASS",
+      "detail": "len=41"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'ORIGINS' present",
+      "status": "PASS",
+      "detail": "len=332"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'DESTINATIONS' present",
+      "status": "PASS",
+      "detail": "len=96"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'REGIONS' present",
+      "status": "PASS",
+      "detail": "len=6"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'COUNTRIES' present",
+      "status": "PASS",
+      "detail": "len=139"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'PORT_HIERARCHY' present",
+      "status": "PASS",
+      "detail": "len=513"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'QUARTERLY_ALLOC_UTIL' present",
+      "status": "PASS",
+      "detail": "len=17"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'CARRIER_BREAKDOWN' present",
+      "status": "PASS",
+      "detail": "len=15"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'CONTRACTS' present",
+      "status": "PASS",
+      "detail": "len=41"
+    },
+    {
+      "category": "full_pipeline",
+      "name": "Key 'WEEKS' present",
+      "status": "PASS",
+      "detail": "len=144"
+    },
+    {
+      "category": "booking_log",
+      "name": "Booking records exist",
+      "status": "PASS",
+      "detail": "13530 records"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'order' in booking record",
+      "status": "PASS",
+      "detail": "value=#12-C"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'contract' in booking record",
+      "status": "PASS",
+      "detail": "value=OTHER"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'branch' in booking record",
+      "status": "PASS",
+      "detail": "value=FR1"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'teu' in booking record",
+      "status": "PASS",
+      "detail": "value=2.0"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'week_num' in booking record",
+      "status": "PASS",
+      "detail": "value=25"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'year' in booking record",
+      "status": "PASS",
+      "detail": "value=2026"
+    },
+    {
+      "category": "booking_log",
+      "name": "Field 'mscWeek' in booking record",
+      "status": "PASS",
+      "detail": "value=25-2026"
+    },
+    {
+      "category": "booking_log",
+      "name": "Total TEU > 0",
+      "status": "PASS",
+      "detail": "35127.0 TEU"
+    },
+    {
+      "category": "booking_log",
+      "name": "No NaN/Infinity values",
+      "status": "PASS",
+      "detail": "0 found"
+    },
+    {
+      "category": "booking_log",
+      "name": "Multiple branches present",
+      "status": "PASS",
+      "detail": "8 branches: ['AD1', 'AKL', 'BN1', 'FR1', 'ME1', 'OTH', 'PRJ', 'SY1']"
+    },
+    {
+      "category": "contract_util",
+      "name": "Contracts exist",
+      "status": "PASS",
+      "detail": "41 contracts"
+    },
+    {
+      "category": "contract_util",
+      "name": "Contract TEU matches booking log",
+      "status": "PASS",
+      "detail": "contract=35127.0, booking=35127.0, diff=0.00%"
+    },
+    {
+      "category": "contract_util",
+      "name": "Some contracts have allocation",
+      "status": "PASS",
+      "detail": "10 with, 31 without"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED contracts flagged",
+      "status": "PASS",
+      "detail": "4 shared contracts"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 16646__NEA, SEA_AU syd alloc=pool",
+      "status": "PASS",
+      "detail": "branch_alloc=1008, pool=1008"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 16646__NEA, SEA_AU syd avail=remaining",
+      "status": "PASS",
+      "detail": "avail=988.0, expected=988.0"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 299992850__EUR_AU syd alloc=pool",
+      "status": "PASS",
+      "detail": "branch_alloc=576, pool=576"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 299992850__EUR_AU syd avail=remaining",
+      "status": "PASS",
+      "detail": "avail=576.0, expected=576.0"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 299992851__AU_AMR syd alloc=pool",
+      "status": "PASS",
+      "detail": "branch_alloc=864, pool=864"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED 299992851__AU_AMR syd avail=remaining",
+      "status": "PASS",
+      "detail": "avail=864.0, expected=864.0"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED MELLN260010__NEA_AU syd alloc=pool",
+      "status": "PASS",
+      "detail": "branch_alloc=288, pool=288"
+    },
+    {
+      "category": "contract_util",
+      "name": "SHARED MELLN260010__NEA_AU syd avail=remaining",
+      "status": "PASS",
+      "detail": "avail=288.0, expected=288.0"
+    },
+    {
+      "category": "contract_util",
+      "name": "Non-shared 299424850__NEA_AU branch sum \u2248 total",
+      "status": "PASS",
+      "detail": "sum=8352, total=8352"
+    },
+    {
+      "category": "contract_util",
+      "name": "Non-shared AUT26704__NEA_AU branch sum \u2248 total",
+      "status": "PASS",
+      "detail": "sum=1440, total=1440"
+    },
+    {
+      "category": "contract_util",
+      "name": "Non-shared AUT26705__SEA_AU branch sum \u2248 total",
+      "status": "PASS",
+      "detail": "sum=576, total=576"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "All 9 branches present",
+      "status": "PASS",
+      "detail": "9 branches"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "Expected branch codes",
+      "status": "PASS",
+      "detail": "got={'AKL', 'PIL', 'SY1', 'AD1', 'ME1', 'OTH', 'BN1', 'FR1', 'PRJ'}"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "Branch booked = booking log TEU",
+      "status": "PASS",
+      "detail": "branch_total=35127.0, booking_log=35127.0"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "SYDNEY has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=3580.0, booked=5306.0, util=148.2%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "MELBOURNE has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=3580.0, booked=6061.0, util=169.3%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "BRISBANE has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=6028.0, booked=6677.0, util=110.8%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "FREMANTLE has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=4444.0, booked=2984.0, util=67.1%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "ADELAIDE has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=9916.0, booked=4385.0, util=44.2%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "PIL has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=2716.0, booked=0.0, util=0.0%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "PROJECTS has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=4156.0, booked=7261.0, util=174.7%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "AUCKLAND has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=2716.0, booked=640.0, util=23.6%"
+    },
+    {
+      "category": "branch_snapshot",
+      "name": "OTHER has allocation (incl. shared pool)",
+      "status": "PASS",
+      "detail": "alloc=2716.0, booked=1813.0, util=66.8%"
+    },
+    {
+      "category": "weekly_trend",
+      "name": "Weekly data exists",
+      "status": "PASS",
+      "detail": "144 weeks"
+    },
+    {
+      "category": "weekly_trend",
+      "name": "Weekly booked = booking log TEU",
+      "status": "PASS",
+      "detail": "weekly=35127.0, booking_log=35127.0"
+    },
+    {
+      "category": "weekly_trend",
+      "name": "Consistent weekly allocation",
+      "status": "PASS",
+      "detail": "unique values: [126]"
+    },
+    {
+      "category": "quarterly",
+      "name": "Quarterly data exists",
+      "status": "PASS",
+      "detail": "17 quarters"
+    },
+    {
+      "category": "quarterly",
+      "name": "Quarterly utilisation = booking log TEU",
+      "status": "PASS",
+      "detail": "quarterly=35127.0, booking_log=35127.0"
+    },
+    {
+      "category": "carrier_breakdown",
+      "name": "Carriers exist",
+      "status": "PASS",
+      "detail": "15 carriers"
+    },
+    {
+      "category": "carrier_breakdown",
+      "name": "Carrier pct sums to ~100%",
+      "status": "PASS",
+      "detail": "97.70000000000002%"
+    },
+    {
+      "category": "geo_data",
+      "name": "Port hierarchy exists",
+      "status": "PASS",
+      "detail": "513 ports"
+    },
+    {
+      "category": "geo_data",
+      "name": "Regions exist",
+      "status": "PASS",
+      "detail": "['Americas', 'Asia', 'Europe', 'Middle East & Africa', 'Oceania', 'Other']"
+    },
+    {
+      "category": "geo_data",
+      "name": "Countries exist",
+      "status": "PASS",
+      "detail": "139 countries"
+    },
+    {
+      "category": "geo_data",
+      "name": "Origins exist",
+      "status": "PASS",
+      "detail": "332 origins"
+    },
+    {
+      "category": "geo_data",
+      "name": "Destinations exist",
+      "status": "PASS",
+      "detail": "96 destinations"
+    },
+    {
+      "category": "cross_validation",
+      "name": "All booking contracts in util data",
+      "status": "PASS",
+      "detail": "0 unmatched: set()"
+    },
+    {
+      "category": "cross_validation",
+      "name": "All booking weeks in weekly trend",
+      "status": "PASS",
+      "detail": "0 missing"
+    },
+    {
+      "category": "cross_validation",
+      "name": "WEEKS list = weekly trend weeks",
+      "status": "PASS",
+      "detail": "WEEKS=144, trend=144"
+    }
+  ],
+  "summary": {
+    "total": 107,
+    "passed": 107,
+    "failed": 0,
+    "pass_rate": "100.0%"
+  },
+  "pipeline_time": 15.0,
+  "booking_count": 13530,
+  "contract_count": 41,
+  "shared_count": 4,
+  "total_teu": 35127.0,
+  "branch_snapshot": [
+    {
+      "branch": "SYDNEY",
+      "alloc": 3580.0,
+      "booked": 5306.0,
+      "util": 148.2
+    },
+    {
+      "branch": "MELBOURNE",
+      "alloc": 3580.0,
+      "booked": 6061.0,
+      "util": 169.3
+    },
+    {
+      "branch": "BRISBANE",
+      "alloc": 6028.0,
+      "booked": 6677.0,
+      "util": 110.8
+    },
+    {
+      "branch": "FREMANTLE",
+      "alloc": 4444.0,
+      "booked": 2984.0,
+      "util": 67.1
+    },
+    {
+      "branch": "ADELAIDE",
+      "alloc": 9916.0,
+      "booked": 4385.0,
+      "util": 44.2
+    },
+    {
+      "branch": "PIL",
+      "alloc": 2716.0,
+      "booked": 0.0,
+      "util": 0.0
+    },
+    {
+      "branch": "PROJECTS",
+      "alloc": 4156.0,
+      "booked": 7261.0,
+      "util": 174.7
+    },
+    {
+      "branch": "AUCKLAND",
+      "alloc": 2716.0,
+      "booked": 640.0,
+      "util": 23.6
+    },
+    {
+      "branch": "OTHER",
+      "alloc": 2716.0,
+      "booked": 1813.0,
+      "util": 66.8
+    }
+  ],
+  "master_contracts": 25,
+  "master_compound_keys": 26
+}
