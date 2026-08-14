@@ -680,10 +680,11 @@ const ContractDashboard: React.FC = () => {
 
       const branchCodeMatch = { SY1: 'syd', ME1: 'mel', BN1: 'bne', FR1: 'fre', PR1: 'fre', AD1: 'adl', PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth' }[b.branch];
       
-      // Only show contracts from master data that have allocation in this branch
+      // Show contracts from master data that have allocation OR bookings in this branch
       const masterContractsForBranch = reactiveContractUtilData.filter(c => {
         const branchAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
-        return branchAlloc > 0;
+        const branchBooked = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].booked : 0;
+        return branchAlloc > 0 || branchBooked > 0;
       });
 
       const carrierFilteredContractsForBranch = selectedCarrier === 'ALL'
