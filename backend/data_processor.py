@@ -54,8 +54,8 @@ def fetch_orders_from_snowflake(log_func):
     )
 
     cs = ctx.cursor()
-    log_func("Querying Snowflake DEV.RAW.TEST_ORDER...")
-    cs.execute("SELECT * FROM DEV.RAW.TEST_ORDER")
+    log_func("Querying Snowflake PROD.RAW.TEST_ORDER...")
+    cs.execute("SELECT * FROM PROD.RAW.TEST_ORDER")
     df = cs.fetch_pandas_all()
     ctx.close()
     
