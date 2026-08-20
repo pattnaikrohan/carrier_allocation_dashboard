@@ -77,6 +77,138 @@ function getUtilColor(util: number, mode: 'text' | 'bg' | 'bar' | 'badge' = 'tex
   return 'bg-rose-500/20';
 }
 
+// ─── Port Hierarchy Lookup Map & Normalization Helpers ───
+const PORT_LOOKUP_MAP: Record<string, { code: string; name: string; country: string; region: string; lane: string; tradeRegion: string }> = {};
+
+function initPortLookup(ports: any[]) {
+  if (!ports || ports.length === 0) return;
+  ports.forEach(p => {
+    const code = (p.code || '').trim().toUpperCase();
+    const name = (p.name || '').trim().toUpperCase();
+    const country = (p.country || '').trim();
+    const region = (p.region || '').trim();
+    const lane = (p.lane || '').trim();
+
+    const cLower = country.toLowerCase();
+    let tradeRegion = region;
+    if (['china', 'hong kong', 'taiwan', 'japan', 'south korea', 'korea'].includes(cLower)) {
+      tradeRegion = 'NEA';
+    } else if (['singapore', 'vietnam', 'malaysia', 'indonesia', 'thailand', 'philippines', 'cambodia', 'myanmar'].includes(cLower)) {
+      tradeRegion = 'SEA';
+    } else if (['australia'].includes(cLower)) {
+      tradeRegion = 'AU';
+    } else if (['new zealand'].includes(cLower)) {
+      tradeRegion = 'NZ';
+    } else if (region.toLowerCase().includes('europe') || ['germany', 'united kingdom', 'france', 'italy', 'spain', 'netherlands', 'belgium'].includes(cLower)) {
+      tradeRegion = 'EUR';
+    } else if (region.toLowerCase().includes('america') || ['united states', 'usa', 'canada', 'brazil', 'mexico'].includes(cLower)) {
+      tradeRegion = 'Americas';
+    }
+
+    const meta = { code: p.code, name: p.name, country, region, lane, tradeRegion };
+    if (code) PORT_LOOKUP_MAP[code] = meta;
+    if (name) PORT_LOOKUP_MAP[name] = meta;
+  });
+}
+
+function matchLocationFilter(portValue: string | undefined | null, filterValue: string | undefined | null): boolean {
+  if (!filterValue || filterValue === 'ALL') return true;
+  if (!portValue) return false;
+  const pv = String(portValue).trim();
+  const fv = String(filterValue).trim();
+  if (pv.toLowerCase() === fv.toLowerCase()) return true;
+
+  const meta = PORT_LOOKUP_MAP[pv.toUpperCase()];
+  if (!meta) {
+    return pv.toLowerCase().includes(fv.toLowerCase());
+  }
+
+  if (meta.code && meta.code.toLowerCase() === fv.toLowerCase()) return true;
+  if (meta.name && meta.name.toLowerCase() === fv.toLowerCase()) return true;
+  if (meta.country && meta.country.toLowerCase() === fv.toLowerCase()) return true;
+  if (meta.region && meta.region.toLowerCase() === fv.toLowerCase()) return true;
+  if (meta.lane && meta.lane.toLowerCase() === fv.toLowerCase()) return true;
+  if (meta.tradeRegion && meta.tradeRegion.toLowerCase() === fv.toLowerCase()) return true;
+
+  const regionAliases: Record<string, string[]> = {
+    'NEA': ['North East Asia', 'NEA', 'North Asia', 'Asia'],
+    'North East Asia': ['North East Asia', 'NEA', 'North Asia', 'Asia'],
+    'SEA': ['South East Asia', 'SEA', 'Asia'],
+    'South East Asia': ['South East Asia', 'SEA', 'Asia'],
+    'EUR': ['Europe', 'EUR', 'North Europe', 'Mediterranean'],
+    'Europe': ['Europe', 'EUR', 'North Europe', 'Mediterranean'],
+    'AU': ['Australia', 'AU', 'Oceania', 'Australia East Coast', 'Australia West Coast'],
+    'Australia': ['Australia', 'AU', 'Oceania', 'Australia East Coast', 'Australia West Coast'],
+    'NZ': ['New Zealand', 'NZ'],
+    'New Zealand': ['New Zealand', 'NZ'],
+    'Americas': ['Americas', 'USA', 'United States', 'North America West Coast', 'North America East Coast', 'AMR'],
+    'USA': ['Americas', 'USA', 'United States', 'North America West Coast', 'North America East Coast'],
+  };
+
+  const aliases = regionAliases[fv] || [fv];
+  for (const a of aliases) {
+    const aLower = a.toLowerCase();
+    if (meta.tradeRegion && meta.tradeRegion.toLowerCase() === aLower) return true;
+    if (meta.region && meta.region.toLowerCase() === aLower) return true;
+    if (meta.country && meta.country.toLowerCase() === aLower) return true;
+    if (meta.lane && meta.lane.toLowerCase() === aLower) return true;
+    if (meta.name && meta.name.toLowerCase() === aLower) return true;
+    if (meta.code && meta.code.toLowerCase() === aLower) return true;
+  }
+
+  return false;
+}
+
+function matchBookingCarrier(b: any, selectedCarrier: string, contractsData: any[]): boolean {
+  if (!selectedCarrier || selectedCarrier === 'ALL') return true;
+  const selCarrierLower = selectedCarrier.toLowerCase();
+
+  // 1. Check if contract in CONTRACT_UTIL_DATA matches
+  const matchingMasters = contractsData.filter(c => c.id === b.contract || c.id.split('__')[0] === b.contract);
+  if (matchingMasters.length > 0) {
+    return matchingMasters.some(c => c.carrier?.toLowerCase() === selCarrierLower);
+  }
+
+  // 2. Check plannedCarrier
+  if (b.plannedCarrier) {
+    const pc = String(b.plannedCarrier).toLowerCase();
+    if (pc.includes(selCarrierLower) || pc.startsWith(selCarrierLower)) return true;
+
+    const carrierPrefixMap: Record<string, string[]> = {
+      'maersk': ['maersk', 'maelin'],
+      'one': ['ocenet', 'oceshi'],
+      'oocl': ['ooc', 'oocaus', 'oocnew'],
+      'pil': ['pil', 'pilaus'],
+      'cma': ['cma', 'anl'],
+      'msc': ['medshi', 'medaus', 'medtec'],
+      'hmm': ['hyu', 'hyumer'],
+      'cosco': ['cos', 'cosshi'],
+      'mgf': ['mgf', 'mgflog'],
+    };
+    const prefixes = carrierPrefixMap[selCarrierLower] || [selCarrierLower];
+    if (prefixes.some(p => pc.startsWith(p) || pc.includes(p))) return true;
+  }
+
+  return false;
+}
+
+function matchBookingContract(b: any, selectedContract: string, contractsData: any[]): boolean {
+  if (!selectedContract || selectedContract === 'ALL') return true;
+  const baseSelected = selectedContract.split('__')[0];
+  if (b.contract !== selectedContract && b.contract !== baseSelected) return false;
+
+  // If selected contract has a leg suffix (e.g. 299992851__AMR_AU), verify origin/dest for that leg
+  if (selectedContract.includes('__')) {
+    const master = contractsData.find(c => c.id === selectedContract);
+    if (master && (master.originRegion || (master as any).origins?.length)) {
+      const originRegion = (master as any).originRegion || '';
+      const origins: string[] = (master as any).origins || [];
+      return matchLocationFilter(b.loadPort, originRegion) || origins.some(o => matchLocationFilter(b.loadPort, o));
+    }
+  }
+  return true;
+}
+
 /* ─── Component ─── */
 
 
@@ -87,6 +219,12 @@ const ContractDashboard: React.FC = () => {
     ORIGINS, DESTINATIONS, REGIONS, COUNTRIES, PORT_HIERARCHY,
     syncData,
   } = useBookingData();
+
+  useEffect(() => {
+    if (PORT_HIERARCHY && PORT_HIERARCHY.length > 0) {
+      initPortLookup(PORT_HIERARCHY);
+    }
+  }, [PORT_HIERARCHY]);
 
   const AVAILABLE_WEEKS = useMemo(() => WEEKLY_TREND_DATA.map(w => w.week), [WEEKLY_TREND_DATA]);
 
@@ -215,7 +353,7 @@ const ContractDashboard: React.FC = () => {
         if (selectedWeek === 'ALL') return true;
         const wkMatch = String(b.mscWeek).match(/^(\d+)/);
         const wNum = wkMatch ? parseInt(wkMatch[1], 10) : null;
-        if (!wNum) return `WK ${b.mscWeek}` === selectedWeek;
+        if (!wNum) return `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
 
         if (selectedWeek.startsWith('Month:')) {
           const month = selectedWeek.replace('Month: ', '').trim();
@@ -243,33 +381,12 @@ const ContractDashboard: React.FC = () => {
           return false;
         }
 
-        return `WK ${b.mscWeek}` === selectedWeek;
+        return `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
       })();
-      const matchContract = selectedContract === 'ALL' || b.contract === selectedContract;
 
-      const master = CONTRACT_UTIL_DATA.find(c => c.id === b.contract);
-
-      // Hierarchical Filter Matches
-      const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
-      const dPortMeta = PORT_HIERARCHY.find(p => p.code === b.dischargePort || p.name === b.dischargePort);
-
-      // Match Origin/Dest by looking in the split tokens or the booking data
-      const matchOrigin = selectedOrigin === 'ALL' ||
-        b.loadPort === selectedOrigin ||
-        oPortMeta?.name === selectedOrigin ||
-        oPortMeta?.code === selectedOrigin ||
-        oPortMeta?.lane === selectedOrigin ||
-        oPortMeta?.country === selectedOrigin ||
-        oPortMeta?.region === selectedOrigin ||
-        (master && master.notes && master.notes?.toLowerCase().includes(selectedOrigin?.toLowerCase() || ''));
-
-      const matchDest = selectedDestination === 'ALL' ||
-        b.dischargePort === selectedDestination ||
-        dPortMeta?.name === selectedDestination ||
-        dPortMeta?.code === selectedDestination ||
-        dPortMeta?.lane === selectedDestination ||
-        dPortMeta?.country === selectedDestination ||
-        dPortMeta?.region === selectedDestination;
+      const matchContract = matchBookingContract(b, selectedContract, CONTRACT_UTIL_DATA);
+      const matchOrigin = matchLocationFilter(b.loadPort, selectedOrigin);
+      const matchDest = matchLocationFilter(b.dischargePort, selectedDestination);
 
       // Branch filter (replaces Allocation filter)
       const matchBranch = selectedBranch === 'ALL' || (() => {
@@ -281,13 +398,7 @@ const ContractDashboard: React.FC = () => {
         return (branchCodeMap[selectedBranch] || [selectedBranch]).includes(b.branch);
       })();
 
-      // Carrier filter
-      const matchCarrier = selectedCarrier === 'ALL' || (() => {
-        if (master) {
-          return master.carrier?.toLowerCase() === selectedCarrier?.toLowerCase();
-        }
-        return false;
-      })();
+      const matchCarrier = matchBookingCarrier(b, selectedCarrier, CONTRACT_UTIL_DATA);
 
       return matchWeek && matchContract && matchOrigin && matchDest && matchBranch && matchCarrier;
     });
@@ -333,7 +444,7 @@ const ContractDashboard: React.FC = () => {
 
   // Compute contract metrics based on the BASE filtered bookings
   const reactiveContractUtilData = CONTRACT_UTIL_DATA
-    .filter(c => selectedContract === 'ALL' || c.id === selectedContract)
+    .filter(c => selectedContract === 'ALL' || c.id === selectedContract || c.id.split('__')[0] === selectedContract)
     .filter(c => selectedCarrier === 'ALL' || c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase())
     // Filter by origin: match contract's origin region against the selected origin filter
     .filter(c => {
@@ -341,34 +452,9 @@ const ContractDashboard: React.FC = () => {
       const originRegion = (c as any).originRegion || '';
       const origins: string[] = (c as any).origins || [];
       const lane = c.lane || '';
-      // Direct region match (e.g., selectedOrigin = "South East Asia" and originRegion = "SEA")
-      const regionAliases: Record<string, string[]> = {
-        'NEA': ['North East Asia', 'NEA'],
-        'SEA': ['South East Asia', 'SEA'],
-        'EUR': ['Europe', 'EUR'],
-        'AU': ['Australia', 'Oceania', 'AU'],
-        'NZ': ['New Zealand', 'NZ'],
-        'Americas': ['Americas', 'USA'],
-      };
-      // Check if the selected origin matches this contract's origin region
-      const aliases = regionAliases[originRegion] || [originRegion];
-      if (aliases.some(a => a?.toLowerCase() === selectedOrigin?.toLowerCase())) return true;
-      // Check if any raw origin matches
-      if (origins.some(o => o?.toLowerCase() === selectedOrigin?.toLowerCase())) return true;
-      // Check port hierarchy: if the selected origin is a specific port, check if any raw origin contains it
-      const oPortMeta = PORT_HIERARCHY.find(p => p.code === selectedOrigin || p.name === selectedOrigin);
-      if (oPortMeta) {
-        // If filter is a port/country, check if the contract's origin region matches the port's trade lane region
-        const portRegion = oPortMeta.lane || oPortMeta.region || '';
-        const portRegionAliases = Object.entries(regionAliases).find(([_, vals]) =>
-          vals.some(v => v?.toLowerCase() === portRegion?.toLowerCase())
-        );
-        if (portRegionAliases && portRegionAliases[0] === originRegion) return true;
-        // Or if the raw origins contain the port name
-        if (origins.some(o => o?.toLowerCase().includes(selectedOrigin?.toLowerCase() || ''))) return true;
-      }
-      // Fallback: check if lane string contains the selected origin
-      if (lane?.toLowerCase().includes(selectedOrigin?.toLowerCase() || '')) return true;
+      if (matchLocationFilter(originRegion, selectedOrigin)) return true;
+      if (origins.some(o => matchLocationFilter(o, selectedOrigin))) return true;
+      if (lane && matchLocationFilter(lane, selectedOrigin)) return true;
       return false;
     })
     // Filter by destination
@@ -377,45 +463,50 @@ const ContractDashboard: React.FC = () => {
       const destRegion = (c as any).destRegion || '';
       const destinations: string[] = (c as any).destinations || [];
       const lane = c.lane || '';
-      const destAliases: Record<string, string[]> = {
-        'AU': ['Australia', 'Oceania', 'AU'],
-        'NZ': ['New Zealand', 'NZ'],
-        'AU/NZ': ['AU/NZ', 'AU, NZ', 'AU/ NZ'],
-        'Americas': ['Americas', 'USA'],
-      };
-      const aliases = destAliases[destRegion] || [destRegion];
-      if (aliases.some(a => a?.toLowerCase() === selectedDestination?.toLowerCase())) return true;
-      if (destinations.some(d => d?.toLowerCase() === selectedDestination?.toLowerCase())) return true;
-      if (lane?.toLowerCase().includes(selectedDestination?.toLowerCase() || '')) return true;
+      if (matchLocationFilter(destRegion, selectedDestination)) return true;
+      if (destinations.some(d => matchLocationFilter(d, selectedDestination))) return true;
+      if (lane && matchLocationFilter(lane, selectedDestination)) return true;
       return false;
     })
     .map(c => {
-      const scaledAlloc = Math.round(c.alloc * weekScale);
+      const branchCodeMap: Record<string, string> = {
+        SYD: 'syd', MEL: 'mel', BNE: 'bne',
+        FRE: 'fre', ADL: 'adl',
+        PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth'
+      };
+      const bKey = selectedBranch !== 'ALL' ? branchCodeMap[selectedBranch] : null;
+
+      // When branch is selected, show branch-specific allocation instead of entire network allocation
+      const totalScaledAlloc = Math.round(c.alloc * weekScale);
+      const branchAllocRaw = bKey && (c as any)[bKey] ? Math.round(((c as any)[bKey]?.alloc || 0) * weekScale) : totalScaledAlloc;
+      const effectiveAlloc = selectedBranch !== 'ALL' ? branchAllocRaw : totalScaledAlloc;
+
       const contractBookings = baseFilteredBookings.filter(b => {
         const mainId = c.id.split('__')[0];
-        if (b.contract !== mainId) return false;
+        if (b.contract !== mainId && b.contract !== c.id) return false;
         if (!c.id.includes('__')) return true;
 
         const originRegion = (c as any).originRegion || '';
         const origins = (c as any).origins || [];
-        const regionAliases: Record<string, string[]> = {
-          'NEA': ['North East Asia', 'NEA', 'Asia'],
-          'SEA': ['South East Asia', 'SEA', 'Asia'],
-          'EUR': ['Europe', 'EUR'],
-          'AU': ['Australia', 'Oceania', 'AU'],
-          'NZ': ['New Zealand', 'NZ'],
-          'Americas': ['Americas', 'USA'],
-        };
-        const oPortMeta = PORT_HIERARCHY.find(p => p.code === b.loadPort || p.name === b.loadPort);
-        const oRegion = oPortMeta ? (oPortMeta.region || '') : '';
-        const aliases = regionAliases[originRegion] || [originRegion];
-        if (aliases.some(a => a?.toLowerCase() === oRegion?.toLowerCase())) return true;
-        if (origins.some((o: string) => o?.toLowerCase() === b.loadPort?.toLowerCase() || oPortMeta?.name?.toLowerCase() === o?.toLowerCase())) return true;
-        
+        if (matchLocationFilter(b.loadPort, originRegion)) return true;
+        if (origins.some((o: string) => matchLocationFilter(b.loadPort, o))) return true;
         return false;
       });
       const booked = contractBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-      const util = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
+
+      const isExcluded = (c as any).noCalc === true || c.id.toUpperCase() === 'OTHER' || c.id.toUpperCase() === 'SPOT' || c.id.toUpperCase() === 'OTH' || c.id.toUpperCase() === 'AGENT';
+      let util = 0;
+      let status = 'No Allocation';
+      if (isExcluded) {
+        util = 0;
+        status = 'N/A';
+      } else if (effectiveAlloc > 0) {
+        util = (booked / effectiveAlloc) * 100;
+        status = util > 100 ? 'Overutilised' : (util >= 80 ? 'Healthy' : 'Underperforming');
+      } else if (booked > 0) {
+        status = 'Unplanned';
+      }
+      const avail = isExcluded ? -booked : (effectiveAlloc - booked);
 
       const getBranchBooked = (branchCodes: string[]) =>
         contractBookings
@@ -428,10 +519,12 @@ const ContractDashboard: React.FC = () => {
         ...c,
         contractType: (c as any).contractType ?? 'LT',
         expiry: (c as any).expiry ?? 'N/A',
-        alloc: scaledAlloc,
+        alloc: effectiveAlloc,
         booked,
-        avail: scaledAlloc - booked,
+        avail,
         util,
+        status,
+        noCalc: isExcluded,
         syd: { ...(c.syd ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.syd as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['SYDNEY', 'SY1']) },
         mel: { ...(c.mel ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.mel as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['MELBOURNE', 'ME1']) },
         bne: { ...(c.bne ?? { alloc: 0, booked: 0, util: 0 }), alloc: Math.round(((c.bne as any)?.alloc || 0) * weekScale), booked: getBranchBooked(['BRISBANE', 'BN1']) },
@@ -453,8 +546,8 @@ const ContractDashboard: React.FC = () => {
         PIL: ['PIL'], PRJ: ['PRJ'], AKL: ['AKL'], OTH: ['OTH'],
       };
       const codes = branchCodeMap[selectedBranch] || [selectedBranch];
-      // Show if the branch has allocation OR bookings (don't require booked > 0)
-      return codes.some(code => (c as any)[code?.toLowerCase()]?.alloc > 0) || c.booked > 0;
+      // Show if the branch has allocation OR bookings
+      return codes.some(code => ((c as any)[code?.toLowerCase()]?.alloc || 0) > 0 || ((c as any)[code?.toLowerCase()]?.booked || 0) > 0) || c.booked > 0;
     });
 
   const filteredBookings = (() => {
@@ -472,31 +565,15 @@ const ContractDashboard: React.FC = () => {
 
 
   const contractMetrics = (() => {
-    const branchCodeMap: Record<string, string> = {
-      SYD: 'syd', MEL: 'mel', BNE: 'bne',
-      FRE: 'fre', ADL: 'adl',
-      PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth'
-    };
-    const bKey = selectedBranch !== 'ALL' ? branchCodeMap[selectedBranch] : null;
-
     let allocNode = 0;
 
     reactiveContractUtilData.forEach(c => {
       if (c.noCalc) return;
-      if (bKey && (c as any)[bKey]) {
-        allocNode += (c as any)[bKey].alloc || 0;
-      } else {
-        allocNode += c.alloc || 0;
-      }
+      allocNode += c.alloc || 0;
     });
 
-    // Total Booked = sum of ALL bookings from Snowflake (not just contract-matched)
+    // Total Booked = sum of ALL bookings from Snowflake respecting all active filters
     let bookedNode = filteredBookings.reduce((sum, b) => sum + (b.teu || 0), 0);
-    
-    // If selectedWeek is 'ALL', we should display the total bookings across all weeks, not just the first filtered set if they got limited
-    if (selectedWeek === 'ALL' && selectedContract === 'ALL') {
-      bookedNode = BOOKING_LOG_DATA.reduce((sum, b) => sum + (b.teu || 0), 0);
-    }
 
     const utilNode = allocNode > 0 ? (bookedNode / allocNode) * 100 : 0;
     return { alloc: Math.round(allocNode), booked: Math.round(bookedNode), util: utilNode };
@@ -675,8 +752,6 @@ const ContractDashboard: React.FC = () => {
       // Auto-merge Fremantle (FR1) into Perth (PR1) if it appears in bookings
       const matchBranches = b.branch === 'PR1' ? ['PR1', 'FR1'] : [b.branch];
       const hubBookings = filteredBookings.filter(row => matchBranches.includes(row.branch));
-      const booked = reactiveContractUtilData.reduce((sum, c) => sum + ((c as any)[bKey]?.booked || 0), 0);
-      const utilFloat = scaledAlloc > 0 ? (booked / scaledAlloc) * 100 : 0;
 
       const branchCodeMatch = { SY1: 'syd', ME1: 'mel', BN1: 'bne', FR1: 'fre', PR1: 'fre', AD1: 'adl', PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth' }[b.branch];
       
@@ -693,10 +768,7 @@ const ContractDashboard: React.FC = () => {
 
       // Build contract sub-rows — ONLY master contracts (no blank booking-only lines)
       const activeContractsData = carrierFilteredContractsForBranch.map(c => {
-        const mainId = c.id.split('__')[0];
-        // Match bookings using base contract ID (strip __leg suffix)
-        const contractBookings = hubBookings.filter(bk => bk.contract === mainId || bk.contract === c.id);
-        const cBooked = contractBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
+        const cBooked = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].booked : 0;
         const rawAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
         // rawAlloc is already week-scaled from reactiveContractUtilData (lines 428-437)
         const cAlloc = Math.round(rawAlloc);
@@ -722,8 +794,9 @@ const ContractDashboard: React.FC = () => {
       });
 
       const matchedBooked = activeContractsData.reduce((sum, c) => sum + c.booked, 0);
-      const unmatchedBooked = booked - matchedBooked;
-      if (unmatchedBooked > 0) {
+      const hubTotalBooked = hubBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
+      const unmatchedBooked = Math.max(0, hubTotalBooked - matchedBooked);
+      if (unmatchedBooked > 0 && selectedContract === 'ALL') {
         activeContractsData.push({
           id: 'OTHER / UNPLANNED',
           alloc: 0,
@@ -737,6 +810,11 @@ const ContractDashboard: React.FC = () => {
         });
       }
 
+      const branchTotalBooked = selectedContract === 'ALL'
+        ? (matchedBooked + unmatchedBooked)
+        : matchedBooked;
+      const utilFloat = scaledAlloc > 0 ? (branchTotalBooked / scaledAlloc) * 100 : 0;
+
       const activeContracts = activeContractsData.map(c => c.id);
 
       let status = 'No Allocation';
@@ -745,11 +823,11 @@ const ContractDashboard: React.FC = () => {
         else if (utilFloat > 80) status = 'Healthy';
         else if (utilFloat > 50) status = 'Underperforming';
         else status = 'Critical';
-      } else if (booked > 0) {
+      } else if (branchTotalBooked > 0) {
         status = 'Unplanned';
       }
 
-      return { ...b, alloc: scaledAlloc, booked, avail: scaledAlloc - booked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts, activeContractsData };
+      return { ...b, alloc: scaledAlloc, booked: branchTotalBooked, avail: scaledAlloc - branchTotalBooked, util: Number(utilFloat.toFixed(1)), utilFloat, status, activeContracts, activeContractsData };
     }).filter(b => b.alloc > 0 || b.booked > 0);
 
     // Check if any bookings are completely unmatched and create OTHER category
@@ -858,12 +936,13 @@ const ContractDashboard: React.FC = () => {
     : "No contract-specific volume detected currently.";
 
   // Dynamic Contract Utilisation Insights (Reactive)
-  const cuTotalAlloc = reactiveContractUtilData.reduce((s, r) => s + r.alloc, 0);
-  const cuTotalBooked = reactiveContractUtilData.reduce((s, r) => s + r.booked, 0);
+  const cuTotalAlloc = reactiveContractUtilData.reduce((s, r) => s + (r.noCalc ? 0 : r.alloc), 0);
+  const cuTotalBooked = Math.round(reactiveContractUtilData.reduce((s, r) => s + r.booked, 0));
   const cuOverallUtil = cuTotalAlloc > 0 ? ((cuTotalBooked / cuTotalAlloc) * 100).toFixed(1) : "0.0";
-  const cuOverbooked = reactiveContractUtilData.filter(r => r.util > 100);
-  const cuNearFull = reactiveContractUtilData.filter(r => r.util >= 85 && r.util <= 100);
-  const cuLowUptake = reactiveContractUtilData.filter(r => r.util < 50);
+  const cuOverbooked = reactiveContractUtilData.filter(r => !r.noCalc && r.alloc > 0 && r.util > 100);
+  const cuNearFull = reactiveContractUtilData.filter(r => !r.noCalc && r.alloc > 0 && r.util >= 85 && r.util <= 100);
+  const cuUnderperforming = reactiveContractUtilData.filter(r => !r.noCalc && r.alloc > 0 && r.util <= 80);
+  const cuLowUptake = reactiveContractUtilData.filter(r => !r.noCalc && r.alloc > 0 && r.util < 50);
 
   const cuTopCarrier = reactiveContractUtilData.length > 0
     ? reactiveContractUtilData.reduce((max, r) => r.booked > max.booked ? r : max, reactiveContractUtilData[0])
@@ -1583,7 +1662,7 @@ const ContractDashboard: React.FC = () => {
                     { label: 'Total Alloc', value: `${cuTotalAlloc}`, color: 'text-violet-400', border: 'border-violet-500/30', bg: 'bg-violet-500/10', sub: 'Network Threshold', trend: 'Fixed Capacity', details: `Total contracted TEU capacity across all carriers for this period. Threshold: ${cuTotalAlloc} TEU.` },
                     { label: 'Total Booked', value: `${cuTotalBooked}`, color: 'text-cyan-400', border: 'border-cyan-500/30', bg: 'bg-cyan-500/10', sub: 'Confirmed Volume', trend: 'Live', details: `Confirmed cargo assigned to contract allocations. ${cuTotalBooked} TEU validated against a ${cuTotalAlloc} TEU ceiling.` },
                     { label: 'Overall Util', value: `${cuOverallUtil}%`, color: parseFloat(cuOverallUtil) > 80 ? 'text-emerald-400' : 'text-rose-400', border: parseFloat(cuOverallUtil) > 80 ? 'border-emerald-500/30' : 'border-rose-500/30', bg: parseFloat(cuOverallUtil) > 80 ? 'bg-emerald-500/10' : 'bg-rose-500/10', sub: parseFloat(cuOverallUtil) > 80 ? 'Healthy' : 'Underutilisation Risk', trend: parseFloat(cuOverallUtil) > 80 ? 'On Track' : 'Attention Required', details: `Network efficiency at ${cuOverallUtil}%. Target is >80%. ${parseFloat(cuOverallUtil) <= 80 ? 'Current levels indicate underutilisation — contracts at risk.' : 'Healthy utilisation across the network.'}` },
-                    { label: 'Underperforming (≤80%)', value: `${cuLowUptake.length}`, color: 'text-rose-400', border: 'border-rose-500/30', bg: 'bg-rose-500/10', sub: 'Utilisation Risk', trend: 'Action Required', details: `${cuLowUptake.length} contract(s) are below the 80% utilisation threshold — the primary risk metric. Review allocation commitments and increase bookings to avoid compliance exposure.` },
+                    { label: 'Underperforming (≤80%)', value: `${cuUnderperforming.length}`, color: 'text-rose-400', border: 'border-rose-500/30', bg: 'bg-rose-500/10', sub: 'Utilisation Risk', trend: 'Action Required', details: `${cuUnderperforming.length} contract(s) are below the 80% utilisation threshold — the primary risk metric. Review allocation commitments and increase bookings to avoid compliance exposure.` },
                   ].map(p => (
                     <motion.div
                       whileHover={{ scale: 1.05, y: -5 }}
@@ -1633,10 +1712,15 @@ const ContractDashboard: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-white/[0.02]">
                       {reactiveContractUtilData.map((row, i) => {
-                        const statusStyle = row.util > 100 ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25'
-                          : row.util >= 85 ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
-                            : row.util >= 70 ? 'bg-amber-500/10 text-amber-400 border-amber-500/25'
-                              : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
+                        const statusStyle = row.status === 'N/A' || row.noCalc
+                          ? 'bg-slate-500/10 text-slate-400 border-slate-500/25'
+                          : row.status === 'Unplanned'
+                            ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25'
+                            : row.status === 'Overutilised'
+                              ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25'
+                              : row.status === 'Healthy'
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                                : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
                         const polBreakdown = (row as any).polBreakdown || [];
                         const hasPOL = polBreakdown.length > 0;
                         const rowKey = `${row.id}__${row.lane}`;
@@ -2834,10 +2918,15 @@ const ContractDashboard: React.FC = () => {
                     </thead>
                     <tbody className="divide-y divide-white/[0.05]">
                       {reactiveContractUtilData.map((row, i) => {
-                        const statusStyle = row.util > 100 ? 'bg-rose-500/20 text-rose-300 border-rose-500/40'
-                          : row.util >= 85 ? 'bg-amber-500/20 text-amber-300 border-amber-500/40'
-                            : row.util >= 70 ? 'bg-emerald-500/20 text-emerald-300 border-emerald-500/40'
-                              : 'bg-slate-700/30 text-slate-400 border-slate-600/30';
+                        const statusStyle = row.status === 'N/A' || row.noCalc
+                          ? 'bg-slate-500/10 text-slate-400 border-slate-500/25'
+                          : row.status === 'Unplanned'
+                            ? 'bg-indigo-500/10 text-indigo-400 border-indigo-500/25'
+                            : row.status === 'Overutilised'
+                              ? 'bg-cyan-500/10 text-cyan-400 border-cyan-500/25'
+                              : row.status === 'Healthy'
+                                ? 'bg-emerald-500/10 text-emerald-400 border-emerald-500/25'
+                                : 'bg-rose-500/10 text-rose-400 border-rose-500/25';
                         const polBreakdown = (row as any).polBreakdown || [];
                         const hasPOL = polBreakdown.length > 0;
                         const rowKey = `${row.id}__${row.lane}`;

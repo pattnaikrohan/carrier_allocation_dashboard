@@ -169,8 +169,8 @@ const ProcurementDashboard: React.FC = () => {
   // ── Derived: filtered bookings ────────────────────────────────────────────
   const filteredBookings = useMemo(() => {
     return LIVE_BOOKING_LOG_DATA.filter(b => {
-      const weekMatch     = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
-      const contractMatch = selectedContract === 'ALL' || b.contract === selectedContract;
+      const weekMatch     = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
+      const contractMatch = selectedContract === 'ALL' || b.contract === selectedContract || b.contract === selectedContract.split('__')[0];
       const branchMatch   = selectedBranch === 'ALL' || (() => {
         const br = BRANCHES.find(x => x.code === selectedBranch);
         return br ? br.rawCodes.includes(b.branch) : b.branch === selectedBranch;
@@ -188,7 +188,7 @@ const ProcurementDashboard: React.FC = () => {
 
     const relevantContracts = selectedContract === 'ALL'
       ? LIVE_CONTRACT_UTIL_DATA
-      : LIVE_CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract);
+      : LIVE_CONTRACT_UTIL_DATA.filter(c => c.id === selectedContract || c.id.split('__')[0] === selectedContract);
 
     // Allocation: scale weekly alloc by week coverage
     const totalAlloc = relevantContracts.reduce((s, c) => s + c.alloc * weekScale, 0);
@@ -200,12 +200,12 @@ const ProcurementDashboard: React.FC = () => {
     // Underperforming (contract-level, ≤80%)
     const underCount = relevantContracts.filter(c => {
       const cBooked = LIVE_BOOKING_LOG_DATA.filter(b => {
-        const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
+        const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
         const brm = selectedBranch === 'ALL' || (() => {
           const br = BRANCHES.find(x => x.code === selectedBranch);
           return br ? br.rawCodes.includes(b.branch) : b.branch === selectedBranch;
         })();
-        return b.contract === c.id && wm && brm;
+        return (b.contract === c.id || b.contract === c.id.split('__')[0]) && wm && brm;
       }).reduce((s, b) => s + b.teu, 0);
       const cAlloc = c.alloc * weekScale;
       return cAlloc > 0 && (cBooked / cAlloc) <= 0.8;
@@ -213,12 +213,12 @@ const ProcurementDashboard: React.FC = () => {
 
     const healthyCount = relevantContracts.filter(c => {
       const cBooked = LIVE_BOOKING_LOG_DATA.filter(b => {
-        const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
+        const wm = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
         const brm = selectedBranch === 'ALL' || (() => {
           const br = BRANCHES.find(x => x.code === selectedBranch);
           return br ? br.rawCodes.includes(b.branch) : b.branch === selectedBranch;
         })();
-        return b.contract === c.id && wm && brm;
+        return (b.contract === c.id || b.contract === c.id.split('__')[0]) && wm && brm;
       }).reduce((s, b) => s + b.teu, 0);
       const cAlloc = c.alloc * weekScale;
       return cAlloc > 0 && (cBooked / cAlloc) > 0.8;
@@ -234,18 +234,18 @@ const ProcurementDashboard: React.FC = () => {
     const weekScale       = activeWeekCount / totalWeeks;
 
     return LIVE_CONTRACT_UTIL_DATA
-      .filter(c => matrixContractFilter === 'ALL' || c.id === matrixContractFilter)
+      .filter(c => matrixContractFilter === 'ALL' || c.id === matrixContractFilter || c.id.split('__')[0] === matrixContractFilter)
       .map(c => {
         // bookings for this contract filtered by week + branch
         const cBookings = LIVE_BOOKING_LOG_DATA.filter(b => {
-          const wm  = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek;
+          const wm  = selectedWeek === 'ALL' || `WK ${b.mscWeek}` === selectedWeek || String(b.mscWeek) === selectedWeek.replace('WK ', '');
           const brm = (() => {
             const eff = matrixBranchFilter !== 'ALL' ? matrixBranchFilter : selectedBranch;
             if (eff === 'ALL') return true;
             const br = BRANCHES.find(x => x.code === eff);
             return br ? br.rawCodes.includes(b.branch) : b.branch === eff;
           })();
-          return b.contract === c.id && wm && brm;
+          return (b.contract === c.id || b.contract === c.id.split('__')[0]) && wm && brm;
         });
 
         const booked = cBookings.reduce((s, b) => s + b.teu, 0);
