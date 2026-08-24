@@ -825,16 +825,17 @@ const ContractDashboard: React.FC = () => {
 
       // Collect all bookings not matched to named master contracts
       const unmatchedHubBookings = hubBookings.filter(b => !matchedOrderNumbers.has(b.order));
-      const otherContractsMap: Record<string, { id: string; orderNo: string; buyer: string; carrier: string; route: string; booked: number; orderCount: number }> = {};
+      const otherContractsMap: Record<string, { id: string; contract: string; orderNo: string; buyer: string; carrier: string; route: string; booked: number; orderCount: number }> = {};
 
       unmatchedHubBookings.forEach(bk => {
         const rawContract = (bk.contract && bk.contract !== 'nan' && bk.contract !== 'OTHER' && bk.contract.trim() !== '') ? bk.contract.trim() : '';
-        const displayId = rawContract || (bk.order ? `Order #${bk.order}` : 'Unassigned Contract');
+        const displayContract = rawContract || '-';
         const cKey = rawContract ? `CTR:${rawContract}` : `ORD:${bk.order || 'UNASSIGNED'}`;
 
         if (!otherContractsMap[cKey]) {
           otherContractsMap[cKey] = {
-            id: displayId,
+            id: displayContract,
+            contract: displayContract,
             orderNo: bk.order || '-',
             buyer: bk.buyer || '-',
             carrier: bk.plannedCarrier || bk.carrierName || 'Various',
