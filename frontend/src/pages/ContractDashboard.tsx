@@ -766,8 +766,11 @@ const ContractDashboard: React.FC = () => {
 
       const branchCodeMatch = { SY1: 'syd', ME1: 'mel', BN1: 'bne', FR1: 'fre', PR1: 'fre', AD1: 'adl', PIL: 'pil', PRJ: 'prj', AKL: 'akl', OTH: 'oth' }[b.branch];
       
-      // Show contracts from master data that have allocation OR bookings in this branch
+      // Show contracts from master data that have allocation OR bookings in this branch (excluding generic OTHER pseudocontracts)
       const masterContractsForBranch = reactiveContractUtilData.filter(c => {
+        const idUpper = c.id.toUpperCase();
+        const isPseudocontract = idUpper === 'OTHER' || idUpper === 'OTH' || idUpper === 'SPOT' || idUpper === 'AGENT' || idUpper === 'UNASSIGNED';
+        if (isPseudocontract) return false;
         const branchAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
         const branchBooked = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].booked : 0;
         return branchAlloc > 0 || branchBooked > 0;
@@ -777,7 +780,7 @@ const ContractDashboard: React.FC = () => {
         ? masterContractsForBranch
         : masterContractsForBranch.filter(c => c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase());
 
-      // Track bookings matched to master contracts
+      // Track bookings matched to real master contracts
       const matchedOrderNumbers = new Set<string>();
       carrierFilteredContractsForBranch.forEach(c => {
         const cBookings = hubBookings.filter(b => {
@@ -795,21 +798,16 @@ const ContractDashboard: React.FC = () => {
         });
       });
 
-      // Build contract sub-rows — ONLY master contracts (no blank booking-only lines)
+      // Build contract sub-rows — ONLY real master contracts
       const activeContractsData = carrierFilteredContractsForBranch.map(c => {
         const cBooked = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].booked : 0;
         const rawAlloc = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].alloc : 0;
         // rawAlloc is already week-scaled from reactiveContractUtilData (lines 428-437)
         const cAlloc = Math.round(rawAlloc);
         const cAvail = cAlloc - cBooked;
-        const noCalc = (c as any).noCalc === true;
-        const isExcluded = noCalc || c.id.toUpperCase() === 'OTH' || c.id.toUpperCase() === 'SPOT' || c.id.toUpperCase() === 'AGENT' || c.id.toUpperCase() === 'OTHER';
         let cUtil = 0;
         let cStatus = 'No Allocation';
-        if (isExcluded) {
-          cUtil = 0;
-          cStatus = 'N/A';
-        } else if (cAlloc > 0) {
+        if (cAlloc > 0) {
           cUtil = (cBooked / cAlloc) * 100;
           cStatus = cUtil > 100 ? 'Overutilised' : (cUtil > 80 ? 'Healthy' : 'Underperforming');
         }
@@ -817,26 +815,31 @@ const ContractDashboard: React.FC = () => {
           id: c.id, alloc: cAlloc, booked: cBooked, avail: cAvail, util: cUtil,
           contractType: (c as any).contractType || '',
           carrier: c.carrier || '',
-          noCalc: isExcluded,
+          noCalc: false,
           status: cStatus
         };
       });
 
       const matchedBooked = activeContractsData.reduce((sum, c) => sum + c.booked, 0);
       const hubTotalBooked = hubBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
-      const unmatchedBooked = Math.max(0, hubTotalBooked - matchedBooked);
 
-      // Collect unmatched bookings and group by contract
+      // Collect all bookings not matched to named master contracts
       const unmatchedHubBookings = hubBookings.filter(b => !matchedOrderNumbers.has(b.order));
-      const otherContractsMap: Record<string, { id: string; booked: number; carrier: string; orderCount: number }> = {};
+      const otherContractsMap: Record<string, { id: string; orderNo: string; buyer: string; carrier: string; route: string; booked: number; orderCount: number }> = {};
 
       unmatchedHubBookings.forEach(bk => {
-        const cKey = (bk.contract && bk.contract !== 'nan' && bk.contract.trim() !== '') ? bk.contract.trim() : 'UNASSIGNED';
+        const rawContract = (bk.contract && bk.contract !== 'nan' && bk.contract !== 'OTHER' && bk.contract.trim() !== '') ? bk.contract.trim() : '';
+        const displayId = rawContract || (bk.order ? `Order #${bk.order}` : 'Unassigned Contract');
+        const cKey = rawContract ? `CTR:${rawContract}` : `ORD:${bk.order || 'UNASSIGNED'}`;
+
         if (!otherContractsMap[cKey]) {
           otherContractsMap[cKey] = {
-            id: cKey,
-            booked: 0,
+            id: displayId,
+            orderNo: bk.order || '-',
+            buyer: bk.buyer || '-',
             carrier: bk.plannedCarrier || bk.carrierName || 'Various',
+            route: (bk.loadPort && bk.dischargePort) ? `${bk.loadPort} → ${bk.dischargePort}` : (bk.loadPort || bk.dischargePort || '-'),
+            booked: 0,
             orderCount: 0,
           };
         }
@@ -844,34 +847,26 @@ const ContractDashboard: React.FC = () => {
         otherContractsMap[cKey].orderCount += 1;
       });
 
-      if (Object.keys(otherContractsMap).length === 0 && unmatchedBooked > 0) {
-        otherContractsMap['SPOT / OTHER'] = {
-          id: 'SPOT / OTHER',
-          booked: unmatchedBooked,
-          carrier: 'Various',
-          orderCount: 1,
-        };
-      }
-
       const otherContractsList = Object.values(otherContractsMap).sort((a, b) => b.booked - a.booked);
+      const totalOtherBooked = Math.round(unmatchedHubBookings.reduce((sum, b) => sum + (b.teu || 0), 0));
 
-      if (unmatchedBooked > 0 && selectedContract === 'ALL') {
+      if ((totalOtherBooked > 0 || otherContractsList.length > 0) && selectedContract === 'ALL') {
         activeContractsData.push({
-          id: 'OTHER / UNPLANNED',
+          id: 'OTHER',
           alloc: 0,
-          booked: unmatchedBooked,
-          avail: -unmatchedBooked,
+          booked: totalOtherBooked,
+          avail: -totalOtherBooked,
           util: 0,
           contractType: 'SPOT',
           carrier: 'Various',
           noCalc: true,
-          status: 'Unplanned',
+          status: 'N/A',
           otherContracts: otherContractsList,
         });
       }
 
       const branchTotalBooked = selectedContract === 'ALL'
-        ? (matchedBooked + unmatchedBooked)
+        ? (matchedBooked + totalOtherBooked)
         : matchedBooked;
       const utilFloat = scaledAlloc > 0 ? (branchTotalBooked / scaledAlloc) * 100 : 0;
 
@@ -1526,21 +1521,25 @@ const ContractDashboard: React.FC = () => {
                         {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
                           <div className="bg-sky-400/10 border-t border-b border-sky-400/20 py-2">
                             {(row as any).activeContractsData.map((c: any, cIdx: number) => {
-                              const isOtherRow = c.id === 'OTHER / UNPLANNED' || (c.otherContracts && c.otherContracts.length > 0);
+                              const isOtherRow = c.id?.toUpperCase() === 'OTHER' || c.id?.toUpperCase() === 'OTHER / UNPLANNED' || c.id?.toUpperCase() === 'OTH' || c.id?.toUpperCase() === 'SPOT' || (c.otherContracts && c.otherContracts.length > 0);
                               const isOtherExpanded = expandedOtherBranches.has(row.branch);
                               return (
                                 <React.Fragment key={cIdx}>
-                                  <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-1.5 items-center hover:bg-sky-400/10 transition-colors">
+                                  <div
+                                    className={`grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-1.5 items-center transition-colors ${
+                                      isOtherRow ? 'hover:bg-amber-400/10 cursor-pointer' : 'hover:bg-sky-400/10'
+                                    }`}
+                                    onClick={isOtherRow ? () => toggleOtherBranch(row.branch) : undefined}
+                                  >
                                     <div className="pl-6 flex items-center min-w-0 flex-wrap gap-1.5">
                                       {isOtherRow ? (
                                         <div
                                           className="flex items-center gap-2 cursor-pointer group/other select-none"
-                                          onClick={() => toggleOtherBranch(row.branch)}
                                           title="Click to view/hide unassigned & spot contracts"
                                         >
                                           <span className="text-[12px] text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center gap-1.5">
                                             <span>↳ OTHER</span>
-                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium flex items-center gap-1">
+                                            <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold flex items-center gap-1.5 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                                               <span>{c.otherContracts?.length || 0} contracts</span>
                                               <svg className={`w-3 h-3 text-amber-400 transition-transform duration-200 ${isOtherExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -1618,24 +1617,43 @@ const ContractDashboard: React.FC = () => {
                                         </div>
                                       </div>
                                       
-                                      <div className="max-h-60 overflow-y-auto elegant-scrollbar pr-1">
-                                        <div className="grid grid-cols-[1.8fr_1.2fr_1fr_1fr] px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#070c18] z-10">
+                                      <div className="max-h-64 overflow-y-auto elegant-scrollbar pr-1">
+                                        <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#070c18] z-10">
                                           <span>Contract #</span>
+                                          <span>Order No.</span>
+                                          <span>Buyer / Client</span>
                                           <span>Carrier</span>
-                                          <span className="text-center">Orders</span>
-                                          <span className="text-right">Booked (TEU)</span>
+                                          <span className="text-right">TEU</span>
                                         </div>
                                         <div className="divide-y divide-white/[0.04]">
                                           {c.otherContracts
-                                            .filter((item: any) => !otherSearchQuery || item.id.toLowerCase().includes(otherSearchQuery.toLowerCase()) || (item.carrier && item.carrier.toLowerCase().includes(otherSearchQuery.toLowerCase())))
+                                            .filter((item: any) => {
+                                              if (!otherSearchQuery) return true;
+                                              const q = otherSearchQuery.toLowerCase();
+                                              return (
+                                                item.id.toLowerCase().includes(q) ||
+                                                (item.orderNo && item.orderNo.toLowerCase().includes(q)) ||
+                                                (item.buyer && item.buyer.toLowerCase().includes(q)) ||
+                                                (item.carrier && item.carrier.toLowerCase().includes(q))
+                                              );
+                                            })
                                             .map((item: any, oIdx: number) => (
-                                              <div key={oIdx} className="grid grid-cols-[1.8fr_1.2fr_1fr_1fr] px-3 py-2 items-center hover:bg-white/[0.04] transition-colors rounded text-[11px]">
+                                              <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-2 items-center hover:bg-white/[0.04] transition-colors rounded text-[11px]">
                                                 <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
                                                   {item.id}
                                                 </span>
-                                                <span className="text-slate-400 truncate">{item.carrier || 'Various'}</span>
-                                                <span className="text-center text-slate-400">{item.orderCount}</span>
-                                                <span className="text-right font-bold text-cyan-400 tabular-nums">{Math.round(item.booked)}</span>
+                                                <span className="text-slate-300 font-mono truncate" title={item.orderNo}>
+                                                  {item.orderNo}
+                                                </span>
+                                                <span className="text-slate-400 truncate" title={item.buyer}>
+                                                  {item.buyer || '-'}
+                                                </span>
+                                                <span className="text-slate-400 truncate" title={item.carrier}>
+                                                  {item.carrier || 'Various'}
+                                                </span>
+                                                <span className="text-right font-bold text-cyan-400 tabular-nums">
+                                                  {Math.round(item.booked)}
+                                                </span>
                                               </div>
                                             ))}
                                         </div>
@@ -3229,21 +3247,25 @@ const ContractDashboard: React.FC = () => {
                             </tr>
                             {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
                               (row as any).activeContractsData.map((c: any, cIdx: number) => {
-                                const isOtherRow = c.id === 'OTHER / UNPLANNED' || (c.otherContracts && c.otherContracts.length > 0);
+                                const isOtherRow = c.id?.toUpperCase() === 'OTHER' || c.id?.toUpperCase() === 'OTHER / UNPLANNED' || c.id?.toUpperCase() === 'OTH' || c.id?.toUpperCase() === 'SPOT' || (c.otherContracts && c.otherContracts.length > 0);
                                 const isOtherExpanded = expandedOtherBranches.has(row.branch);
                                 return (
                                   <React.Fragment key={`nested-${i}-${cIdx}`}>
-                                    <tr className="bg-sky-400/10 hover:bg-sky-400/20 transition-colors border-b border-sky-400/20">
+                                    <tr
+                                      className={`border-b border-sky-400/20 transition-colors ${
+                                        isOtherRow ? 'bg-sky-400/10 hover:bg-amber-400/10 cursor-pointer' : 'bg-sky-400/10 hover:bg-sky-400/20'
+                                      }`}
+                                      onClick={isOtherRow ? () => toggleOtherBranch(row.branch) : undefined}
+                                    >
                                       <td className="pl-16 p-4 border-l-4 border-sky-500/30">
                                         {isOtherRow ? (
                                           <div
                                             className="flex items-center gap-3 cursor-pointer group/other select-none"
-                                            onClick={() => toggleOtherBranch(row.branch)}
                                             title="Click to view/hide unassigned & spot contracts"
                                           >
                                             <span className="text-base text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center gap-2">
                                               <span>↳ OTHER</span>
-                                              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium flex items-center gap-1">
+                                              <span className="text-xs px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/40 font-semibold flex items-center gap-1.5 shadow-[0_0_8px_rgba(245,158,11,0.2)]">
                                                 <span>{c.otherContracts?.length || 0} contracts</span>
                                                 <svg className={`w-3.5 h-3.5 text-amber-400 transition-transform duration-200 ${isOtherExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
@@ -3307,24 +3329,43 @@ const ContractDashboard: React.FC = () => {
                                                 />
                                               </div>
                                             </div>
-                                            <div className="max-h-72 overflow-y-auto elegant-scrollbar pr-2">
-                                              <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr] px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#0b0f19] z-10">
+                                            <div className="max-h-80 overflow-y-auto elegant-scrollbar pr-2">
+                                              <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#0b0f19] z-10">
                                                 <span>Contract #</span>
+                                                <span>Order No.</span>
+                                                <span>Buyer / Client</span>
                                                 <span>Carrier</span>
-                                                <span className="text-center">Orders</span>
-                                                <span className="text-right">Booked (TEU)</span>
+                                                <span className="text-right">TEU</span>
                                               </div>
                                               <div className="divide-y divide-white/[0.04]">
                                                 {c.otherContracts
-                                                  .filter((item: any) => !otherSearchQuery || item.id.toLowerCase().includes(otherSearchQuery.toLowerCase()) || (item.carrier && item.carrier.toLowerCase().includes(otherSearchQuery.toLowerCase())))
+                                                  .filter((item: any) => {
+                                                    if (!otherSearchQuery) return true;
+                                                    const q = otherSearchQuery.toLowerCase();
+                                                    return (
+                                                      item.id.toLowerCase().includes(q) ||
+                                                      (item.orderNo && item.orderNo.toLowerCase().includes(q)) ||
+                                                      (item.buyer && item.buyer.toLowerCase().includes(q)) ||
+                                                      (item.carrier && item.carrier.toLowerCase().includes(q))
+                                                    );
+                                                  })
                                                   .map((item: any, oIdx: number) => (
-                                                    <div key={oIdx} className="grid grid-cols-[2fr_1.5fr_1fr_1fr] px-4 py-2.5 items-center hover:bg-white/[0.04] transition-colors rounded text-xs">
+                                                    <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-2.5 items-center hover:bg-white/[0.04] transition-colors rounded text-xs">
                                                       <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
                                                         {item.id}
                                                       </span>
-                                                      <span className="text-slate-400 truncate">{item.carrier || 'Various'}</span>
-                                                      <span className="text-center text-slate-400">{item.orderCount}</span>
-                                                      <span className="text-right font-bold text-cyan-400 tabular-nums">{Math.round(item.booked)}</span>
+                                                      <span className="text-slate-300 font-mono truncate" title={item.orderNo}>
+                                                        {item.orderNo}
+                                                      </span>
+                                                      <span className="text-slate-400 truncate" title={item.buyer}>
+                                                        {item.buyer || '-'}
+                                                      </span>
+                                                      <span className="text-slate-400 truncate" title={item.carrier}>
+                                                        {item.carrier || 'Various'}
+                                                      </span>
+                                                      <span className="text-right font-bold text-cyan-400 tabular-nums">
+                                                        {Math.round(item.booked)}
+                                                      </span>
                                                     </div>
                                                   ))}
                                               </div>
