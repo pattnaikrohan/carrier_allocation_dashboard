@@ -275,6 +275,17 @@ const ContractDashboard: React.FC = () => {
   const [filterMode, setFilterMode] = useState<'ALL' | 'UNDERPERFORMING' | 'LOW_UTIL'>('ALL');
   const [granularity, setGranularity] = useState<'region' | 'country' | 'port'>('port');
   const [expandedPOLRows, setExpandedPOLRows] = useState<Set<string>>(new Set());
+  const [expandedOtherBranches, setExpandedOtherBranches] = useState<Set<string>>(new Set());
+  const [otherSearchQuery, setOtherSearchQuery] = useState<string>('');
+
+  const toggleOtherBranch = (branchKey: string) => {
+    setExpandedOtherBranches(prev => {
+      const next = new Set(prev);
+      if (next.has(branchKey)) next.delete(branchKey);
+      else next.add(branchKey);
+      return next;
+    });
+  };
 
   useEffect(() => { setMounted(true); }, []);
 
@@ -766,6 +777,24 @@ const ContractDashboard: React.FC = () => {
         ? masterContractsForBranch
         : masterContractsForBranch.filter(c => c.carrier?.toLowerCase() === selectedCarrier?.toLowerCase());
 
+      // Track bookings matched to master contracts
+      const matchedOrderNumbers = new Set<string>();
+      carrierFilteredContractsForBranch.forEach(c => {
+        const cBookings = hubBookings.filter(b => {
+          const mainId = c.id.split('__')[0];
+          if (b.contract !== mainId && b.contract !== c.id) return false;
+          if (!c.id.includes('__')) return true;
+          const originRegion = (c as any).originRegion || '';
+          const origins = (c as any).origins || [];
+          if (matchLocationFilter(b.loadPort, originRegion)) return true;
+          if (origins.some((o: string) => matchLocationFilter(b.loadPort, o))) return true;
+          return false;
+        });
+        cBookings.forEach(b => {
+          if (b.order) matchedOrderNumbers.add(b.order);
+        });
+      });
+
       // Build contract sub-rows — ONLY master contracts (no blank booking-only lines)
       const activeContractsData = carrierFilteredContractsForBranch.map(c => {
         const cBooked = branchCodeMatch && (c as any)[branchCodeMatch] ? (c as any)[branchCodeMatch].booked : 0;
@@ -796,6 +825,36 @@ const ContractDashboard: React.FC = () => {
       const matchedBooked = activeContractsData.reduce((sum, c) => sum + c.booked, 0);
       const hubTotalBooked = hubBookings.reduce((sum, bk) => sum + (bk.teu || 0), 0);
       const unmatchedBooked = Math.max(0, hubTotalBooked - matchedBooked);
+
+      // Collect unmatched bookings and group by contract
+      const unmatchedHubBookings = hubBookings.filter(b => !matchedOrderNumbers.has(b.order));
+      const otherContractsMap: Record<string, { id: string; booked: number; carrier: string; orderCount: number }> = {};
+
+      unmatchedHubBookings.forEach(bk => {
+        const cKey = (bk.contract && bk.contract !== 'nan' && bk.contract.trim() !== '') ? bk.contract.trim() : 'UNASSIGNED';
+        if (!otherContractsMap[cKey]) {
+          otherContractsMap[cKey] = {
+            id: cKey,
+            booked: 0,
+            carrier: bk.plannedCarrier || bk.carrierName || 'Various',
+            orderCount: 0,
+          };
+        }
+        otherContractsMap[cKey].booked += (bk.teu || 0);
+        otherContractsMap[cKey].orderCount += 1;
+      });
+
+      if (Object.keys(otherContractsMap).length === 0 && unmatchedBooked > 0) {
+        otherContractsMap['SPOT / OTHER'] = {
+          id: 'SPOT / OTHER',
+          booked: unmatchedBooked,
+          carrier: 'Various',
+          orderCount: 1,
+        };
+      }
+
+      const otherContractsList = Object.values(otherContractsMap).sort((a, b) => b.booked - a.booked);
+
       if (unmatchedBooked > 0 && selectedContract === 'ALL') {
         activeContractsData.push({
           id: 'OTHER / UNPLANNED',
@@ -806,7 +865,8 @@ const ContractDashboard: React.FC = () => {
           contractType: 'SPOT',
           carrier: 'Various',
           noCalc: true,
-          status: 'Unplanned'
+          status: 'Unplanned',
+          otherContracts: otherContractsList,
         });
       }
 
@@ -900,7 +960,7 @@ const ContractDashboard: React.FC = () => {
     return {
       week: wk,
       alloc: round(alloc),
-      booked: Number(booked.toFixed(1)),
+      booked: Math.round(booked),
       util: Number(util.toFixed(1))
     };
   });
@@ -923,7 +983,7 @@ const ContractDashboard: React.FC = () => {
     : { branch: 'N/A', code: 'N/A', teu: 0 };
 
   const branchInsight = highestBranch.branch !== 'N/A'
-    ? `Dominant volume flows heavily through ${highestBranch.branch} (${highestBranch.teu.toFixed(1)} TEU), vastly outpacing other tracking allocations across the operation.`
+    ? `Dominant volume flows heavily through ${highestBranch.branch} (${Math.round(highestBranch.teu)} TEU), vastly outpacing other tracking allocations across the operation.`
     : "No booking activity detected for the selected filters.";
 
   const highestContract = reactiveBookingContractBreakdown.length > 0
@@ -1442,12 +1502,12 @@ const ContractDashboard: React.FC = () => {
                           {/* Booked */}
                           <div className="flex justify-end">
                             <span className={` font-bold text-[14px] px-2.5 py-0.5 rounded-md border tabular-nums ${row.booked > 0 ? 'text-cyan-400 border-cyan-500/20 bg-cyan-500/5' : 'text-slate-600 border-slate-700/30'}`}>
-                              {row.booked.toFixed(1)}
+                              {Math.round(row.booked)}
                             </span>
                           </div>
                           {/* Available */}
                           <span className={` text-[14px] text-right tabular-nums ${row.avail < 0 ? 'text-rose-400' : 'text-slate-300'}`}>
-                            {row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}
+                            {row.avail < 0 ? `(${Math.round(Math.abs(row.avail))})` : Math.round(row.avail)}
                           </span>
                           {/* Utilisation + bar */}
                           <div className="flex flex-col items-end gap-1.5 pr-2">
@@ -1465,49 +1525,126 @@ const ContractDashboard: React.FC = () => {
                         </div>
                         {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
                           <div className="bg-sky-400/10 border-t border-b border-sky-400/20 py-2">
-                            {(row as any).activeContractsData.map((c: any, cIdx: number) => (
-                              <div key={cIdx} className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-1.5 items-center hover:bg-sky-400/10 transition-colors">
-                                <div className="pl-6 flex items-center min-w-0 flex-wrap gap-1">
-                                  <span className="text-[12px] text-indigo-300 font-bold whitespace-nowrap" title={formatContract(c)}>↳ {formatContract(c)}</span>
-                                  {c.contractType && (
-                                    <span className={`ml-1 text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase tracking-wider ${
-                                      c.contractType === 'NAC' ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30' :
-                                      c.contractType === 'BUNDLE' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
-                                      'bg-slate-500/15 text-slate-400 border-slate-500/30'
-                                    }`}>{c.contractType}</span>
+                            {(row as any).activeContractsData.map((c: any, cIdx: number) => {
+                              const isOtherRow = c.id === 'OTHER / UNPLANNED' || (c.otherContracts && c.otherContracts.length > 0);
+                              const isOtherExpanded = expandedOtherBranches.has(row.branch);
+                              return (
+                                <React.Fragment key={cIdx}>
+                                  <div className="grid grid-cols-[minmax(120px,2fr)_1fr_1fr_1fr_1.4fr_1.2fr] gap-x-4 px-6 py-1.5 items-center hover:bg-sky-400/10 transition-colors">
+                                    <div className="pl-6 flex items-center min-w-0 flex-wrap gap-1.5">
+                                      {isOtherRow ? (
+                                        <div
+                                          className="flex items-center gap-2 cursor-pointer group/other select-none"
+                                          onClick={() => toggleOtherBranch(row.branch)}
+                                          title="Click to view/hide unassigned & spot contracts"
+                                        >
+                                          <span className="text-[12px] text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center gap-1.5">
+                                            <span>↳ OTHER</span>
+                                            <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium flex items-center gap-1">
+                                              <span>{c.otherContracts?.length || 0} contracts</span>
+                                              <svg className={`w-3 h-3 text-amber-400 transition-transform duration-200 ${isOtherExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                              </svg>
+                                            </span>
+                                          </span>
+                                          <span className="text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase tracking-wider bg-slate-500/15 text-slate-400 border-slate-500/30">SPOT</span>
+                                        </div>
+                                      ) : (
+                                        <>
+                                          <span className="text-[12px] text-indigo-300 font-bold whitespace-nowrap" title={formatContract(c)}>↳ {formatContract(c)}</span>
+                                          {c.contractType && (
+                                            <span className={`ml-1 text-[9px] px-1.5 py-0.5 rounded border font-bold uppercase tracking-wider ${
+                                              c.contractType === 'NAC' ? 'bg-indigo-500/15 text-indigo-400 border-indigo-500/30' :
+                                              c.contractType === 'BUNDLE' ? 'bg-amber-500/15 text-amber-400 border-amber-500/30' :
+                                              'bg-slate-500/15 text-slate-400 border-slate-500/30'
+                                            }`}>{c.contractType}</span>
+                                          )}
+                                        </>
+                                      )}
+                                    </div>
+                                    <div className="text-[12px] text-slate-300 font-bold text-right tabular-nums">{c.alloc || '-'}</div>
+                                    <div className="flex justify-end">
+                                      <span className="text-[12px] text-blue-500 font-bold tabular-nums">{Math.round(c.booked)}</span>
+                                    </div>
+                                    <span className="text-[12px] text-slate-300 font-bold text-right tabular-nums">{c.avail < 0 ? `(${Math.round(Math.abs(c.avail))})` : Math.round(c.avail)}</span>
+                                    <div className="flex flex-col items-end justify-center pr-2">
+                                      <span className={`text-[12px] font-bold tabular-nums ${
+                                        c.noCalc ? 'text-slate-600' :
+                                        c.alloc === 0 ? 'text-slate-600' :
+                                        c.util > 100 ? 'text-emerald-300' :
+                                        c.util > 80 ? 'text-emerald-400' :
+                                        c.util > 50 ? 'text-rose-400' :
+                                        'text-orange-400'
+                                      }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
+                                    </div>
+                                    {/* Per-line status badge (items #4, #5, #7, #9) */}
+                                    <div className="flex justify-center">
+                                      {c.noCalc ? (
+                                        <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
+                                      ) : c.alloc === 0 ? (
+                                        <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
+                                      ) : c.status === 'Overutilised' ? (
+                                        <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
+                                      ) : c.status === 'Healthy' ? (
+                                        <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
+                                      ) : (
+                                        <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
+                                      )}
+                                    </div>
+                                  </div>
+
+                                  {/* Expandable Scrollable Box for OTHER Contracts */}
+                                  {isOtherRow && isOtherExpanded && c.otherContracts && c.otherContracts.length > 0 && (
+                                    <div className="mx-6 my-2.5 p-4 rounded-2xl bg-[#070c18]/95 border border-amber-500/30 backdrop-blur-xl shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
+                                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-white/10">
+                                        <div className="flex items-center gap-2">
+                                          <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
+                                          <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">
+                                            Unassigned & Spot Contracts in {row.branchName || row.branch}
+                                          </span>
+                                          <span className="text-[10px] text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                                            {c.otherContracts.length} contracts · {Math.round(c.booked)} TEU
+                                          </span>
+                                        </div>
+                                        <div className="relative">
+                                          <input
+                                            type="text"
+                                            placeholder="Filter contract / carrier..."
+                                            value={otherSearchQuery}
+                                            onChange={(e) => setOtherSearchQuery(e.target.value)}
+                                            onClick={(e) => e.stopPropagation()}
+                                            className="bg-white/5 border border-white/15 rounded-lg px-3 py-1 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/60 w-52 transition-all"
+                                          />
+                                        </div>
+                                      </div>
+                                      
+                                      <div className="max-h-60 overflow-y-auto elegant-scrollbar pr-1">
+                                        <div className="grid grid-cols-[1.8fr_1.2fr_1fr_1fr] px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#070c18] z-10">
+                                          <span>Contract #</span>
+                                          <span>Carrier</span>
+                                          <span className="text-center">Orders</span>
+                                          <span className="text-right">Booked (TEU)</span>
+                                        </div>
+                                        <div className="divide-y divide-white/[0.04]">
+                                          {c.otherContracts
+                                            .filter((item: any) => !otherSearchQuery || item.id.toLowerCase().includes(otherSearchQuery.toLowerCase()) || (item.carrier && item.carrier.toLowerCase().includes(otherSearchQuery.toLowerCase())))
+                                            .map((item: any, oIdx: number) => (
+                                              <div key={oIdx} className="grid grid-cols-[1.8fr_1.2fr_1fr_1fr] px-3 py-2 items-center hover:bg-white/[0.04] transition-colors rounded text-[11px]">
+                                                <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
+                                                  {item.id}
+                                                </span>
+                                                <span className="text-slate-400 truncate">{item.carrier || 'Various'}</span>
+                                                <span className="text-center text-slate-400">{item.orderCount}</span>
+                                                <span className="text-right font-bold text-cyan-400 tabular-nums">{Math.round(item.booked)}</span>
+                                              </div>
+                                            ))}
+                                        </div>
+                                      </div>
+                                    </div>
                                   )}
-                                </div>
-                                <div className="text-[12px] text-slate-300 font-bold  text-right tabular-nums">{c.alloc || '-'}</div>
-                                <div className="flex justify-end">
-                                  <span className="text-[12px] text-blue-500 font-bold  tabular-nums">{c.booked.toFixed(1)}</span>
-                                </div>
-                                <span className="text-[12px] text-slate-300 font-bold  text-right tabular-nums">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</span>
-                                <div className="flex flex-col items-end justify-center pr-2">
-                                  <span className={`text-[12px] font-bold tabular-nums ${
-                                    c.noCalc ? 'text-slate-600' :
-                                    c.alloc === 0 ? 'text-slate-600' :
-                                    c.util > 100 ? 'text-emerald-300' :
-                                    c.util > 80 ? 'text-emerald-400' :
-                                    c.util > 50 ? 'text-rose-400' :
-                                    'text-orange-400'
-                                  }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
-                                </div>
-                                {/* Per-line status badge (items #4, #5, #7, #9) */}
-                                <div className="flex justify-center">
-                                  {c.noCalc ? (
-                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
-                                  ) : c.alloc === 0 ? (
-                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
-                                  ) : c.status === 'Overutilised' ? (
-                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
-                                  ) : c.status === 'Healthy' ? (
-                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
-                                  ) : (
-                                    <span className="px-2 py-1 text-[8px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
-                                  )}
-                                </div>
-                              </div>
-                            ))}
+                                </React.Fragment>
+                              );
+                            })}
                           </div>
                         )}
                       </React.Fragment>
@@ -1522,15 +1659,15 @@ const ContractDashboard: React.FC = () => {
                     <span className="text-[10px] font-bold text-white uppercase tracking-widest">Total</span>
                   </div>
                   <span className=" font-bold text-white text-[12px] text-right tabular-nums">
-                    {reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0).toFixed(0)}
+                    {Math.round(reactiveBranchSnapshot.reduce((s, r) => s + r.alloc, 0))}
                   </span>
                   <div className="flex justify-end">
                     <span className=" font-bold text-cyan-400 text-[12px] tabular-nums drop-shadow-[0_0_6px_rgba(34,211,238,0.5)]">
-                      {reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0).toFixed(1)}
+                      {Math.round(reactiveBranchSnapshot.reduce((s, r) => s + r.booked, 0))}
                     </span>
                   </div>
                   <span className=" font-bold text-slate-300 text-[12px] text-right tabular-nums">
-                    {reactiveBranchSnapshot.reduce((s, r) => s + r.avail, 0).toFixed(1)}
+                    {Math.round(reactiveBranchSnapshot.reduce((s, r) => s + r.avail, 0))}
                   </span>
                   <div className="flex justify-end pr-2">
                     {(() => {
@@ -1760,7 +1897,7 @@ const ContractDashboard: React.FC = () => {
                               )}
                             </td>
                             <td className="px-4 py-4  text-[13px] text-right font-bold text-slate-300">{row.alloc}</td>
-                            <td className="px-4 py-4  text-[13px] text-right font-bold text-emerald-400">{row.booked.toFixed(1)}</td>
+                            <td className="px-4 py-4  text-[13px] text-right font-bold text-emerald-400">{Math.round(row.booked)}</td>
                             <td className="px-4 py-4  text-[13px] text-right font-bold text-cyan-400">{row.avail}</td>
                             <td className="px-4 py-4 text-right">
                               <div className="flex flex-col items-end gap-1.5">
@@ -2128,7 +2265,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-5  text-xs text-center text-slate-300">{formatDate(row.etd)}</td>
                             <td className="px-6 py-5  text-xs text-center text-slate-300">{formatDate(row.eta)}</td>
                             <td className="px-6 py-5 text-center  text-xs bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
-                            <td className={`px-6 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{rTeu.toFixed(1)}</td>
+                            <td className={`px-6 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{Math.round(rTeu)}</td>
                           </tr>
                         );
                       })}
@@ -2488,7 +2625,7 @@ const ContractDashboard: React.FC = () => {
                                   return (
                                     <React.Fragment key={wk}>
                                       <td className="px-2 py-6 text-center border-r border-white/10  text-xs text-slate-300">{d.alloc}</td>
-                                      <td className="px-2 py-6 text-center border-r border-white/10  text-xs text-slate-300">{d.booked.toFixed(1)}</td>
+                                      <td className="px-2 py-6 text-center border-r border-white/10  text-xs text-slate-300">{Math.round(d.booked)}</td>
                                       <td className={`px-2 py-6 text-center border-r border-white/10  font-bold text-sm ${utilColor}`}>
                                         <div className={`mx-auto px-2 py-1 rounded-lg border ${utilColor}`}>{d.util}%</div>
                                       </td>
@@ -2509,7 +2646,7 @@ const ContractDashboard: React.FC = () => {
                                     return (
                                       <React.Fragment key={wk}>
                                         <td className="px-2 py-5 text-center border-r border-white/10  text-xs text-slate-300">{d.alloc}</td>
-                                        <td className="px-2 py-5 text-center border-r border-white/10  text-xs text-slate-300">{d.booked.toFixed(1)}</td>
+                                        <td className="px-2 py-5 text-center border-r border-white/10  text-xs text-slate-300">{Math.round(d.booked)}</td>
                                         <td className={`px-2 py-5 text-center border-r border-white/10  font-bold text-xs ${utilColor}`}>
                                           {d.util > 0 ? `${d.util}%` : '-'}
                                         </td>
@@ -2533,7 +2670,7 @@ const ContractDashboard: React.FC = () => {
                           {reactiveWeeklyTrendData.map((wk, i) => (
                             <React.Fragment key={i}>
                               <td className="px-2 py-8 text-center border-r border-white/10  font-bold text-lg text-white">{wk.alloc}</td>
-                              <td className="px-2 py-8 text-center border-r border-white/10  font-bold text-lg text-white">{wk.booked.toFixed(1)}</td>
+                              <td className="px-2 py-8 text-center border-r border-white/10  font-bold text-lg text-white">{Math.round(wk.booked)}</td>
                               <td className={`px-2 py-8 text-center border-r border-white/10  font-bold text-xl ${getUtilColor(wk.util, 'text')} drop-shadow-[0_0_10px_currentColor]`}>{wk.util}%</td>
                             </React.Fragment>
                           ))}
@@ -2585,7 +2722,7 @@ const ContractDashboard: React.FC = () => {
                         <tr key={i} className={row.code === 'ALL' ? 'bg-emerald-900/20' : 'hover:bg-white/[0.02] transition-colors'}>
                           <td className={`px-6 py-4  text-sm font-bold text-center ${row.code === 'ALL' ? 'text-white' : 'text-slate-300'}`}>{row.code}</td>
                           <td className={`px-6 py-4 font-medium ${row.code === 'ALL' ? 'text-white' : 'text-slate-300'}`}>{row.branch}</td>
-                          <td className="px-6 py-4  text-base font-bold text-emerald-400 text-right drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{row.teu.toFixed(1)}</td>
+                          <td className="px-6 py-4  text-base font-bold text-emerald-400 text-right drop-shadow-[0_0_8px_rgba(52,211,153,0.3)]">{Math.round(row.teu)}</td>
                           <td className={`px-6 py-4  text-sm text-right ${row.code === 'ALL' ? 'text-white font-bold' : 'text-slate-400'}`}>{row.bookings}</td>
                           <td className={`px-6 py-4  text-sm text-right ${row.code === 'ALL' ? 'text-white font-bold' : 'text-slate-400'}`}>{row.contracts || '-'}</td>
                         </tr>
@@ -2635,7 +2772,7 @@ const ContractDashboard: React.FC = () => {
                         <tr key={i} className="hover:bg-white/[0.02] transition-colors">
                           <td className="px-6 py-4  text-sm font-bold text-slate-300">{row.contract}</td>
                           <td className="px-6 py-4  text-sm font-bold text-cyan-400 text-center"><div className="px-2 py-1 bg-cyan-500/10 rounded border border-cyan-500/20 w-min mx-auto">{row.region}</div></td>
-                          <td className="px-6 py-4  text-base font-bold text-white text-right">{row.teu.toFixed(1)}</td>
+                          <td className="px-6 py-4  text-base font-bold text-white text-right">{Math.round(row.teu)}</td>
                           <td className="px-6 py-4  text-sm font-bold text-slate-400 text-right">{row.bookings}</td>
                         </tr>
                       ))}
@@ -2741,10 +2878,10 @@ const ContractDashboard: React.FC = () => {
                               <td className="px-8 py-5  text-xs text-slate-300">N/A</td>
                               <td className="px-8 py-5  text-xs text-slate-300">N/A</td>
                               <td className="px-8 py-5 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20  tracking-widest">{row.branch}</div></td>
-                              <td className={`px-8 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{rTeu.toFixed(2)}</td>
+                              <td className={`px-8 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{Math.round(rTeu)}</td>
                               <td className="px-8 py-5  text-xs text-slate-400 text-right">{row.containers || '-'}</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-300">{row.mscWeek}</td>
-                              <td className={`px-8 py-5  text-xs text-right ${hasZeroTeu ? 'text-rose-500' : 'text-slate-400'}`}>{rTeu.toFixed(2)}</td>
+                              <td className={`px-8 py-5  text-xs text-right ${hasZeroTeu ? 'text-rose-500' : 'text-slate-400'}`}>{Math.round(rTeu)}</td>
                               <td className="px-8 py-5  text-xs text-slate-400 text-right">-</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-300">WK {row.mscWeek}</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-400">-</td>
@@ -3081,8 +3218,8 @@ const ContractDashboard: React.FC = () => {
                                 </div>
                               </td>
                               <td className="p-8 text-right  text-xl text-slate-300">{row.alloc}</td>
-                              <td className="p-8 text-right  text-xl text-cyan-400 font-bold">{row.booked.toFixed(1)}</td>
-                              <td className={`p-8 text-right  text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.abs(row.avail).toFixed(1)})` : row.avail.toFixed(1)}</td>
+                              <td className="p-8 text-right  text-xl text-cyan-400 font-bold">{Math.round(row.booked)}</td>
+                              <td className={`p-8 text-right  text-xl ${row.avail < 0 ? 'text-rose-400' : 'text-slate-400'}`}>{row.avail < 0 ? `(${Math.round(Math.abs(row.avail))})` : Math.round(row.avail)}</td>
                               <td className={`p-8 text-right  text-xl font-bold ${s.util}`}>{row.util.toFixed(1)}%</td>
                               <td className="p-8 text-center">
                                 <span className="px-4 py-2 text-xs font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-400 border-slate-500/20">
@@ -3091,38 +3228,114 @@ const ContractDashboard: React.FC = () => {
                               </td>
                             </tr>
                             {(row as any).activeContractsData && (row as any).activeContractsData.length > 0 && (
-                              (row as any).activeContractsData.map((c: any, cIdx: number) => (
-                                <tr key={`nested-${i}-${cIdx}`} className="bg-sky-400/10 hover:bg-sky-400/20 transition-colors border-b border-sky-400/20">
-                                  <td className="pl-16 p-4 border-l-4 border-sky-500/30">
-                                    <span className="text-base text-indigo-300 font-bold ">↳ {c.id}</span>
-                                  </td>
-                                  <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.alloc || '-'}</td>
-                                  <td className="p-4 text-right  text-lg text-blue-500 font-bold">{c.booked.toFixed(1)}</td>
-                                  <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.avail < 0 ? `(${Math.abs(c.avail).toFixed(1)})` : c.avail.toFixed(1)}</td>
-                                  <td className="p-4 text-right  text-lg font-bold">
-                                    <span className={`${
-                                      c.noCalc ? 'text-slate-600' :
-                                      c.alloc === 0 ? 'text-slate-600' :
-                                      c.util > 100 ? 'text-emerald-300' :
-                                      c.util > 80 ? 'text-emerald-400' :
-                                      'text-rose-400'
-                                    }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
-                                  </td>
-                                  <td className="p-4 text-center">
-                                    {c.noCalc ? (
-                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
-                                    ) : c.alloc === 0 ? (
-                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
-                                    ) : c.status === 'Overutilised' ? (
-                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
-                                    ) : c.status === 'Healthy' ? (
-                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
-                                    ) : (
-                                      <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
+                              (row as any).activeContractsData.map((c: any, cIdx: number) => {
+                                const isOtherRow = c.id === 'OTHER / UNPLANNED' || (c.otherContracts && c.otherContracts.length > 0);
+                                const isOtherExpanded = expandedOtherBranches.has(row.branch);
+                                return (
+                                  <React.Fragment key={`nested-${i}-${cIdx}`}>
+                                    <tr className="bg-sky-400/10 hover:bg-sky-400/20 transition-colors border-b border-sky-400/20">
+                                      <td className="pl-16 p-4 border-l-4 border-sky-500/30">
+                                        {isOtherRow ? (
+                                          <div
+                                            className="flex items-center gap-3 cursor-pointer group/other select-none"
+                                            onClick={() => toggleOtherBranch(row.branch)}
+                                            title="Click to view/hide unassigned & spot contracts"
+                                          >
+                                            <span className="text-base text-amber-300 font-bold hover:text-amber-200 transition-colors flex items-center gap-2">
+                                              <span>↳ OTHER</span>
+                                              <span className="text-xs px-2 py-0.5 rounded-full bg-amber-500/20 text-amber-300 border border-amber-500/30 font-medium flex items-center gap-1">
+                                                <span>{c.otherContracts?.length || 0} contracts</span>
+                                                <svg className={`w-3.5 h-3.5 text-amber-400 transition-transform duration-200 ${isOtherExpanded ? 'rotate-180' : ''}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+                                                </svg>
+                                              </span>
+                                            </span>
+                                            <span className="text-[10px] px-2 py-0.5 rounded border font-bold uppercase tracking-wider bg-slate-500/15 text-slate-400 border-slate-500/30">SPOT</span>
+                                          </div>
+                                        ) : (
+                                          <span className="text-base text-indigo-300 font-bold ">↳ {c.id}</span>
+                                        )}
+                                      </td>
+                                      <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.alloc || '-'}</td>
+                                      <td className="p-4 text-right  text-lg text-blue-500 font-bold">{Math.round(c.booked)}</td>
+                                      <td className="p-4 text-right  text-lg text-slate-300 font-bold">{c.avail < 0 ? `(${Math.round(Math.abs(c.avail))})` : Math.round(c.avail)}</td>
+                                      <td className="p-4 text-right  text-lg font-bold">
+                                        <span className={`${
+                                          c.noCalc ? 'text-slate-600' :
+                                          c.alloc === 0 ? 'text-slate-600' :
+                                          c.util > 100 ? 'text-emerald-300' :
+                                          c.util > 80 ? 'text-emerald-400' :
+                                          'text-rose-400'
+                                        }`}>{c.noCalc || c.alloc === 0 ? '—' : `${c.util.toFixed(1)}%`}</span>
+                                      </td>
+                                      <td className="p-4 text-center">
+                                        {c.noCalc ? (
+                                          <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">N/A</span>
+                                        ) : c.alloc === 0 ? (
+                                          <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-slate-500/10 text-slate-500 border-slate-500/20">—</span>
+                                        ) : c.status === 'Overutilised' ? (
+                                          <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-400/10 text-emerald-300 border-emerald-400/25">{c.status}</span>
+                                        ) : c.status === 'Healthy' ? (
+                                          <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-emerald-500/10 text-emerald-400 border-emerald-500/25">{c.status}</span>
+                                        ) : (
+                                          <span className="px-3 py-1.5 text-[9px] font-bold rounded-full border uppercase tracking-wider bg-rose-500/10 text-rose-400 border-rose-500/25">{c.status}</span>
+                                        )}
+                                      </td>
+                                    </tr>
+                                    {isOtherRow && isOtherExpanded && c.otherContracts && c.otherContracts.length > 0 && (
+                                      <tr className="bg-[#070c18]">
+                                        <td colSpan={6} className="p-6">
+                                          <div className="p-5 rounded-2xl bg-[#0b0f19] border border-amber-500/30 backdrop-blur-xl shadow-2xl">
+                                            <div className="flex items-center justify-between gap-4 pb-4 mb-4 border-b border-white/10">
+                                              <div className="flex items-center gap-3">
+                                                <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
+                                                <span className="text-sm font-bold text-slate-200 uppercase tracking-wider">
+                                                  Unassigned & Spot Contracts Breakdown ({row.branchName || row.branch})
+                                                </span>
+                                                <span className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 px-3 py-1 rounded-full">
+                                                  {c.otherContracts.length} contracts · {Math.round(c.booked)} TEU
+                                                </span>
+                                              </div>
+                                              <div className="relative">
+                                                <input
+                                                  type="text"
+                                                  placeholder="Filter contract / carrier..."
+                                                  value={otherSearchQuery}
+                                                  onChange={(e) => setOtherSearchQuery(e.target.value)}
+                                                  onClick={(e) => e.stopPropagation()}
+                                                  className="bg-white/5 border border-white/15 rounded-lg px-3.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/60 w-60"
+                                                />
+                                              </div>
+                                            </div>
+                                            <div className="max-h-72 overflow-y-auto elegant-scrollbar pr-2">
+                                              <div className="grid grid-cols-[2fr_1.5fr_1fr_1fr] px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#0b0f19] z-10">
+                                                <span>Contract #</span>
+                                                <span>Carrier</span>
+                                                <span className="text-center">Orders</span>
+                                                <span className="text-right">Booked (TEU)</span>
+                                              </div>
+                                              <div className="divide-y divide-white/[0.04]">
+                                                {c.otherContracts
+                                                  .filter((item: any) => !otherSearchQuery || item.id.toLowerCase().includes(otherSearchQuery.toLowerCase()) || (item.carrier && item.carrier.toLowerCase().includes(otherSearchQuery.toLowerCase())))
+                                                  .map((item: any, oIdx: number) => (
+                                                    <div key={oIdx} className="grid grid-cols-[2fr_1.5fr_1fr_1fr] px-4 py-2.5 items-center hover:bg-white/[0.04] transition-colors rounded text-xs">
+                                                      <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
+                                                        {item.id}
+                                                      </span>
+                                                      <span className="text-slate-400 truncate">{item.carrier || 'Various'}</span>
+                                                      <span className="text-center text-slate-400">{item.orderCount}</span>
+                                                      <span className="text-right font-bold text-cyan-400 tabular-nums">{Math.round(item.booked)}</span>
+                                                    </div>
+                                                  ))}
+                                              </div>
+                                            </div>
+                                          </div>
+                                        </td>
+                                      </tr>
                                     )}
-                                  </td>
-                                </tr>
-                              ))
+                                  </React.Fragment>
+                                );
+                              })
                             )}
                           </React.Fragment>
                         );
@@ -3195,7 +3408,7 @@ const ContractDashboard: React.FC = () => {
                             return (
                               <React.Fragment key={bi}>
                                 <td className="px-2 py-8 text-center  text-xs text-slate-400 border-r border-white/5">{b.alloc}</td>
-                                <td className={`px-2 py-8 text-center  text-sm font-black border-r border-white/5 ${util > 100 ? 'text-rose-400' : 'text-slate-200'}`}>{b.booked.toFixed(1)}</td>
+                                <td className={`px-2 py-8 text-center  text-sm font-black border-r border-white/5 ${util > 100 ? 'text-rose-400' : 'text-slate-200'}`}>{Math.round(b.booked)}</td>
                                 <td className={`px-2 py-8 text-center border-r border-white/5  text-sm font-black ${utilColor} bg-white/[0.02]`}>{util.toFixed(0)}%</td>
                               </React.Fragment>
                             );

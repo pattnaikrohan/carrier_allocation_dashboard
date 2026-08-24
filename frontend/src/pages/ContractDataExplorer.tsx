@@ -108,8 +108,8 @@ const ContractDataExplorer: React.FC = () => {
                       <td className="px-4 py-3 font-mono text-slate-300">{row.houseBill}</td>
                       <td className="px-4 py-3 font-mono text-slate-300">{row.masterBill}</td>
                       <td className="px-4 py-3">{row.branch}</td>
-                      <td className="px-4 py-3 text-right font-bold text-cyan-400 bg-cyan-500/5">{row.totalTeu.toFixed(1)}</td>
-                      <td className="px-4 py-3 text-right">{row.totalFeu.toFixed(1)}</td>
+                      <td className="px-4 py-3 text-right font-bold text-cyan-400 bg-cyan-500/5">{Math.round(row.totalTeu)}</td>
+                      <td className="px-4 py-3 text-right">{Math.round(row.totalFeu)}</td>
                       <td className="px-4 py-3">{row.mscWeek}</td>
                       <td className="px-4 py-3 text-slate-400 font-mono">{row.country}</td>
                       <td className="px-4 py-3">{row.year}</td>
