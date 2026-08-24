@@ -1594,38 +1594,38 @@ const ContractDashboard: React.FC = () => {
 
                                   {/* Expandable Scrollable Box for OTHER Contracts */}
                                   {isOtherRow && isOtherExpanded && c.otherContracts && c.otherContracts.length > 0 && (
-                                    <div className="mx-6 my-2.5 p-4 rounded-2xl bg-[#070c18]/95 border border-amber-500/30 backdrop-blur-xl shadow-[0_12px_32px_rgba(0,0,0,0.6)]">
-                                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-white/10">
-                                        <div className="flex items-center gap-2">
-                                          <div className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                                          <span className="text-[11px] font-bold text-slate-200 uppercase tracking-wider">
+                                    <div className="mx-6 my-3 p-5 rounded-2xl bg-white border-2 border-amber-300/80 shadow-[0_10px_25px_rgba(0,0,0,0.06)]">
+                                      <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 pb-3 mb-3 border-b border-slate-200">
+                                        <div className="flex items-center gap-2.5">
+                                          <div className="w-2.5 h-2.5 rounded-full bg-amber-500 animate-pulse" />
+                                          <span className="text-xs font-bold text-slate-800 uppercase tracking-wider">
                                             Unassigned & Spot Contracts in {row.branchName || row.branch}
                                           </span>
-                                          <span className="text-[10px] text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 px-2.5 py-0.5 rounded-full">
+                                          <span className="text-[11px] text-amber-900 font-bold bg-amber-100/90 border border-amber-300 px-3 py-0.5 rounded-full">
                                             {c.otherContracts.length} contracts · {Math.round(c.booked)} TEU
                                           </span>
                                         </div>
                                         <div className="relative">
                                           <input
                                             type="text"
-                                            placeholder="Filter contract / carrier..."
+                                            placeholder="Filter contract / order / buyer..."
                                             value={otherSearchQuery}
                                             onChange={(e) => setOtherSearchQuery(e.target.value)}
                                             onClick={(e) => e.stopPropagation()}
-                                            className="bg-white/5 border border-white/15 rounded-lg px-3 py-1 text-[11px] text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/60 w-52 transition-all"
+                                            className="bg-slate-50 hover:bg-white focus:bg-white border border-slate-300 focus:border-amber-500 rounded-lg px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-amber-400/20 w-60 transition-all shadow-sm"
                                           />
                                         </div>
                                       </div>
                                       
-                                      <div className="max-h-64 overflow-y-auto elegant-scrollbar pr-1">
-                                        <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-1.5 text-[10px] font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#070c18] z-10">
+                                      <div className="max-h-72 overflow-y-auto elegant-scrollbar pr-1 rounded-xl border border-slate-200/80 bg-slate-50/50">
+                                        <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-2 text-[10px] font-bold text-slate-600 uppercase tracking-wider bg-slate-100 border-b border-slate-200 sticky top-0 z-10">
                                           <span>Contract #</span>
                                           <span>Order No.</span>
                                           <span>Buyer / Client</span>
                                           <span>Carrier</span>
                                           <span className="text-right">TEU</span>
                                         </div>
-                                        <div className="divide-y divide-white/[0.04]">
+                                        <div className="divide-y divide-slate-100 bg-white">
                                           {c.otherContracts
                                             .filter((item: any) => {
                                               if (!otherSearchQuery) return true;
@@ -1638,22 +1638,24 @@ const ContractDashboard: React.FC = () => {
                                               );
                                             })
                                             .map((item: any, oIdx: number) => (
-                                              <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-2 items-center hover:bg-white/[0.04] transition-colors rounded text-[11px]">
-                                                <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
+                                              <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-3 py-2.5 items-center hover:bg-amber-50/70 transition-colors text-[11px]">
+                                                <span className="font-bold text-indigo-700 font-mono truncate" title={item.id}>
                                                   {item.id}
                                                 </span>
-                                                <span className="text-slate-300 font-mono truncate" title={item.orderNo}>
+                                                <span className="text-slate-800 font-mono font-medium truncate" title={item.orderNo}>
                                                   {item.orderNo}
                                                 </span>
-                                                <span className="text-slate-400 truncate" title={item.buyer}>
+                                                <span className="text-slate-600 font-medium truncate" title={item.buyer}>
                                                   {item.buyer || '-'}
                                                 </span>
-                                                <span className="text-slate-400 truncate" title={item.carrier}>
+                                                <span className="text-slate-600 font-medium truncate" title={item.carrier}>
                                                   {item.carrier || 'Various'}
                                                 </span>
-                                                <span className="text-right font-bold text-cyan-400 tabular-nums">
-                                                  {Math.round(item.booked)}
-                                                </span>
+                                                <div className="flex justify-end">
+                                                  <span className="font-bold text-cyan-800 tabular-nums px-2 py-0.5 rounded bg-cyan-50 border border-cyan-200 text-[11px]">
+                                                    {Math.round(item.booked)}
+                                                  </span>
+                                                </div>
                                               </div>
                                             ))}
                                         </div>
@@ -3305,39 +3307,39 @@ const ContractDashboard: React.FC = () => {
                                       </td>
                                     </tr>
                                     {isOtherRow && isOtherExpanded && c.otherContracts && c.otherContracts.length > 0 && (
-                                      <tr className="bg-[#070c18]">
+                                      <tr className="bg-slate-950">
                                         <td colSpan={6} className="p-6">
-                                          <div className="p-5 rounded-2xl bg-[#0b0f19] border border-amber-500/30 backdrop-blur-xl shadow-2xl">
-                                            <div className="flex items-center justify-between gap-4 pb-4 mb-4 border-b border-white/10">
+                                          <div className="p-6 rounded-2xl bg-slate-900 border-2 border-amber-400/50 shadow-2xl">
+                                            <div className="flex items-center justify-between gap-4 pb-4 mb-4 border-b border-slate-800">
                                               <div className="flex items-center gap-3">
-                                                <div className="w-2.5 h-2.5 rounded-full bg-amber-400 animate-pulse" />
-                                                <span className="text-sm font-bold text-slate-200 uppercase tracking-wider">
+                                                <div className="w-3 h-3 rounded-full bg-amber-400 animate-pulse" />
+                                                <span className="text-sm font-bold text-white uppercase tracking-wider">
                                                   Unassigned & Spot Contracts Breakdown ({row.branchName || row.branch})
                                                 </span>
-                                                <span className="text-xs text-amber-300 font-semibold bg-amber-500/15 border border-amber-500/30 px-3 py-1 rounded-full">
+                                                <span className="text-xs text-amber-300 font-bold bg-amber-500/20 border border-amber-400/50 px-3 py-1 rounded-full">
                                                   {c.otherContracts.length} contracts · {Math.round(c.booked)} TEU
                                                 </span>
                                               </div>
                                               <div className="relative">
                                                 <input
                                                   type="text"
-                                                  placeholder="Filter contract / carrier..."
+                                                  placeholder="Filter contract / order / buyer..."
                                                   value={otherSearchQuery}
                                                   onChange={(e) => setOtherSearchQuery(e.target.value)}
                                                   onClick={(e) => e.stopPropagation()}
-                                                  className="bg-white/5 border border-white/15 rounded-lg px-3.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-amber-400/60 w-60"
+                                                  className="bg-slate-800 border border-slate-600 rounded-lg px-3.5 py-1.5 text-xs text-white placeholder-slate-400 focus:outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 w-64 transition-all"
                                                 />
                                               </div>
                                             </div>
-                                            <div className="max-h-80 overflow-y-auto elegant-scrollbar pr-2">
-                                              <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-2 text-xs font-bold text-slate-400 uppercase tracking-wider bg-white/[0.03] rounded-lg mb-1 sticky top-0 bg-[#0b0f19] z-10">
+                                            <div className="max-h-80 overflow-y-auto elegant-scrollbar pr-2 rounded-xl border border-slate-800 bg-slate-950/60">
+                                              <div className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-2.5 text-xs font-bold text-slate-300 uppercase tracking-wider bg-slate-800 border-b border-slate-700 sticky top-0 z-10">
                                                 <span>Contract #</span>
                                                 <span>Order No.</span>
                                                 <span>Buyer / Client</span>
                                                 <span>Carrier</span>
                                                 <span className="text-right">TEU</span>
                                               </div>
-                                              <div className="divide-y divide-white/[0.04]">
+                                              <div className="divide-y divide-slate-800/80 bg-slate-900/50">
                                                 {c.otherContracts
                                                   .filter((item: any) => {
                                                     if (!otherSearchQuery) return true;
@@ -3350,22 +3352,24 @@ const ContractDashboard: React.FC = () => {
                                                     );
                                                   })
                                                   .map((item: any, oIdx: number) => (
-                                                    <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-2.5 items-center hover:bg-white/[0.04] transition-colors rounded text-xs">
+                                                    <div key={oIdx} className="grid grid-cols-[1.5fr_1.2fr_1.5fr_1.2fr_0.8fr] px-4 py-3 items-center hover:bg-amber-500/10 transition-colors text-xs">
                                                       <span className="font-bold text-indigo-300 font-mono truncate" title={item.id}>
                                                         {item.id}
                                                       </span>
-                                                      <span className="text-slate-300 font-mono truncate" title={item.orderNo}>
+                                                      <span className="text-slate-200 font-mono font-medium truncate" title={item.orderNo}>
                                                         {item.orderNo}
                                                       </span>
-                                                      <span className="text-slate-400 truncate" title={item.buyer}>
+                                                      <span className="text-slate-300 font-medium truncate" title={item.buyer}>
                                                         {item.buyer || '-'}
                                                       </span>
-                                                      <span className="text-slate-400 truncate" title={item.carrier}>
+                                                      <span className="text-slate-400 font-medium truncate" title={item.carrier}>
                                                         {item.carrier || 'Various'}
                                                       </span>
-                                                      <span className="text-right font-bold text-cyan-400 tabular-nums">
-                                                        {Math.round(item.booked)}
-                                                      </span>
+                                                      <div className="flex justify-end">
+                                                        <span className="font-bold text-cyan-300 tabular-nums px-2.5 py-0.5 rounded bg-cyan-950/80 border border-cyan-500/40 text-xs">
+                                                          {Math.round(item.booked)}
+                                                        </span>
+                                                      </div>
                                                     </div>
                                                   ))}
                                               </div>
