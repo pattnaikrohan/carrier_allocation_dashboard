@@ -89,34 +89,44 @@ const ContractDataExplorer: React.FC = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-800 text-sm">
-                  {BOOKING_LOG_DATA.map((row, i) => (
-                    <tr key={i} className="hover:bg-slate-800/40 transition-colors">
-                      <td className="px-4 py-3 font-mono text-cyan-300 sticky left-0 z-10 bg-slate-900/50 backdrop-blur border-r border-slate-700/50">{row.contract}</td>
-                      <td className="px-4 py-3 text-white font-medium sticky left-[125px] z-10 bg-slate-900/50 backdrop-blur shadow-[4px_0_15px_-3px_rgba(0,0,0,0.3)]">{row.order}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.etd}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.eta}</td>
-                      <td className="px-4 py-3">{row.depVessel}</td>
-                      <td className="px-4 py-3 text-slate-400">{row.depVoyage}</td>
-                      <td className="px-4 py-3">{row.arrVessel}</td>
-                      <td className="px-4 py-3 text-slate-400">{row.arrVoyage}</td>
-                      <td className="px-4 py-3">{row.buyer}</td>
-                      <td className="px-4 py-3">{row.supplier}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.goodsOrigin}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.loadPort}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.dischargePort}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.goodsDest}</td>
-                      <td className="px-4 py-3 font-mono text-slate-300">{row.houseBill}</td>
-                      <td className="px-4 py-3 font-mono text-slate-300">{row.masterBill}</td>
-                      <td className="px-4 py-3">{row.branch}</td>
-                      <td className="px-4 py-3 text-right font-bold text-cyan-400 bg-cyan-500/5">{Math.round(row.totalTeu)}</td>
-                      <td className="px-4 py-3 text-right">{Math.round(row.totalFeu)}</td>
-                      <td className="px-4 py-3">{row.mscWeek}</td>
-                      <td className="px-4 py-3 text-slate-400 font-mono">{row.country}</td>
-                      <td className="px-4 py-3">{row.year}</td>
-                      <td className="px-4 py-3 text-center">{row.qtr}</td>
-                      <td className="px-4 py-3">{row.region}</td>
-                    </tr>
-                  ))}
+                    {BOOKING_LOG_DATA.map((row, i) => {
+                      const isBcn = row.bcnFlag === true;
+                      const rTeu = row.teu ?? row.totalTeu ?? 0;
+                      return (
+                      <tr key={i} className="hover:bg-slate-800/40 transition-colors">
+                        <td className="px-4 py-3 font-mono text-cyan-300 sticky left-0 z-10 bg-slate-900/50 backdrop-blur border-r border-slate-700/50">{row.contract}</td>
+                        <td className="px-4 py-3 text-white font-medium sticky left-[125px] z-10 bg-slate-900/50 backdrop-blur shadow-[4px_0_15px_-3px_rgba(0,0,0,0.3)]">
+                          {row.order}
+                          {isBcn && <span className="ml-1.5 px-1 py-0.5 text-[9px] font-bold rounded bg-orange-500/20 text-orange-400 border border-orange-500/30">BCN</span>}
+                        </td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.etd}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.eta}</td>
+                        <td className="px-4 py-3">{row.depVessel}</td>
+                        <td className="px-4 py-3 text-slate-400">{row.depVoyage}</td>
+                        <td className="px-4 py-3">{row.arrVessel}</td>
+                        <td className="px-4 py-3 text-slate-400">{row.arrVoyage}</td>
+                        <td className="px-4 py-3">{row.buyer}</td>
+                        <td className="px-4 py-3">{row.supplier}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.goodsOrigin}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.loadPort}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.dischargePort}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.goodsDest}</td>
+                        <td className="px-4 py-3 font-mono text-slate-300">{row.houseBill}</td>
+                        <td className="px-4 py-3 font-mono text-slate-300">{row.masterBill || row.masterWaybill}</td>
+                        <td className="px-4 py-3">{row.branch}</td>
+                        <td className={`px-4 py-3 text-right font-bold ${isBcn ? 'text-orange-400 line-through opacity-60' : 'text-cyan-400 bg-cyan-500/5'}`}>
+                          {Math.round(rTeu)}
+                          {isBcn && <span className="ml-1 text-[8px] text-orange-400 no-underline font-bold inline-block" style={{textDecoration: 'none'}}>BCN</span>}
+                        </td>
+                        <td className="px-4 py-3 text-right">{Math.round(row.totalFeu ?? 0)}</td>
+                        <td className="px-4 py-3">{row.mscWeek}</td>
+                        <td className="px-4 py-3 text-slate-400 font-mono">{row.country}</td>
+                        <td className="px-4 py-3">{row.year}</td>
+                        <td className="px-4 py-3 text-center">{row.qtr}</td>
+                        <td className="px-4 py-3">{row.region}</td>
+                      </tr>
+                    );
+                    })}
                 </tbody>
               </table>
             )}

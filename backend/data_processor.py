@@ -484,7 +484,10 @@ def process_data_from_azure(force_source: str = None) -> str:
         'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
         'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
-        'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
+        'BCN': 'bcn', 'BCN_FLAG': 'bcnFlag', 'Bcn_Flag': 'bcnFlag', 'bcn_flag': 'bcnFlag',
+        'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
+        'CONTRACT_NUMBER': 'contractNumber', 'Contract Number': 'contractNumber', 'contract_number': 'contractNumber',
+        'MASTER_WAYBILL': 'masterWaybill', 'Master Waybill': 'masterWaybill', 'Master Bill': 'masterWaybill', 'MASTER WAYBILL': 'masterWaybill', 'master_waybill': 'masterWaybill',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier',
         'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
@@ -511,12 +514,18 @@ def process_data_from_azure(force_source: str = None) -> str:
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
 
-    # --- Filter out BCN orders (item #1) ---
-    if 'bcn' in df.columns:
-        df['bcn'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
-        bcn_count = df['bcn'].sum()
-        df = df[~df['bcn']]
-        log(f"Excluded {int(bcn_count)} BCN orders")
+    # --- BCN_FLAG handling: zero out TEU for BCN duplicates (keep row for visibility) ---
+    if 'bcnFlag' in df.columns:
+        df['bcnFlag'] = df['bcnFlag'].apply(lambda x: str(x).strip().upper() in ('Y', 'YES', '1', 'TRUE'))
+        bcn_count = int(df['bcnFlag'].sum())
+        df.loc[df['bcnFlag'], 'teu'] = 0
+        log(f"BCN_FLAG: zeroed TEU for {bcn_count} duplicate orders (rows kept)")
+    elif 'bcn' in df.columns:
+        # Legacy fallback for old BCN column
+        df['bcnFlag'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
+        bcn_count = int(df['bcnFlag'].sum())
+        df.loc[df['bcnFlag'], 'teu'] = 0
+        log(f"BCN (legacy): zeroed TEU for {bcn_count} duplicate orders (rows kept)")
 
     # --- Filter out cancelled orders (item #6) ---
     if 'cancelled_orders' in df.columns:
@@ -952,7 +961,10 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
         'Branch': 'branch', 'Created Branch': 'branch', 'BRANCH': 'branch',
         'Week No': 'week', 'CW Week No': 'week', 'WEEK NO': 'week',
         'Order Number': 'order', 'ORDER_NUMBER': 'order', 'Est. Departure': 'etd', 'EST_DEPARTURE': 'etd', 'Est. Arrival': 'eta', 'EST_ARRIVAL': 'eta',
-        'BCN': 'bcn', 'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
+        'BCN': 'bcn', 'BCN_FLAG': 'bcnFlag', 'Bcn_Flag': 'bcnFlag', 'bcn_flag': 'bcnFlag',
+        'CANCELLED_ORDERS': 'cancelled_orders', 'Cancelled_Orders': 'cancelled_orders', 'cancelled_orders': 'cancelled_orders',
+        'CONTRACT_NUMBER': 'contractNumber', 'Contract Number': 'contractNumber', 'contract_number': 'contractNumber',
+        'MASTER_WAYBILL': 'masterWaybill', 'Master Waybill': 'masterWaybill', 'Master Bill': 'masterWaybill', 'MASTER WAYBILL': 'masterWaybill', 'master_waybill': 'masterWaybill',
         'Departure Vessel': 'depVessel', 'Departure Voyage': 'depVoyage', 'DEPARTURE VESSEL': 'depVessel', 'DEPARTURE VOYAGE': 'depVoyage',
         'Buyer': 'buyer', 'Supplier': 'supplier', 'BUYER': 'buyer', 'SUPPLIER': 'supplier',
         'Load Port': 'loadPort', 'LOAD PORT': 'loadPort',
@@ -979,12 +991,18 @@ def process_data_from_azure_json(force_source: str = None) -> tuple:
     df = df.rename(columns=existing_cols)
     df = df.loc[:, ~df.columns.duplicated()]
 
-    # --- Filter out BCN orders (item #1) ---
-    if 'bcn' in df.columns:
-        df['bcn'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
-        bcn_count = df['bcn'].sum()
-        df = df[~df['bcn']]
-        log(f"Excluded {int(bcn_count)} BCN orders")
+    # --- BCN_FLAG handling: zero out TEU for BCN duplicates (keep row for visibility) ---
+    if 'bcnFlag' in df.columns:
+        df['bcnFlag'] = df['bcnFlag'].apply(lambda x: str(x).strip().upper() in ('Y', 'YES', '1', 'TRUE'))
+        bcn_count = int(df['bcnFlag'].sum())
+        df.loc[df['bcnFlag'], 'teu'] = 0
+        log(f"BCN_FLAG: zeroed TEU for {bcn_count} duplicate orders (rows kept)")
+    elif 'bcn' in df.columns:
+        # Legacy fallback for old BCN column
+        df['bcnFlag'] = df['bcn'].apply(lambda x: str(x).strip().lower() in ('1', 'true', 'yes'))
+        bcn_count = int(df['bcnFlag'].sum())
+        df.loc[df['bcnFlag'], 'teu'] = 0
+        log(f"BCN (legacy): zeroed TEU for {bcn_count} duplicate orders (rows kept)")
 
     # --- Filter out cancelled orders (item #6) ---
     if 'cancelled_orders' in df.columns:

@@ -2238,9 +2238,10 @@ const ContractDashboard: React.FC = () => {
                     <tbody className="divide-y divide-white/[0.02]">
                       {filteredBookings.slice(0, 30).map((row, i) => {
                         const rTeu = row.teu || 0;
+                        const isBcn = row.bcnFlag === true;
                         
                         // Data Quality Rules evaluation
-                        const hasZeroTeu = rTeu <= 0;
+                        const hasZeroTeu = rTeu <= 0 && !isBcn;
                         const hasMissingPorts = !row.loadPort || !row.dischargePort || row.loadPort === '-' || row.dischargePort === '-';
                         const hasMissingEq = !row.equipment || row.equipment === '-';
                         const contractInfo = CONTRACT_UTIL_DATA.find(c => c.id === row.contract);
@@ -2259,6 +2260,7 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-5  text-xs font-bold text-slate-300 relative">
                               <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
                                 {hasZeroTeu && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Zero TEU" />}
+                                {isBcn && <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]" title="BCN Duplicate — TEU excluded" />}
                                 {hasMissingPorts && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Missing Port Codes" />}
                                 {hasMissingEq && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Missing Equipment" />}
                                 {isSuspectContract && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Suspect Contract" />}
@@ -2286,7 +2288,10 @@ const ContractDashboard: React.FC = () => {
                             <td className="px-6 py-5  text-xs text-center text-slate-300">{formatDate(row.etd)}</td>
                             <td className="px-6 py-5  text-xs text-center text-slate-300">{formatDate(row.eta)}</td>
                             <td className="px-6 py-5 text-center  text-xs bg-slate-900/40 text-slate-300">{row.loadPort} → {row.dischargePort}</td>
-                            <td className={`px-6 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{Math.round(rTeu)}</td>
+                            <td className={`px-6 py-5  text-xs font-bold text-right ${isBcn ? 'text-orange-500 line-through opacity-60' : hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>
+                              {Math.round(rTeu)}
+                              {isBcn && <span className="ml-1 text-[8px] text-orange-400 no-underline font-bold inline-block" style={{textDecoration: 'none'}}>BCN</span>}
+                            </td>
                           </tr>
                         );
                       })}
@@ -2861,9 +2866,10 @@ const ContractDashboard: React.FC = () => {
                       <tbody className="divide-y divide-white/5">
                         {filteredBookings.map((row, i) => {
                           const rTeu = row.teu || 0;
+                          const isBcn = row.bcnFlag === true;
                           
                           // Data Quality Rules evaluation
-                          const hasZeroTeu = rTeu <= 0;
+                          const hasZeroTeu = rTeu <= 0 && !isBcn;
                           const hasMissingPorts = !row.loadPort || !row.dischargePort || row.loadPort === '-' || row.dischargePort === '-';
                           const hasMissingEq = !row.equipment || row.equipment === '-';
                           const isSuspectContract = !CONTRACT_UTIL_DATA.find(c => c.id === row.contract);
@@ -2873,6 +2879,7 @@ const ContractDashboard: React.FC = () => {
                               <td className="px-8 py-5  text-xs font-bold text-sky-900 sticky left-0 z-10 bg-sky-50 border-r border-sky-200 transition-colors duration-200 hover:bg-sky-100">
                                 <div className="absolute left-2 top-1/2 -translate-y-1/2 flex flex-col gap-0.5">
                                   {hasZeroTeu && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Zero TEU" />}
+                                  {isBcn && <span className="w-1.5 h-1.5 rounded-full bg-orange-500 shadow-[0_0_8px_rgba(249,115,22,0.8)]" title="BCN Duplicate — TEU excluded" />}
                                   {hasMissingPorts && <span className="w-1.5 h-1.5 rounded-full bg-rose-500 shadow-[0_0_8px_rgba(239,68,68,0.8)]" title="Missing Port Codes" />}
                                   {hasMissingEq && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Missing Equipment" />}
                                   {isSuspectContract && <span className="w-1.5 h-1.5 rounded-full bg-amber-500 shadow-[0_0_8px_rgba(245,158,11,0.8)]" title="Suspect Contract" />}
@@ -2899,10 +2906,16 @@ const ContractDashboard: React.FC = () => {
                               <td className="px-8 py-5  text-xs text-slate-300">N/A</td>
                               <td className="px-8 py-5  text-xs text-slate-300">N/A</td>
                               <td className="px-8 py-5 text-center"><div className="text-xs font-bold px-3 py-1 bg-indigo-500/10 text-indigo-300 rounded border border-indigo-500/20  tracking-widest">{row.branch}</div></td>
-                              <td className={`px-8 py-5  text-xs font-bold text-right ${hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>{Math.round(rTeu)}</td>
+                              <td className={`px-8 py-5  text-xs font-bold text-right ${isBcn ? 'text-orange-500 line-through opacity-60' : hasZeroTeu ? 'text-rose-500' : 'text-emerald-400'}`}>
+                                {Math.round(rTeu)}
+                                {isBcn && <span className="ml-1 text-[8px] text-orange-400 no-underline font-bold inline-block" style={{textDecoration: 'none'}}>BCN</span>}
+                              </td>
                               <td className="px-8 py-5  text-xs text-slate-400 text-right">{row.containers || '-'}</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-300">{row.mscWeek}</td>
-                              <td className={`px-8 py-5  text-xs text-right ${hasZeroTeu ? 'text-rose-500' : 'text-slate-400'}`}>{Math.round(rTeu)}</td>
+                              <td className={`px-8 py-5  text-xs text-right ${isBcn ? 'text-orange-500 line-through opacity-60' : hasZeroTeu ? 'text-rose-500' : 'text-slate-400'}`}>
+                                {Math.round(rTeu)}
+                                {isBcn && <span className="ml-1 text-[8px] text-orange-400 no-underline font-bold inline-block" style={{textDecoration: 'none'}}>BCN</span>}
+                              </td>
                               <td className="px-8 py-5  text-xs text-slate-400 text-right">-</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-300">WK {row.mscWeek}</td>
                               <td className="px-8 py-5  text-xs text-center text-slate-400">-</td>
